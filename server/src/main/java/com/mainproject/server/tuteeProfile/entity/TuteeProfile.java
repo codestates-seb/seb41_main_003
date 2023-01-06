@@ -1,8 +1,13 @@
 package com.mainproject.server.tuteeProfile.entity;
 
 import com.mainproject.server.audit.Auditable;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.mainproject.server.constant.TuteeStatus;
+import com.mainproject.server.constant.WantedStatus;
+import com.mainproject.server.image.entity.UserImage;
+import com.mainproject.server.image.entity.VerifyImage;
+import com.mainproject.server.message.entity.Message;
+import com.mainproject.server.profile.entity.Profile;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

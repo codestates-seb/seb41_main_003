@@ -2,13 +2,13 @@ package com.mainproject.server.tutoring.entity;
 
 import com.mainproject.server.audit.Auditable;
 import com.mainproject.server.constant.TutoringStatus;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.mainproject.server.dateNotice.entity.DateNotice;
+import com.mainproject.server.review.entity.Review;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -19,5 +19,43 @@ public class Tutoring extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tutoringId;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Setter
     private TutoringStatus tutoringStatus;
+
+
+    /* 연관 관계 매핑*/
+
+    @ToString.Exclude
+    @OrderBy("dateNoticeId")
+    @OneToMany(mappedBy = "tutoring", cascade = CascadeType.ALL)
+    @Setter
+    private Set<DateNotice> dateNotices = new LinkedHashSet<>();
+
+    @ToString.Exclude
+    @OrderBy("reviewId")
+    @OneToMany(mappedBy = "tutoring", cascade = CascadeType.DETACH)
+    @Setter
+    private Set<Review> reviews = new LinkedHashSet<>();
+
+    @ToString.Exclude
+    @OrderBy("tutoringProfileId")
+    @OneToMany(mappedBy = "tutoring", cascade = CascadeType.DETACH)
+    @Setter
+    private Set<TutoringProfile> tutoringProfiles = new LinkedHashSet<>();
+
+    /* 연관 관계 편의 메소드 */
+
+    public void addDateNotice(DateNotice dateNotice) {
+        this.dateNotices.add(dateNotice);
+    }
+
+    public void addReview(Review reviews) {
+        this.reviews.add(reviews);
+    }
+
+    public void addTutoringProfile(TutoringProfile tutoringProfiles) {
+        this.tutoringProfiles.add(tutoringProfiles);
+    }
 }

@@ -4,10 +4,7 @@ import com.mainproject.server.audit.Auditable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
@@ -18,6 +15,8 @@ public class VerifyImage extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long verifyImageId;
 
+    @Column(nullable = false)
+    @Setter
     private String url;
 
 }

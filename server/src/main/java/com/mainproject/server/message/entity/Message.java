@@ -12,6 +12,8 @@ import javax.persistence.Id;
 @Getter
 @NoArgsConstructor
 @Entity
+@Builder
+@AllArgsConstructor
 public class Message extends Auditable {
 
     @Id

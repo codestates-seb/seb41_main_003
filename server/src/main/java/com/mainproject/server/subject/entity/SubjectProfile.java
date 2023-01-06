@@ -1,12 +1,9 @@
 package com.mainproject.server.subject.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.mainproject.server.profile.entity.Profile;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
@@ -16,4 +13,29 @@ public class SubjectProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long subjectProfileId;
+
+    /* 연관 관계 매핑 */
+
+    @ToString.Exclude
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @Setter
+    private Profile profile;
+
+    @ToString.Exclude
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @Setter
+    private Subject subject;
+
+    /* 연관 관계 편의 메소드 */
+
+    public void addProfile(Profile profile) {
+        setProfile(profile);
+        profile.addSubjectProfile(this);
+    }
+
+    public void addSubject(Subject subject) {
+        setSubject(subject);
+        subject.addSubjectProfile(this);
+    }
+
 }
