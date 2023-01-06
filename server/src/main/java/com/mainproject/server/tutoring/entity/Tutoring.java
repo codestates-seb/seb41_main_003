@@ -13,6 +13,8 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
+@AllArgsConstructor
+@Builder
 public class Tutoring extends Auditable {
 
     @Id

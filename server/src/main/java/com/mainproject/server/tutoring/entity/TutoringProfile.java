@@ -8,6 +8,8 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
+@AllArgsConstructor
+@Builder
 public class TutoringProfile {
 
     @Id

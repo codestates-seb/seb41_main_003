@@ -1,13 +1,11 @@
 package com.mainproject.server.message.entity;
 
 import com.mainproject.server.audit.Auditable;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.mainproject.server.tuteeProfile.entity.TuteeProfile;
+import com.mainproject.server.tutorProfile.entity.TutorProfile;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
@@ -20,8 +18,36 @@ public class Message extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
 
+    @Column(nullable = false)
+    @Setter
     private String messageTitle;
 
+    @Column(nullable = false,columnDefinition = "LONGTEXT")
+    @Setter
     private String messageContent;
+
+    /* 연관 관계 매핑 */
+    @ToString.Exclude
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "TUTOR_PROFILE_ID")
+    @Setter
+    private TutorProfile tutorProfile;
+
+    @ToString.Exclude
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "TUTEE_PROFILE_ID")
+    @Setter
+    private TuteeProfile tuteeProfile;
+
+    /* 연관 관계 편의 메소드 */
+    public void addTutorProfile(TutorProfile tutorProfile) {
+        setTutorProfile(tutorProfile);
+        tutorProfile.addMessage(this);
+    }
+
+    public void addTuteeProfile(TuteeProfile tuteeProfile) {
+        setTuteeProfile(tuteeProfile);
+        tuteeProfile.addMessage(this);
+    }
 
 }

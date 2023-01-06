@@ -3,10 +3,7 @@ package com.mainproject.server.image.entity;
 import com.mainproject.server.audit.Auditable;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
@@ -19,5 +16,7 @@ public class UserImage extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userImageId;
 
+    @Column(nullable = false)
+    @Setter
     private String url;
 }
