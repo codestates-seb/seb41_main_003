@@ -3,6 +3,7 @@ package com.mainproject.server.tutoring.entity;
 import com.mainproject.server.audit.Auditable;
 import com.mainproject.server.constant.TutoringStatus;
 import com.mainproject.server.dateNotice.entity.DateNotice;
+import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.review.entity.Review;
 import lombok.*;
 
@@ -30,6 +31,16 @@ public class Tutoring extends Auditable {
     /* 연관 관계 매핑*/
 
     @ToString.Exclude
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @Setter
+    private Profile tutor;
+
+    @ToString.Exclude
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @Setter
+    private Profile tutee;
+
+    @ToString.Exclude
     @OrderBy("dateNoticeId")
     @OneToMany(mappedBy = "tutoring", cascade = CascadeType.ALL)
     @Setter
@@ -41,11 +52,6 @@ public class Tutoring extends Auditable {
     @Setter
     private Set<Review> reviews = new LinkedHashSet<>();
 
-    @ToString.Exclude
-    @OrderBy("tutoringProfileId")
-    @OneToMany(mappedBy = "tutoring", cascade = CascadeType.DETACH)
-    @Setter
-    private Set<TutoringProfile> tutoringProfiles = new LinkedHashSet<>();
 
     /* 연관 관계 편의 메소드 */
 
@@ -57,7 +63,14 @@ public class Tutoring extends Auditable {
         this.reviews.add(reviews);
     }
 
-    public void addTutoringProfile(TutoringProfile tutoringProfiles) {
-        this.tutoringProfiles.add(tutoringProfiles);
+    public void addTutor(Profile tutor) {
+        setTutor(tutor);
+        tutor.addTutorTutoring(this);
     }
+
+    public void addTutee(Profile tutee) {
+        setTutor(tutee);
+        tutee.addTuteeTutoring(this);
+    }
+
 }

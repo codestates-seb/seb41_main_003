@@ -18,36 +18,25 @@ public class Message extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
 
-    @Column(nullable = false)
-    @Setter
-    private String messageTitle;
-
     @Column(nullable = false,columnDefinition = "LONGTEXT")
     @Setter
     private String messageContent;
 
     /* 연관 관계 매핑 */
     @ToString.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "TUTOR_PROFILE_ID")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Setter
-    private TutorProfile tutorProfile;
+    private Profile sender;
 
     @ToString.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "TUTEE_PROFILE_ID")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Setter
-    private TuteeProfile tuteeProfile;
+    private Profile receiver;
 
     /* 연관 관계 편의 메소드 */
-    public void addTutorProfile(TutorProfile tutorProfile) {
-        setTutorProfile(tutorProfile);
-        tutorProfile.addMessage(this);
-    }
-
-    public void addTuteeProfile(TuteeProfile tuteeProfile) {
-        setTuteeProfile(tuteeProfile);
-        tuteeProfile.addMessage(this);
+    public void addSender(Profile sender) {
+        setSender(sender);
+        sender.addSendMessage(this);
     }
 
 }

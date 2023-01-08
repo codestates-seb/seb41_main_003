@@ -1,5 +1,5 @@
 package com.mainproject.server.constant;
 
-public enum TuteeStatus {
+public enum ProfileStatus {
     STUDENT,PARENTS
 }
