@@ -84,16 +84,6 @@ public class Profile extends Auditable {
 
     /* 연관 관계 매핑*/
     @ToString.Exclude
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @Setter
-    private TuteeProfile tuteeProfile;
-
-    @ToString.Exclude
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @Setter
-    private TutorProfile tutorProfile;
-
-    @ToString.Exclude
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Setter
     private User user;
@@ -148,14 +138,8 @@ public class Profile extends Auditable {
 
     /* 연관 관계 편의 메소드 */
 
-    public void addTuteeProfile(TuteeProfile tuteeProfile) {
-        setTuteeProfile(tuteeProfile);
-        tuteeProfile.setProfile(this);
-    }
-
-    public void addTutorProfile(TutorProfile tutorProfile) {
-        setTuteeProfile(tuteeProfile);
-        tutorProfile.setProfile(this);
+    public void addUserImage(UserImage userImage) {
+        setUserImage(userImage);
     }
 
     public void addUser(User user) {

@@ -1,8 +1,8 @@
 package com.mainproject.server.message.entity;
 
 import com.mainproject.server.audit.Auditable;
-import com.mainproject.server.tuteeProfile.entity.TuteeProfile;
-import com.mainproject.server.tutorProfile.entity.TutorProfile;
+import com.mainproject.server.profile.entity.Profile;
+import com.mainproject.server.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -37,6 +37,11 @@ public class Message extends Auditable {
     public void addSender(Profile sender) {
         setSender(sender);
         sender.addSendMessage(this);
+    }
+
+    public void addReceiver(Profile receiver) {
+        setReceiver(receiver);
+        receiver.addReceiveMessage(this);
     }
 
 }

@@ -45,7 +45,7 @@ public class DateNotice extends Auditable {
 
     @ToString.Exclude
     @OrderBy("homeworkId")
-    @OneToMany(mappedBy = "tuteeProfile",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "dateNotice",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Setter
     private Set<Homework> homeworks;
 
