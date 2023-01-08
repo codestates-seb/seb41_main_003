@@ -92,9 +92,10 @@ public class TutorProfile extends Auditable {
     private UserImage userImage;
 
     @ToString.Exclude
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OrderBy("verifyImageId")
+    @OneToMany(mappedBy = "tutorProfile", fetch = FetchType.LAZY)
     @Setter
-    private VerifyImage verifyImage;
+    private Set<VerifyImage> verifyImages = new LinkedHashSet<>();
 
     @ToString.Exclude
     @OrderBy("messageId")
@@ -117,7 +118,7 @@ public class TutorProfile extends Auditable {
     }
 
     public void addVerifyImage(VerifyImage verifyImage) {
-        setVerifyImage(verifyImage);
+        this.verifyImages.add(verifyImage);
     }
 
 }
