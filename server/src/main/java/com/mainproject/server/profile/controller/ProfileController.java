@@ -2,6 +2,7 @@ package com.mainproject.server.profile.controller;
 
 import com.mainproject.server.dto.PageResponseDto;
 import com.mainproject.server.profile.dto.ProfileDto;
+import com.mainproject.server.profile.dto.ProfilePageDto;
 import com.mainproject.server.profile.dto.ProfileResponseDto;
 import com.mainproject.server.profile.dto.ProfileSimpleResponseDto;
 import com.mainproject.server.utils.StubData;
@@ -49,9 +50,10 @@ public class ProfileController {
             @PageableDefault(page = 0, size = 10, sort = "reviewId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
-        ProfileResponseDto profile = stubData.createProfileResponse();
+        ProfilePageDto profile = stubData.createProfileResponse();
+        ProfileResponseDto responseDto = ProfileResponseDto.of(profile);
         PageResponseDto response = PageResponseDto.of(
-                profile.getReviews().getContent(),
+                responseDto,
                 profile.getReviews());
         return new ResponseEntity<>(
                 response,
@@ -73,7 +75,7 @@ public class ProfileController {
             @PathVariable Long profileId,
             @RequestBody ProfileDto profileDto
     ) {
-        ProfileResponseDto profile = stubData.createProfileResponse();
+        ProfilePageDto profile = stubData.createProfileResponse();
         PageResponseDto response = PageResponseDto.of(
                 profile.getReviews().getContent(),
                 profile.getReviews());

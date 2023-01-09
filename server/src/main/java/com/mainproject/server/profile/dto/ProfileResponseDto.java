@@ -4,14 +4,13 @@ import com.mainproject.server.image.dto.ImageResponseDto;
 import com.mainproject.server.review.dto.ReviewResponseDto;
 import com.mainproject.server.subject.dto.SubjectProfileResponseDto;
 import lombok.*;
-import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -49,5 +48,30 @@ public class ProfileResponseDto {
 
     private LocalDateTime updateAt;
 
-    private Page<ReviewResponseDto> reviews;
+    private List<ReviewResponseDto> reviews;
+
+    public ProfileResponseDto(ProfilePageDto dto) {
+        this.profileId = dto.getProfileId();
+        this.name = dto.getName();
+        this.rate = dto.getRate();
+        this.bio = dto.getBio();
+        this.school = dto.getSchool();
+        this.wantedStatus = dto.getWantedStatus();
+        this.way = dto.getWay();
+        this.subjects = dto.getSubjects();
+        this.difference = dto.getDifference();
+        this.gender = dto.getGender();
+        this.pay = dto.getPay();
+        this.wantDate = dto.getWantDate();
+        this.preTutoring = dto.getPreTutoring();
+        this.profileImage = dto.getProfileImage();
+        this.createAt = dto.getCreateAt();
+        this.updateAt= dto.getUpdateAt();
+        this.reviews = dto.getReviews().getContent();
+    }
+
+    public static ProfileResponseDto of(ProfilePageDto dto) {
+        return new ProfileResponseDto(dto);
+    }
+
 }

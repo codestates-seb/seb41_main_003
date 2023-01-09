@@ -10,7 +10,7 @@ import com.mainproject.server.image.dto.ImageResponseDto;
 import com.mainproject.server.message.dto.MessageResponseDto;
 import com.mainproject.server.message.dto.MessageRoomResponseDto;
 import com.mainproject.server.message.dto.MessageRoomSimpleResponseDto;
-import com.mainproject.server.profile.dto.ProfileResponseDto;
+import com.mainproject.server.profile.dto.ProfilePageDto;
 import com.mainproject.server.profile.dto.ProfileSimpleResponseDto;
 import com.mainproject.server.review.dto.ReviewResponseDto;
 import com.mainproject.server.subject.dto.SubjectProfileResponseDto;
@@ -140,13 +140,13 @@ public class StubData {
                 .build();
     }
 
-    public ProfileResponseDto createProfileResponse() {
+    public ProfilePageDto createProfileResponse() {
         List<ReviewResponseDto> list = List.of(
                 createReviewResponse(),
                 createReviewResponse()
         );
         Page page = new PageImpl(list, PageRequest.of(0, 10), 10L);
-        return ProfileResponseDto.builder()
+        return ProfilePageDto.builder()
                 .profileId(1L)
                 .name("강호수")
                 .rate(4.9)
