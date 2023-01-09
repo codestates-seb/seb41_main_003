@@ -1,8 +1,7 @@
 package com.mainproject.server.profile.dto;
 
+
 import com.mainproject.server.image.dto.ImageResponseDto;
-import com.mainproject.server.review.dto.ReviewResponseDto;
-import com.mainproject.server.subject.dto.SubjectProfileResponseDto;
 import com.mainproject.server.subject.dto.SubjectResponseDto;
 import lombok.*;
 
@@ -15,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ProfileResponseDto {
+public class ProfileSimpleResponseDto {
 
     private Long profileId;
 
@@ -23,27 +22,11 @@ public class ProfileResponseDto {
 
     private double rate;
 
-    private String bio;
+    private List<SubjectResponseDto> subjects;
 
     private String school;
 
-    private String wantedStatus;
-
-    private String way;
-
-    private List<SubjectProfileResponseDto> subjects;
-
-    private String difference;
-
-    private String gender;
-
-    private String pay;
-
-    private String wantDate;
-
-    private String preTutoring;
-
-    private List<ReviewResponseDto> reviews;
+    private String bio;
 
     private ImageResponseDto profileImage;
 
