@@ -2,6 +2,7 @@ package com.mainproject.server.tutoring.dto;
 
 import com.mainproject.server.dateNotice.dto.DateNoticeResponseDto;
 import com.mainproject.server.profile.dto.ProfileResponseDto;
+import com.mainproject.server.profile.dto.ProfileSimpleResponseDto;
 import com.mainproject.server.review.dto.ReviewResponseDto;
 import lombok.Getter;
 import lombok.Setter;

@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class DateNoticeResponseDto {
+
     private Long dateNoticeId;
     private LocalDateTime noticeAt;
     private NoticeResponseDto noticeResponseDto;

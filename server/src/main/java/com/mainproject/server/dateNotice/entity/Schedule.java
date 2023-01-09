@@ -17,9 +17,6 @@ public class Schedule extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long scheduleId;
 
-    @Column(nullable = false)
-    @Setter
-    private String scheduleTitle;
 
     @Column(nullable = false, columnDefinition = "LONGTEXT")
     @Setter
