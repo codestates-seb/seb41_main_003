@@ -2,23 +2,19 @@ package com.mainproject.server.message.dto;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class MessageResponseDto {
-
-    private Long messageId;
+public class MessagePostDto {
 
     private Long senderId;
 
     private Long receiverId;
 
-    private String messageContent;
+    private Long messageResponseId;
 
-    private LocalDateTime createAt;
+    private String messageContent;
 }
