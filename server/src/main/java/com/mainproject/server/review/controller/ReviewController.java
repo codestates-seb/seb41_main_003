@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/reviews")
 public class ReviewController {
 
-    private StubData stubData;
+    private final StubData stubData;
 
     @GetMapping("/{tutoringId}")
     public ResponseEntity getReview(@PathVariable("tutoringId") Long tutoringId) {

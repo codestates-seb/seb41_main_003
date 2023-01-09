@@ -23,7 +23,7 @@ import java.util.List;
 @RequestMapping("/tutoring")
 public class TutoringController {
 
-    private StubData stubData;
+    private final StubData stubData;
 
     @GetMapping("/{userId}")
     public ResponseEntity getAllTutoringByUser(@PathVariable("userId") Long userId) {
