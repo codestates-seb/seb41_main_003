@@ -17,6 +17,7 @@ import MyProfile from './pages/MyProfile';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import TestPage from './pages/TestPage';
+import ModalTestPage from './pages/ModalTestPage';
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
             <Route path="/message" element={<Message />} />
             <Route path="/myprofile" element={<MyProfile />} />
             <Route path="/test" element={<TestPage />} />
+            <Route path="/mpdaltest" element={<ModalTestPage />} />
           </Routes>
         </div>
         <div className="footer">
