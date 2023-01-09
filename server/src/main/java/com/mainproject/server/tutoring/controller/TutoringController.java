@@ -26,17 +26,17 @@ public class TutoringController {
     private StubData stubData;
 
     @GetMapping("/{userId}")
-    public ResponseEntity getAllTutoringByUser(@PathVariable String userId) {
+    public ResponseEntity getAllTutoringByUser(@PathVariable Long userId) {
         return new ResponseEntity(ResponseDto.of(stubData.createTutoringSimpleResponse()), HttpStatus.OK);
     }
 
     @PostMapping("/{userId}")
-    public ResponseEntity postTutoring(@PathVariable String userId) {
+    public ResponseEntity postTutoring(@PathVariable Long userId) {
         return new ResponseEntity(ResponseDto.of(stubData.createTutoringSimpleResponse()), HttpStatus.CREATED);
     }
 
     @GetMapping("/profiles/{profileId}")
-    public ResponseEntity getAllTutoring(@PathVariable String profileId,
+    public ResponseEntity getAllTutoring(@PathVariable Long profileId,
                                          @PageableDefault(page = 0, size = 10, sort = "profileId", direction = Sort.Direction.DESC)
                                          Pageable pageable) {
         TutoringSimpleResponseDto tutoringSimpleResponse = stubData.createTutoringSimpleResponse();
@@ -47,17 +47,17 @@ public class TutoringController {
     }
 
     @GetMapping("/details/{tutoringId}")
-    public ResponseEntity getTutoring(@PathVariable String tutoringId) {
+    public ResponseEntity getTutoring(@PathVariable Long tutoringId) {
         return new ResponseEntity(ResponseDto.of(stubData.createTutoringResponse()), HttpStatus.OK);
     }
 
     @PatchMapping("/details/{tutoringId}")
-    public ResponseEntity patchTutoring(@PathVariable String tutoringId) {
+    public ResponseEntity patchTutoring(@PathVariable Long tutoringId) {
         return new ResponseEntity(ResponseDto.of(stubData.createTutoringResponse()), HttpStatus.OK);
     }
 
     @DeleteMapping("/details/{tutoringId}")
-    public ResponseEntity deleteTutoring(@PathVariable String tutoringId) {
+    public ResponseEntity deleteTutoring(@PathVariable Long tutoringId) {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -67,17 +67,17 @@ public class TutoringController {
     }
 
     @GetMapping("/date-notice/{dateNoticeId}")
-    public ResponseEntity getDateNotice(@PathVariable String dateNoticeId) {
+    public ResponseEntity getDateNotice(@PathVariable Long dateNoticeId) {
         return new ResponseEntity(ResponseDto.of(stubData.createDateNoticeResponse()), HttpStatus.OK);
     }
 
     @PatchMapping("/date-notice/{dateNoticeId}")
-    public ResponseEntity patchDateNotice(@PathVariable String dateNoticeId) {
+    public ResponseEntity patchDateNotice(@PathVariable Long dateNoticeId) {
         return new ResponseEntity(ResponseDto.of(stubData.createDateNoticeResponse()), HttpStatus.OK);
     }
 
     @DeleteMapping("/date-notice/{dateNoticeId}")
-    public ResponseEntity deleteDateNotice(@PathVariable String dateNoticeId) {
+    public ResponseEntity deleteDateNotice(@PathVariable Long dateNoticeId) {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

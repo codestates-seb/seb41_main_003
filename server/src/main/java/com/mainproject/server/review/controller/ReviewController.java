@@ -17,17 +17,17 @@ public class ReviewController {
     private StubData stubData;
 
     @GetMapping("/{tutoringId}")
-    public ResponseEntity getReview(@PathVariable String tutoringId) {
+    public ResponseEntity getReview(@PathVariable Long tutoringId) {
         return new ResponseEntity(ResponseDto.of(stubData.createReviewResponse()), HttpStatus.OK);
     }
 
     @PostMapping("/{tutoringId}")
-    public ResponseEntity postReview(@PathVariable String tutoringId) {
+    public ResponseEntity postReview(@PathVariable Long tutoringId) {
         return new ResponseEntity(ResponseDto.of(stubData.createReviewResponse()), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{tutoringId}")
-    public ResponseEntity patchReview(@PathVariable String tutoringId) {
+    public ResponseEntity patchReview(@PathVariable Long tutoringId) {
         return new ResponseEntity(ResponseDto.of(stubData.createReviewResponse()), HttpStatus.OK);
     }
 }
