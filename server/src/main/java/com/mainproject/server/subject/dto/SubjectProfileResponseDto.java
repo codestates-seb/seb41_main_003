@@ -1,4 +1,4 @@
-package com.mainproject.server.image.dto;
+package com.mainproject.server.subject.dto;
 
 
 import lombok.*;
@@ -11,11 +11,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ImageResponseDto {
+public class SubjectProfileResponseDto {
 
-    private Long profileImageId;
+    private Long subjectId;
 
-    private String url;
+    private String subjectTitle;
+
+    private String content;
 
     private LocalDateTime createAt;
 
