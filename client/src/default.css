@@ -1,0 +1,38 @@
+$night: #023373;
+$indigo: #023e73;
+$dirty: #0367a6;
+$ocean: #3b9cd9;
+$baby: #77c3f2;
+$whiteBlue: #d1edff;
+
+$black: #000000;
+$coal: #333333;
+$nickel: #666666;
+$moon: #999999;
+$silver: #cccccc;
+$snow: #f4f4f4;
+$white: #ffffff;
+$red: #e74c3c;
+
+$font1: 48px;
+$font2: 40px;
+$font3: 32px;
+$font4: 24px;
+$font5: 20px;
+$font6: 16px;
+$para: 16px;
+$sub: 12px;
+
+$font1W: 800;
+$font2W: 700;
+$font3W: 700;
+$font4W: 600;
+$font5W: 500;
+$font6W: 600;
+$paraW: 400;
+$subW: 500;
+
+$defaultShadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+$bigShadow: 8px 8px 15px rgba(0, 0, 0, 0.08);
+$containShadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 1px 3px rgba(0, 0, 0, 0.08);
+$buttonShadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
