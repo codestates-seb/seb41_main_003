@@ -1,0 +1,29 @@
+@import url('../default.css');
+
+footer {
+  z-index: 1;
+  width: 100vw;
+  height: 160px;
+  background-color: $coal;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.logos {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.copyright {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+
+  > div {
+    color: $white;
+    font-size: $para;
+    font-weight: $paraW;
+  }
+}
