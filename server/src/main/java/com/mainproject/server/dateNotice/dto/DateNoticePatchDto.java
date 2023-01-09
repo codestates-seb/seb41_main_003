@@ -8,10 +8,10 @@ import java.util.List;
 
 @Getter
 @Setter
-public class DateNoticeResponseDto {
+public class DateNoticePatchDto {
     private Long dateNoticeId;
     private LocalDateTime noticeAt;
-    private NoticeResponseDto noticeResponseDto;
-    private ScheduleResponseDto scheduleResponseDto;
-    private List<HomeworkResponseDto> homeworkResponseDtos;
+    private NoticePatchDto noticePatchDto;
+    private SchedulePatchDto schedulePatchDto;
+    private List<HomeworkPatchDto> homeworkPatchDtos;
 }
