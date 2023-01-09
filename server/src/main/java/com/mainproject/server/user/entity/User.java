@@ -29,6 +29,10 @@ public class User extends Auditable {
 
     @Column(nullable = false)
     @Setter
+    private String nickName;
+
+    @Column(nullable = false)
+    @Setter
     private String password;
 
     @Column(nullable = false)
