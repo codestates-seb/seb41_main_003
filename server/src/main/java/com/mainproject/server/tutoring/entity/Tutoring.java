@@ -31,12 +31,12 @@ public class Tutoring extends Auditable {
     /* 연관 관계 매핑*/
 
     @ToString.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @Setter
     private Profile tutor;
 
     @ToString.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @Setter
     private Profile tutee;
 
@@ -65,12 +65,10 @@ public class Tutoring extends Auditable {
 
     public void addTutor(Profile tutor) {
         setTutor(tutor);
-        tutor.addTutorTutoring(this);
     }
 
     public void addTutee(Profile tutee) {
         setTutor(tutee);
-        tutee.addTuteeTutoring(this);
     }
 
 }
