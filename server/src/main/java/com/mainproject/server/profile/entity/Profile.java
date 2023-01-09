@@ -8,7 +8,6 @@ import com.mainproject.server.message.entity.Message;
 import com.mainproject.server.message.entity.MessageRoom;
 import com.mainproject.server.review.entity.Review;
 import com.mainproject.server.subject.entity.SubjectProfile;
-import com.mainproject.server.subjectContent.entity.SubjectContent;
 import com.mainproject.server.tutoring.entity.Tutoring;
 import com.mainproject.server.user.entity.User;
 import lombok.*;

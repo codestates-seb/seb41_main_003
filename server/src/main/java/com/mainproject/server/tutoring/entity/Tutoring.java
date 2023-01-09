@@ -47,10 +47,9 @@ public class Tutoring extends Auditable {
     private Set<DateNotice> dateNotices = new LinkedHashSet<>();
 
     @ToString.Exclude
-    @OrderBy("reviewId")
-    @OneToMany(mappedBy = "tutoring", cascade = CascadeType.DETACH)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Setter
-    private Set<Review> reviews = new LinkedHashSet<>();
+    private Review review;
 
 
     /* 연관 관계 편의 메소드 */
@@ -59,8 +58,8 @@ public class Tutoring extends Auditable {
         this.dateNotices.add(dateNotice);
     }
 
-    public void addReview(Review reviews) {
-        this.reviews.add(reviews);
+    public void addReview(Review review) {
+        setReview(review);
     }
 
     public void addTutor(Profile tutor) {

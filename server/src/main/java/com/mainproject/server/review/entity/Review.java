@@ -43,11 +43,6 @@ public class Review extends Auditable {
     @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @Setter
-    private Tutoring tutoring;
-
-    @ToString.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @Setter
     private Profile profile;
 
     /* 연관 관계 편의 메소드 */

@@ -18,6 +18,12 @@ public class Message extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
 
+    @Column(nullable = false)
+    private String receiverName;
+
+    @Column(nullable = false)
+    private String senderName;
+
     @Column(nullable = false,columnDefinition = "LONGTEXT")
     @Setter
     private String messageContent;
@@ -26,22 +32,29 @@ public class Message extends Auditable {
     @ToString.Exclude
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Setter
-    private Profile sender;
+    private MessageRoom messageRoom;
 
     @ToString.Exclude
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Setter
-    private Profile receiver;
+    private Profile tutor;
+
+    @ToString.Exclude
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Setter
+    private Profile tutee;
 
     /* 연관 관계 편의 메소드 */
-    public void addSender(Profile sender) {
-        setSender(sender);
-        sender.addSendMessage(this);
+    public void addMessageRoom(MessageRoom messageRoom) {
+        setMessageRoom(messageRoom);
+        messageRoom.addMessage(this);
     }
 
-    public void addReceiver(Profile receiver) {
-        setReceiver(receiver);
-        receiver.addReceiveMessage(this);
+    public void addTutorProfile(Profile tutorProfile) {
+        setTutor(tutorProfile);
     }
 
+    public void addTuteeProfile(Profile tuteeProfile) {
+        setTutee(tuteeProfile);
+    }
 }
