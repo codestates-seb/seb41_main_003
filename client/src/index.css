@@ -12,6 +12,7 @@ body {
     padding: 0;
     box-sizing: border-box;
     color: #000;
+    font-size: 16px;
   }
 }
 
@@ -23,6 +24,12 @@ li {
 
 a {
   text-decoration: none;
+}
+
+button {
+  background: none;
+  border: none;
+  outline: none;
 }
 
 code {
