@@ -1,0 +1,23 @@
+@import url('../default.css');
+
+.blueSubject {
+  color: $white;
+  background-color: $dirty;
+  border-radius: 10px;
+  width: 64px;
+  height: 24px;
+  font-size: $font6;
+  padding: 3px 7px;
+  text-align: center;
+}
+
+.graySubject {
+  color: $white;
+  background-color: $nickel;
+  border-radius: 10px;
+  width: 64px;
+  height: 24px;
+  font-size: $font6;
+  padding: 3px 7px;
+  text-align: center;
+}
