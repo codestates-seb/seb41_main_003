@@ -2,7 +2,6 @@ package com.mainproject.server.message.entity;
 
 import com.mainproject.server.audit.Auditable;
 import com.mainproject.server.profile.entity.Profile;
-import com.mainproject.server.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;

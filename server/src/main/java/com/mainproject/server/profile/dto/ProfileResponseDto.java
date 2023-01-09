@@ -4,6 +4,7 @@ import com.mainproject.server.image.dto.ImageResponseDto;
 import com.mainproject.server.review.dto.ReviewResponseDto;
 import com.mainproject.server.subject.dto.SubjectProfileResponseDto;
 import lombok.*;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,11 +43,11 @@ public class ProfileResponseDto {
 
     private String preTutoring;
 
-    private List<ReviewResponseDto> reviews;
-
     private ImageResponseDto profileImage;
 
     private LocalDateTime createAt;
 
     private LocalDateTime updateAt;
+
+    private Page<ReviewResponseDto> reviews;
 }

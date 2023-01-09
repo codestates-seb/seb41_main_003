@@ -18,6 +18,9 @@ import com.mainproject.server.subject.dto.SubjectResponseDto;
 import com.mainproject.server.tutoring.dto.TutoringResponseDto;
 import com.mainproject.server.tutoring.dto.TutoringSimpleResponseDto;
 import com.mainproject.server.user.dto.UserResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -138,6 +141,11 @@ public class StubData {
     }
 
     public ProfileResponseDto createProfileResponse() {
+        List<ReviewResponseDto> list = List.of(
+                createReviewResponse(),
+                createReviewResponse()
+        );
+        Page page = new PageImpl(list, PageRequest.of(0, 10), 10L);
         return ProfileResponseDto.builder()
                 .profileId(1L)
                 .name("강호수")
@@ -155,10 +163,7 @@ public class StubData {
                 .pay("4딸라")
                 .wantDate("주말이 좋아요")
                 .preTutoring("불가능합니다")
-                .reviews(List.of(
-                        createReviewResponse(),
-                        createReviewResponse()
-                ))
+                .reviews(page)
                 .profileImage(createImageResponse())
                 .createAt(LocalDateTime.now())
                 .updateAt(LocalDateTime.now())

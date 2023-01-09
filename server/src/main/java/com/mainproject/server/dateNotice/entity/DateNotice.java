@@ -1,13 +1,10 @@
 package com.mainproject.server.dateNotice.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mainproject.server.audit.Auditable;
 import com.mainproject.server.tutoring.entity.Tutoring;
 import lombok.*;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
