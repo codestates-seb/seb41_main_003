@@ -17,9 +17,6 @@ public class Notice extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long noticeId;
 
-    @Column(nullable = false)
-    @Setter
-    private String noticeTitle;
 
     @Column(nullable = false, columnDefinition = "LONGTEXT")
     @Setter

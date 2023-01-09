@@ -9,9 +9,18 @@ import java.util.List;
 @Getter
 @Setter
 public class DateNoticePatchDto {
+
     private Long dateNoticeId;
-    private LocalDateTime noticeAt;
-    private NoticePatchDto noticePatchDto;
-    private SchedulePatchDto schedulePatchDto;
-    private List<HomeworkPatchDto> homeworkPatchDtos;
+
+    private String dateNoticeTitle;
+
+    private String startTime;
+
+    private String endTime;
+
+    private String scheduleBody;
+
+    private String noticeBody;
+
+    private List<String> Homeworks;
 }

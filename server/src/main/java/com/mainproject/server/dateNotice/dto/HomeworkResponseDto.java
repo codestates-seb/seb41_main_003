@@ -6,7 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class HomeworkResponseDto {
+
     private Long homeworkId;
+
     private String homeworkBody;
+
     private String HomeworkStatus;
 }

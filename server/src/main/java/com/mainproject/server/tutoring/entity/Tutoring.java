@@ -23,6 +23,10 @@ public class Tutoring extends Auditable {
     private Long tutoringId;
 
     @Column(nullable = false)
+    @Setter
+    private String tutoringTitle;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     @Setter
     private TutoringStatus tutoringStatus;

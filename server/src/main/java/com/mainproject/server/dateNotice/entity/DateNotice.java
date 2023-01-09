@@ -22,9 +22,16 @@ public class DateNotice extends Auditable {
     private Long dateNoticeId;
 
     @Column(nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Setter
-    private LocalDateTime noticeAt;
+    private String dateNoticeTitle;
+
+    @Column(nullable = false)
+    @Setter
+    private String startTime;
+
+    @Column(nullable = false)
+    @Setter
+    private String endTime;
 
     /* 연관 관계 매핑 */
 

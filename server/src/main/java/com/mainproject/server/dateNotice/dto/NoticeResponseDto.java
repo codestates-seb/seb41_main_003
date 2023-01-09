@@ -6,7 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class NoticeResponseDto {
+
     private Long noticeId;
-    private String noticeTitle;
+
     private String noticeBody;
 }
