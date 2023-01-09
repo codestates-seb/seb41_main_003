@@ -14,7 +14,7 @@ public class MessageRoomSimpleResponseDto {
     // 메세지 방 ID, 메세지 상대 이름, 최근 메세지(messageResponseDto), 읽음 상태, 생성 시간
     private Long messageRoomId;
 
-    private String MessageStatus;
+    private String messageStatus;
 
     private String lastMessage;
 
