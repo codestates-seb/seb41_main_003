@@ -17,7 +17,7 @@ public class DateNoticePostDto {
     private String endTime;
 
     private String scheduleBody;
-    private String noticeTitle;
+
     private String noticeBody;
 
     private List<String> Homeworks;
