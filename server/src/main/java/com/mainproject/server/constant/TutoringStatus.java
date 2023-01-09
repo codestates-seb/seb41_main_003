@@ -1,5 +1,5 @@
 package com.mainproject.server.constant;
 
 public enum TutoringStatus {
-    WAITING, PROGRESS, FINISH
+    TUTEE_WAITING, TUTOR_WAITING, PROGRESS, UNCHECK, FINISH
 }

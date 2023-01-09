@@ -5,6 +5,7 @@ import com.mainproject.server.constant.ProfileStatus;
 import com.mainproject.server.constant.WantedStatus;
 import com.mainproject.server.image.entity.UserImage;
 import com.mainproject.server.message.entity.Message;
+import com.mainproject.server.message.entity.MessageRoom;
 import com.mainproject.server.review.entity.Review;
 import com.mainproject.server.subject.entity.SubjectProfile;
 import com.mainproject.server.subjectContent.entity.SubjectContent;
@@ -78,7 +79,7 @@ public class Profile extends Auditable {
     private String preTutoring;
 
     @Setter
-    @Column(nullable = false, columnDefinition = "LONGTEXT")
+    @Column(nullable = true, columnDefinition = "LONGTEXT")
     private String difference;
 
 
@@ -106,35 +107,7 @@ public class Profile extends Auditable {
     @Setter
     private Set<SubjectProfile> subjectProfiles = new LinkedHashSet<>();
 
-    @ToString.Exclude
-    @OrderBy("tutoringId")
-    @OneToMany(mappedBy = "tutee", cascade = CascadeType.REMOVE)
-    @Setter
-    private Set<Tutoring> tuteeTutorings = new LinkedHashSet<>();
 
-    @ToString.Exclude
-    @OrderBy("tutoringId")
-    @OneToMany(mappedBy = "tutor", cascade = CascadeType.REMOVE)
-    @Setter
-    private Set<Tutoring> tutorTutorings = new LinkedHashSet<>();
-
-    @ToString.Exclude
-    @OrderBy("subjectContentId")
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.REMOVE)
-    @Setter
-    private Set<SubjectContent> subjectContents = new LinkedHashSet<>();
-
-    @ToString.Exclude
-    @OrderBy("messageId")
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.REMOVE)
-    @Setter
-    private Set<Message> sendMessages = new LinkedHashSet<>();
-
-    @ToString.Exclude
-    @OrderBy("messageId")
-    @OneToMany(mappedBy = "receiver", cascade = CascadeType.REMOVE)
-    @Setter
-    private Set<Message> receiveMessages = new LinkedHashSet<>();
 
     /* 연관 관계 편의 메소드 */
 
@@ -153,26 +126,6 @@ public class Profile extends Auditable {
 
     public void addSubjectProfile(SubjectProfile subjectProfile) {
         this.subjectProfiles.add(subjectProfile);
-    }
-
-    public void addSubjectContent(SubjectContent subjectContent) {
-        this.subjectContents.add(subjectContent);
-    }
-
-    public void addSendMessage(Message sendMessage) {
-        this.sendMessages.add(sendMessage);
-    }
-
-    public void addReceiveMessage(Message receiveMessage) {
-        this.sendMessages.add(receiveMessage);
-    }
-
-    public void addTuteeTutoring(Tutoring tutee) {
-        this.tuteeTutorings.add(tutee);
-    }
-
-    public void addTutorTutoring(Tutoring tutor) {
-        this.tutorTutorings.add(tutor);
     }
 
 }

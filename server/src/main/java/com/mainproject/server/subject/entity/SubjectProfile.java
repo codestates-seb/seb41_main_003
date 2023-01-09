@@ -16,6 +16,10 @@ public class SubjectProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long subjectProfileId;
 
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
+    @Setter
+    private String content;
+
     /* 연관 관계 매핑 */
 
     @ToString.Exclude

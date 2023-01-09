@@ -56,9 +56,4 @@ public class Review extends Auditable {
         setProfile(profile);
         profile.addReview(this);
     }
-
-    public void addTutoring(Tutoring tutoring) {
-        setTutoring(tutoring);
-        tutoring.addReview(this);
-    }
 }
