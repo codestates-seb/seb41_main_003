@@ -32,7 +32,7 @@ public class MessageController {
     }
 
     @PostMapping("/{profileId}")
-    public ResponseEntity postMessageRoom(@PathVariable("profileId") long profileId, @RequestBody @Validated MessageRoomPostDto messageRoomPostDto) {
+    public ResponseEntity postMessageRoom(@PathVariable("profileId") Long profileId, @RequestBody @Validated MessageRoomPostDto messageRoomPostDto) {
 
 
         return new ResponseEntity<>(ResponseDto.of(stubData.createMessageRoomResponse()), HttpStatus.CREATED);
