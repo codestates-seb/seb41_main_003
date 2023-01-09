@@ -10,11 +10,11 @@ import javax.persistence.*;
 @Entity
 @Builder
 @AllArgsConstructor
-public class UserImage extends Auditable {
+public class ProfileImage extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userImageId;
+    private Long profileImageId;
 
     @Column(nullable = false)
     @Setter

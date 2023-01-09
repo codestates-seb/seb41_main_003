@@ -3,7 +3,6 @@ package com.mainproject.server.profile.dto;
 import com.mainproject.server.image.dto.ImageResponseDto;
 import com.mainproject.server.review.dto.ReviewResponseDto;
 import com.mainproject.server.subject.dto.SubjectProfileResponseDto;
-import com.mainproject.server.subject.dto.SubjectResponseDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
