@@ -1,8 +1,8 @@
 package com.mainproject.server.message.entity;
 
 import com.mainproject.server.audit.Auditable;
-import com.mainproject.server.tuteeProfile.entity.TuteeProfile;
-import com.mainproject.server.tutorProfile.entity.TutorProfile;
+import com.mainproject.server.profile.entity.Profile;
+import com.mainproject.server.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,8 +19,10 @@ public class Message extends Auditable {
     private Long messageId;
 
     @Column(nullable = false)
-    @Setter
-    private String messageTitle;
+    private String receiverName;
+
+    @Column(nullable = false)
+    private String senderName;
 
     @Column(nullable = false,columnDefinition = "LONGTEXT")
     @Setter
@@ -28,26 +30,31 @@ public class Message extends Auditable {
 
     /* 연관 관계 매핑 */
     @ToString.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "TUTOR_PROFILE_ID")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Setter
-    private TutorProfile tutorProfile;
+    private MessageRoom messageRoom;
 
     @ToString.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "TUTEE_PROFILE_ID")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Setter
-    private TuteeProfile tuteeProfile;
+    private Profile tutor;
+
+    @ToString.Exclude
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Setter
+    private Profile tutee;
 
     /* 연관 관계 편의 메소드 */
-    public void addTutorProfile(TutorProfile tutorProfile) {
-        setTutorProfile(tutorProfile);
-        tutorProfile.addMessage(this);
+    public void addMessageRoom(MessageRoom messageRoom) {
+        setMessageRoom(messageRoom);
+        messageRoom.addMessage(this);
     }
 
-    public void addTuteeProfile(TuteeProfile tuteeProfile) {
-        setTuteeProfile(tuteeProfile);
-        tuteeProfile.addMessage(this);
+    public void addTutorProfile(Profile tutorProfile) {
+        setTutor(tutorProfile);
     }
 
+    public void addTuteeProfile(Profile tuteeProfile) {
+        setTutee(tuteeProfile);
+    }
 }

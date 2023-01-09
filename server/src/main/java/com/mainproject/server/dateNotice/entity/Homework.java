@@ -25,4 +25,21 @@ public class Homework extends Auditable {
     @Enumerated(EnumType.STRING)
     @Setter
     private HomeworkStatus homeworkStatus;
+
+
+    /* 연관 관계 매핑 */
+    @ToString.Exclude
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Setter
+    private DateNotice dateNotice;
+
+
+    /* 연관 관계 편의 메소드 */
+
+    public void addDateNotice(DateNotice dateNotice) {
+        setDateNotice(dateNotice);
+        dateNotice.addHomework(this);
+    }
+
+
 }

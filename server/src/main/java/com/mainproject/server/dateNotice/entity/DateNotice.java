@@ -8,6 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -26,10 +27,6 @@ public class DateNotice extends Auditable {
     private LocalDateTime noticeAt;
 
     /* 연관 관계 매핑 */
-    @ToString.Exclude
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @Setter
-    private Homework homework;
 
     @ToString.Exclude
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -46,11 +43,17 @@ public class DateNotice extends Auditable {
     @Setter
     private Tutoring tutoring;
 
+    @ToString.Exclude
+    @OrderBy("homeworkId")
+    @OneToMany(mappedBy = "dateNotice",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Setter
+    private Set<Homework> homeworks;
+
 
     /* 연관 관계 편의 메소드 */
 
     public void addHomework(Homework homework) {
-        setHomework(homework);
+        this.homeworks.add(homework);
     }
 
     public void addNotice(Notice notice) {

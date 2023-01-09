@@ -1,10 +1,8 @@
-package com.mainproject.server.tutoring.entity;
+package com.mainproject.server.message.entity;
 
 import com.mainproject.server.audit.Auditable;
-import com.mainproject.server.constant.TutoringStatus;
-import com.mainproject.server.dateNotice.entity.DateNotice;
+import com.mainproject.server.constant.MessageStatus;
 import com.mainproject.server.profile.entity.Profile;
-import com.mainproject.server.review.entity.Review;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,21 +12,20 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
-@AllArgsConstructor
 @Builder
-public class Tutoring extends Auditable {
+@AllArgsConstructor
+public class MessageRoom extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tutoringId;
+    private Long messageRoomId;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     @Setter
-    private TutoringStatus tutoringStatus;
+    private MessageStatus messageStatus;
 
-
-    /* 연관 관계 매핑*/
+    /* 연관 관계 매핑 */
 
     @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
@@ -41,25 +38,14 @@ public class Tutoring extends Auditable {
     private Profile tutee;
 
     @ToString.Exclude
-    @OrderBy("dateNoticeId")
-    @OneToMany(mappedBy = "tutoring", cascade = CascadeType.ALL)
+    @OrderBy("messageId")
+    @OneToMany(mappedBy = "messageRoom", cascade = CascadeType.REMOVE)
     @Setter
-    private Set<DateNotice> dateNotices = new LinkedHashSet<>();
-
-    @ToString.Exclude
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Setter
-    private Review review;
-
+    private Set<Message> messages = new LinkedHashSet<>();
 
     /* 연관 관계 편의 메소드 */
-
-    public void addDateNotice(DateNotice dateNotice) {
-        this.dateNotices.add(dateNotice);
-    }
-
-    public void addReview(Review review) {
-        setReview(review);
+    public void addMessage(Message message) {
+        this.messages.add(message);
     }
 
     public void addTutor(Profile tutor) {
@@ -67,7 +53,8 @@ public class Tutoring extends Auditable {
     }
 
     public void addTutee(Profile tutee) {
-        setTutor(tutee);
+        setTutee(tutee);
     }
+
 
 }
