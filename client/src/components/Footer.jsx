@@ -1,9 +1,7 @@
 import styles from './Footer.module.css';
-// import { ButtonDefault } from './Button';
 const Footer = () => {
   return (
     <footer>
-      {/* <ButtonDefault /> */}
       <div className={styles.logos}>
         <div className={styles.logo1}>
           <svg
