@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -12,20 +11,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class MessageResponseDto {
+public class MessagePostDto {
 
-
-    private Long messageId;
-
+    @NotNull
     private Long senderId;
-
-    private String senderName;
-
+    @NotNull
     private Long receiverId;
-
-    private String receiverName;
-
+    @NotNull
+    private Long messageRoomId;
+    @NotBlank
     private String messageContent;
-
-    private LocalDateTime createAt;
 }
