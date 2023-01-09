@@ -6,7 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TutoringPatchDto {
-    private Long tutorId;
-    private Long tuteeId;
+
+    private Long tutoringId;
+
     private String tutoringStatus;
 }

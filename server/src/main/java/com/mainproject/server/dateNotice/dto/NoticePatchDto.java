@@ -6,7 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class NoticePatchDto {
+
     private Long noticeId;
+
     private String noticeTitle;
+
     private String noticeBody;
 }

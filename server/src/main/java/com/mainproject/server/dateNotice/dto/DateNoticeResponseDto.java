@@ -11,8 +11,16 @@ import java.util.List;
 public class DateNoticeResponseDto {
 
     private Long dateNoticeId;
-    private LocalDateTime noticeAt;
-    private NoticeResponseDto noticeResponseDto;
-    private ScheduleResponseDto scheduleResponseDto;
-    private List<HomeworkResponseDto> homeworkResponseDtos;
+
+    private String dateNoticeTitle;
+
+    private String startTime;
+
+    private String endTime;
+
+    private ScheduleResponseDto schedule;
+
+    private NoticeResponseDto notice;
+
+    private List<HomeworkResponseDto> homeworks;
 }

@@ -8,16 +8,23 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ReviewResponseDto {
+
     private Long reviewId;
+
     private int professional;
+
     private int readiness;
+
     private int explanation;
+
     private int punctuality;
+
     private String reviewBody;
     // 프로필 이름
-    private String name;
-    private String tutoringId;
+    private String tuteeName;
+
     private LocalDateTime createAt;
+
     private LocalDateTime updateAt;
 
 }

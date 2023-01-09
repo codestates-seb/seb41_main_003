@@ -6,7 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SchedulePatchDto {
+
     private Long scheduleId;
+
     private String scheduleTitle;
+
     private String scheduleBody;
 }

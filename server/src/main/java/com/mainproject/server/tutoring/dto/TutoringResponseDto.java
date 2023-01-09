@@ -13,12 +13,20 @@ import java.util.List;
 @Getter
 @Setter
 public class TutoringResponseDto {
+
     private Long tutoringId;
+
     private String tutoringStatus;
+
     private LocalDateTime createAt;
+
     private LocalDateTime updateAt;
-    private ProfileResponseDto tutorResponseDto;
-    private ProfileResponseDto tuteeResponseDto;
-    private ReviewResponseDto reviewResponseDto;
-    private List<DateNoticeResponseDto> dateNoticeResponseDtos;
+
+    private ProfileSimpleResponseDto tutor;
+
+    private ProfileSimpleResponseDto tutee;
+
+    private ReviewResponseDto review;
+
+    private List<DateNoticeResponseDto> dateNotices;
 }
