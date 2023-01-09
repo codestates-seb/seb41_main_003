@@ -5,13 +5,13 @@ $ocean: #3b9cd9;
 $baby: #77c3f2;
 $whiteBlue: #d1edff;
 
-$black: #000000;
-$coal: #333333;
-$nickel: #666666;
-$moon: #999999;
-$silver: #cccccc;
+$black: #000;
+$coal: #333;
+$nickel: #666;
+$moon: #999;
+$silver: #ccc;
 $snow: #f4f4f4;
-$white: #ffffff;
+$white: #fff;
 $red: #e74c3c;
 
 $font1: 48px;
@@ -32,7 +32,7 @@ $font6W: 600;
 $paraW: 400;
 $subW: 500;
 
-$defaultShadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
-$bigShadow: 8px 8px 15px rgba(0, 0, 0, 0.08);
-$containShadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 1px 3px rgba(0, 0, 0, 0.08);
-$buttonShadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+$defaultShadow: 2px 2px 2px rgb(0 0 0 / 10%);
+$bigShadow: 8px 8px 15px rgb(0 0 0 / 8%);
+$containShadow: 0 4px 4px rgb(0 0 0 / 25%), 0 1px 3px rgb(0 0 0 / 8%);
+$buttonShadow: 1px 1px 2px rgb(0 0 0 / 5%);
