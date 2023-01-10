@@ -6,6 +6,8 @@ on:
     branches: [ "be/ci_cd_githubactions" ]
   pull_request:
     branches: [ "be/ci_cd_githubactions" ]
+  paths:
+    - './server/**'
 
 permissions:
   contents: read
@@ -27,5 +29,4 @@ jobs:
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
         with:
           arguments: build
-          paths: ./server
 
