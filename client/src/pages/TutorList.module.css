@@ -1,0 +1,137 @@
+@import url('../default.css');
+
+.wrapper {
+  width: 100%;
+  background-color: $white;
+}
+
+.container {
+  height: 100%;
+  max-width: 1048px;
+  margin: 0 auto;
+}
+
+.banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1048px;
+  height: 320px;
+  background-color: $yellow;
+}
+
+.bannerContents {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.bannerText {
+  font-size: $font3;
+  font-weight: $font3W;
+  margin-bottom: 21px;
+}
+
+.searchBox {
+  display: flex;
+  justify-content: space-evenly;
+  background-color: $snow;
+  width: 520px;
+  height: 60px;
+  border: 3px solid $night;
+  border-radius: 5px;
+}
+
+.iconBox {
+  flex-grow: 0.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.mdSearch {
+  font-size: 24px;
+  height: 24px;
+  background-color: $snow;
+}
+
+.input {
+  flex-grow: 2;
+  border-radius: 5px;
+  border: none;
+  background-color: $snow;
+  outline: none;
+  font-size: $font5;
+  font-weight: $font5W;
+
+  &::placeholder {
+    text-align: center;
+  }
+}
+
+.feedContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  margin-bottom: 16px;
+}
+
+.list {
+  margin-right: 4px;
+  margin-bottom: 16px;
+}
+
+.menuContainer {
+  width: 1048px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.menu {
+  display: flex;
+  justify-content: start;
+}
+
+.filter {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: $font6;
+  font-weight: $font6W;
+  cursor: pointer;
+}
+
+.mdFilterList {
+  font-size: 24px;
+  height: 24px;
+  margin-right: 4px;
+}
+
+.defaultMenu {
+  background-color: $snow;
+  color: $coal;
+  font-size: $font5;
+  font-weight: $font5W;
+  width: 80px;
+  height: 32px;
+  border-radius: 12px;
+  padding: 4px 10px;
+  margin-right: 8px;
+}
+
+.activeMenu {
+  background-color: $night;
+  color: $white;
+  font-size: $font5;
+  font-weight: $font5W;
+  width: 80px;
+  height: 32px;
+  border-radius: 12px;
+  padding: 4px 10px;
+  margin-right: 8px;
+}

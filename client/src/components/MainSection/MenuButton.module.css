@@ -1,0 +1,24 @@
+@import url('../../default.css');
+
+.snowButton {
+  background-color: $snow;
+  color: $coal;
+  font-size: $font5;
+  font-weight: $font5W;
+  width: 80px;
+  height: 32px;
+  border-radius: 12px;
+  padding: 4px 10px;
+  margin-right: 8px;
+}
+
+.nightButton {
+  background-color: $night;
+  color: $snow;
+  font-size: $font5;
+  font-weight: $font5W;
+  width: 80px;
+  height: 32px;
+  border-radius: 12px;
+  padding: 4px 22px;
+}
