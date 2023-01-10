@@ -27,7 +27,6 @@ const App = () => {
           <Header />
         </div>
         <div className="content">
-          content
           <Routes>
             <Route path="/" element={<TutorList />} />
             <Route path="/tutorlist" element={<TutorList />} />
