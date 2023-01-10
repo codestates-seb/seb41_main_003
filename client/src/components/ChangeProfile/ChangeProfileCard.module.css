@@ -1,0 +1,82 @@
+@import url('../../default.css');
+
+.container {
+  width: 344px;
+  background-color: $white;
+  border-radius: 5px;
+  padding: 40px;
+}
+
+.userImage {
+  position: relative;
+  width: 264px;
+  height: 264px;
+
+  > .image {
+    width: 264px;
+    height: 264px;
+    border-radius: 50%;
+    background-image: url('../../assets/defaultUser.png');
+    background-size: cover;
+  }
+
+  > button {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    background-color: $night;
+    border-radius: 50%;
+    box-shadow: $defaultShadow;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      font-size: 24px;
+      fill: $white;
+    }
+  }
+}
+
+.userInfo {
+  width: 264px;
+
+  > div {
+    margin-bottom: 16px;
+  }
+}
+
+.subject {
+  font-size: $font6;
+  font-weight: $font6W;
+  padding-left: 4px;
+}
+
+.btnContain {
+  width: 264px;
+  margin-top: 4px;
+  margin-bottom: 32px;
+
+  > button {
+    width: 64px;
+    height: 24px;
+    border-radius: 10px;
+    background-color: $nickel;
+    color: $white;
+    font-size: $font6;
+    font-weight: $font6W;
+    line-height: 24px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+
+    &.active {
+      background-color: $dirty;
+    }
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+}
