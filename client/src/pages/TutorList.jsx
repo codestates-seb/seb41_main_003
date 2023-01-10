@@ -1,4 +1,3 @@
-import { SnowMenuButton } from '../components/MainSection/MenuButton';
 import FeedItem from '../components/MainSection/FeedItem';
 import styles from '../pages/TutorList.module.css';
 import { MdSearch, MdFilterList } from 'react-icons/md';
@@ -278,6 +277,7 @@ const TutorList = () => {
             <Link to="" key={el.profileId} className={styles.list}>
               <FeedItem
                 name={el.name}
+                userStatus="TUTOR"
                 school={el.school}
                 rate={el.rate}
                 subjects={el.subjects}
