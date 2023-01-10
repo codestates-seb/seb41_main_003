@@ -5,6 +5,7 @@
   background-color: $white;
   border-radius: 5px;
   padding: 40px;
+  box-shadow: $bigShadow;
 }
 
 .userImage {
