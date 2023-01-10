@@ -31,6 +31,10 @@ spring:
 # 디버깅 용이하게 하기 위한 로깅 레벨 수정
 logging.level:
   org.hibernate.SQL: debug
+  com:
+    amazonaws:
+      util:
+        EC2MetadataUtils: error
   org:
     hibernate:
       type:
@@ -39,5 +43,3 @@ logging.level:
             org.hibernate.type.descriptor.sql.BasicBinder: trace
     springframework:
       web.servlet: debug
-discord:
-  webhookUrl: https://discord.com/api/webhooks/1061335628605829240/LXxLolrz5XNyLg1mcEAz8O4jqFdVJnsDPkJt07gklBQIo8kU39BnZcBI6K1TIjf81wXB
