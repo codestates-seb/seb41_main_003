@@ -37,7 +37,7 @@ export const TextInput = ({
       id={id}
       value={value}
       placeholder={placeHolder}
-      onChange={(e) => handler(e.target.value)}
+      onChange={handler}
     />
   );
 };
@@ -62,7 +62,7 @@ export const LabelTextInput = ({
         id={id}
         value={value}
         placeholder={placeHolder}
-        onChange={(e) => handler(e.target.value)}
+        onChange={handler}
       />
     </div>
   );
@@ -83,7 +83,7 @@ export const Textarea = ({
       id={id}
       value={value}
       placeholder={placeHolder}
-      onChange={(e) => handler(e.target.value)}
+      onChange={handler}
     />
   );
 };
