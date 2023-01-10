@@ -26,7 +26,7 @@
 
 .text {
   font-size: $font5;
-  margin-bottom: 47px;
+  margin: 32px 0;
 }
 
 .buttonBox {
