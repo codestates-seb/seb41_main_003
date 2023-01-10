@@ -15,6 +15,7 @@ import java.util.Map;
 public class HomeController {
 
     private final WebHookService webHookService;
+
     @GetMapping
     public ResponseEntity helloWorld() {
         return ResponseEntity.ok().body(

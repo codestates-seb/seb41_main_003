@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class WebHookService {
 
-    @Value("${discord.webhookUrl}")
+    @Value("${WEBHOOK_URL}")
     private  String url;
 
     public void callEvent(WebHookDto response) throws JsonProcessingException {

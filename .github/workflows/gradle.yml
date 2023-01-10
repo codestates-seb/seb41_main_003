@@ -35,6 +35,20 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
+    # Github Repository Secrets를 통해 환경 변수 파일을 생성한다.
+      - name: Generate Environment Variables File for Production
+        run: |
+          echo "WEBHOOK_URL: $WEBHOOK_URL" >> ./src/main/resources/env.yml
+          echo "AWS_S3_ACCESS_KEY: AWS_S3_ACCESS_KEY" >> ./src/main/resources/env.yml
+          echo "AWS_S3_SECRET_KEY: AWS_S3_SECRET_KEY" >> ./src/main/resources/env.yml
+          echo "JWT_SECRET_KEY: JWT_SECRET_KEY" >> ./src/main/resources/env.yml
+
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          AWS_S3_ACCESS_KEY: ${{ secrets.AWS_S3_ACCESS_KEY }}
+          AWS_S3_SECRET_KEY: ${{ secrets.AWS_S3_SECRET_KEY }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+
 
       - name: Run chmod to make gradlew executable
         run: chmod +x gradlew
@@ -58,6 +72,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # 등록한 Github Secret.
           aws-region: ap-northeast-2
 
-      # 압축한 프로젝트를 S3로 전송합니다.
+      # 압축한 프로젝트를 S3로 전송.
       - name: Upload to S3
         run: aws s3 cp --region ap-northeast-2 ./sseuengnim-deploy.zip s3://$S3_BUCKET_NAME/sseuengnim-deploy.zip
+
+      # CodeDeploy 배포.
+      - name: Code Deploy
+        run: >
+          aws deploy create-deployment --application-name sseuengnim
+          --deployment-config-name CodeDeployDefault.AllAtOnce
+          --deployment-group-name sseuengnim-project
+          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=sseuengnim-deploy.zip
