@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class HomeworkPatchDto {
+public class HomeworkDto {
 
     private Long homeworkId;
 

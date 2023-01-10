@@ -3,7 +3,6 @@ package com.mainproject.server.dateNotice.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -22,5 +21,5 @@ public class DateNoticePatchDto {
 
     private String noticeBody;
 
-    private List<HomeworkPatchDto> Homeworks;
+    private List<HomeworkDto> Homeworks;
 }
