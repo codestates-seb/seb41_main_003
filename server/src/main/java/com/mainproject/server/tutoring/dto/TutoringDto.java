@@ -1,11 +1,12 @@
 package com.mainproject.server.tutoring.dto;
 
 import com.mainproject.server.dateNotice.dto.DateNoticeResponseDto;
-import com.mainproject.server.profile.dto.ProfileSimpleResponseDto;
+import com.mainproject.server.profile.dto.ProfileListResponseDto;
 import com.mainproject.server.review.dto.ReviewResponseDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class TutoringResponseDto {
+public class TutoringDto {
 
     private Long tutoringId;
 
@@ -23,11 +24,11 @@ public class TutoringResponseDto {
 
     private LocalDateTime updateAt;
 
-    private ProfileSimpleResponseDto tutor;
+    private ProfileListResponseDto tutor;
 
-    private ProfileSimpleResponseDto tutee;
+    private ProfileListResponseDto tutee;
 
     private ReviewResponseDto review;
 
-    private List<DateNoticeResponseDto> dateNotices;
+    private Page<DateNoticeResponseDto> dateNotices;
 }
