@@ -44,4 +44,5 @@ jobs:
 #        with:
 #          arguments: build
         run : ./gradlew clean build --exclude-task test
-        build-root-directory: server
+        with:
+          build-root-directory: server
