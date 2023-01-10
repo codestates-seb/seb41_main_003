@@ -22,5 +22,5 @@ public class DateNoticePatchDto {
 
     private String noticeBody;
 
-    private List<String> Homeworks;
+    private List<HomeworkPatchDto> Homeworks;
 }
