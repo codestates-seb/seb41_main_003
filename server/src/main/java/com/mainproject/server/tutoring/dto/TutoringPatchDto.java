@@ -9,5 +9,7 @@ public class TutoringPatchDto {
 
     private Long tutoringId;
 
+    private String tutoringTitle;
+
     private String tutoringStatus;
 }

@@ -23,7 +23,7 @@ public class PageResponseDto {
         private int totalPages;
     }
 
-    public static PageResponseDto of(List list, Page page) {
+    public static PageResponseDto of(Object list, Page page) {
         PageInfo pageInfoResponse = new PageInfo(
                 page.getNumber()+1,
                 page.getSize(),
