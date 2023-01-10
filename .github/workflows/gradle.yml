@@ -12,7 +12,7 @@ permissions:
 
 defaults:
   run:
-    working-directory: ./server
+    working-directory: ./server/gradle/wrapper/gradle-wrapper.properties
 
 jobs:
   build:
