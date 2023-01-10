@@ -20,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -69,6 +70,7 @@ public class UserController {
 
     @GetMapping("/tutors")
     public ResponseEntity getTutors(
+            @RequestParam Map<String, String> params,
             @PageableDefault(page = 0, size = 10, sort = "profileId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
@@ -77,6 +79,7 @@ public class UserController {
 
     @GetMapping("/tutees")
     public ResponseEntity getTutees(
+            @RequestParam Map<String, String> params,
             @PageableDefault(page = 0, size = 10, sort = "profileId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
