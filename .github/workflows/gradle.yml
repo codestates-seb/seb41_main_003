@@ -9,8 +9,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches:
-      - 'ci_cd_githubActions'
+    branches: [ "ci_cd_githubActions" ]
     path:
       - 'server/**'
 
