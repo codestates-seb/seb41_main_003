@@ -10,7 +10,7 @@ name: Java CI with Gradle
 on:
   push:
     branches:
-      - 'ci_cd_githubActions'
+      - 'be/ci_cd_githubActions'
     path:
       - 'server/**'
 
@@ -32,6 +32,9 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
+
+      - name: Run chmod to make gradlew executable
+        run: chmod +x gradlew
 
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
