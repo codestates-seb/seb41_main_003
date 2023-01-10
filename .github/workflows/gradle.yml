@@ -10,14 +10,14 @@ on:
 permissions:
   contents: read
 
-defaults:
-  run:
-    working-directory: ./server/gradle/wrapper/gradle-wrapper.properties
+
 
 jobs:
+  defaults:
+    run:
+      working-directory: ./server/gradle/wrapper
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
