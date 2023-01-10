@@ -17,6 +17,9 @@ on:
 permissions:
   contents: read
 
+env:
+  S3_BUCKET_NAME: sseuengnim
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -40,8 +43,21 @@ jobs:
         uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
 
       - name: Build with Gradle
-#        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-#        with:
-#          arguments: build
         run : ./gradlew clean build --exclude-task test
-#        build-root-directory: server
+
+      # build 후 프로젝트를 압축한다
+      - name: Make zip file
+        run: zip -r ./sseuengnim-deploy.zip .
+        shell: bash
+
+      # Access Key와 Secret Access Key를 통해 권한 확인
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }} # 등록한 Github Secret.
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # 등록한 Github Secret.
+          aws-region: ap-northeast-2
+
+      # 압축한 프로젝트를 S3로 전송합니다.
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./sseuengnim-deploy.zip s3://$S3_BUCKET_NAME/sseuengnim-deploy.zip
