@@ -1,58 +1,58 @@
 import styles from './Button.module.css';
 import PropTypes from 'prop-types';
-const ButtonDefault = ({ content, buttonHandler }) => {
+const ButtonDefault = ({ text, buttonHandler }) => {
   return (
     <button onClick={buttonHandler} className={styles.default}>
-      {content}
+      {text}
     </button>
   );
 };
 ButtonDefault.propTypes = {
-  content: PropTypes.string,
+  text: PropTypes.string,
   buttonHandler: PropTypes.func,
 };
-const ButtonNightBlue = ({ content, buttonHandler }) => {
+const ButtonNightBlue = ({ text, buttonHandler }) => {
   return (
     <button onClick={buttonHandler} className={styles.nightBlue}>
-      {content}
+      {text}
     </button>
   );
 };
 ButtonNightBlue.propTypes = {
-  content: PropTypes.string,
+  text: PropTypes.string,
   buttonHandler: PropTypes.func,
 };
-const ButtonRed = ({ content, buttonHandler }) => {
+const ButtonRed = ({ text, buttonHandler }) => {
   return (
     <button onClick={buttonHandler} className={styles.red}>
-      {content}
+      {text}
     </button>
   );
 };
 ButtonRed.propTypes = {
-  content: PropTypes.string,
+  text: PropTypes.string,
   buttonHandler: PropTypes.func,
 };
-const ButtonSnow = ({ content, buttonHandler }) => {
+const ButtonSnow = ({ text, buttonHandler }) => {
   return (
     <button onClick={buttonHandler} className={styles.snow}>
-      {content}
+      {text}
     </button>
   );
 };
 ButtonSnow.propTypes = {
-  content: PropTypes.string,
+  text: PropTypes.string,
   buttonHandler: PropTypes.func,
 };
-const ButtonSilver = ({ content, buttonHandler }) => {
+const ButtonSilver = ({ text, buttonHandler }) => {
   return (
     <button onClick={buttonHandler} className={styles.silver}>
-      {content}
+      {text}
     </button>
   );
 };
 ButtonSilver.propTypes = {
-  content: PropTypes.string,
+  text: PropTypes.string,
   buttonHandler: PropTypes.func,
 };
 export { ButtonDefault, ButtonNightBlue, ButtonRed, ButtonSnow, ButtonSilver };
