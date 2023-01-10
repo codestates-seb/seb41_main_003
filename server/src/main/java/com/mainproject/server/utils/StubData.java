@@ -123,6 +123,7 @@ public class StubData {
         Page page = new PageImpl(list, PageRequest.of(0, 10), list.size());
         return TutoringDto.builder()
                 .tutoringId(1L)
+                .tutoringTitle("열심히 가르칩니다! 강호수입니다!")
                 .tutoringStatus(TutoringStatus.TUTOR_WAITING.name())
                 .createAt(LocalDateTime.now())
                 .updateAt(LocalDateTime.now())
