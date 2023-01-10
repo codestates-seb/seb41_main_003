@@ -2,6 +2,7 @@ package com.mainproject.server.user.controller;
 
 import com.mainproject.server.dto.PageResponseDto;
 import com.mainproject.server.dto.ResponseDto;
+import com.mainproject.server.profile.dto.ProfileListResponseDto;
 import com.mainproject.server.user.dto.UserPatchDto;
 import com.mainproject.server.user.dto.UserPostDto;
 import com.mainproject.server.user.dto.UserResponseDto;
@@ -91,9 +92,9 @@ public class UserController {
             @PageableDefault(page = 0, size = 10, sort = "profileId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
-        UserResponseDto userResponse = stubData.createUserResponse();
-        List<UserResponseDto> userList = List.of(userResponse, userResponse, userResponse);
-        Page<UserResponseDto> page = new PageImpl<>(userList, pageable, 10L);
+        ProfileListResponseDto userResponse = stubData.createProfileListResponse();
+        List<ProfileListResponseDto> userList = List.of(userResponse, userResponse, userResponse);
+        Page<ProfileListResponseDto> page = new PageImpl<>(userList, pageable, userList.size());
         PageResponseDto response = PageResponseDto.of(userList, page);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
