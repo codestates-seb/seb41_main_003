@@ -51,7 +51,7 @@
 
 .subjectBox {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   width: 217px;
   margin-top: 8px;
 }
