@@ -1,4 +1,11 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  http:
+    multipart:
+      enabled: false
   cache:
     type: redis
   redis:
@@ -43,3 +50,12 @@ logging.level:
             org.hibernate.type.descriptor.sql.BasicBinder: trace
     springframework:
       web.servlet: debug
+cloud:
+  aws: # AWS IAM SecretKey ??
+    s3:
+      bucket: image-test-suyoung    # ex) marryting-gyunny
+      dir: /image # ex) /gyunny
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
