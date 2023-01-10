@@ -6,17 +6,16 @@ on:
     branches: [ "be/ci_cd_githubactions" ]
   pull_request:
     branches: [ "be/ci_cd_githubactions" ]
-  paths:
-    - './server/**'
 
 permissions:
   contents: read
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./server
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
