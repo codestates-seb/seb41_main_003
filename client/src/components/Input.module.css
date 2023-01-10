@@ -1,0 +1,95 @@
+@import url('../default.css');
+
+.container {
+  width: 100%;
+}
+
+.checkLabel {
+  display: block;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.unChecked {
+  width: 16px;
+  height: 16px;
+  background-color: $snow;
+  border-radius: 3px;
+
+  > svg {
+    fill: $snow;
+  }
+}
+
+.checked {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $night;
+  border-radius: 3px;
+
+  > svg {
+    font-size: 14px;
+    fill: $white;
+  }
+}
+
+.input {
+  display: none;
+}
+
+.textLabel {
+  font-size: $font6;
+  font-weight: $font6W;
+  color: $black;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: 4px;
+  margin-bottom: 4px;
+}
+
+.textInput {
+  background-color: $snow;
+  width: 100%;
+  height: 36px;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 10px 8px;
+  font-size: $para;
+  font-weight: $paraW;
+
+  &:focus {
+    outline: 1px solid $silver;
+  }
+
+  &:placeholder {
+    font-size: $font6;
+    font-weight: $font6W;
+    color: $moon;
+  }
+}
+
+.textarea {
+  background-color: $snow;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 10px 8px;
+  font-size: $para;
+  font-weight: $paraW;
+  resize: vertical;
+
+  &:focus {
+    outline: 1px solid $silver;
+  }
+
+  &:placeholder {
+    font-size: $font6;
+    font-weight: $font6W;
+    color: $moon;
+  }
+}

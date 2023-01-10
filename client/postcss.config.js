@@ -3,6 +3,8 @@ const atImport = require('postcss-import');
 
 module.exports = {
   plugins: [
+    require('stylelint'),
+    require('autoprefixer'),
     require('postcss-simple-vars'),
     require('postcss-nested'),
     require('postcss-flexbugs-fixes'),
@@ -14,6 +16,5 @@ module.exports = {
     }),
     postcssNormalize(),
     atImport(),
-    require('stylelint'),
   ],
 };

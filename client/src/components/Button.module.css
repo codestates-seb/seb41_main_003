@@ -1,0 +1,41 @@
+@import url('../default.css');
+
+.default {
+  background-color: $white;
+  padding: 8px 16px;
+  font-size: $font4;
+  color: black;
+  border-radius: 5px;
+}
+
+.nightBlue {
+  background-color: $night;
+  padding: 8px 16px;
+  font-size: $font4;
+  color: $white;
+  border-radius: 5px;
+}
+
+.red {
+  background-color: $red;
+  padding: 8px 16px;
+  font-size: $font4;
+  color: $white;
+  border-radius: 5px;
+}
+
+.snow {
+  background-color: $snow;
+  padding: 8px 16px;
+  font-size: $font4;
+  color: black;
+  border-radius: 5px;
+}
+
+.silver {
+  background-color: $silver;
+  padding: 8px 16px;
+  font-size: $font4;
+  color: black;
+  border-radius: 5px;
+}
