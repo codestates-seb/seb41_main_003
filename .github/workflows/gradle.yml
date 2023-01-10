@@ -27,4 +27,4 @@ jobs:
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
         with:
           arguments: build
-        working-directory: '/home/runner/work/seb41_main_003/seb41_main_003/server/gradle/wrapper/gradle-wrapper.properties'
+          working-directory: './server'
