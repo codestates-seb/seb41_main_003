@@ -26,6 +26,7 @@
 
 .text {
   font-size: $font5;
+  font-weight: $font5W;
   margin-bottom: 47px;
 }
 
