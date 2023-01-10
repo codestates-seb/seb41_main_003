@@ -25,34 +25,45 @@ public class MessageController {
 
 
     @PostMapping
-    public ResponseEntity postMessage(@RequestBody @Validated MessageResponseDto messageResponseDto) {
+    public ResponseEntity postMessage(
+            @RequestBody @Validated MessageResponseDto messageResponseDto
+    ) {
 
-        return new ResponseEntity<>(ResponseDto.of(stubData.createMessageResponse()), HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                ResponseDto.of(stubData.createMessageResponse()),
+                HttpStatus.CREATED);
 
     }
 
     @PostMapping("/{profileId}")
-    public ResponseEntity postMessageRoom(@PathVariable("profileId") Long profileId, @RequestBody @Validated MessageRoomPostDto messageRoomPostDto) {
+    public ResponseEntity postMessageRoom(
+            @PathVariable("profileId") Long profileId,
+            @RequestBody @Validated MessageRoomPostDto messageRoomPostDto
+    ) {
 
 
-        return new ResponseEntity<>(ResponseDto.of(stubData.createMessageRoomResponse()), HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                ResponseDto.of(stubData.createMessageRoomResponse()),
+                HttpStatus.CREATED);
     }
 
     @GetMapping("/{profileId}")
-    public ResponseEntity getMessage(@PathVariable("profileId")Long profileId) {
+    public ResponseEntity getMessage(
+            @PathVariable("profileId")Long profileId
+    ) {
 
         MessageResponseDto response = stubData.createMessageResponse();
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/messages/rooms/{messageRoomId}")
+    @GetMapping("/rooms/{messageRoomId}")
     public ResponseEntity getMessages(@PathVariable ("messageRoomId") Long profileId) {
 
         MessageRoomResponseDto response = stubData.createMessageRoomResponse();
 
 
-        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }
