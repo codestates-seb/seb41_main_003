@@ -10,7 +10,7 @@
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  align-items: start;
+  align-items: flex-start;
   padding: 16px 0;
 
   > div:first-child {
