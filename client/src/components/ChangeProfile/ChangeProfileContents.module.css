@@ -1,0 +1,56 @@
+@import url('../../default.css');
+
+.container {
+  width: 696px;
+  background-color: $white;
+  border-radius: 5px;
+  padding: 32px;
+  box-shadow: $bigShadow;
+}
+
+.inputContainer {
+  margin-bottom: 24px;
+
+  & label {
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  h4 {
+    font-size: $font4;
+    font-weight: $font4W;
+    margin-bottom: 8px;
+  }
+
+  > .textareaContainer {
+    display: flex;
+    align-items: stretch;
+    height: auto;
+    min-height: 80px;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.subjectInput {
+  margin-bottom: 16px;
+
+  div {
+    width: 64px;
+    height: 24px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: $dirty;
+    color: $white;
+    font-size: $font6;
+    font-weight: $font6W;
+    line-height: 24px;
+    margin-bottom: 8px;
+  }
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
