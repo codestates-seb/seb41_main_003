@@ -1,5 +1,6 @@
 import styles from './Modal.module.css';
 import PropTypes from 'prop-types';
+import { ButtonNightBlue, ButtonSilver } from './Button';
 
 export const AlertModal = ({ text, modalHandler }) => {
   return (
@@ -10,9 +11,7 @@ export const AlertModal = ({ text, modalHandler }) => {
         aria-hidden="true"
       >
         <div className={styles.text}>{text}</div>
-        <button className={styles.button} onClick={modalHandler}>
-          확인
-        </button>
+        <ButtonNightBlue buttonHandler={modalHandler} text="확인" />
       </div>
     </div>
   );
@@ -24,12 +23,8 @@ export const ConfirmModal = ({ text, modalHandler }) => {
       <div className={styles.view}>
         <div className={styles.text}>{text}</div>
         <div className={styles.buttonBox}>
-          <button className={styles.button} onClick={modalHandler}>
-            확인
-          </button>
-          <button className={styles.cancleButton} onClick={modalHandler}>
-            취소
-          </button>
+          <ButtonNightBlue buttonHandler={modalHandler} text="확인" />
+          <ButtonSilver buttonHandler={modalHandler} text="취소" />
         </div>
       </div>
     </div>
