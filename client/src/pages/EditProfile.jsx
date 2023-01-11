@@ -50,16 +50,16 @@ const tuteeDummyState = {
 
 const EditProfile = () => {
   const [user, setUser] = useState(tutorDummyState);
-  const [confirm, setConfirm] = useState(false);
+  const [isConfirm, setIsConfirm] = useState(false);
   const confirmText = `현재 입력된 내용으로
   프로필을 수정하시겠습니까?`;
 
   const confirmHandler = (e) => {
     if (e.target.name === 'yes') {
       console.log('수정 요청'); // TODO : PATCH 요청
-      setConfirm(!confirm); // TODO : 리다이렉트 함수
+      setIsConfirm(!isConfirm); // TODO : 리다이렉트 함수
     } else {
-      setConfirm(!confirm);
+      setIsConfirm(!isConfirm);
     }
   };
 
@@ -70,11 +70,11 @@ const EditProfile = () => {
           user={user}
           setUser={setUser}
           isNew={false}
-          setConfirm={setConfirm}
+          setIsConfirm={setIsConfirm}
         />
         <ChangeProfileContents user={user} setUser={setUser} />
       </div>
-      {confirm && (
+      {isConfirm && (
         <ConfirmModal text={confirmText} modalHandler={confirmHandler} />
       )}
     </div>

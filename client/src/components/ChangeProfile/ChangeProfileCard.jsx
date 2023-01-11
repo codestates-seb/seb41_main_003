@@ -4,7 +4,7 @@ import styles from './ChangeProfileCard.module.css';
 import { MdMode } from 'react-icons/md';
 import PropType from 'prop-types';
 
-const ChangeProfileCard = ({ isNew = true, user, setUser, setConfirm }) => {
+const ChangeProfileCard = ({ isNew = true, user, setUser, setIsConfirm }) => {
   const { name, bio, school, subjects, profile_status } = user;
 
   const subjectTitles = subjects.map((obj) => obj.subjectTitle);
@@ -127,7 +127,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser, setConfirm }) => {
       <ButtonNightBlue
         text={isNew ? '추가완료' : '수정완료'}
         buttonHandler={() => {
-          setConfirm((prev) => !prev);
+          setIsConfirm((prev) => !prev);
         }}
       />
     </div>
@@ -138,7 +138,7 @@ ChangeProfileCard.propTypes = {
   isNew: PropType.bool,
   user: PropType.object,
   setUser: PropType.func,
-  setConfirm: PropType.func,
+  setIsConfirm: PropType.func,
 };
 
 export default ChangeProfileCard;
