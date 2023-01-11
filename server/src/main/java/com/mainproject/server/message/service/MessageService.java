@@ -2,6 +2,7 @@ package com.mainproject.server.message.service;
 
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.MessageStatus;
+import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.message.entity.Message;
 import com.mainproject.server.message.entity.MessageRoom;
 import com.mainproject.server.message.repository.MessageRepository;
