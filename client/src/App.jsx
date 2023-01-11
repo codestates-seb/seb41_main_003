@@ -22,7 +22,7 @@ import AdminModal from './components/AdminModal';
 import { useState } from 'react';
 
 const App = () => {
-  const [isOpenAdminModal, setIsOpenAdminModal] = useState(true);
+  const [isOpenAdminModal, setIsOpenAdminModal] = useState(false);
   return (
     <div className="app">
       <Router basename="/">
