@@ -27,8 +27,8 @@ public class MessageService {
 
     public Message createMessage(Message message, Long profileId){
 
-        message.addTuteeProfile(new Profile());
-        message.addTutorProfile(new Profile());
+        message.addSender(new Profile());
+        message.addReceiver(new Profile());
 
         messageRepository.save(message);
 
@@ -38,12 +38,14 @@ public class MessageService {
     public MessageRoom createMessageRoom(MessageRoom messageRoom, Message message, Long profileId) {
 
         messageRoom.addMessage(message);
+        //
         messageRoom.setMessageStatus(MessageStatus.UNCHECK);
+
+        messageRoomRepository.save(messageRoom);
 
         return messageRoom;
     }
 
-    public MessageRoom
 
     public MessageRoom findVerifiedMessageRoom(Long messageRoomId) {
 
