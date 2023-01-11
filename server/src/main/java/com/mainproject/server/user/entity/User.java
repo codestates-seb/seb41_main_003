@@ -38,11 +38,11 @@ public class User extends Auditable {
     @Setter
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     @Setter
     private String secondPassword;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     @Setter
     private String phoneNumber;
 
