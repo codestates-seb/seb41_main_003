@@ -26,9 +26,7 @@ const App = () => {
   return (
     <div className="app">
       <Router basename="/">
-        <div className="header">
-          <Header />
-        </div>
+        <Header />
         <div className="content">
           <Routes>
             <Route path="/" element={<TutorList />} />
@@ -53,9 +51,7 @@ const App = () => {
             <AdminModal setIsOpenAdminModal={setIsOpenAdminModal} />
           )}
         </div>
-        <div className="footer">
-          <Footer />
-        </div>
+        <Footer />
       </Router>
     </div>
   );
