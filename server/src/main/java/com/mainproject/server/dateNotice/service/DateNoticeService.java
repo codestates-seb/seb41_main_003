@@ -1,9 +1,12 @@
 package com.mainproject.server.dateNotice.service;
 
 import com.mainproject.server.constant.ErrorCode;
+import com.mainproject.server.constant.UserStatus;
 import com.mainproject.server.dateNotice.entity.DateNotice;
 import com.mainproject.server.dateNotice.repository.DateNoticeRepository;
 import com.mainproject.server.exception.ServiceLogicException;
+import com.mainproject.server.tutoring.service.TutoringService;
+import com.mainproject.server.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,20 +18,29 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DateNoticeService {
     private final DateNoticeRepository dateNoticeRepository;
+    private final TutoringService tutoringService;
+    private final UserService userService;
 
     public DateNotice createDateNotice(DateNotice dateNotice) {
+        tutoringService.setTutoringStatusUncheck(dateNotice.getTutoring().getTutoringId());
+
         DateNotice saveDateNotice = dateNoticeRepository.save(dateNotice);
         return saveDateNotice;
     }
 
-    public DateNotice findDateNotice(Long dateNoticeId) {
+    public DateNotice findDateNotice(Long dateNoticeId, String email) {
         DateNotice verifiedDateNotice = findVerifiedDateNoticeById(dateNoticeId);
+
+        // TUTEE가 조회한 경우에만 Tutoring 상태 변경
+        if (userService.verifiedUserByEmail(email).getUserStatus() == UserStatus.TUTEE) {
+            tutoringService.setTutoringStatusProgress(verifiedDateNotice.getTutoring().getTutoringId());
+        }
 
         return verifiedDateNotice;
     }
     
     public DateNotice updateDateNotice(DateNotice dateNotice) {
-        DateNotice findDateNotice = findDateNotice(dateNotice.getDateNoticeId());
+        DateNotice findDateNotice = findVerifiedDateNoticeById(dateNotice.getDateNoticeId());
 
         Optional.ofNullable(dateNotice.getDateNoticeTitle())
                 .ifPresent(findDateNotice::setDateNoticeTitle);
