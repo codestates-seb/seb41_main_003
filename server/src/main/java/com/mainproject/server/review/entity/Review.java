@@ -45,11 +45,6 @@ public class Review extends Auditable {
     @Setter
     private Profile profile;
 
-    @ToString.Exclude
-    @OneToOne(mappedBy = "review", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Setter
-    private Tutoring tutoring;
-
     /* 연관 관계 편의 메소드 */
 
     public void addProfile(Profile profile) {
