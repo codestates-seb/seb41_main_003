@@ -47,7 +47,7 @@ const App = () => {
             <Route path="/message" element={<Message />} />
             <Route path="/myprofile" element={<MyProfile />} />
             <Route path="/test" element={<TestPage />} />
-            <Route path="/mpdaltest" element={<ModalTestPage />} />
+            <Route path="/modaltest" element={<ModalTestPage />} />
           </Routes>
           {isOpenAdminModal ? (
             <AdminModal setIsOpenAdminModal={setIsOpenAdminModal} />

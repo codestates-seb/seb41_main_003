@@ -1,0 +1,130 @@
+@import url('../../default.css');
+
+.signUpContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 344px;
+  height: 590px;
+  background-color: $white;
+  margin-top: 80px;
+  margin-bottom: 80px;
+  border-radius: 5px;
+  box-shadow: 0 24px 38px 3px rgb(0 0 0 / 14%);
+}
+
+.inputArea {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+
+  > input {
+    width: 296px;
+    margin-bottom: 4px;
+  }
+
+  > div {
+    margin-bottom: 4px;
+    margin-top: 4px;
+  }
+
+  > span {
+    margin-bottom: 18px;
+    font-size: $sub;
+    font-weight: $subW;
+    color: $red;
+  }
+}
+
+.signupText {
+  font-size: $font3;
+  font-weight: $font3W;
+  margin-top: 36px;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 35px;
+
+  > span {
+    text-align: center;
+    font-size: $font6;
+    font-weight: $font6W;
+    margin-top: 24px;
+    margin-bottom: 16px;
+  }
+}
+
+.kakaoLoginButton {
+  background-color: #fee500;
+  width: 295px;
+  height: 45px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+  box-shadow: $buttonShadow;
+
+  > span {
+    font-size: $font5;
+    font-weight: $font5W;
+    width: 109px;
+  }
+
+  > svg {
+    margin-right: 8px;
+  }
+}
+
+.googleLoginButton {
+  width: 295px;
+  height: 45px;
+  margin-top: 8px;
+  border: 1px solid #4285f4;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: $buttonShadow;
+
+  > span {
+    font-size: $font5;
+    font-weight: $font5W;
+  }
+
+  > svg {
+    margin-right: 8px;
+  }
+}
+
+.checkboxContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 233px;
+
+  > span {
+    margin-left: 9px;
+    font-size: $sub;
+    font-weight: $subW;
+  }
+
+  > span:first-of-type {
+    margin-right: 72px;
+  }
+}
+
+.signupButton {
+  width: 295px;
+  height: 45px;
+  background-color: $night;
+  font-size: $font4;
+  font-weight: $font4W;
+  color: $white;
+  border-radius: 5px;
+  box-shadow: $buttonShadow;
+}
