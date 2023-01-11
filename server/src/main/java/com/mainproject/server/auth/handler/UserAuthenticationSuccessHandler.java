@@ -28,10 +28,7 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
             Authentication authentication
     ) throws IOException, ServletException {
         log.info("# Authenticated successfully!");
-
-        // Todo 추후 구현 완료 되면 삭제 예정
         Gson gson = new Gson();
-
         ResponseDto responseDto = ResponseDto.of(AuthSuccessTokenResponseDto.of(response));
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.OK.value());

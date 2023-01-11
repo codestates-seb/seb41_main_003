@@ -6,6 +6,7 @@ import com.mainproject.server.auth.handler.UserAccessDeniedHandler;
 import com.mainproject.server.auth.handler.UserAuthenticationEntryPoint;
 import com.mainproject.server.auth.handler.UserAuthenticationFailureHandler;
 import com.mainproject.server.auth.handler.UserAuthenticationSuccessHandler;
+import com.mainproject.server.auth.oauth2.OAuth2UserSuccessHandler;
 import com.mainproject.server.auth.oauth2.provider.CustomOAuth2Provider;
 import com.mainproject.server.auth.oauth2.service.CustomOAuth2UserService;
 import com.mainproject.server.auth.redis.service.RefreshService;
@@ -47,6 +48,8 @@ public class SecurityConfig {
 
     private final CustomOAuth2UserService oAuth2UserService;
 
+    private final OAuth2UserSuccessHandler oAuth2UserSuccessHandler;
+
     @Value("${GOOGLE_AOUTH2_MAINPROJECT_SECRETKEY}")
     private String clientSecret;
 
@@ -77,9 +80,11 @@ public class SecurityConfig {
                         auth -> auth
                                 .anyRequest().permitAll()
                 )
-                .oauth2Login()
-                .userInfoEndpoint()
-                .userService(oAuth2UserService);
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(oAuth2UserSuccessHandler)
+                        .userInfoEndpoint().userService(oAuth2UserService)
+                );
+
 
         return http.build();
     }
