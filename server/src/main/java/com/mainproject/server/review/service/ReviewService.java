@@ -5,6 +5,7 @@ import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.review.entity.Review;
 import com.mainproject.server.review.repository.ReviewRepository;
+import com.mainproject.server.tutoring.service.TutoringService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +17,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ReviewService {
     private final ReviewRepository reviewRepository;
+    private final TutoringService tutoringService;
 
     public Review findReview(Long tutoringId) {
         return findVerifiedReviewById(tutoringId);
     }
 
     public Review createReview(Review review, Long tuteeId) {
+        tutoringService.setTutoringStatusFinish(review.getTutoring().getTutoringId());
+
         // Todo: ProfileService를 통한 profile 조회
         review.addProfile(new Profile());
         Review saveReview = reviewRepository.save(review);
