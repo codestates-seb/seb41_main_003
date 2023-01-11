@@ -1,11 +1,13 @@
-import styles from './ProfileCard.module.css';
+import styles from './MyProfileCard.module.css';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { ButtonNightBlue } from '../Button.jsx';
 import { BlueSubject } from '../Subject.jsx';
 import defaultUser from '../../assets/defaultUser.png';
 import { MdStar } from 'react-icons/md';
+import Toggle from './Toggle';
 
-const ProfileCard = ({ user, QuestionModalHandler }) => {
+const MyProfileCard = ({ user, isAnnounceOn, modalOpenOnHandler }) => {
   return (
     <div className={styles.cardContainer}>
       <img alt="user img" src={defaultUser} />
@@ -42,16 +44,34 @@ const ProfileCard = ({ user, QuestionModalHandler }) => {
         </div>
       </section>
       <div className={styles.buttonBox}>
-        <ButtonNightBlue buttonHandler={QuestionModalHandler} text="문의하기" />
+        <Link to="/pages/EditProfile">
+          <ButtonNightBlue text="수정하기" />
+        </Link>
       </div>
+      <section>
+        <div className={styles.toggleContainer}>
+          <div className={styles.toggleTextBox}>
+            <p className={styles.announceText1}>공고 상태</p>
+            <div className={styles.announceText2}>
+              지금은{' '}
+              {isAnnounceOn ? (
+                <span className={styles.announceOnText}>공고 중</span>
+              ) : (
+                <span>공고 안함</span>
+              )}{' '}
+              상태입니다
+            </div>
+          </div>
+          <Toggle modalOpenOnHandler={modalOpenOnHandler} />
+        </div>
+      </section>
     </div>
   );
 };
-
-ProfileCard.propTypes = {
+MyProfileCard.propTypes = {
   isAnnounceOn: PropTypes.func,
-  QuestionModalHandler: PropTypes.func,
+  modalOpenOnHandler: PropTypes.func,
   user: PropTypes.object,
 };
 
-export default ProfileCard;
+export default MyProfileCard;

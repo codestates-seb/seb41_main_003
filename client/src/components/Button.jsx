@@ -1,5 +1,6 @@
 import styles from './Button.module.css';
 import PropTypes from 'prop-types';
+
 const ButtonDefault = ({ text, buttonHandler }) => {
   return (
     <button onClick={buttonHandler} className={styles.default}>
@@ -7,10 +8,12 @@ const ButtonDefault = ({ text, buttonHandler }) => {
     </button>
   );
 };
+
 ButtonDefault.propTypes = {
   text: PropTypes.string,
   buttonHandler: PropTypes.func,
 };
+
 const ButtonNightBlue = ({ text, buttonHandler }) => {
   return (
     <button onClick={buttonHandler} className={styles.nightBlue}>
@@ -18,10 +21,12 @@ const ButtonNightBlue = ({ text, buttonHandler }) => {
     </button>
   );
 };
+
 ButtonNightBlue.propTypes = {
   text: PropTypes.string,
   buttonHandler: PropTypes.func,
 };
+
 const ButtonRed = ({ text, buttonHandler }) => {
   return (
     <button onClick={buttonHandler} className={styles.red}>
@@ -29,6 +34,7 @@ const ButtonRed = ({ text, buttonHandler }) => {
     </button>
   );
 };
+
 ButtonRed.propTypes = {
   text: PropTypes.string,
   buttonHandler: PropTypes.func,
@@ -40,10 +46,12 @@ const ButtonSnow = ({ text, buttonHandler }) => {
     </button>
   );
 };
+
 ButtonSnow.propTypes = {
   text: PropTypes.string,
   buttonHandler: PropTypes.func,
 };
+
 const ButtonSilver = ({ text, buttonHandler }) => {
   return (
     <button onClick={buttonHandler} className={styles.silver}>
@@ -51,6 +59,7 @@ const ButtonSilver = ({ text, buttonHandler }) => {
     </button>
   );
 };
+
 ButtonSilver.propTypes = {
   text: PropTypes.string,
   buttonHandler: PropTypes.func,

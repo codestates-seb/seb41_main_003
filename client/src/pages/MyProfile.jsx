@@ -13,8 +13,7 @@ const MyProfile = () => {
     if (e.target.name === 'yes') {
       setIsAnnounceOn((prev) => !prev);
       setIsModalOpen((prev) => !prev);
-      //바뀐 유저의 공고 상태를 서버에 전송 해야함
-      // setUser((userData) => userData.wanted_status);
+      //TODO:바뀐 유저의 공고 상태를 서버에 전송 해야함
     } else {
       setIsModalOpen((prev) => !prev);
     }
@@ -22,9 +21,6 @@ const MyProfile = () => {
 
   const modalOpenOnHandler = useCallback(() => {
     setIsModalOpen((prev) => !prev);
-  }, []);
-  const announceOnHandler = useCallback(() => {
-    setIsAnnounceOn((prev) => !prev);
   }, []);
 
   let modalText = `공고 상태를 변경하시겠습니까?`;
@@ -37,7 +33,6 @@ const MyProfile = () => {
             user={user}
             isAnnounceOn={isAnnounceOn}
             modalOpenOnHandler={modalOpenOnHandler}
-            announceOnHandler={announceOnHandler}
           />
           <ProfileContents user={user} />
         </div>
@@ -48,9 +43,9 @@ const MyProfile = () => {
             modalHandler={modaInnerHandler}
             text={modalText.split('\n').map((line) => {
               return (
-                <div key={line.id} className={styles.modalText}>
+                <p key={line.id} className={styles.modalText}>
                   {line}
-                </div>
+                </p>
               );
             })}
           />
