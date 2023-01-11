@@ -2,6 +2,7 @@ package com.mainproject.server.message.service;
 
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.MessageStatus;
+import com.mainproject.server.constant.TutoringStatus;
 import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.message.entity.Message;
 import com.mainproject.server.message.entity.MessageRoom;
@@ -60,6 +61,20 @@ public class MessageService {
                 messageRoomRepository.findAllByTutorProfileIdAndTuteeProfileId(profileId, profileId, pageable);
 
         return messageRooms;
+    }
+
+    //매칭 요청시, TUTORINGSTATUS -waiting 출력 -> 프론트 전달
+    public void requestMatching(Message message, Long profileId) {
+
+
+    }
+
+    //매칭 취소를 고려한 메세지룸 삭제
+    public void cancelInquiry(Long messageRoomId) {
+
+        MessageRoom messageRoom = findVerifiedMessageRoom(messageRoomId);
+
+        messageRoomRepository.delete(messageRoom);
     }
 
 }
