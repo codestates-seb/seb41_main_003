@@ -49,9 +49,9 @@ const AddProfile = () => {
         />
         <ChangeProfileContents user={user} setUser={setUser} />
       </div>
-      {confirm ? (
+      {confirm && (
         <ConfirmModal text={confirmText} modalHandler={confirmHandler} />
-      ) : undefined}
+      )}
     </div>
   );
 };

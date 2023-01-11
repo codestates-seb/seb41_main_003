@@ -57,11 +57,11 @@ const Header = () => {
               </button>
             </li>
           </ul>
-          {isNoti ? (
+          {isNoti && (
             <div className={styles.noti}>기능 추가 될 예정입니다.</div>
-          ) : undefined}
+          )}
 
-          {isMenu ? (
+          {isMenu && (
             <ul className={styles.dropdown}>
               <li>
                 <Link to="/myprofile">프로필</Link>
@@ -82,7 +82,7 @@ const Header = () => {
                 <Link to="">로그아웃</Link>
               </li>
             </ul>
-          ) : undefined}
+          )}
         </div>
       ) : (
         <div className={styles.memberMenu}>

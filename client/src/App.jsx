@@ -49,9 +49,9 @@ const App = () => {
             <Route path="/test" element={<TestPage />} />
             <Route path="/modaltest" element={<ModalTestPage />} />
           </Routes>
-          {isOpenAdminModal ? (
+          {isOpenAdminModal && (
             <AdminModal setIsOpenAdminModal={setIsOpenAdminModal} />
-          ) : undefined}
+          )}
         </div>
         <div className="footer">
           <Footer />
