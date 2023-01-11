@@ -4,6 +4,7 @@ import com.mainproject.server.auth.oauth2.attribute.OAuth2Attribute;
 import com.mainproject.server.auth.token.JwtAuthorityUtils;
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.LoginType;
+import com.mainproject.server.constant.UserStatus;
 import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.user.entity.User;
 import com.mainproject.server.user.service.UserService;
@@ -62,6 +63,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                         .email(email)
                         .nickName(nickName)
                         .loginType(LoginType.SOCIAL)
+                        .userStatus(UserStatus.NONE)
+                        .roles(JwtAuthorityUtils.USER_ROLES_STRING_CALL)
                         .build();
                 return userService.createUser(build);
             } else {

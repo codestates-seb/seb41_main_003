@@ -28,6 +28,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final RefreshService refreshService;
 
+
     /* Login Dto로 전송받은 데이터를
     * UsernamePasswordAuthenticationToken 으로 변환 하여 Security Flow 시작 */
     @SneakyThrows
@@ -62,6 +63,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         refreshService.createRefresh(user.getEmail(), refreshToken);
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("userId", userId.toString());
+        response.setHeader("userStatus", user.getUserStatus().name());
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }

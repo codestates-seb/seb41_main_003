@@ -1,5 +1,6 @@
 package com.mainproject.server.auth.token;
 
+import com.mainproject.server.auth.redis.dto.RefreshDto;
 import com.mainproject.server.auth.redis.service.RefreshService;
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.exception.ServiceLogicException;
@@ -96,7 +97,7 @@ public class JwtTokenizer {
         String subject = getEmail(refreshToken);
         claims.put("username", subject);
         claims.put("roles", jwtAuthorityUtils.createRoles(subject));
-
+        // Todo 이메일을 받을 필요 없을것 같다. Refactoring
         Token token = generateToken(claims, subject, base64SecretKey);
         String newAccessToken = token.getAccessToken();
         String newRefreshToken = token.getRefreshToken();
@@ -106,18 +107,19 @@ public class JwtTokenizer {
 
     /* Refresh Token 검증 */
     public void verifyRefreshToken(
-            String refreshToken,
             String email,
             HttpServletResponse response
     ) throws IOException {
-        if (refreshToken == null) {
-            throw new ServiceLogicException(ErrorCode.TOKEN_NOT_NULL);
-        }
+
+
         String base64SecretKey = encodeBase64SecretKey(getSecretKey());
         try {
-            refreshService.getRefresh(email);
-            verifySignature(refreshToken, base64SecretKey);
-            reIssueToken(refreshToken, base64SecretKey, response, email);
+            RefreshDto refreshToken = refreshService.getRefresh(email);
+            if (refreshToken == null) {
+                throw new ServiceLogicException(ErrorCode.TOKEN_NOT_NULL);
+            }
+            verifySignature(refreshToken.getRefreshToken(), base64SecretKey);
+            reIssueToken(refreshToken.getRefreshToken(), base64SecretKey, response, email);
         } catch (ExpiredJwtException | ServiceLogicException ee) {
             throw new ServiceLogicException(ErrorCode.EXPIRED_REFRESH_TOKEN);
         } catch (Exception e) {
