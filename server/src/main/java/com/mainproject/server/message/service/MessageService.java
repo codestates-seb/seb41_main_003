@@ -26,26 +26,27 @@ public class MessageService {
     private final MessageRoomRepository messageRoomRepository;
     private final ProfileRepository profileRepository;
 
-    public Message createMessage(Message message, Long profileId){
-
-        message.addSender(new Profile());
-        message.addReceiver(new Profile());
-
-        messageRepository.save(message);
-
-        return message;
-    }
-
     public MessageRoom createMessageRoom(MessageRoom messageRoom, Message message, Long profileId) {
-
         messageRoom.addMessage(message);
-        //
         messageRoom.setMessageStatus(MessageStatus.UNCHECK);
 
         messageRoomRepository.save(messageRoom);
 
         return messageRoom;
     }
+    public Message createMessage(Message message, Long profileId, Profile sender, Profile receiver, Long messageRoomId){
+        //Optional<MessageRoom> messageRoom = messageRoomRepository.findById(messageRoomId);
+
+        message.addSender(new Profile());
+        message.addReceiver(new Profile());
+        message.setReceiver(receiver);
+        message.setSender(sender);
+
+        messageRepository.save(message);
+
+        return message;
+    }
+
 
 
     public MessageRoom findVerifiedMessageRoom(Long messageRoomId) {
@@ -63,14 +64,13 @@ public class MessageService {
         return messageRooms;
     }
 
-    //매칭 요청시, TUTORINGSTATUS -waiting 출력 -> 프론트 전달
-    public void requestMatching(Message message, Long profileId) {
-
-
+    //매칭 요청시, TUTORINGSTATUS -waiting 출력 -> 프론트 전달 일단 막 적어봐
+    public void requestMatching(Message message, Long tuteeId, Long tutorId) {
+    //여기서 하는게 아닌것 같긴 한데 일단 틀만 넣었어요
     }
 
     //매칭 취소를 고려한 메세지룸 삭제
-    public void cancelInquiry(Long messageRoomId) {
+    public void deleteMessageRoom(Long messageRoomId) {
 
         MessageRoom messageRoom = findVerifiedMessageRoom(messageRoomId);
 
