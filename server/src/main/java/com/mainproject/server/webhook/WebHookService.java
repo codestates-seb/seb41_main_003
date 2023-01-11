@@ -2,6 +2,7 @@ package com.mainproject.server.webhook;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,14 +12,19 @@ import org.springframework.web.client.RestTemplate;
 
 
 @Service
+@Slf4j
 public class WebHookService {
 
-    @Value("${discord.webhookUrl}")
+    @Value("${WEBHOOK_URL}")
     private  String url;
 
-    public void callEvent(WebHookDto response) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        send(objectMapper.writeValueAsString(response));
+    public void callEvent(WebHookDto response) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            send(objectMapper.writeValueAsString(response));
+        } catch (JsonProcessingException e) {
+            log.error("WebHook 동작하지 않음!!");
+        }
     }
 
     private void send(String content){
