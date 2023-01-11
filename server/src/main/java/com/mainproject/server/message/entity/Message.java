@@ -36,12 +36,12 @@ public class Message extends Auditable {
     @ToString.Exclude
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Setter
-    private Profile tutor;
+    private Profile sender;
 
     @ToString.Exclude
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Setter
-    private Profile tutee;
+    private Profile receiver;
 
     /* 연관 관계 편의 메소드 */
     public void addMessageRoom(MessageRoom messageRoom) {
