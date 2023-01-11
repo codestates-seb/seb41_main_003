@@ -1,0 +1,15 @@
+@import url('../default.css');
+
+.wrapper {
+  width: 100%;
+  background-color: $snow;
+}
+
+.container {
+  height: 100%;
+  max-width: 1048px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
