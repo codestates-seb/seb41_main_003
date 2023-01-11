@@ -1,4 +1,7 @@
 package com.mainproject.server.dateNotice.repository;
 
-public interface DateNoticeRepository {
+import com.mainproject.server.dateNotice.entity.DateNotice;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface DateNoticeRepository extends JpaRepository<DateNotice, Long> {
 }

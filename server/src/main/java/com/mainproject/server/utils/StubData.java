@@ -10,12 +10,13 @@ import com.mainproject.server.image.dto.ImageResponseDto;
 import com.mainproject.server.message.dto.MessageResponseDto;
 import com.mainproject.server.message.dto.MessageRoomResponseDto;
 import com.mainproject.server.message.dto.MessageRoomSimpleResponseDto;
-import com.mainproject.server.profile.dto.ProfileResponseDto;
+import com.mainproject.server.profile.dto.ProfilePageDto;
+import com.mainproject.server.profile.dto.ProfileListResponseDto;
 import com.mainproject.server.profile.dto.ProfileSimpleResponseDto;
 import com.mainproject.server.review.dto.ReviewResponseDto;
 import com.mainproject.server.subject.dto.SubjectProfileResponseDto;
 import com.mainproject.server.subject.dto.SubjectResponseDto;
-import com.mainproject.server.tutoring.dto.TutoringResponseDto;
+import com.mainproject.server.tutoring.dto.TutoringDto;
 import com.mainproject.server.tutoring.dto.TutoringSimpleResponseDto;
 import com.mainproject.server.user.dto.UserResponseDto;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -111,21 +113,24 @@ public class StubData {
         return hwDto;
     }
 
-    public TutoringResponseDto createTutoringResponse() {
-        return TutoringResponseDto.builder()
+    public TutoringDto createTutoringDto() {
+        List<DateNoticeResponseDto> list = List.of(
+                createDateNoticeResponse(),
+                createDateNoticeResponse(),
+                createDateNoticeResponse()
+
+        );
+        Page page = new PageImpl(list, PageRequest.of(0, 10), list.size());
+        return TutoringDto.builder()
                 .tutoringId(1L)
+                .tutoringTitle("열심히 가르칩니다! 강호수입니다!")
                 .tutoringStatus(TutoringStatus.TUTOR_WAITING.name())
                 .createAt(LocalDateTime.now())
                 .updateAt(LocalDateTime.now())
-                .tutor(createProfileSimpleResponse())
-                .tutee(createProfileSimpleResponse())
+                .tutor(createProfileListResponse())
+                .tutee(createProfileListResponse())
                 .review(createReviewResponse())
-                .dateNotices(List.of(
-                        createDateNoticeResponse(),
-                        createDateNoticeResponse(),
-                        createDateNoticeResponse()
-
-                )).build();
+                .dateNotices(page).build();
 
     }
 
@@ -140,13 +145,13 @@ public class StubData {
                 .build();
     }
 
-    public ProfileResponseDto createProfileResponse() {
+    public ProfilePageDto createProfileResponse() {
         List<ReviewResponseDto> list = List.of(
                 createReviewResponse(),
                 createReviewResponse()
         );
-        Page page = new PageImpl(list, PageRequest.of(0, 10), 10L);
-        return ProfileResponseDto.builder()
+        Page page = new PageImpl(list, PageRequest.of(0, 10), list.size());
+        return ProfilePageDto.builder()
                 .profileId(1L)
                 .name("강호수")
                 .rate(4.9)
@@ -170,8 +175,31 @@ public class StubData {
                 .build();
     }
 
-    public ProfileSimpleResponseDto createProfileSimpleResponse() {
-        return ProfileSimpleResponseDto.builder()
+    public ProfilePageDto createEmptyProfileResponse() {
+        Page page = new PageImpl(new ArrayList<>(), PageRequest.of(0, 10), 10L);
+        return ProfilePageDto.builder()
+                .profileId(1L)
+                .name("강호수")
+                .rate(4.9)
+                .bio("진짜 잘 가르칩니다.")
+                .school("낙성대")
+                .wantedStatus(WantedStatus.REQUEST.name())
+                .way("같이 술한잔?")
+                .subjects(new ArrayList<>())
+                .difference("제 차별성은요...")
+                .gender("남자")
+                .pay("4딸라")
+                .wantDate("주말이 좋아요")
+                .preTutoring("불가능합니다")
+                .reviews(page)
+                .profileImage(createImageResponse())
+                .createAt(LocalDateTime.now())
+                .updateAt(LocalDateTime.now())
+                .build();
+    }
+
+    public ProfileListResponseDto createProfileListResponse() {
+        return ProfileListResponseDto.builder()
                 .profileId(1L)
                 .name("어때요")
                 .rate(4.8)
@@ -184,6 +212,14 @@ public class StubData {
                 .profileImage(createImageResponse())
                 .createAt(LocalDateTime.now())
                 .updateAt(LocalDateTime.now())
+                .build();
+    }
+
+    public ProfileSimpleResponseDto createProfileSimpleResponse() {
+        return ProfileSimpleResponseDto.builder()
+                .profileId(1L)
+                .name("어때요")
+                .url("https://www.google.com/url?sa=i&url=http%3A%2F%2Fm.blog.naver.com%2Fcjswodnajs%2F222138892587&psig=AOvVaw0Ef_d9Jqh-dQm9Q7RRDiIg&ust=1673341195393000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCMjWyO2PuvwCFQAAAAAdAAAAABAE")
                 .build();
     }
 

@@ -20,6 +20,6 @@ public class DateNoticePostDto {
 
     private String noticeBody;
 
-    private List<String> Homeworks;
+    private List<HomeworkDto> homeworks;
 
 }
