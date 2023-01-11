@@ -1,20 +1,37 @@
 import styles from './SignUpForm.module.css';
 import { LabelTextInput, TextInput } from '../Input';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const initialSignupdata = {
   nickName: '',
   email: '',
   password: '',
+  passwordConfirm: '',
 };
 
 const SignUpForm = () => {
   const [signupData, setSignupData] = useState(initialSignupdata);
+  const [confirmPassword, setConfirmPassword] = useState(false);
 
   const inputHandler = (e) => {
     const { id, value } = e.target;
     setSignupData({ ...signupData, [id]: value });
   };
+
+  //비밀번호와 비밀번호 확인 체크하는 핸들러 함수
+  const confirmHandler = () => {
+    if (signupData.password === signupData.passwordConfirm) {
+      console.log('같은데!');
+      setConfirmPassword(true);
+    } else {
+      console.log('다른데!');
+      setConfirmPassword(false);
+    }
+  };
+
+  useEffect(() => {
+    confirmHandler();
+  }, [signupData.passwordConfirm, signupData.password]);
 
   return (
     <div className={styles.signUpContainer}>
@@ -50,6 +67,8 @@ const SignUpForm = () => {
           id="passwordConfirm"
           type="password"
           placeHolder="비밀번호 확인"
+          value={signupData.passwordConfirm}
+          handler={inputHandler}
         />
         <span>비밀번호 입력이 잘못되었습니다.</span>
       </div>
