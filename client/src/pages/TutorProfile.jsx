@@ -1,5 +1,5 @@
 import styles from './TutorProfile.module.css';
-import { DetailProfile, ProfileCard } from '../components/profileSection';
+import { ProfileContents, ProfileCard } from '../components/profileSection';
 
 const TutorProfile = () => {
   const tutorDummyState = {
@@ -46,7 +46,7 @@ const TutorProfile = () => {
       <div className={styles.background}>
         <div className={styles.container}>
           <ProfileCard user={tutorDummyState} />
-          <DetailProfile user={tutorDummyState} />
+          <ProfileContents user={tutorDummyState} />
         </div>
       </div>
     </div>

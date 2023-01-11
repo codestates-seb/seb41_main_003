@@ -11,6 +11,12 @@
   margin-right: 8px;
   margin-bottom: 32px;
   background-color: $white;
+
+  /* position: sticky;
+  top: 64px; */
+}
+
+.stickyCardContainer {
 }
 
 img {
@@ -48,28 +54,25 @@ ul {
   }
 }
 
-.buttonBox {
-  margin: 32px 0;
-}
-
 .toggleContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 32px;
 }
 
-.firstText {
+.announceText1 {
   font-size: $font4;
   font-weight: $font4W;
   margin-bottom: 8px;
 }
 
-.secondText {
+.announceText2 {
   font-size: $font6;
   font-weight: $font4W;
 }
 
-.announceOn {
+.announceOnText {
   color: #e74c3c;
 }
 
@@ -94,42 +97,4 @@ ul {
   font-size: $para;
   font-weight: $paraW;
   color: $moon;
-}
-
-.announceOnButton {
-  width: 72px;
-  height: 40px;
-  border-radius: 36px;
-  background-color: #4ecb71;
-  position: relative;
-  cursor: pointer;
-
-  > .slider {
-    position: absolute;
-    top: 10px;
-    left: 45px;
-    width: 19px;
-    height: 19px;
-    border-radius: 50%;
-    background-color: white;
-  }
-}
-
-.announceOffButton {
-  width: 72px;
-  height: 40px;
-  border-radius: 36px;
-  position: relative;
-  background-color: $nickel;
-  cursor: pointer;
-
-  > .slider {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 19px;
-    height: 19px;
-    border-radius: 50%;
-    background-color: white;
-  }
 }

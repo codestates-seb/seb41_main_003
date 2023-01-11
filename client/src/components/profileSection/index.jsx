@@ -1,4 +1,4 @@
-import DetailProfile from './DetailProfile';
+import ProfileContents from './ProfileContents';
 import { ProfileCard, MyProfileCard } from './ProfileCard';
 
-export { DetailProfile, ProfileCard, MyProfileCard };
+export { ProfileContents, ProfileCard, MyProfileCard };

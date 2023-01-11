@@ -1,7 +1,8 @@
 import styles from './MyProfile.module.css';
 import { useState, useCallback } from 'react';
-import { DetailProfile, MyProfileCard } from '../components/profileSection';
+import { ProfileContents, MyProfileCard } from '../components/profileSection';
 import { ConfirmModal } from '../components/Modal.jsx';
+
 const tutorDummyState = {
   profile_id: 1,
   user_id: 1,
@@ -66,8 +67,7 @@ const MyProfile = () => {
     setIsAnnounceOn((prev) => !prev);
   }, []);
 
-  let modalText = `공고 상태를 
- \n  ${user.wanted_status}상태로 변경하시겠습니까?`;
+  let modalText = `공고 상태를 \n ${user.wanted_status}상태로 변경하시겠습니까?`;
 
   return (
     <div className={styles.wrapper}>
@@ -79,7 +79,7 @@ const MyProfile = () => {
             modalOpenOnHandler={modalOpenOnHandler}
             announceOnHandler={announceOnHandler}
           />
-          <DetailProfile user={user} />
+          <ProfileContents user={user} />
         </div>
       </div>
       {isModalOpen && (
