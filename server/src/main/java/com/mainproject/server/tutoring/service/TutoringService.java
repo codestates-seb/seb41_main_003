@@ -65,7 +65,15 @@ public class TutoringService {
         tutoringRepository.save(tutoring);
     }
 
+    public void setTutoringStatusUncheck(Long tutoringId) {
+        Tutoring tutoring = findVerifiedTutoring(tutoringId);
+        tutoring.setTutoringStatus(TutoringStatus.UNCHECK);
+
+        tutoringRepository.save(tutoring);
+    }
+
     // 과외가 성사되면 (매칭 요청이 수락되면) 진행중 상태로 변경
+    // Todo: profileId가 receiverId인 사람이 요청했을 때만 되도록 설정
     public Tutoring setTutoringStatusProgress(Long tutoringId) {
         Tutoring tutoring = findVerifiedTutoring(tutoringId);
         tutoring.setTutoringStatus(TutoringStatus.PROGRESS);

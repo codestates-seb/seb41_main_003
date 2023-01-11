@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -102,7 +103,8 @@ public class TutoringController {
 
     @GetMapping("/date-notice/{dateNoticeId}")
     public ResponseEntity getDateNotice(
-            @PathVariable("dateNoticeId") Long dateNoticeId
+            @PathVariable("dateNoticeId") Long dateNoticeId,
+            Principal principal
     ) {
         return new ResponseEntity(
                 ResponseDto.of(stubData.createDateNoticeResponse()),
