@@ -1,16 +1,8 @@
 package com.mainproject.server.auth.handler;
 
 import com.google.gson.Gson;
-import com.mainproject.server.auth.redis.service.RefreshService;
-import com.mainproject.server.auth.token.JwtTokenizer;
-import com.mainproject.server.auth.token.Token;
-import com.mainproject.server.constant.ErrorCode;
-import com.mainproject.server.constant.LoginType;
 import com.mainproject.server.dto.AuthSuccessTokenResponseDto;
 import com.mainproject.server.dto.ResponseDto;
-import com.mainproject.server.exception.ServiceLogicException;
-import com.mainproject.server.user.entity.User;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

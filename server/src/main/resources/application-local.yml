@@ -37,9 +37,9 @@ spring:
       client:
         registration:
           google:
-            client-id: ${GOOGLE_AOUTH2_MAIN_ID}
+            client-id: ${GOOGLE_OAUTH2_MAIN_ID}
           kakao:
-            client-id: ${KAKAO_AOUTH2_MAIN_ID}
+            client-id: ${KAKAO_OAUTH2_MAIN_ID}
 # 디버깅 용이하게 하기 위한 로깅 레벨 수정
 logging.level:
   org.hibernate.SQL: debug
