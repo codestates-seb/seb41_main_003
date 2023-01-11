@@ -43,15 +43,17 @@ public class MessageService {
         return messageRoom;
     }
 
+    public MessageRoom
+
     public MessageRoom findVerifiedMessageRoom(Long messageRoomId) {
 
         Optional<MessageRoom> optionalMessageRoom = messageRoomRepository.findById(messageRoomId);
         MessageRoom messageRoom = optionalMessageRoom.orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
 
-        return null;
+        return messageRoom;
     }
 
-    Page<MessageRoom> getAllTutoring(Long profileId, Pageable pageable) {
+    Page<MessageRoom> getAllMessages(Long profileId, Pageable pageable) {
         Page<MessageRoom> messageRooms =
                 messageRoomRepository.findAllByTutorProfileIdAndTuteeProfileId(profileId, profileId, pageable);
 
