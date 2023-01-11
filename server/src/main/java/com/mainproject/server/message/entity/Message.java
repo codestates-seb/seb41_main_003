@@ -49,11 +49,11 @@ public class Message extends Auditable {
         messageRoom.addMessage(this);
     }
 
-    public void addTutorProfile(Profile tutorProfile) {
-        setTutor(tutorProfile);
+    public void addSender (Profile sender) {
+        setSender(sender);
     }
 
-    public void addTuteeProfile(Profile tuteeProfile) {
-        setTutee(tuteeProfile);
+    public void addReceiver (Profile tuteeProfile) {
+        setReceiver(receiver);
     }
 }
