@@ -1,0 +1,104 @@
+@import url('../../default.css');
+
+.container {
+  width: 696px;
+  height: 100%;
+  padding: 32px 32px 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: $bigShadow;
+  border-radius: 5px;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  background-color: $white;
+
+  > div {
+    margin-bottom: 32px;
+  }
+}
+
+.font3 {
+  font-size: $font3;
+  font-weight: $font3W;
+}
+
+.font4 {
+  font-size: $font4;
+  font-weight: $font4W;
+  margin-bottom: 16px;
+}
+
+.font5 {
+  font-size: $font5;
+  font-weight: $font5W;
+}
+
+.paragragh {
+  font-size: $para;
+  font-weight: $paraW;
+}
+
+.subject {
+  > .subjectList {
+    margin-top: 8px;
+
+    > .paragragh {
+      margin-top: 8px;
+    }
+  }
+}
+
+.review {
+  margin-top: 63px;
+}
+
+.reviewTitleLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+hr {
+  height: 2px;
+  background-color: black;
+  border: 0;
+  margin-top: 4px;
+}
+
+.reviewContentBox {
+  background-color: $snow;
+  border-radius: 5px;
+  margin-top: 16px;
+  padding: 16px;
+}
+
+.reviewTitle {
+  font-size: $font5;
+  font-weight: $font5W;
+}
+
+.reviewProfileId {
+  font-size: $font6;
+  font-weight: $font6W;
+}
+
+.flexbox {
+  display: flex;
+
+  > div {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.rating {
+  display: flex;
+  flex-wrap: wrap;
+  width: 400px;
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.stars {
+  margin: 0 8px;
+}

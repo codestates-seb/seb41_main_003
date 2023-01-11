@@ -1,0 +1,24 @@
+@import url('../default.css');
+
+.wrapper {
+  width: 100%;
+}
+
+.background {
+  background-color: $snow;
+  max-width: 1048px;
+  margin: 0 auto;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.modalWrapper {
+  font-size: $font5;
+  font-weight: $font5W;
+  text-align: center;
+  line-height: 20px;
+}
