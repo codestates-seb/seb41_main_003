@@ -10,4 +10,6 @@ public class TutoringPostDto {
     private Long tutorId;
 
     private Long tuteeId;
+
+    private String tutoringTitle;
 }
