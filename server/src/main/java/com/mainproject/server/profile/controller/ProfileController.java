@@ -1,7 +1,11 @@
 package com.mainproject.server.profile.controller;
 
 import com.mainproject.server.dto.PageResponseDto;
+import com.mainproject.server.dto.ResponseDto;
 import com.mainproject.server.profile.dto.*;
+import com.mainproject.server.profile.entity.Profile;
+import com.mainproject.server.profile.mapper.ProfileMapper;
+import com.mainproject.server.profile.service.ProfileService;
 import com.mainproject.server.utils.StubData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -25,18 +30,17 @@ public class ProfileController {
 
     private final StubData stubData;
 
+    private final ProfileService profileService;
+
+    private final ProfileMapper profileMapper;
+
     @GetMapping("/{userId}")
     public ResponseEntity getProfiles(
-            @PathVariable Long userId,
-            @PageableDefault(page = 0, size = 10, sort = "profileId", direction = Sort.Direction.DESC)
-            Pageable pageable
+            @PathVariable Long userId
     ) {
-        ProfileSimpleResponseDto simple = stubData.createProfileSimpleResponse();
-        List<ProfileSimpleResponseDto> simpleList = List.of(simple, simple, simple, simple);
-        Page<ProfileSimpleResponseDto> page = new PageImpl<>(simpleList, pageable, 10L);
-        PageResponseDto response = PageResponseDto.of(simpleList, page);
+        List<Profile> profiles = profileService.getProfiles(userId);
         return new ResponseEntity<>(
-                response,
+                ResponseDto.of(profileMapper.entityListToSimpleResponseDtoList(profiles)),
                 HttpStatus.OK
         );
     }
@@ -44,16 +48,15 @@ public class ProfileController {
     @GetMapping("/details/{profileId}")
     private ResponseEntity getProfile(
             @PathVariable Long profileId,
-            @PageableDefault(page = 0, size = 10, sort = "reviewId", direction = Sort.Direction.DESC)
+            @PageableDefault(page = 0, size = 5, sort = "reviewId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
-        ProfilePageDto profile = stubData.createProfileResponse();
+        ProfilePageDto profile = profileService.getProfile(profileId,pageable);
         ProfileResponseDto responseDto = ProfileResponseDto.of(profile);
-        PageResponseDto response = PageResponseDto.of(
-                responseDto,
-                profile.getReviews());
         return new ResponseEntity<>(
-                response,
+                PageResponseDto.of(
+                        responseDto,
+                        profile.getReviews()),
                 HttpStatus.OK
         );
     }
@@ -61,15 +64,21 @@ public class ProfileController {
     @PostMapping("/{userId}")
     private ResponseEntity postProfile(
             @PathVariable Long userId,
-            @RequestBody @Validated ProfileDto profileDto
+            @RequestBody @Validated ProfileDto profileDto,
+            @PageableDefault(page = 0, size = 5, sort = "reviewId", direction = Sort.Direction.DESC)
+            Pageable pageable
     ) {
-        ProfilePageDto profile = stubData.createEmptyProfileResponse();
-        ProfileResponseDto responseDto = ProfileResponseDto.of(profile);
-        PageResponseDto response = PageResponseDto.of(
-                responseDto,
-                profile.getReviews());
+        Profile profile = profileMapper.dtoToEntity(profileDto);
+        ProfilePageDto saveProfile = profileService.createProfile(
+                userId,
+                profile,
+                profileDto.getSubjects(),
+                pageable);
+        ProfileResponseDto responseDto = ProfileResponseDto.of(saveProfile);
         return new ResponseEntity<>(
-                response,
+                PageResponseDto.of(
+                        responseDto,
+                        saveProfile.getReviews()),
                 HttpStatus.CREATED
         );
     }
