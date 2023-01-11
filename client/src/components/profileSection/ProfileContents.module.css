@@ -24,7 +24,7 @@
 .font4 {
   font-size: $font4;
   font-weight: $font4W;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .font5 {
@@ -47,21 +47,21 @@
   }
 }
 
-.review {
-  margin-top: 63px;
+.reviewContainer {
+  margin-top: 51px;
+
+  > hr {
+    height: 2px;
+    background-color: black;
+    border: 0;
+    margin-top: 4px;
+  }
 }
 
 .reviewTitleLine {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-}
-
-hr {
-  height: 2px;
-  background-color: black;
-  border: 0;
-  margin-top: 4px;
 }
 
 .reviewContentBox {
@@ -81,23 +81,25 @@ hr {
   font-weight: $font6W;
 }
 
-.flexbox {
-  display: flex;
-
-  > div {
-    display: flex;
-    align-items: center;
-  }
-}
-
 .rating {
   display: flex;
   flex-wrap: wrap;
   width: 400px;
   margin-top: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
+
+  .flexbox {
+    display: flex;
+    margin-bottom: 8px;
+
+    > p {
+      display: flex;
+      align-items: center;
+    }
+  }
 }
 
 .stars {
   margin: 0 8px;
+  display: flex;
 }

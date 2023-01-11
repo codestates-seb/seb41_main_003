@@ -11,18 +11,14 @@
   margin-right: 8px;
   margin-bottom: 32px;
   background-color: $white;
+  position: sticky;
+  top: 64px;
 
-  /* position: sticky;
-  top: 64px; */
-}
-
-.stickyCardContainer {
-}
-
-img {
-  width: 264px;
-  height: 264px;
-  border-radius: 50%;
+  > img {
+    width: 264px;
+    height: 264px;
+    border-radius: 50%;
+  }
 }
 
 .textContainer {
@@ -35,7 +31,11 @@ img {
 
 .starBox {
   display: flex;
-  justify-content: center;
+
+  p {
+    margin-left: 5px;
+    margin-top: 2.5px;
+  }
 }
 
 .starLine {
@@ -44,13 +44,15 @@ img {
   align-items: baseline;
 }
 
-ul {
-  height: 56px;
-  display: flex;
-  flex-wrap: wrap;
+.subjects {
+  ul {
+    height: 56px;
+    display: flex;
+    flex-wrap: wrap;
 
-  > div {
-    margin-right: 10px;
+    > div {
+      margin-right: 10px;
+    }
   }
 }
 

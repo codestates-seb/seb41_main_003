@@ -11,137 +11,139 @@ const ProfileContents = ({ user }) => {
   return (
     <div>
       {user.profile_status === 'TUTOR' ? (
-        <main className={styles.container}>
+        <section className={styles.container}>
           <div className={styles.way}>
-            <div className={styles.font4}>수업방식</div>
-            <div className={styles.paragragh}>{user.way}</div>
+            <p className={styles.font4}>수업방식</p>
+            <p className={styles.paragragh}>{user.way}</p>
           </div>
           <div>
-            <div className={styles.font4}>과목별 수업 내용</div>
             <div className={styles.subject}>
+              <p className={styles.font4}>과목별 수업 내용</p>
               {user.subjects.map((subject) => {
                 return (
                   <div className={styles.subjectList} key={subject.subjectId}>
                     <BlueSubject text={subject.subjectTitle} />
-                    <div className={styles.paragragh}>{subject.content}</div>
+                    <p className={styles.paragragh}>{subject.content}</p>
                   </div>
                 );
               })}
             </div>
           </div>
           <div>
-            <div className={styles.font4}>차별점</div>
-            <div className={styles.paragragh}>{user.difference}</div>
+            <p className={styles.font4}>차별점</p>
+            <p className={styles.paragragh}>{user.difference}</p>
           </div>
           <div>
-            <div className={styles.font4}>성별</div>
-            <div className={styles.paragragh}>{user.gender}</div>
+            <p className={styles.font4}>성별</p>
+            <p className={styles.paragragh}>{user.gender}</p>
           </div>
           <div>
-            <div className={styles.font4}>성격</div>
-            <div className={styles.paragragh}>{user.character}</div>
+            <p className={styles.font4}>성격</p>
+            <p className={styles.paragragh}>{user.character}</p>
           </div>
           <div>
-            <div className={styles.font4}>수업료</div>
-            <div className={styles.paragragh}>{user.pay}</div>
+            <p className={styles.font4}>수업료</p>
+            <p className={styles.paragragh}>{user.pay}</p>
           </div>
           <div>
-            <div className={styles.font4}>과외 가능 요일 / 시간</div>
-            <div className={styles.paragragh}>{user.want_date}</div>
+            <p className={styles.font4}>과외 가능 요일 / 시간</p>
+            <p className={styles.paragragh}>{user.want_date}</p>
           </div>
           <div>
-            <div className={styles.font4}>시범 과외 가능 여부</div>
-            <div className={styles.paragragh}>{user.pre_tutoring}</div>
+            <p className={styles.font4}>시범 과외 가능 여부</p>
+            <p className={styles.paragragh}>{user.pre_tutoring}</p>
           </div>
-          <div className={styles.review}>
+          <div className={styles.reviewContainer}>
             <div className={styles.reviewTitleLine}>
-              <div className={styles.font3}>후기</div>
-              <div className={styles.font5}>총 {''}2개의 후기</div>
+              <p className={styles.font3}>후기</p>
+              <p className={styles.font5}>총 {user.reviews.length}개의 후기</p>
             </div>
             <hr />
-
-            <>
-              <div className={styles.reviewContentBox}>
-                <div className={styles.reviewProfileId}>박학생</div>
-                <div className={styles.rating}>
-                  <div className={styles.flexbox}>
-                    <div className={styles.reviewProfessional}>
-                      전문성
-                      <span className={styles.stars}>
-                        <ProfileContentsMDSTAR />
-                        <ProfileContentsMDSTAR />
-                        <ProfileContentsMDSTAR />
-                        <ProfileContentsMDSTAR />
-                        <ProfileContentsMDSTAR />
-                      </span>
+            <div>
+              {user.reviews.map((review) => {
+                return (
+                  <div
+                    key={review.reviewId}
+                    className={styles.reviewContentBox}
+                  >
+                    <p className={styles.reviewProfileId}>{review.tuteeName}</p>
+                    <div className={styles.rating}>
+                      <div className={styles.flexbox}>
+                        <p>
+                          전문성
+                          <span className={styles.stars}>
+                            <ProfileContentsMDSTAR />
+                            <ProfileContentsMDSTAR />
+                            <ProfileContentsMDSTAR />
+                            <ProfileContentsMDSTAR />
+                            <ProfileContentsMDSTAR />
+                          </span>
+                        </p>
+                        <p>
+                          준비성
+                          <span className={styles.stars}>
+                            <ProfileContentsMDSTAR />
+                            <ProfileContentsMDSTAR />
+                            <ProfileContentsMDSTAR />
+                            <ProfileContentsMDSTAR />
+                            <ProfileContentsMDSTAR />
+                          </span>
+                        </p>
+                      </div>
+                      <div className={styles.flexbox}>
+                        <p>
+                          설명력
+                          <span className={styles.stars}>
+                            <ProfileContentsMDSTAR />
+                            <ProfileContentsMDSTAR />
+                            <ProfileContentsMDSTAR />
+                            <ProfileContentsMDSTAR />
+                            <ProfileContentsMDSTAR />
+                          </span>
+                        </p>
+                        <p>
+                          시간 준수
+                          <span className={styles.stars}>
+                            <ProfileContentsMDSTAR />
+                            <ProfileContentsMDSTAR />
+                            <ProfileContentsMDSTAR />
+                            <ProfileContentsMDSTAR />
+                            <ProfileContentsMDSTAR />
+                          </span>
+                        </p>
+                      </div>
                     </div>
-                    <div className={styles.reviewReadiness}>
-                      준비성
-                      <span className={styles.stars}>
-                        <ProfileContentsMDSTAR />
-                        <ProfileContentsMDSTAR />
-                        <ProfileContentsMDSTAR />
-                        <ProfileContentsMDSTAR />
-                        <ProfileContentsMDSTAR />
-                      </span>
-                    </div>
+                    <p className={styles.reviewBody}>{review.reviewBody}</p>
                   </div>
-                  <div className={styles.flexbox}>
-                    <div className={styles.reviewExplanation}>
-                      설명력
-                      <span className={styles.stars}>
-                        <ProfileContentsMDSTAR />
-                        <ProfileContentsMDSTAR />
-                        <ProfileContentsMDSTAR />
-                        <ProfileContentsMDSTAR />
-                        <ProfileContentsMDSTAR />
-                      </span>
-                    </div>
-                    <div className={styles.reviewPunctuality}>
-                      시간 준수
-                      <span className={styles.stars}>
-                        <ProfileContentsMDSTAR />
-                        <ProfileContentsMDSTAR />
-                        <ProfileContentsMDSTAR />
-                        <ProfileContentsMDSTAR />
-                        <ProfileContentsMDSTAR />
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.reviewBody}>
-                  우리 남편 영양간식 우리 아이 술 안주. 키야 쥑인다 무바라 함
-                  무봤나 한번 맛보면 잊을수가 읍따 이 맛을 모르고 우예 사노
-                  안글나?
-                </div>
-              </div>
-            </>
+                );
+              })}
+            </div>
           </div>
-        </main>
+        </section>
       ) : (
-        <main className={styles.container}>
+        <section className={styles.container}>
           <div>
-            <div className={styles.font4}>성격</div>
-            <div className={styles.paragragh}>{user.character}</div>
+            <p className={styles.font4}>성격</p>
+            <p className={styles.paragragh}>{user.character}</p>
           </div>
           <div>
-            <div className={styles.font4}>성별</div>
-            <div className={styles.paragragh}>{user.gender}</div>
+            <p className={styles.font4}>성별</p>
+            <p className={styles.paragragh}>{user.gender}</p>
           </div>
 
           <div>
-            <div className={styles.font4}>예산</div>
-            <div className={styles.paragragh}>{user.pay}</div>
+            <p className={styles.font4}>예산</p>
+            <p className={styles.paragragh}>{user.pay}</p>
           </div>
           <div>
-            <div className={styles.font4}>과외 가능 요일 / 시간대</div>
-            <div className={styles.paragragh}>{user.want_date}</div>
+            <p className={styles.font4}>과외 가능 요일 / 시간대</p>
+            <p className={styles.paragragh}>{user.want_date}</p>
           </div>
           <div>
-            <div className={styles.font4}>시범 과외 가능 여부</div>
-            <div className={styles.paragragh}>{user.pre_tutoring}</div>
+            <p className={styles.font4}>시범 과외 가능 여부</p>
+            <p className={styles.paragragh}>{user.pre_tutoring}</p>
           </div>
-        </main>
+        </section>
       )}
     </div>
   );

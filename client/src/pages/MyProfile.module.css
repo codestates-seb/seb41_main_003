@@ -16,9 +16,8 @@
   margin-top: 16px;
 }
 
-.modalWrapper {
+.modalText {
+  text-align: center;
   font-size: $font5;
   font-weight: $font5W;
-  text-align: center;
-  line-height: 20px;
 }

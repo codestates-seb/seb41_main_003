@@ -10,73 +10,25 @@ import Toggle from './Toggle';
 const ProfileCard = ({ user }) => {
   return (
     <div className={styles.cardContainer}>
-      <div className={styles.stickyCardContainer}>
-        <img alt="user img" src={defaultUser} />
-        <div className={styles.textContainer}>
-          <div className={styles.starLine}>
-            <div className={styles.font1}>{user.name}</div>
-            <div className={styles.starBox}>
-              <MdStar fill="#F0C24D" />
-              <div className={styles.paragragh}>{user.rate}</div>
-              <div className={styles.paragragh}>/ 5</div>
-            </div>
-          </div>
-          <div>
-            <div className={styles.font4}>한 줄 소개</div>
-            <div className={styles.paragragh}>{user.bio}</div>
-          </div>
-          <div>
-            <div className={styles.font4}>학교</div>
-            <div className={styles.paragragh}>{user.school}</div>
-          </div>
-          <div>
-            <div className={styles.font4}>과목</div>
-            <span className={styles.subjects}>
-              <ul>
-                {user.subjects.map((subject) => {
-                  return (
-                    <BlueSubject
-                      key={subject.subjectId}
-                      text={subject.subjectTitle}
-                    />
-                  );
-                })}
-              </ul>
-            </span>
-          </div>
-        </div>
-        <div className={styles.buttonBox}>
-          <Link to="/pages/Message">
-            <ButtonNightBlue text="문의하기" />
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-};
-const MyProfileCard = ({ user, isAnnounceOn, modalOpenOnHandler }) => {
-  return (
-    <div className={styles.cardContainer}>
       <img alt="user img" src={defaultUser} />
-      <div className={styles.textContainer}>
+      <section className={styles.textContainer}>
         <div className={styles.starLine}>
-          <div className={styles.font1}>{user.name}</div>
+          <p className={styles.font1}>{user.name}</p>
           <div className={styles.starBox}>
-            <MdStar fill="#F0C24D" />
-            <div className={styles.paragragh}>{user.rate}</div>{' '}
-            <div className={styles.paragragh}>/ 5</div>
+            <MdStar fill="#F0C24D" size="21" />
+            <p className={styles.paragragh}>{user.rate} / 5 </p>
           </div>
         </div>
         <div>
-          <div className={styles.font4}>한 줄 소개</div>
-          <div className={styles.paragragh}>{user.bio}</div>
+          <p className={styles.font4}>한 줄 소개</p>
+          <p className={styles.paragragh}>{user.bio}</p>
         </div>
         <div>
-          <div className={styles.font4}>학교</div>
-          <div className={styles.paragragh}>{user.school}</div>
+          <p className={styles.font4}>학교</p>
+          <p className={styles.paragragh}>{user.school}</p>
         </div>
         <div>
-          <div className={styles.font4}>과목</div>
+          <p className={styles.font4}>과목</p>
           <span className={styles.subjects}>
             <ul>
               {user.subjects.map((subject) => {
@@ -90,31 +42,71 @@ const MyProfileCard = ({ user, isAnnounceOn, modalOpenOnHandler }) => {
             </ul>
           </span>
         </div>
+      </section>
+      <div className={styles.buttonBox}>
+        <ButtonNightBlue text="문의하기" />
       </div>
+    </div>
+  );
+};
+const MyProfileCard = ({ user, isAnnounceOn, modalOpenOnHandler }) => {
+  return (
+    <div className={styles.cardContainer}>
+      <img alt="user img" src={defaultUser} />
+      <section className={styles.textContainer}>
+        <div className={styles.starLine}>
+          <p className={styles.font1}>{user.name}</p>
+          <div className={styles.starBox}>
+            <MdStar fill="#F0C24D" size="21" />
+            <p className={styles.paragragh}>{user.rate} / 5 </p>
+          </div>
+        </div>
+        <div>
+          <p className={styles.font4}>한 줄 소개</p>
+          <p className={styles.paragragh}>{user.bio}</p>
+        </div>
+        <div>
+          <p className={styles.font4}>학교</p>
+          <p className={styles.paragragh}>{user.school}</p>
+        </div>
+        <div>
+          <p className={styles.font4}>과목</p>
+          <span className={styles.subjects}>
+            <ul>
+              {user.subjects.map((subject) => {
+                return (
+                  <BlueSubject
+                    key={subject.subjectId}
+                    text={subject.subjectTitle}
+                  />
+                );
+              })}
+            </ul>
+          </span>
+        </div>
+      </section>
       <div className={styles.buttonBox}>
         <Link to="/pages/EditProfile">
           <ButtonNightBlue text="수정하기" />
         </Link>
       </div>
-      <>
-        <div>
-          <div className={styles.toggleContainer}>
-            <div className={styles.toggleTextBox}>
-              <div className={styles.announceText1}>공고 상태</div>
-              <div className={styles.announceText2}>
-                지금은{' '}
-                {isAnnounceOn ? (
-                  <span className={styles.announceOnText}>공고 중</span>
-                ) : (
-                  <span>공고 안함</span>
-                )}{' '}
-                상태입니다
-              </div>
+      <section>
+        <div className={styles.toggleContainer}>
+          <div className={styles.toggleTextBox}>
+            <p className={styles.announceText1}>공고 상태</p>
+            <div className={styles.announceText2}>
+              지금은{' '}
+              {isAnnounceOn ? (
+                <span className={styles.announceOnText}>공고 중</span>
+              ) : (
+                <span>공고 안함</span>
+              )}{' '}
+              상태입니다
             </div>
-            <Toggle modalOpenOnHandler={modalOpenOnHandler} />
           </div>
+          <Toggle modalOpenOnHandler={modalOpenOnHandler} />
         </div>
-      </>
+      </section>
     </div>
   );
 };
