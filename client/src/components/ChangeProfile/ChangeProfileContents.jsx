@@ -55,15 +55,15 @@ const ChangeProfileContents = ({ user, setUser }) => {
           </div>
           <div className={styles.inputContainer}>
             <h4>과목별 수업 내용</h4>
-            {subjects.map((subject, i) => (
-              <div className={styles.subjectInput} key={i}>
+            {subjects.map(({ subjectTitle, content, subjectId }) => (
+              <div className={styles.subjectInput} key={subjectId}>
                 <label htmlFor="subject">
-                  <div className="subject">{subject.subjectTitle}</div>
+                  <div className="subject">{subjectTitle}</div>
                 </label>
                 <Textarea
-                  id={subject.subjectTitle}
+                  id={subjectTitle}
                   placeHolder="수업방식에 대해 자유롭게 작성하세요."
-                  value={subject.content}
+                  value={content}
                   handler={subjectHandler}
                 />
               </div>

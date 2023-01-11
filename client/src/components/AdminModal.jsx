@@ -56,19 +56,16 @@ const AdminModal = ({ setIsOpenAdminModal }) => {
       >
         <h3>전환하실 프로필을 선택하세요.</h3>
         <ul className={styles.profilesList}>
-          {profiles.map((profile) => (
+          {profiles.map(({ profileId, name }) => (
             // TODO : 프로필 이미지 경로 수정 필요
-            <li className={styles.profile} key={profile.profileId}>
-              <button
-                name={`profile${profile.profileId}`}
-                onClick={switchHandler}
-              >
+            <li className={styles.profile} key={profileId}>
+              <button name={`profile${profileId}`} onClick={switchHandler}>
                 <img
                   className={styles.userImage}
                   src={defaultUser}
                   alt="user"
                 />
-                <p>{profile.name}</p>
+                <p>{name}</p>
               </button>
             </li>
           ))}
