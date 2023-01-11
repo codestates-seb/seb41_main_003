@@ -48,7 +48,6 @@ public class MessageService {
     }
 
 
-
     public MessageRoom findVerifiedMessageRoom(Long messageRoomId) {
 
         Optional<MessageRoom> optionalMessageRoom = messageRoomRepository.findById(messageRoomId);
@@ -62,11 +61,6 @@ public class MessageService {
                 messageRoomRepository.findAllByTutorProfileIdAndTuteeProfileId(profileId, profileId, pageable);
 
         return messageRooms;
-    }
-
-    //매칭 요청시, TUTORINGSTATUS -waiting 출력 -> 프론트 전달 일단 막 적어봐
-    public void requestMatching(Message message, Long tuteeId, Long tutorId) {
-    //여기서 하는게 아닌것 같긴 한데 일단 틀만 넣었어요
     }
 
     //매칭 취소를 고려한 메세지룸 삭제
