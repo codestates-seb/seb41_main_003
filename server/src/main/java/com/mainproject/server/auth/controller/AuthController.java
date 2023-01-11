@@ -1,8 +1,11 @@
 package com.mainproject.server.auth.controller;
 
 
+import com.mainproject.server.auth.dto.PasswordDto;
 import com.mainproject.server.auth.token.JwtTokenizer;
 import com.mainproject.server.dto.AuthSuccessTokenResponseDto;
+import com.mainproject.server.user.entity.User;
+import com.mainproject.server.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -11,14 +14,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +28,8 @@ import java.security.Principal;
 public class AuthController {
 
     private final JwtTokenizer jwtTokenizer;
+
+    private final UserService userService;
 
     @GetMapping("/verify-user")
     public ResponseEntity verifyUser(
@@ -40,16 +42,15 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/reissue-token")
+    @GetMapping("/reissue-token/{userId}")
     public ResponseEntity reIssueToken(
-            HttpServletRequest request,
             HttpServletResponse response,
-            Principal principal
+            @PathVariable Long userId
     ) throws IOException {
-        jwtTokenizer.verifyRefreshToken(
-                request.getHeader("Refresh"),
-                principal.getName(),
-                response);
+        User user = userService.verifiedUserById(userId);
+        jwtTokenizer.verifyRefreshToken(user.getEmail(), response);
+        response.setHeader("userStatus", user.getUserStatus().name());
+        response.setHeader("userId", user.getUserId().toString());
         log.info("# Reissue Token");
         return new ResponseEntity<>(AuthSuccessTokenResponseDto.of(response), HttpStatus.OK);
     }
@@ -61,10 +62,19 @@ public class AuthController {
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
-            new SecurityContextLogoutHandler().logout(request,response,authentication);
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
         jwtTokenizer.deleteRefresh(request.getHeader("Authorization"));
         log.info("# User Logout");
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/verify-second-password/{userId}")
+    public ResponseEntity verifySecondPassword(
+            @RequestBody PasswordDto dto,
+            @PathVariable Long userId
+    ) {
+        userService.verifySecondPassword(userId, dto.getSecondPassword());
         return ResponseEntity.ok().build();
     }
 
