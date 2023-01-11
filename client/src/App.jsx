@@ -18,8 +18,11 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import TestPage from './pages/TestPage';
 import ModalTestPage from './pages/ModalTestPage';
+import AdminModal from './components/AdminModal';
+import { useState } from 'react';
 
 const App = () => {
+  const [isOpenAdminModal, setIsOpenAdminModal] = useState(false);
   return (
     <div className="app">
       <Router basename="/">
@@ -44,8 +47,11 @@ const App = () => {
             <Route path="/message" element={<Message />} />
             <Route path="/myprofile" element={<MyProfile />} />
             <Route path="/test" element={<TestPage />} />
-            <Route path="/mpdaltest" element={<ModalTestPage />} />
+            <Route path="/modaltest" element={<ModalTestPage />} />
           </Routes>
+          {isOpenAdminModal ? (
+            <AdminModal setIsOpenAdminModal={setIsOpenAdminModal} />
+          ) : undefined}
         </div>
         <div className="footer">
           <Footer />

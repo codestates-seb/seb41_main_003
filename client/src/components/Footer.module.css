@@ -2,7 +2,7 @@
 
 footer {
   z-index: 1;
-  width: 100vw;
+  width: 100%;
   height: 160px;
   background-color: $coal;
   display: flex;

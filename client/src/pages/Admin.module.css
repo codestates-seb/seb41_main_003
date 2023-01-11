@@ -1,0 +1,107 @@
+@import url('../default.css');
+
+.wrapper {
+  width: 100%;
+  background-color: $white;
+}
+
+.container {
+  height: 100%;
+  max-width: 1048px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: $font1;
+  font-weight: $font1W;
+  margin: 36px 0;
+}
+
+.profileContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.front {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profileBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 520px;
+  height: 136px;
+  border-radius: 5px;
+  margin-bottom: 16px;
+  background-color: $snow;
+
+  &:nth-child(odd) {
+    margin-right: 8px;
+  }
+}
+
+.addBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 520px;
+  height: 136px;
+  border-radius: 5px;
+  margin-bottom: 16px;
+  background-color: $snow;
+}
+
+.addIcon {
+  font-size: 24px;
+  margin-right: 8px;
+}
+
+.addText {
+  font-size: $font5;
+  font-weight: $font5W;
+}
+
+.profileImg {
+  width: 104px;
+  height: 104px;
+  border-radius: 100%;
+}
+
+.profileTextBox {
+  display: flex;
+  flex-direction: column;
+  margin-left: 16px;
+}
+
+.name {
+  font-size: $font2;
+  font-weight: $font2W;
+  margin-bottom: 8px;
+  margin-top: 30px;
+}
+
+.school {
+  font-size: $font5;
+  font-weight: $font5W;
+  margin-bottom: 30px;
+}
+
+.iconsBox {
+  height: 100%;
+  padding: 16px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.mdEdit {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.mdDelete {
+  font-size: 24px;
+  cursor: pointer;
+}

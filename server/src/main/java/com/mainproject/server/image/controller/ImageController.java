@@ -40,6 +40,6 @@ public class ImageController {
     public ResponseEntity deleteProfileImage(
             @PathVariable Long profileId
     ) {
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
     }
 }

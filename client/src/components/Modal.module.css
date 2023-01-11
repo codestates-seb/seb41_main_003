@@ -1,7 +1,7 @@
 @import url('../default.css');
 
 .backdrop {
-  z-index: 1;
+  z-index: 2;
   position: fixed;
   display: flex;
   justify-content: center;
@@ -26,30 +26,14 @@
 
 .text {
   font-size: $font5;
-  margin-bottom: 47px;
+  font-weight: $font5W;
+  margin: 32px 0;
 }
 
 .buttonBox {
   display: flex;
   flex-direction: row;
-}
-
-.button {
-  font-size: $font4;
-  width: 74px;
+  justify-content: space-between;
+  width: 168px;
   height: 45px;
-  background-color: $night;
-  border-radius: 5px;
-  margin: 20px;
-  color: $white;
-}
-
-.cancleButton {
-  font-size: $font4;
-  width: 74px;
-  height: 45px;
-  background-color: $silver;
-  border-radius: 5px;
-  margin: 20px;
-  color: $white;
 }

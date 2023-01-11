@@ -1,9 +1,7 @@
 package com.mainproject.server.profile.controller;
 
 import com.mainproject.server.dto.PageResponseDto;
-import com.mainproject.server.profile.dto.ProfileDto;
-import com.mainproject.server.profile.dto.ProfileResponseDto;
-import com.mainproject.server.profile.dto.ProfileSimpleResponseDto;
+import com.mainproject.server.profile.dto.*;
 import com.mainproject.server.utils.StubData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +32,7 @@ public class ProfileController {
             Pageable pageable
     ) {
         ProfileSimpleResponseDto simple = stubData.createProfileSimpleResponse();
-        List<ProfileSimpleResponseDto> simpleList = List.of(simple, simple);
+        List<ProfileSimpleResponseDto> simpleList = List.of(simple, simple, simple, simple);
         Page<ProfileSimpleResponseDto> page = new PageImpl<>(simpleList, pageable, 10L);
         PageResponseDto response = PageResponseDto.of(simpleList, page);
         return new ResponseEntity<>(
@@ -49,9 +47,10 @@ public class ProfileController {
             @PageableDefault(page = 0, size = 10, sort = "reviewId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
-        ProfileResponseDto profile = stubData.createProfileResponse();
+        ProfilePageDto profile = stubData.createProfileResponse();
+        ProfileResponseDto responseDto = ProfileResponseDto.of(profile);
         PageResponseDto response = PageResponseDto.of(
-                profile.getReviews().getContent(),
+                responseDto,
                 profile.getReviews());
         return new ResponseEntity<>(
                 response,
@@ -64,8 +63,15 @@ public class ProfileController {
             @PathVariable Long userId,
             @RequestBody @Validated ProfileDto profileDto
     ) {
-        ProfileSimpleResponseDto response = stubData.createProfileSimpleResponse();
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        ProfilePageDto profile = stubData.createEmptyProfileResponse();
+        ProfileResponseDto responseDto = ProfileResponseDto.of(profile);
+        PageResponseDto response = PageResponseDto.of(
+                responseDto,
+                profile.getReviews());
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.CREATED
+        );
     }
 
     @PatchMapping("/details/{profileId}")
@@ -73,9 +79,10 @@ public class ProfileController {
             @PathVariable Long profileId,
             @RequestBody ProfileDto profileDto
     ) {
-        ProfileResponseDto profile = stubData.createProfileResponse();
+        ProfilePageDto profile = stubData.createProfileResponse();
+        ProfileResponseDto responseDto = ProfileResponseDto.of(profile);
         PageResponseDto response = PageResponseDto.of(
-                profile.getReviews().getContent(),
+                responseDto,
                 profile.getReviews());
         return new ResponseEntity<>(
                 response,
