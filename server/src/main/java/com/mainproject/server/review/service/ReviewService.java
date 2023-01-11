@@ -3,12 +3,15 @@ package com.mainproject.server.review.service;
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.profile.entity.Profile;
+import com.mainproject.server.profile.service.ProfileService;
 import com.mainproject.server.review.entity.Review;
 import com.mainproject.server.review.repository.ReviewRepository;
+import com.mainproject.server.tutoring.service.TutoringService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -16,12 +19,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ReviewService {
     private final ReviewRepository reviewRepository;
+    private final TutoringService tutoringService;
+    private final ProfileService profileService;
 
     public Review findReview(Long tutoringId) {
         return findVerifiedReviewById(tutoringId);
     }
 
-    public Review createReview(Review review, Long tuteeId) {
+    public Review createReview(Review review, Long tuteeId, Long tutoringId) {
+        tutoringService.setTutoringStatusFinish(tutoringId);
+
         // Todo: ProfileService를 통한 profile 조회
         review.addProfile(new Profile());
         Review saveReview = reviewRepository.save(review);
@@ -30,7 +37,7 @@ public class ReviewService {
     }
 
     public Review updateReview(Review review) {
-        // profile은 안바뀌니 reviewRepository에서 tutee 정보를 받아오자..!
+        // profile은 안바뀌니 reviewRepository에서 tutee 정보를 받아옴
         Long reviewId = review.getReviewId();
         Review findReview = findVerifiedReviewById(reviewId);
 
@@ -53,6 +60,25 @@ public class ReviewService {
     public void deleteReview(Long reviewId) {
         Review review = findVerifiedReviewById(reviewId);
         reviewRepository.delete(review);
+    }
+
+    // Todo: ProfileService를 통한 프로필 조회
+    public double createRate(Long profileId) {
+        Profile profile = new Profile();
+        List<Review> reviews = reviewRepository.findAllByProfile(profile);
+
+        double rate = reviews.stream()
+                .map(review -> review.getProfessional() +
+                        review.getPunctuality() +
+                        review.getExplanation() +
+                        review.getReadiness())
+                .mapToInt(i -> i)
+                .average()
+                .getAsDouble();
+
+        double averageRate = Math.round(rate * 2) / 2.0;
+
+        return averageRate;
     }
 
     private Review findVerifiedReviewById(Long tutoringId) {
