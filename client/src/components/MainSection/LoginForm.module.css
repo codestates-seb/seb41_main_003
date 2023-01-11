@@ -10,6 +10,8 @@
   background-color: $white;
   margin-top: 80px;
   margin-bottom: 80px;
+  border-radius: 5px;
+  box-shadow: 0 24px 38px 3px rgb(0 0 0 / 14%);
 }
 
 .inputArea {
