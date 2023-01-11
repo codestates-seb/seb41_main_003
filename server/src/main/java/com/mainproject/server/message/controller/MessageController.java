@@ -66,4 +66,10 @@ public class MessageController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @DeleteMapping("/rooms/{messageRoomId}")
+    public ResponseEntity deleteMessages(@PathVariable("messageRoomId") Long profileId) {
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
