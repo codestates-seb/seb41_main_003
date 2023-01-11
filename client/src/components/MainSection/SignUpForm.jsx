@@ -1,60 +1,60 @@
-import styles from './LoginForm.module.css';
-import { CheckBox, TextInput } from '../Input';
+import styles from './SignUpForm.module.css';
+import { LabelTextInput, TextInput } from '../Input';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 
-const initialLogindata = {
-  username: '',
+const initialSignupdata = {
+  nickName: '',
+  email: '',
   password: '',
 };
 
-const LoginForm = () => {
-  const [loginData, setLoginData] = useState(initialLogindata);
-  const [isIdChecked, setIsIdChecked] = useState(false);
-  const [isAutoLoginChecked, setIsAutoLoginChecked] = useState(false);
+const SignUpForm = () => {
+  const [signupData, setSignupData] = useState(initialSignupdata);
 
   const inputHandler = (e) => {
     const { id, value } = e.target;
-    setLoginData({ ...loginData, [id]: value });
+    setSignupData({ ...signupData, [id]: value });
   };
 
   return (
-    <div className={styles.loginContainer}>
-      <span className={styles.loginText}>로그인 후 이용하실 수 있습니다.</span>
+    <div className={styles.signUpContainer}>
+      <span className={styles.signupText}>회원가입</span>
       <div className={styles.inputArea}>
-        <TextInput
-          id="username"
+        <LabelTextInput
+          id="nickName"
+          name="닉네임"
+          placeHolder="닉네임"
+          type="text"
+          value={signupData.nickName}
+          handler={inputHandler}
+        />
+        <span>닉네임을 최소 2글자 이상이어야 합니다.</span>
+        <LabelTextInput
+          id="email"
+          name="이메일"
           placeHolder="이메일"
           type="email"
-          value={loginData.username}
+          value={signupData.email}
           handler={inputHandler}
         />
-        <span>이메일을 찾을 수 없습니다.</span>
-        <TextInput
+        <span>유효하지 않은 이메일 형식입니다.</span>
+        <LabelTextInput
           id="password"
+          name="비밀번호"
           placeHolder="비밀번호"
           type="password"
-          value={loginData.password}
+          value={signupData.password}
           handler={inputHandler}
         />
-        <span>비밀번호가 틀렸습니다.</span>
-      </div>
-      <div className={styles.checkboxContainer}>
-        <CheckBox
-          id="아이디저장"
-          value={isIdChecked}
-          handler={setIsIdChecked}
+        <TextInput
+          id="passwordConfirm"
+          type="password"
+          placeHolder="비밀번호 확인"
         />
-        <span> 아이디 저장 </span>
-        <CheckBox
-          id="자동로그인"
-          value={isAutoLoginChecked}
-          handler={setIsAutoLoginChecked}
-        />
-        <span> 자동 로그인 </span>
+        <span>비밀번호 입력이 잘못되었습니다.</span>
       </div>
       <div className={styles.buttonContainer}>
-        <button className={styles.loginButton}>로그인</button>
+        <button className={styles.signupButton}>회원가입</button>
         <button className={styles.kakaoLoginButton}>
           <svg
             width="22"
@@ -115,13 +115,9 @@ const LoginForm = () => {
           </svg>
           <span>Google 계정으로 로그인</span>
         </button>
-        <span>회원이 아니신가요?</span>
-        <Link to="/signup">
-          <button className={styles.signupButton}>회원가입</button>
-        </Link>
       </div>
     </div>
   );
 };
 
-export default LoginForm;
+export default SignUpForm;
