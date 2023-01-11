@@ -10,10 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthSuccessTokenResponseDto {
-    private String accessToken;
 
+    private String Authorization;
+
+    private String  userId;
+
+    private String userStatus;
     public static AuthSuccessTokenResponseDto of(HttpServletResponse response) {
         return new AuthSuccessTokenResponseDto(
-                response.getHeader("Authorization"));
+                response.getHeader("Authorization"),
+                response.getHeader("userId"),
+                response.getHeader("userStatus")
+        );
     }
 }

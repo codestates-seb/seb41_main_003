@@ -33,9 +33,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     ) throws OAuth2AuthenticationException {
         OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
-        String email = String.valueOf(oAuth2User.getAttributes().get("email"));
-        String nickName = String.valueOf(oAuth2User.getAttributes().get("name"));
-        User saveUser = saveUser(email, nickName);
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         String userNameAttributeName = userRequest.getClientRegistration()
@@ -46,30 +43,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         var memberAttribute = oAuth2Attribute.convertToMap();
         return new DefaultOAuth2User(
-                JwtAuthorityUtils.getAuthorities(saveUser.getRoles()),
+                JwtAuthorityUtils.USER_ROLES,
                 memberAttribute,
                 userNameAttributeName
         );
 
     }
 
-    private User saveUser(String email, String nickName) {
-        try {
-            log.info(" #### OAuth2 Login ");
-            return userService.verifiedUserByEmail(email);
-        } catch (ServiceLogicException se) {
-            if (se.getErrorCode().equals(ErrorCode.USER_NOT_FOUND)) {
-                User build = User.builder()
-                        .email(email)
-                        .nickName(nickName)
-                        .loginType(LoginType.SOCIAL)
-                        .userStatus(UserStatus.NONE)
-                        .roles(JwtAuthorityUtils.USER_ROLES_STRING_CALL)
-                        .build();
-                return userService.createUser(build);
-            } else {
-                throw se;
-            }
-        }
-    }
 }
