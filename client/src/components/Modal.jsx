@@ -23,7 +23,11 @@ export const ConfirmModal = ({ text, modalHandler }) => {
       <div className={styles.view}>
         <div className={styles.text}>{text}</div>
         <div className={styles.buttonBox}>
-          <ButtonNightBlue name="yes" buttonHandler={modalHandler} text="확인" />
+          <ButtonNightBlue
+            name="yes"
+            buttonHandler={modalHandler}
+            text="확인"
+          />
           <ButtonSilver name="no" buttonHandler={modalHandler} text="취소" />
         </div>
       </div>
