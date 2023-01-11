@@ -3,9 +3,6 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
-  http:
-    multipart:
-      enabled: false
   cache:
     type: redis
   redis:
@@ -14,10 +11,22 @@ spring:
   jpa:
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
     properties:
       hibernate:
+        format_sql: true
         default_batch_fetch_size: 1000
+  sql:
+    init:
+      mode: always
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_AOUTH2_MAIN_ID}
+          kakao:
+            client-id: ${KAKAO_AOUTH2_MAIN_ID}
 logging.level:
   org.hibernate.SQL: debug
   com:
@@ -33,10 +42,10 @@ logging.level:
     springframework:
       web.servlet: debug
 cloud:
-  aws: # AWS IAM SecretKey ??
+  aws:
     s3:
-      bucket: image-test-suyoung    # ex) marryting-gyunny
-      dir: /image # ex) /gyunny
+      bucket: image-test-suyoung
+      dir: /image
     region:
       static: ap-northeast-2
     stack:
