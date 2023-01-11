@@ -27,18 +27,9 @@ public class TutoringController {
 
     private final StubData stubData;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity getAllTutoringByUser(
-            @PathVariable("userId") Long userId
-    ) {
-        return new ResponseEntity(
-                ResponseDto.of(stubData.createTutoringSimpleResponse()),
-                HttpStatus.OK);
-    }
-
-    @PostMapping("/{userId}")
+    @PostMapping("/{profileId}")
     public ResponseEntity postTutoring(
-            @PathVariable("userId") Long userId,
+            @PathVariable("profileId") Long profileId,
             @RequestBody TutoringPostDto tutoringPostDto
             ) {
         return new ResponseEntity(
@@ -46,7 +37,7 @@ public class TutoringController {
                 HttpStatus.CREATED);
     }
 
-    @GetMapping("/profiles/{profileId}")
+    @GetMapping("/{profileId}")
     public ResponseEntity getAllTutoring(
             @PathVariable("profileId") Long profileId,
             @PageableDefault(page = 0, size = 10, sort = "profileId", direction = Sort.Direction.DESC)
@@ -59,10 +50,21 @@ public class TutoringController {
         return new ResponseEntity(response, HttpStatus.OK);
     }
 
+    @PostMapping("/details/{tutoringId}")
+    public ResponseEntity postTutoringMatch(
+            @PathVariable("tutoringId") Long tutoringId
+    ) {
+        return new ResponseEntity(
+                ResponseDto.of(stubData.createTutoringSimpleResponse()),
+                HttpStatus.OK);
+    }
+
+
     @GetMapping("/details/{tutoringId}")
     public ResponseEntity getTutoring(
             @PathVariable("tutoringId") Long tutoringId
     ) {
+
         TutoringDto tutoringDto = stubData.createTutoringDto();
         TutoringResponseDto response = TutoringResponseDto.of(tutoringDto);
         return new ResponseEntity(
