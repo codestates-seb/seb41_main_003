@@ -1,0 +1,38 @@
+@import url('../../default.css');
+
+.tutoring {
+  width: 50%;
+  max-width: 520px;
+  background-color: $white;
+  box-shadow: $buttonShadow;
+  margin-bottom: 8px;
+  border-radius: 5px;
+
+  > a {
+    display: block;
+    padding: 16px;
+    position: relative;
+
+    h4 {
+      font-size: $font4;
+      font-weight: $font4W;
+      margin-bottom: 16px;
+    }
+
+    span {
+      font-size: $font6;
+      font-weight: $font6W;
+    }
+
+    .noti {
+      position: absolute;
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-color: $red;
+      border-radius: 50%;
+      top: 16px;
+      right: 16px;
+    }
+  }
+}
