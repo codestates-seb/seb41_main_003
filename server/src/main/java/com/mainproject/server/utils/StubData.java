@@ -248,7 +248,6 @@ public class StubData {
     public MessageRoomResponseDto createMessageRoomResponse() {
         return MessageRoomResponseDto.builder()
                 .messageRoomId(1L)
-                .targetName("너에게")
                 .messages(List.of(
                         createMessageResponse(),
                         createMessageResponse(),
