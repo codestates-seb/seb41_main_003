@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.data.domain.Page;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,25 +18,18 @@ import java.util.List;
 @NoArgsConstructor
 public class TutoringDto {
 
-    @NotBlank
     private Long tutoringId;
 
-    @NotBlank
     private String tutoringTitle;
 
-    @NotBlank
     private String tutoringStatus;
 
-    @NotBlank
     private LocalDateTime createAt;
 
-    @NotBlank
     private LocalDateTime updateAt;
 
-    @NotBlank
     private ProfileListResponseDto tutor;
 
-    @NotBlank
     private ProfileListResponseDto tutee;
 
     private ReviewResponseDto review;

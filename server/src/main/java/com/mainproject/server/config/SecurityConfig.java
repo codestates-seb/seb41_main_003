@@ -50,10 +50,10 @@ public class SecurityConfig {
 
     private final OAuth2UserSuccessHandler oAuth2UserSuccessHandler;
 
-    @Value("${GOOGLE_AOUTH2_MAINPROJECT_SECRETKEY}")
+    @Value("${GOOGLE_OAUTH2_MAINPROJECT_SECRETKEY}")
     private String clientSecret;
 
-    @Value("${KAKAO_AOUTH2_MAINPROJECT_SECRETKEY}")
+    @Value("${KAKAO_OAUTH2_MAINPROJECT_SECRETKEY}")
     private String kakaoClientSecret;
 
     @Bean
