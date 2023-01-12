@@ -3,6 +3,9 @@ package com.mainproject.server.review.controller;
 import com.mainproject.server.dto.ResponseDto;
 import com.mainproject.server.review.dto.ReviewPatchDto;
 import com.mainproject.server.review.dto.ReviewPostDto;
+import com.mainproject.server.review.entity.Review;
+import com.mainproject.server.review.mapper.ReviewMapper;
+import com.mainproject.server.review.service.ReviewService;
 import com.mainproject.server.utils.StubData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,23 +20,31 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RequestMapping("/reviews")
 public class ReviewController {
+    private ReviewMapper mapper;
+    private ReviewService reviewService;
 
     private final StubData stubData;
 
     @GetMapping("/{tutoringId}")
     public ResponseEntity getReview(@PathVariable("tutoringId") Long tutoringId) {
-        return new ResponseEntity(ResponseDto.of(stubData.createReviewResponse()), HttpStatus.OK);
+        Review review = reviewService.findReview(tutoringId);
+
+        return new ResponseEntity(ResponseDto.of(mapper.reviewToReviewResponseDto(review)), HttpStatus.OK);
     }
 
     @PostMapping("/{tutoringId}")
     public ResponseEntity postReview(@PathVariable("tutoringId") Long tutoringId,
                                      @RequestBody ReviewPostDto reviewPostDto) {
-        return new ResponseEntity(ResponseDto.of(stubData.createReviewResponse()), HttpStatus.CREATED);
+        Review review = reviewService.createReview(mapper.reviewPostDtoToReview(reviewPostDto), tutoringId);
+
+        return new ResponseEntity(ResponseDto.of(mapper.reviewToReviewResponseDto(review)), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{tutoringId}")
     public ResponseEntity patchReview(@PathVariable("tutoringId") Long tutoringId,
                                       @RequestBody ReviewPatchDto reviewPatchDto) {
-        return new ResponseEntity(ResponseDto.of(stubData.createReviewResponse()), HttpStatus.OK);
+        Review review = reviewService.updateReview(mapper.reviewPatchDtoToReview(reviewPatchDto));
+
+        return new ResponseEntity(ResponseDto.of(mapper.reviewToReviewResponseDto(review)), HttpStatus.OK);
     }
 }
