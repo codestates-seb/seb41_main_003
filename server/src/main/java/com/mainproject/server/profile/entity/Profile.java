@@ -81,13 +81,13 @@ public class Profile extends Auditable {
 
     /* 연관 관계 매핑*/
     @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @Setter
     private User user;
 
 
     @ToString.Exclude
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Setter
     private ProfileImage profileImage;
 
