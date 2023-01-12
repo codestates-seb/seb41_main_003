@@ -3,10 +3,8 @@ package com.mainproject.server.review.service;
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.profile.entity.Profile;
-import com.mainproject.server.profile.service.ProfileService;
 import com.mainproject.server.review.entity.Review;
 import com.mainproject.server.review.repository.ReviewRepository;
-import com.mainproject.server.tutoring.entity.Tutoring;
 import com.mainproject.server.tutoring.service.TutoringService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +28,7 @@ public class ReviewService {
     public Review createReview(Review review, Long tutoringId) {
         tutoringService.setTutoringStatusFinish(tutoringId);
 
-        Profile tutee = tutoringService.findTutoring(tutoringId).getTutee();
+        Profile tutee = tutoringService.verifiedTutoring(tutoringId).getTutee();
 
         // Todo: ProfileService를 통한 profile 조회
         review.addProfile(new Profile());
