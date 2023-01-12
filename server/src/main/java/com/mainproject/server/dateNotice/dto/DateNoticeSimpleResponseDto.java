@@ -20,7 +20,7 @@ public class DateNoticeSimpleResponseDto {
 
     private int finishHomeworkCount;
 
-    private Boolean notice;
+    private String noticeStatus;
 
     public DateNoticeSimpleResponseDto(DateNoticeResponseDto dto) {
         this.dateNoticeId = dto.getDateNoticeId();
@@ -33,7 +33,7 @@ public class DateNoticeSimpleResponseDto {
                         h.getHomeworkStatus()
                                 .equals(HomeworkStatus.FINISH.name()))
                 .count();
-        this.notice = dto.getNotice().getNoticeBody().length() > 1;
+        this.noticeStatus = dto.getNoticeStatus();
     }
 
     public static DateNoticeSimpleResponseDto of(DateNoticeResponseDto dto) {

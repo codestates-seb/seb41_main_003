@@ -24,7 +24,7 @@ public class Homework extends Auditable {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     @Setter
-    private HomeworkStatus homeworkStatus;
+    private HomeworkStatus homeworkStatus = HomeworkStatus.UNFINISHED;
 
 
     /* 연관 관계 매핑 */

@@ -1,6 +1,7 @@
 package com.mainproject.server.dateNotice.service;
 
 import com.mainproject.server.constant.ErrorCode;
+import com.mainproject.server.constant.NoticeStatus;
 import com.mainproject.server.constant.UserStatus;
 import com.mainproject.server.dateNotice.entity.DateNotice;
 import com.mainproject.server.dateNotice.repository.DateNoticeRepository;
@@ -24,6 +25,8 @@ public class DateNoticeService {
     public DateNotice createDateNotice(DateNotice dateNotice) {
         tutoringService.setTutoringStatusUncheck(dateNotice.getTutoring().getTutoringId());
 
+        updateNotice(dateNotice);
+
         DateNotice saveDateNotice = dateNoticeRepository.save(dateNotice);
         return saveDateNotice;
     }
@@ -41,6 +44,8 @@ public class DateNoticeService {
     
     public DateNotice updateDateNotice(DateNotice dateNotice) {
         DateNotice findDateNotice = findVerifiedDateNoticeById(dateNotice.getDateNoticeId());
+
+        updateNotice(dateNotice);
 
         Optional.ofNullable(dateNotice.getDateNoticeTitle())
                 .ifPresent(findDateNotice::setDateNoticeTitle);
@@ -62,6 +67,14 @@ public class DateNoticeService {
         DateNotice verifiedDateNotice = findVerifiedDateNoticeById(dateNoticeId);
 
         dateNoticeRepository.delete(verifiedDateNotice);
+    }
+
+    private void updateNotice(DateNotice dateNotice) {
+        if (!dateNotice.getNotice().getNoticeBody().isEmpty()) {
+            tutoringService.updateLatestNoticeBody(dateNotice.getTutoring(), dateNotice.getNotice().getNoticeBody());
+            dateNotice.setNoticeStatus(NoticeStatus.NOTICE);
+        }
+        dateNoticeRepository.save(dateNotice);
     }
 
     private DateNotice findVerifiedDateNoticeById(Long dateNoticeId) {

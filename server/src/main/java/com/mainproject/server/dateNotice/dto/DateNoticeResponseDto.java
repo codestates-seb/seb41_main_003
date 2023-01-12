@@ -25,4 +25,6 @@ public class DateNoticeResponseDto {
     private NoticeResponseDto notice;
 
     private List<HomeworkResponseDto> homeworks;
+
+    private String noticeStatus;
 }
