@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TutoringRepository extends JpaRepository<Tutoring, Long> {
-    Page<Tutoring> findAllByTutorProfileIdAndTuteeProfileId(Long tutorId, Long tuteeId, Pageable pageable);
+    Page<Tutoring> findAllByTutorProfileIdOrTuteeProfileId(Long tutorId, Long tuteeId, Pageable pageable);
 }
