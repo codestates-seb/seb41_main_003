@@ -1,7 +1,5 @@
 package com.mainproject.server.tutoring.mapper;
 
-import com.mainproject.server.dateNotice.dto.DateNoticeSimpleResponseDto;
-import com.mainproject.server.dateNotice.entity.DateNotice;
 import com.mainproject.server.tutoring.dto.*;
 import com.mainproject.server.tutoring.entity.Tutoring;
 import org.mapstruct.Mapper;
@@ -9,7 +7,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ValueMapping;
 
 import java.util.List;
-import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface TutoringMapper {
@@ -32,6 +29,8 @@ public interface TutoringMapper {
     @Mapping(source = "tutee.name", target = "tuteeName")
     @ValueMapping(source = "tutoringStatus", target = "tutoringStatus")
     TutoringSimpleResponseDto tutoringToTutoringSimpleResponseDto(Tutoring tutoring);
+
+    TutoringSimpleResponseDto dtoToSimpleResponseDto(TutoringDto dto);
 
     List<TutoringSimpleResponseDto> tutoringListToTutoringSimpleResponseDtoList(List<Tutoring> tutoringList);
 
