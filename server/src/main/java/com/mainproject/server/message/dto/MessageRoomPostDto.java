@@ -16,5 +16,5 @@ public class MessageRoomPostDto {
     @NotNull
     private Long tutorId;
     @NotNull
-    private  Long tuteeId;
+    private Long tuteeId;
 }
