@@ -1,0 +1,24 @@
+@import url('../default.css');
+
+.wrapper {
+  width: 100%;
+  background-color: $snow;
+}
+
+.container {
+  height: 100%;
+  max-width: 1048px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  font-size: $font1;
+  font-weight: $font1W;
+  margin-top: 32px;
+  margin-bottom: 38px;
+  width: 1048px;
+}

@@ -1,8 +1,10 @@
+//데이터 통신 전이라면 tutoringStatus를 'PROGRESS', 'FINISHED'로 바꿔주면서
+
 const dummyTutoringData = {
   tutoringId: 1,
   tutoringTitle: '수학을 정복하는 여정',
   latestNotice: '나는야 퉁퉁이 골목대장이라네',
-  tutoringStatus: 'FINISHED',
+  tutoringStatus: 'PROGRESS',
   tuteeId: 1,
   tuteeName: '김학생',
   tuteeSubjects: [
