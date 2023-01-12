@@ -31,7 +31,7 @@ public class TutoringService {
     }
 
     public Page<Tutoring> findAllTutoring(Long profileId, Pageable pageable) {
-        Page<Tutoring> tutorings = tutoringRepository.findAllByTutorProfileIdAndTuteeProfileId(profileId, profileId, pageable);
+        Page<Tutoring> tutorings = tutoringRepository.findAllByTutorProfileIdOrTuteeProfileId(profileId, profileId, pageable);
         return tutorings;
     }
 
