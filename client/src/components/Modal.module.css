@@ -21,7 +21,10 @@
   border-radius: 10px;
   background-color: $white;
   width: 522px;
-  height: 240px;
+
+  > button {
+    margin-bottom: 32px;
+  }
 }
 
 .text {
@@ -32,10 +35,28 @@
   text-align: center;
 }
 
+.input {
+  width: 344px;
+  margin-bottom: 16px;
+
+  input {
+    margin-bottom: 2px;
+  }
+
+  span {
+    display: inline-block;
+    height: 12px;
+    margin-left: 4px;
+    font-size: $sub;
+    font-weight: $subW;
+    color: $red;
+  }
+}
+
 .buttonBox {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 168px;
-  height: 45px;
+  margin-bottom: 32px;
 }
