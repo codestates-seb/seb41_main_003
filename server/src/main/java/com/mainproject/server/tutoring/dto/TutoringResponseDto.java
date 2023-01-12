@@ -2,8 +2,6 @@ package com.mainproject.server.tutoring.dto;
 
 
 import com.mainproject.server.dateNotice.dto.DateNoticeSimpleResponseDto;
-import com.mainproject.server.subject.dto.SubjectResponseDto;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,13 +25,9 @@ public class TutoringResponseDto {
 
     private String tuteeName;
 
-    private List<SubjectResponseDto> tuteeSubjects;
-
     private Long tutorId;
 
     private String tutorName;
-
-    private List<SubjectResponseDto> tutorSubjects;
 
     private LocalDateTime createAt;
 
@@ -45,19 +39,16 @@ public class TutoringResponseDto {
         this.tutoringId = dto.getTutoringId();
         this.tutoringTitle = dto.getTutoringTitle();
         this.tutoringStatus = dto.getTutoringStatus();
-        this.tuteeId = dto.getTutee().getProfileId();
-        this.tuteeName = dto.getTutee().getName();
-        this.tuteeSubjects = dto.getTutee().getSubjects();
-        this.tutorId = dto.getTutor().getProfileId();
-        this.tutorName = dto.getTutor().getName();
-        this.tutorSubjects = dto.getTutor().getSubjects();
+        this.tuteeId = dto.getTuteeId();
+        this.tuteeName = dto.getTuteeName();
+        this.tutorId = dto.getTutorId();
+        this.tutorName = dto.getTutorName();
         this.createAt = dto.getCreateAt();
         this.updateAt = dto.getUpdateAt();
         this.dateNotices = dto.getDateNotices().getContent()
                 .stream()
                 .map(DateNoticeSimpleResponseDto::of)
                 .collect(Collectors.toList());
-
     }
 
     public static TutoringResponseDto of(TutoringDto dto) {
