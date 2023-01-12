@@ -11,5 +11,5 @@ public class HomeworkDto {
 
     private String homeworkBody;
 
-    private String HomeworkStatus;
+    private String homeworkStatus;
 }

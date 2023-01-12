@@ -26,6 +26,10 @@ public class Tutoring extends Auditable {
     @Setter
     private String tutoringTitle;
 
+    @Column
+    @Setter
+    private String latestNoticeBody;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     @Setter
