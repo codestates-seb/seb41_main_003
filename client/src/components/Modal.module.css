@@ -28,6 +28,8 @@
   font-size: $font5;
   font-weight: $font5W;
   margin: 32px 0;
+  white-space: pre-line;
+  text-align: center;
 }
 
 .buttonBox {
