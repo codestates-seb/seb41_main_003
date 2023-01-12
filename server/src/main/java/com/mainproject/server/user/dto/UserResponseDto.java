@@ -17,6 +17,8 @@ public class UserResponseDto {
 
     private String email;
 
+    private String nickName;
+
     private String phoneNumber;
 
     private String loginType;

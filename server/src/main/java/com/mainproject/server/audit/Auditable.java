@@ -15,11 +15,13 @@ import java.time.ZoneId;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Auditable {
+    @Column(nullable = false, insertable = false, updatable = false,
+            columnDefinition = "datetime default CURRENT_TIMESTAMP")
     @CreatedDate
-    @Column(name = "creat_at", updatable = false)
     private LocalDateTime createAt;
 
+    @Column(nullable = false, insertable = false, updatable = false,
+            columnDefinition = "datetime default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
     @LastModifiedDate
-    @Column(name = "update_at")
     private LocalDateTime updateAt;
 }
