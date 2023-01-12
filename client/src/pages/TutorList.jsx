@@ -10,7 +10,7 @@ const TutorListData = [
   {
     profileId: 1,
     name: '어때요',
-    rate: 4.8,
+    rate: 4.5,
     subjects: [
       {
         subjectId: 1,
@@ -64,7 +64,7 @@ const TutorListData = [
   {
     profileId: 3,
     name: '마이크',
-    rate: 4.8,
+    rate: 4,
     subjects: [
       {
         subjectId: 1,

@@ -4,24 +4,6 @@ import { BlueSubject } from '../Subject';
 import { MdStar, MdStarHalf, MdStarOutline } from 'react-icons/md';
 
 const FeedItem = ({ name, userStatus, school, bio, subjects, rate, img }) => {
-  const makeStars = (yellow, gray, half = 0) => {
-    const arr = [];
-    for (let i = 1; i <= yellow; i++) {
-      arr.push('y');
-    }
-    if (half !== 0) {
-      arr.push('h');
-    }
-    for (let i = 1; i <= gray; i++) {
-      arr.push('g');
-    }
-    return arr;
-  };
-
-  const stars = Number.isInteger(Number(rate))
-    ? makeStars(rate, 5 - rate)
-    : makeStars(Math.floor(rate), 5 - (Math.floor(rate) + 1), 1);
-
   return (
     <div className={styles.container}>
       <img className={styles.img} alt="프로필 이미지" src={img} />
@@ -29,21 +11,34 @@ const FeedItem = ({ name, userStatus, school, bio, subjects, rate, img }) => {
         <div className={styles.name}>
           {userStatus === 'TUTOR' ? `${name} 튜터` : `${name} 튜티`}
         </div>
-        {userStatus === 'TUTOR' ? (
+        {userStatus === 'TUTOR' && (
           <div className={styles.stars}>
-            {stars.map((el, index) => {
-              if (el === 'y') {
-                return <MdStar key={index} className={styles.yellowStar} />;
-              } else if (el === 'g') {
-                return (
-                  <MdStarOutline key={index} className={styles.emptyStar} />
-                );
-              } else {
-                return <MdStarHalf key={index} className={styles.halfStar} />;
-              }
+            {new Array(5).fill('star').map((_, count) => {
+              const star = Number(rate);
+              const checkedStar = (star) => {
+                if (count + 1 - 0.5 === star) return 'half';
+                else if (count + 1 > star) return 'dimmed';
+                else return 'colored';
+              };
+
+              const renderStar = (color) => {
+                switch (color) {
+                  case 'dimmed':
+                    return (
+                      <MdStarOutline key={count} className={styles.emptyStar} />
+                    );
+                  case 'half':
+                    return (
+                      <MdStarHalf key={count} className={styles.halfStar} />
+                    );
+                  default:
+                    return <MdStar key={count} className={styles.yellowStar} />;
+                }
+              };
+              return renderStar(checkedStar(star));
             })}
           </div>
-        ) : null}
+        )}
       </div>
       <div className={styles.subjectBox}>
         {subjects.map((el) => (
