@@ -46,7 +46,7 @@ public class ProfileController {
     }
 
     @GetMapping("/details/{profileId}")
-    private ResponseEntity getProfile(
+    public ResponseEntity getProfile(
             @PathVariable Long profileId,
             @PageableDefault(page = 0, size = 5, sort = "reviewId", direction = Sort.Direction.DESC)
             Pageable pageable
@@ -62,16 +62,15 @@ public class ProfileController {
     }
 
     @PostMapping("/{userId}")
-    private ResponseEntity postProfile(
+    public ResponseEntity postProfile(
             @PathVariable Long userId,
             @RequestBody @Validated ProfileDto profileDto,
             @PageableDefault(page = 0, size = 5, sort = "reviewId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
-        Profile profile = profileMapper.dtoToEntity(profileDto);
         ProfilePageDto saveProfile = profileService.createProfile(
                 userId,
-                profile,
+                profileMapper.dtoToEntity(profileDto),
                 profileDto.getSubjects(),
                 pageable);
         ProfileResponseDto responseDto = ProfileResponseDto.of(saveProfile);
@@ -84,11 +83,40 @@ public class ProfileController {
     }
 
     @PatchMapping("/details/{profileId}")
-    private ResponseEntity patchProfile(
+    public ResponseEntity patchProfile(
             @PathVariable Long profileId,
-            @RequestBody ProfileDto profileDto
+            @RequestBody ProfileDto profileDto,
+            @PageableDefault(page = 0, size = 5, sort = "reviewId", direction = Sort.Direction.DESC)
+            Pageable pageable
     ) {
-        ProfilePageDto profile = stubData.createProfileResponse();
+        ProfilePageDto profile = profileService.updateProfile(
+                profileId,
+                profileMapper.dtoToEntity(profileDto),
+                profileDto.getSubjects(),
+                pageable
+        );
+        ProfileResponseDto responseDto = ProfileResponseDto.of(profile);
+        PageResponseDto response = PageResponseDto.of(
+                responseDto,
+                profile.getReviews());
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.OK
+        );
+    }
+
+    @PatchMapping("/status/{profileId}")
+    public ResponseEntity patchProfileStatus(
+            @PathVariable Long profileId,
+            @RequestBody WantedDto wantedDto,
+            @PageableDefault(page = 0, size = 5, sort = "reviewId", direction = Sort.Direction.DESC)
+            Pageable pageable
+    ) {
+        ProfilePageDto profile = profileService.updateWantedStatus(
+                profileId,
+                wantedDto,
+                pageable
+        );
         ProfileResponseDto responseDto = ProfileResponseDto.of(profile);
         PageResponseDto response = PageResponseDto.of(
                 responseDto,
@@ -100,9 +128,12 @@ public class ProfileController {
     }
 
     @DeleteMapping("/details/{profileId}")
-    private ResponseEntity deleteProfile(
+    public ResponseEntity deleteProfile(
             @PathVariable Long profileId
     ) {
+        profileService.deleteProfile(profileId);
         return ResponseEntity.noContent().build();
     }
+
+
 }
