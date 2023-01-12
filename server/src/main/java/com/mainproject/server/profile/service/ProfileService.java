@@ -106,7 +106,9 @@ public class ProfileService {
         profileRepository.delete(findProfile);
     }
 
-
+    public void updateProfileForImage(Profile profile) {
+        profileRepository.save(profile);
+    }
 
 
 
