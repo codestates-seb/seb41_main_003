@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MessageRoomRepository extends JpaRepository<MessageRoom, Long> {
-    Page<MessageRoom> findAllByTutorProfileIdAndTuteeProfileId(Long profileId, Long profileId1, Pageable pageable);
+    Page<MessageRoom> findAllByTutorProfileIdOrTuteeProfileId(Long profileId, Long profileId1, Pageable pageable);
 }

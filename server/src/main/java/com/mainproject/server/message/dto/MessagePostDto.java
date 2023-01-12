@@ -15,10 +15,13 @@ public class MessagePostDto {
 
     @NotNull
     private Long senderId;
+
     @NotNull
     private Long receiverId;
+
     @NotNull
     private Long messageRoomId;
+
     @NotBlank
     private String messageContent;
 }
