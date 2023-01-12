@@ -23,8 +23,6 @@ public class ReviewController {
     private ReviewMapper mapper;
     private ReviewService reviewService;
 
-    private final StubData stubData;
-
     @GetMapping("/{tutoringId}")
     public ResponseEntity getReview(@PathVariable("tutoringId") Long tutoringId) {
         Review review = reviewService.findReview(tutoringId);
