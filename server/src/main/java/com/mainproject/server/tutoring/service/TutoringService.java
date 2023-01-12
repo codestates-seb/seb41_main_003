@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -31,7 +30,7 @@ public class TutoringService {
         return tutoringRepository.save(tutoring);
     }
 
-    public Page<Tutoring> getAllTutoring(Long profileId, Pageable pageable) {
+    public Page<Tutoring> findAllTutoring(Long profileId, Pageable pageable) {
         Page<Tutoring> tutorings = tutoringRepository.findAllByTutorProfileIdAndTuteeProfileId(profileId, profileId, pageable);
         return tutorings;
     }
@@ -80,6 +79,11 @@ public class TutoringService {
         Tutoring progressTutoring = tutoringRepository.save(tutoring);
 
         return progressTutoring;
+    }
+
+    public void updateLatestNoticeBody(Tutoring tutoring, String noticeBody) {
+        tutoring.setLatestNoticeBody(noticeBody);
+        tutoringRepository.save(tutoring);
     }
 
     private Tutoring findVerifiedTutoring(Long tutoringId) {

@@ -23,4 +23,5 @@ public class TutoringSimpleResponseDto {
 
     private LocalDateTime createAt;
 
+    private LocalDateTime updateAt;
 }

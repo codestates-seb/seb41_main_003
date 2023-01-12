@@ -19,6 +19,8 @@ public class TutoringResponseDto {
 
     private String tutoringTitle;
 
+    private String latestNoticeBody;
+
     private String tutoringStatus;
 
     private Long tuteeId;
