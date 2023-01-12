@@ -2,70 +2,105 @@ package com.mainproject.server.message.service;
 
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.MessageStatus;
-import com.mainproject.server.constant.TutoringStatus;
+import com.mainproject.server.constant.ProfileStatus;
 import com.mainproject.server.exception.ServiceLogicException;
-import com.mainproject.server.message.dto.MessagePostDto;
+import com.mainproject.server.message.dto.*;
 import com.mainproject.server.message.entity.Message;
 import com.mainproject.server.message.entity.MessageRoom;
 import com.mainproject.server.message.repository.MessageRepository;
 import com.mainproject.server.message.repository.MessageRoomRepository;
 import com.mainproject.server.profile.entity.Profile;
-import com.mainproject.server.profile.repository.ProfileRepository;
+import com.mainproject.server.profile.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class MessageService {
+
     private final MessageRepository messageRepository;
+
     private final MessageRoomRepository messageRoomRepository;
 
-    public MessageRoom createMessageRoom(MessageRoom messageRoom, Message message, Long profileId) {
-        messageRoom.addMessage(message);
+    private final ProfileService profileService;
+
+    public MessageResponseDto createMessage(
+            MessagePostDto postDto
+    ) {
+        MessageRoom messageRoom = verifiedMessageRoom(postDto.getMessageRoomId());
+        Profile sender = profileService.verifiedProfileById(postDto.getSenderId());
+        Profile receiver = profileService.verifiedProfileById(postDto.getReceiverId());
+        Message message = new Message();
+        message.setMessageContent(postDto.getMessageContent());
+        message.addSender(sender);
+        message.addReceiver(receiver);
+        message.addMessageRoom(messageRoom);
+        return MessageResponseDto.of(messageRepository.save(message));
+    }
+
+    public MessageRoomSimpleResponseDto createMessageRoom(
+            MessageRoomPostDto postDto,
+            Long profileId
+    ) {
+        Profile profile = profileService.verifiedProfileById(profileId);
+        Profile tutor = profileService.verifiedProfileById(postDto.getTutorId());
+        Profile tutee = profileService.verifiedProfileById(postDto.getTuteeId());
+        MessageRoom messageRoom = new MessageRoom();
         messageRoom.setMessageStatus(MessageStatus.UNCHECK);
-
-        messageRoomRepository.save(messageRoom);
-
-        return messageRoom;
-    }
-    public Message createMessage(Message message){
-
-        Message savedMessage = messageRepository.save(message);
-
-        return savedMessage;
+        messageRoom.addTutor(tutor);
+        messageRoom.addTutee(tutee);
+        MessageRoom save = messageRoomRepository.save(messageRoom);
+        return MessageRoomSimpleResponseDto.of(profile.getProfileStatus(), save);
     }
 
-
-    public MessageRoom findVerifiedMessageRoom(Long messageRoomId) {
-
-        Optional<MessageRoom> optionalMessageRoom = messageRoomRepository.findById(messageRoomId);
-        MessageRoom messageRoom = optionalMessageRoom.orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
-
-        messageRoom.setMessageStatus(MessageStatus.CHECK);
-        return messageRoom;
-    }
-
-    Page<MessageRoom> getAllMessages(Long profileId, Pageable pageable) {
+    public Page<MessageRoomSimpleResponseDto> getMessageRooms(
+            Long profileId,
+            Pageable pageable
+    ) {
+        Profile profile = profileService.verifiedProfileById(profileId);
+        ProfileStatus profileStatus = profile.getProfileStatus();
         Page<MessageRoom> messageRooms =
-                messageRoomRepository.findAllByTutorProfileIdAndTuteeProfileId(profileId, profileId, pageable);
+                messageRoomRepository.findAllByTutorProfileIdOrTuteeProfileId(
+                        profileId, profileId, pageable
+                );
+        List<MessageRoom> messageRoomList = messageRooms.getContent();
+        List<MessageRoomSimpleResponseDto> simpleResponseDtoList =
+                messageRoomList.stream()
+                .map(mr -> MessageRoomSimpleResponseDto.of(profileStatus, mr))
+                .collect(Collectors.toList());
 
-        return messageRooms;
+        return new PageImpl<>(
+                simpleResponseDtoList,
+                messageRooms.getPageable(),
+                messageRooms.getTotalElements()
+        );
+
     }
 
-    //매칭 취소를 고려한 메세지룸 삭제
+    public MessageRoomResponseDto getMessageRoom(Long messageRoomId) {
+        MessageRoom findMessageRoom = verifiedMessageRoom(messageRoomId);
+        findMessageRoom.setMessageStatus(MessageStatus.CHECK);
+        return MessageRoomResponseDto.of(messageRoomRepository.save(findMessageRoom));
+    }
+
     public void deleteMessageRoom(Long messageRoomId) {
-
-        MessageRoom messageRoom = findVerifiedMessageRoom(messageRoomId);
-
+        MessageRoom messageRoom = verifiedMessageRoom(messageRoomId);
         messageRoomRepository.delete(messageRoom);
     }
 
+    /* 검증 로직 */
+    private MessageRoom verifiedMessageRoom(Long messageRoomId) {
+        return messageRoomRepository.findById(messageRoomId)
+                .orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
+    }
 }
 
 
