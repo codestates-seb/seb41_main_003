@@ -1,79 +1,84 @@
 package com.mainproject.server.message.controller;
 
+import com.mainproject.server.dto.PageResponseDto;
 import com.mainproject.server.dto.ResponseDto;
 import com.mainproject.server.message.dto.MessagePostDto;
-import com.mainproject.server.message.dto.MessageResponseDto;
 import com.mainproject.server.message.dto.MessageRoomPostDto;
-import com.mainproject.server.message.dto.MessageRoomResponseDto;
-import com.mainproject.server.message.entity.Message;
-import com.mainproject.server.message.mapper.MessageMapper;
-import com.mainproject.server.message.repository.MessageRepository;
-import com.mainproject.server.message.repository.MessageRoomRepository;
+import com.mainproject.server.message.dto.MessageRoomSimpleResponseDto;
 import com.mainproject.server.message.service.MessageService;
-import com.mainproject.server.utils.StubData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/messages")
 public class MessageController {
-    private final StubData stubData;
+
     private final MessageService messageService;
-    private final MessageRepository messageRepository;
-    private final MessageRoomRepository messageRoomRepository;
 
     @PostMapping
     public ResponseEntity postMessage(
-            @RequestBody @Validated MessagePostDto messagePostDto, Long messageRoomId) {
-
-            messagePostDto.getMessageRoomId();
-            messagePostDto.getMessageContent();
-
-        return new ResponseEntity<>(messagePostDto ,HttpStatus.CREATED);
-
+            @RequestBody @Validated MessagePostDto messagePostDto
+    ) {
+        ResponseDto response =
+                ResponseDto.of(messageService.createMessage(messagePostDto));
+        return new ResponseEntity<>(response ,HttpStatus.CREATED);
     }
+
 
     @PostMapping("/{profileId}")
     public ResponseEntity postMessageRoom(
             @PathVariable("profileId") Long profileId,
             @RequestBody @Validated MessageRoomPostDto messageRoomPostDto
     ) {
-        messageRoomPostDto.getTuteeId();
-        messageRoomPostDto.getTutorId();
+        MessageRoomSimpleResponseDto createMessageRoom
+                = messageService.createMessageRoom(messageRoomPostDto, profileId);
 
-        return new ResponseEntity<>(messageRoomPostDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                ResponseDto.of(createMessageRoom),
+                HttpStatus.CREATED
+        );
     }
+
 
     @GetMapping("/{profileId}")
     public ResponseEntity getMessage(
-            @PathVariable("profileId")Long profileId
+            @PathVariable("profileId")Long profileId,
+            @PageableDefault(page = 0, size = 7, sort = "messageRoomId", direction = Sort.Direction.DESC)
+            Pageable pageable
     ) {
-
-        MessageResponseDto response = stubData.createMessageResponse();
-
+        Page<MessageRoomSimpleResponseDto> messageRooms =
+                messageService.getMessageRooms(profileId, pageable);
+        PageResponseDto response =
+                PageResponseDto.of(messageRooms.getContent(), messageRooms);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
 
     @GetMapping("/rooms/{messageRoomId}")
-    public ResponseEntity getMessages(@PathVariable ("messageRoomId") Long profileId) {
-
-        MessageRoomResponseDto response = stubData.createMessageRoomResponse();
-
-
+    public ResponseEntity getMessages(
+            @PathVariable ("messageRoomId") Long messageRoomId
+    ) {
+        ResponseDto response =
+                ResponseDto.of(messageService.getMessageRoom(messageRoomId));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    @DeleteMapping("/rooms/{messageRoomId}")
-    public ResponseEntity deleteMessages(@PathVariable("messageRoomId") Long profileId) {
 
+
+    @DeleteMapping("/rooms/{messageRoomId}")
+    public ResponseEntity deleteMessages(
+            @PathVariable("messageRoomId") Long messageRoomId
+    ) {
+        messageService.deleteMessageRoom(messageRoomId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
