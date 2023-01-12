@@ -18,5 +18,9 @@ public class ProfileImage extends Auditable {
 
     @Column(nullable = false)
     @Setter
+    private String fileName;
+
+    @Column(nullable = false)
+    @Setter
     private String url;
 }
