@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-@Builder
 @AllArgsConstructor
 public class Message extends Auditable {
 
@@ -51,9 +50,11 @@ public class Message extends Auditable {
 
     public void addSender (Profile sender) {
         setSender(sender);
+        this.senderName = sender.getName();
     }
 
     public void addReceiver (Profile tuteeProfile) {
         setReceiver(receiver);
+        this.receiverName = receiver.getName();
     }
 }
