@@ -21,7 +21,7 @@ import java.util.Optional;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final TutoringService tutoringService;
-    private final ProfileService profileService;
+//    private final ProfileService profileService;
 
     public Review findReview(Long tutoringId) {
         return findVerifiedReviewById(tutoringId);
