@@ -4,6 +4,7 @@ import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.MessageStatus;
 import com.mainproject.server.constant.TutoringStatus;
 import com.mainproject.server.exception.ServiceLogicException;
+import com.mainproject.server.message.dto.MessagePostDto;
 import com.mainproject.server.message.entity.Message;
 import com.mainproject.server.message.entity.MessageRoom;
 import com.mainproject.server.message.repository.MessageRepository;
@@ -24,7 +25,6 @@ import java.util.Optional;
 public class MessageService {
     private final MessageRepository messageRepository;
     private final MessageRoomRepository messageRoomRepository;
-    private final ProfileRepository profileRepository;
 
     public MessageRoom createMessageRoom(MessageRoom messageRoom, Message message, Long profileId) {
         messageRoom.addMessage(message);
@@ -34,17 +34,11 @@ public class MessageService {
 
         return messageRoom;
     }
-    public Message createMessage(Message message, Long profileId, Profile sender, Profile receiver, Long messageRoomId){
-        //Optional<MessageRoom> messageRoom = messageRoomRepository.findById(messageRoomId);
+    public Message createMessage(Message message){
 
-        message.addSender(new Profile());
-        message.addReceiver(new Profile());
-        message.setReceiver(receiver);
-        message.setSender(sender);
+        Message savedMessage = messageRepository.save(message);
 
-        messageRepository.save(message);
-
-        return message;
+        return savedMessage;
     }
 
 
@@ -53,6 +47,7 @@ public class MessageService {
         Optional<MessageRoom> optionalMessageRoom = messageRoomRepository.findById(messageRoomId);
         MessageRoom messageRoom = optionalMessageRoom.orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
 
+        messageRoom.setMessageStatus(MessageStatus.CHECK);
         return messageRoom;
     }
 
