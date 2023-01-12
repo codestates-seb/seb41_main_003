@@ -36,4 +36,4 @@ $subW: 500;
 $defaultShadow: 2px 2px 2px rgb(0 0 0 / 10%);
 $bigShadow: 8px 8px 15px rgb(0 0 0 / 8%);
 $containShadow: 0 4px 4px rgb(0 0 0 / 25%), 0 1px 3px rgb(0 0 0 / 8%);
-$buttonShadow: 1px 1px 2px rgb(0 0 0 / 5%);
+$buttonShadow: 0 1px 3px rgb(0 0 0 / 10%), 0 1px 2px rgb(0 0 0 / 6%);
