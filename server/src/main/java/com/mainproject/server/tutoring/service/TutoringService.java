@@ -4,6 +4,7 @@ import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.ProfileStatus;
 import com.mainproject.server.constant.TutoringStatus;
 import com.mainproject.server.exception.ServiceLogicException;
+import com.mainproject.server.message.entity.MessageRoom;
 import com.mainproject.server.message.service.MessageService;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.service.ProfileService;
@@ -36,7 +37,8 @@ public class TutoringService {
         tutoring.addTutor(tutor);
         tutoring.addTutee(tutee);
         Tutoring save = tutoringRepository.save(tutoring);
-        messageService.updateMessageRoom(messageRoomId, save.getTutoringId());
+        MessageRoom messageRoom = messageService.updateMessageRoom(messageRoomId, save.getTutoringId());
+        messageService.sendMessage(profileId, messageRoom, tutor, tutee);
         return save;
     }
 
@@ -49,7 +51,7 @@ public class TutoringService {
         return TutoringDto.of(verifiedTutoring(tutoringId),pageable);
     }
 
-    public Tutoring updateTutoring(Tutoring tutoring) {
+    public TutoringDto updateTutoring(Tutoring tutoring, Pageable pageable) {
         Tutoring findTutoring = verifiedTutoring(tutoring.getTutoringId());
 
         Optional.ofNullable(tutoring.getTutoringTitle())
@@ -57,7 +59,7 @@ public class TutoringService {
         Optional.ofNullable(tutoring.getTutoringStatus())
                 .ifPresent(findTutoring::setTutoringStatus);
 
-        return tutoringRepository.save(findTutoring);
+        return TutoringDto.of(tutoringRepository.save(findTutoring), pageable);
     }
 
     public void deleteTutoring(Long tutoringId) {
@@ -66,7 +68,7 @@ public class TutoringService {
         tutoringRepository.delete(findTutoring);
     }
 
-    // 리뷰 작성이 되면 과외 종료
+
     public void setTutoringStatusFinish(Long tutoringId) {
         Tutoring tutoring = verifiedTutoring(tutoringId);
         tutoring.setTutoringStatus(TutoringStatus.FINISH);
@@ -81,14 +83,11 @@ public class TutoringService {
         tutoringRepository.save(tutoring);
     }
 
-    // 과외가 성사되면 (매칭 요청이 수락되면) 진행중 상태로 변경
-    // Todo: profileId가 receiverId인 사람이 요청했을 때만 되도록 설정
-    public Tutoring setTutoringStatusProgress(Long tutoringId) {
+    public TutoringDto setTutoringStatusProgress(Long tutoringId, Pageable pageable) {
         Tutoring tutoring = verifiedTutoring(tutoringId);
         tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
         Tutoring progressTutoring = tutoringRepository.save(tutoring);
-
-        return progressTutoring;
+        return TutoringDto.of(progressTutoring,pageable);
     }
 
     public void updateLatestNoticeBody(Tutoring tutoring, String noticeBody) {
