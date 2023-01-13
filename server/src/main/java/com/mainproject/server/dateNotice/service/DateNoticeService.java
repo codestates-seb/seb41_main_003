@@ -9,6 +9,7 @@ import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.tutoring.service.TutoringService;
 import com.mainproject.server.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,9 +35,11 @@ public class DateNoticeService {
     public DateNotice findDateNotice(Long dateNoticeId, String email) {
         DateNotice verifiedDateNotice = findVerifiedDateNoticeById(dateNoticeId);
 
-        // TUTEE가 조회한 경우에만 Tutoring 상태 변경
-        if (userService.verifiedUserByEmail(email).getUserStatus() == UserStatus.TUTEE) {
-            tutoringService.setTutoringStatusProgress(verifiedDateNotice.getTutoring().getTutoringId());
+        if (userService.verifiedUserByEmail(email).getUserStatus().equals(UserStatus.TUTEE)) {
+            tutoringService.setTutoringStatusProgress(
+                    verifiedDateNotice.getTutoring().getTutoringId(),
+                    PageRequest.of(0,5)
+            );
         }
 
         return verifiedDateNotice;
