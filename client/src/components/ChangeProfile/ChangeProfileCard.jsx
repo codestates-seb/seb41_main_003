@@ -3,6 +3,7 @@ import { ButtonNightBlue } from '../Button';
 import styles from './ChangeProfileCard.module.css';
 import { MdMode } from 'react-icons/md';
 import PropType from 'prop-types';
+import SubjectsButtons from './SubjectsButtons';
 
 const ChangeProfileCard = ({
   isNew = true,
@@ -30,28 +31,6 @@ const ChangeProfileCard = ({
     }
   };
 
-  const subjectHandler = (e) => {
-    const { name } = e.target;
-    const id = ['_', '영어', '수학', '국어', '사회', '과학', '자격증', '기타'];
-    if (subjectTitles.includes(name)) {
-      setUser({
-        ...user,
-        subjects: user.subjects.filter((obj) => obj.subjectTitle !== name),
-      });
-    } else {
-      setUser({
-        ...user,
-        subjects: [
-          ...user.subjects,
-          {
-            subjectId: id.indexOf(name),
-            subjectTitle: name,
-            content: '',
-          },
-        ],
-      });
-    }
-  };
   return (
     <div className={styles.container}>
       <form id="profile" onSubmit={(e) => submitHandler(e)}>
@@ -96,64 +75,7 @@ const ChangeProfileCard = ({
         <div className={styles.subject}>
           과목
           <span className={styles.requiredIcon} />
-          <div className={styles.btnContain}>
-            <button
-              type="button"
-              name="영어"
-              className={subjectTitles.includes('영어') ? styles.active : ''}
-              onClick={subjectHandler}
-            >
-              영어
-            </button>
-            <button
-              type="button"
-              name="수학"
-              className={subjectTitles.includes('수학') ? styles.active : ''}
-              onClick={subjectHandler}
-            >
-              수학
-            </button>
-            <button
-              type="button"
-              name="국어"
-              className={subjectTitles.includes('국어') ? styles.active : ''}
-              onClick={subjectHandler}
-            >
-              국어
-            </button>
-            <button
-              type="button"
-              name="사회"
-              className={subjectTitles.includes('사회') ? styles.active : ''}
-              onClick={subjectHandler}
-            >
-              사회
-            </button>
-            <button
-              type="button"
-              name="과학"
-              className={subjectTitles.includes('과학') ? styles.active : ''}
-              onClick={subjectHandler}
-            >
-              과학
-            </button>
-            <button
-              type="button"
-              name="자격증"
-              className={subjectTitles.includes('자격증') ? styles.active : ''}
-              onClick={subjectHandler}
-            >
-              자격증
-            </button>
-            <button
-              type="button"
-              name="기타"
-              className={subjectTitles.includes('기타') ? styles.active : ''}
-              onClick={subjectHandler}
-            >
-              기타
-            </button>
-          </div>
+          <SubjectsButtons subjectTitles={subjectTitles} setUser={setUser} />
         </div>
         <ButtonNightBlue
           text={isNew ? '추가완료' : '수정완료'}
