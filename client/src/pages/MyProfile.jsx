@@ -8,11 +8,11 @@ import { ButtonTop } from '../components/Button';
 const MyProfile = () => {
   const [user, setUser] = useState(DummyData);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isAnnounceOn, setIsAnnounceOn] = useState(DummyData.wanted_status);
+  const [isAnnounceOn, setIsAnnounceOn] = useState(DummyData.wantedStatus);
 
   const modaInnerHandler = (e) => {
     if (e.target.name === 'yes') {
-      setIsAnnounceOn((prev) => !prev);
+      setIsAnnounceOn((prev) => (prev === 'REQUEST' ? 'NONE' : 'REQUEST'));
       setIsModalOpen((prev) => !prev);
       //TODO:바뀐 유저의 공고 상태를 서버에 전송 해야함
     } else {
@@ -33,6 +33,7 @@ const MyProfile = () => {
           <MyProfileCard
             user={user}
             isAnnounceOn={isAnnounceOn}
+            setIsAnnounceOn={setIsAnnounceOn}
             modalOpenOnHandler={modalOpenOnHandler}
           />
           <ProfileContents user={user} />

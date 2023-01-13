@@ -54,7 +54,7 @@ const MyProfileCard = ({ user, isAnnounceOn, modalOpenOnHandler }) => {
             <p className={styles.announceText1}>공고 상태</p>
             <div className={styles.announceText2}>
               지금은{' '}
-              {isAnnounceOn ? (
+              {isAnnounceOn === 'REQUEST' ? (
                 <span className={styles.announceOnText}>공고 중</span>
               ) : (
                 <span>공고 안함</span>
@@ -62,7 +62,10 @@ const MyProfileCard = ({ user, isAnnounceOn, modalOpenOnHandler }) => {
               상태입니다
             </div>
           </div>
-          <Toggle modalOpenOnHandler={modalOpenOnHandler} />
+          <Toggle
+            isAnnounceOn={isAnnounceOn}
+            modalOpenOnHandler={modalOpenOnHandler}
+          />
         </div>
       </section>
     </div>
