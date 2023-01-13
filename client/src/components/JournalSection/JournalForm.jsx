@@ -7,7 +7,6 @@ import DropDown from './DropDown';
 
 const JournalForm = ({ user, setUser }) => {
   const {
-    dateNoticeId,
     dateNoticeTitle,
     startTime,
     endTime,
