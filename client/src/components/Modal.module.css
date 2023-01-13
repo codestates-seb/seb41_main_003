@@ -20,6 +20,7 @@
   align-items: center;
   border-radius: 10px;
   background-color: $white;
+  padding: 16px 0;
   width: 522px;
 
   > button {
