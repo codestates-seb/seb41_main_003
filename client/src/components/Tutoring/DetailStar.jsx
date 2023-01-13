@@ -1,6 +1,6 @@
 import { MdStar, MdStarOutline } from 'react-icons/md';
 import PropTypes from 'prop-types';
-import styles from './DetailStar.module.css';
+import styles from './StarRating.module.css';
 
 const DetailStar = ({ rate }) => {
   return (

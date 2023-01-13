@@ -16,7 +16,6 @@ const StarRating = ({ name, reviewData, setReviewData }) => {
     setClicked(clickStates);
   };
 
-  //전송하는 역할이 아니라 만들어진 별점의 score를 세팅하는 공간
   const getStarRate = (name) => {
     let score = clicked.filter(Boolean).length;
     setReviewData({

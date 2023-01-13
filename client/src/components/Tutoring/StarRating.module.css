@@ -4,3 +4,13 @@
   fill: $yellow;
   font-size: 32px;
 }
+
+.yellowStar {
+  fill: $yellow;
+  font-size: 32px;
+}
+
+.emptyStar {
+  fill: $yellow;
+  font-size: 32px;
+}
