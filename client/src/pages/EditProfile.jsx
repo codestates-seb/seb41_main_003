@@ -2,7 +2,7 @@ import ChangeProfileCard from '../components/ChangeProfile/ChangeProfileCard';
 import ChangeProfileContents from '../components/ChangeProfile/ChangeProfileContents';
 import styles from './ChangeProfile.module.css';
 import { useState } from 'react';
-import { ConfirmModal } from '../components/Modal';
+import { ConfirmModal, AlertModal } from '../components/Modal';
 import { ButtonTop } from '../components/Button';
 
 const tutorDummyState = {
@@ -52,6 +52,7 @@ const tuteeDummyState = {
 const EditProfile = () => {
   const [user, setUser] = useState(tutorDummyState);
   const [isConfirm, setIsConfirm] = useState(false);
+  const [isRequired, setIsRequired] = useState(false);
   const confirmText = `현재 입력된 내용으로
   프로필을 수정하시겠습니까?`;
 
@@ -73,6 +74,7 @@ const EditProfile = () => {
           setUser={setUser}
           isNew={false}
           setIsConfirm={setIsConfirm}
+          setIsRequired={setIsRequired}
         />
         <ChangeProfileContents user={user} setUser={setUser} />
       </div>
@@ -80,6 +82,12 @@ const EditProfile = () => {
         <ConfirmModal text={confirmText} modalHandler={confirmHandler} />
       )}
       <ButtonTop />
+      {isRequired && (
+        <AlertModal
+          text="필수 입력 사항을 모두 작성해주세요."
+          modalHandler={() => setIsRequired(!isRequired)}
+        />
+      )}
     </div>
   );
 };
