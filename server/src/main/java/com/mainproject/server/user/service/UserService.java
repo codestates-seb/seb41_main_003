@@ -59,8 +59,11 @@ public class UserService {
                 .ifPresent(findUser::setPassword);
         Optional.ofNullable(user.getSecondPassword())
                 .ifPresent(findUser::setSecondPassword);
-        Optional.ofNullable(user.getUserStatus())
-                .ifPresent(findUser::setUserStatus);
+        if (findUser.getUserStatus().equals(UserStatus.NONE)) {
+            findUser.setUserStatus(user.getUserStatus());
+        } else {
+            throw new ServiceLogicException(ErrorCode.NOT_CHANGE_USER_STATUS);
+        }
         Optional.ofNullable(user.getPhoneNumber())
                 .ifPresent(findUser::setPhoneNumber);
         return userRepository.save(findUser);
