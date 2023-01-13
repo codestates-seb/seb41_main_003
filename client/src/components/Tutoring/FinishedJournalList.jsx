@@ -3,21 +3,44 @@ import dummyTutoringData from './dummyTutoringData';
 import { HiSpeakerphone } from 'react-icons/hi';
 import { MdEdit } from 'react-icons/md';
 import { ButtonNightBlue, ButtonRed } from '../Button';
-import { ConfirmModal, ConfirmTextModal } from '../Modal';
+import { ConfirmModal, ConfirmTextModal, AlertModal } from '../Modal';
 import { useState } from 'react';
+import EditReviewModal from './EditReviewModal';
+import ReviewDetail from './ReviewDetail';
 
 const FinishedJournalList = () => {
-  const [confirmModalData, setConfirmModalData] = useState({
+  //TODO:현재 이 컴포넌트는 튜티 기준으로 만들어짐 이후 튜터, 튜티 분기해 수정 필요
+  //name부분과 과외 일지 작성 버튼 부분이 튜터와 튜티가 달라야 함
+  // 작성된 리뷰 확인 버튼은 튜티인 경우에만 존재함
+
+  const [alertModal, setAlertModal] = useState({
+    text: '리뷰가 수정되었습니다.',
+    isOpen: false,
+  });
+
+  const [confirmModal, setConfirmModal] = useState({
     text: `과외를 삭제 하시겠습니까?
     과외 삭제 시 과외 관리 내역이 모두 삭제됩니다.`,
     isOpen: false,
   });
   const [confirmTextModal, setConfirmTextModal] = useState({
-    text: '튜터링 이름을 아래와 같이 수정합니다.',
+    text: '과외 제목을 아래와 같이 수정합니다.',
     isOpen: false,
-    placeHolder: 'Text',
+    value: '',
   });
-  const [newTitle, setNewTitle] = useState('');
+
+  //리뷰 수정 상태
+  //TODO: 여기 초기값으로 특정 과외 조회한 내용을 들려주어야 함...
+  const [reviewData, setReviewData] = useState({
+    isOpen: false,
+    professional: 0,
+    readiness: 0,
+    explanation: 0,
+    punctuality: 0,
+    value: '',
+  });
+
+  const [reviewDetailData, setDetailReviewData] = useState(false);
 
   const {
     tutoringTitle,
@@ -29,26 +52,60 @@ const FinishedJournalList = () => {
     latestNotice,
   } = dummyTutoringData;
 
-  // TODO: ConfirmModal에서 확인을 누르면 삭제 요청 가도록 MessageContent 컴포넌트 참고해서 로직 추가
-  //근데 그 전에 삭제 요청에 대한 백단과 이야기 필요함 (한 쪽이 삭제 시 과외 했던 양쪽에서 삭제될듯)
-  const confirmHandler = () => {
-    setConfirmModalData(!confirmModalData.isOpen);
+  const confirmHandler = (e) => {
+    const { name } = e.target;
+    setConfirmModal({
+      ...confirmModal,
+      isOpen: !confirmModal.isOpen,
+    });
+
+    if (name === 'yes') {
+      //TODO : 과외 삭제 관련 API 요청(중요도:하)
+      console.log('과외 삭제 요청 갑니다!');
+    }
   };
 
-  const confirmTextHandler = () => {
-    setConfirmTextModal(!confirmTextModal.isOpen);
+  const confirmTextHandler = (e) => {
+    const { name } = e.target;
+    setConfirmTextModal({
+      ...confirmTextModal,
+      isOpen: !confirmTextModal.isOpen,
+      value: '',
+    });
+
+    if (name === 'yes') {
+      //TODO : 과외 제목 수정 관련 API 요청
+      console.log(confirmTextModal.value);
+    }
   };
 
-  // TODO: Title 수정 모달에서 새로운 제목 입력 후 확인을 누르면 수정 요청 가도록
-  //MessageContent 컴포넌트 참고해서 로직 추가
-  const titleHandler = ({ target }) => {
-    setNewTitle(target.value);
+  //리뷰 수정 모달
+  const reviewHandler = (e) => {
+    const { name } = e.target;
+    setReviewData({
+      ...reviewData,
+      isOpen: !reviewData.isOpen,
+      value: '',
+    });
+    if (name === 'yes') {
+      //TODO: 과외 리뷰 작성 API 요청
+      console.log(reviewData);
+      setAlertModal({ ...alertModal, isOpen: !alertModal.isOpen });
+    }
   };
 
-  //TODO:현재 이 컴포넌트는 튜티 기준으로 만들어짐 이후 튜터, 튜티 분기해 수정 필요
-  //name부분과 과외 일지 작성 버튼 부분이 튜터와 튜티가 달라야 함
-  // 작성된 리뷰 확인 버튼은 튜티인 경우에만 존재함
+  const reviewDetailHandler = (e) => {
+    const { name } = e.target;
+    setDetailReviewData(!reviewDetailData);
 
+    if (name === 'edit') {
+      console.log('리뷰를 수정하러 갈거라네~');
+      setReviewData({ ...reviewData, isOpen: !reviewData.isOpen });
+    } else if (name === 'delete') {
+      console.log('리뷰를 삭제할 거라네~');
+      //TODO: 리뷰 삭제 로직 & 리뷰 삭제 완료되었다는 모달창 띄워야 함.
+    }
+  };
   return (
     <div className={styles.container}>
       <div className={styles.leftCard}>
@@ -101,8 +158,14 @@ const FinishedJournalList = () => {
               <ConfirmTextModal
                 text={confirmTextModal.text}
                 modalHandler={confirmTextHandler}
-                value={newTitle}
-                valueHandler={titleHandler}
+                value={confirmTextModal.value}
+                valueHandler={(e) => {
+                  setConfirmTextModal({
+                    ...confirmTextModal,
+                    value: e.target.value,
+                  });
+                }}
+                placeHolder="새로운 과외 제목"
               />
             )}
           </div>
@@ -114,13 +177,28 @@ const FinishedJournalList = () => {
           </span>
         </div>
         <div className={styles.buttonBox}>
-          {/* TODO: 버튼 눌렀을 때 리뷰 확인 모달 띄워져야 함  */}
-          <ButtonNightBlue text="작성된 리뷰 확인" />
-          {/* TODO: 버튼 눌렀을 때 과외 삭제 안내 모달 떠야 함 */}
+          <ButtonNightBlue
+            text="작성된 리뷰 확인"
+            buttonHandler={reviewDetailHandler}
+          />
+          {reviewDetailData && (
+            <ReviewDetail modalHandler={reviewDetailHandler} />
+          )}
+          {reviewData.isOpen && (
+            <EditReviewModal
+              modalHandler={reviewHandler}
+              value={reviewData.value}
+              valueHandler={(e) => {
+                setReviewData({ ...reviewData, value: e.target.value });
+              }}
+              reviewData={reviewData}
+              setReviewData={setReviewData}
+            />
+          )}
           <ButtonRed text="과외 삭제" buttonHandler={confirmHandler} />
-          {confirmModalData.isOpen && (
+          {confirmModal.isOpen && (
             <ConfirmModal
-              text={confirmModalData.text}
+              text={confirmModal.text}
               modalHandler={confirmHandler}
             />
           )}
