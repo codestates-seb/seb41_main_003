@@ -1,15 +1,16 @@
 package com.mainproject.server.dateNotice.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ScheduleResponseDto {
 
-    @NotNull
     private Long scheduleId;
 
     private String scheduleBody;

@@ -1,15 +1,16 @@
 package com.mainproject.server.tutoring.dto;
 
 import com.mainproject.server.dateNotice.dto.DateNoticeResponseDto;
-import com.mainproject.server.profile.dto.ProfileListResponseDto;
-import com.mainproject.server.review.dto.ReviewResponseDto;
+import com.mainproject.server.tutoring.entity.Tutoring;
 import lombok.*;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -28,11 +29,33 @@ public class TutoringDto {
 
     private LocalDateTime updateAt;
 
-    private ProfileListResponseDto tutor;
+    private Long  tutorId;
 
-    private ProfileListResponseDto tutee;
+    private String  tutorName;
 
-    private ReviewResponseDto review;
+    private Long  tuteeId;
+
+    private String  tuteeName;
 
     private Page<DateNoticeResponseDto> dateNotices;
+
+    public TutoringDto(Tutoring tutoring, Pageable pageable) {
+        this.tutoringId = tutoring.getTutoringId();
+        this.tutoringTitle = tutoring.getTutoringTitle();
+        this.tutoringStatus = tutoring.getTutoringStatus().name();
+        this.createAt = tutoring.getCreateAt();
+        this.updateAt = tutoring.getUpdateAt();
+        this.tutorId = tutoring.getTutor().getProfileId();
+        this.tuteeId = tutoring.getTutee().getProfileId();
+        this.tuteeName = tutoring.getTutee().getName();
+        List<DateNoticeResponseDto> dtos = new ArrayList<>(tutoring.getDateNotices())
+                .stream()
+                .map(DateNoticeResponseDto::of)
+                .collect(Collectors.toList());
+        this.dateNotices = new PageImpl<>(dtos, pageable, dtos.size());
+    }
+
+    public static TutoringDto of(Tutoring tutoring, Pageable pageable) {
+        return new TutoringDto(tutoring, pageable);
+    }
 }

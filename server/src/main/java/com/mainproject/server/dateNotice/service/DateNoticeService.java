@@ -70,7 +70,7 @@ public class DateNoticeService {
     }
 
     private void updateNotice(DateNotice dateNotice) {
-        if (!dateNotice.getNotice().getNoticeBody().isEmpty()) {
+        if (dateNotice.getNotice().getNoticeBody().trim().equals("")) {
             tutoringService.updateLatestNoticeBody(dateNotice.getTutoring(), dateNotice.getNotice().getNoticeBody());
             dateNotice.setNoticeStatus(NoticeStatus.NOTICE);
         }

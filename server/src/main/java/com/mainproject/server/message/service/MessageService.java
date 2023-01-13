@@ -11,6 +11,7 @@ import com.mainproject.server.message.repository.MessageRepository;
 import com.mainproject.server.message.repository.MessageRoomRepository;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.service.ProfileService;
+import com.mainproject.server.tutoring.service.TutoringService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +33,8 @@ public class MessageService {
     private final MessageRoomRepository messageRoomRepository;
 
     private final ProfileService profileService;
+
+    private final TutoringService tutoringService;
 
     public MessageResponseDto createMessage(
             MessagePostDto postDto
@@ -91,8 +95,20 @@ public class MessageService {
         return MessageRoomResponseDto.of(messageRoomRepository.save(findMessageRoom));
     }
 
+    public void updateMessageRoom(Long messageRoomId, Long tutoringId) {
+        MessageRoom messageRoom = verifiedMessageRoom(messageRoomId);
+        messageRoom.setTutoringId(tutoringId);
+
+        messageRoomRepository.save(messageRoom);
+    }
+
     public void deleteMessageRoom(Long messageRoomId) {
         MessageRoom messageRoom = verifiedMessageRoom(messageRoomId);
+
+        if (messageRoom.getTutoringId() > 0) {
+            tutoringService.deleteTutoring(messageRoom.getTutoringId());
+        }
+
         messageRoomRepository.delete(messageRoom);
     }
 

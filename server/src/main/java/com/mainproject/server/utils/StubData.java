@@ -127,11 +127,11 @@ public class StubData {
                 .tutoringStatus(TutoringStatus.TUTOR_WAITING.name())
                 .createAt(LocalDateTime.now())
                 .updateAt(LocalDateTime.now())
-                .tutor(createProfileListResponse())
-                .tutee(createProfileListResponse())
-                .review(createReviewResponse())
+                .tutorId(createProfileListResponse().getProfileId())
+                .tuteeId(createProfileListResponse().getProfileId())
+                .tutorName(createProfileListResponse().getName())
+                .tuteeName(createProfileListResponse().getName())
                 .dateNotices(page).build();
-
     }
 
     public TutoringSimpleResponseDto createTutoringSimpleResponse() {

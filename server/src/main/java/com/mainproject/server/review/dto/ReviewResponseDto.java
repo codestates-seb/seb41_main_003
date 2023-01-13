@@ -22,7 +22,7 @@ public class ReviewResponseDto {
     private int punctuality;
 
     private String reviewBody;
-    // 프로필 이름
+
     private String tuteeName;
 
     private LocalDateTime createAt;
