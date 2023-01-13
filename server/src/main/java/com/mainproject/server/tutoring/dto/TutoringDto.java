@@ -47,6 +47,7 @@ public class TutoringDto {
         this.updateAt = tutoring.getUpdateAt();
         this.tutorId = tutoring.getTutor().getProfileId();
         this.tuteeId = tutoring.getTutee().getProfileId();
+        this.tutorName = tutoring.getTutor().getName();
         this.tuteeName = tutoring.getTutee().getName();
         List<DateNoticeResponseDto> dtos = new ArrayList<>(tutoring.getDateNotices())
                 .stream()
