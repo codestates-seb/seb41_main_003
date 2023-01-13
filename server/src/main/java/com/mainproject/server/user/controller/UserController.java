@@ -3,15 +3,14 @@ package com.mainproject.server.user.controller;
 import com.mainproject.server.dto.PageResponseDto;
 import com.mainproject.server.dto.ResponseDto;
 import com.mainproject.server.profile.dto.ProfileListResponseDto;
+import com.mainproject.server.profile.service.ProfileService;
 import com.mainproject.server.user.dto.UserPatchDto;
 import com.mainproject.server.user.dto.UserPostDto;
-import com.mainproject.server.user.dto.UserResponseDto;
 import com.mainproject.server.user.entity.User;
 import com.mainproject.server.user.mapper.UserMapper;
 import com.mainproject.server.user.service.UserService;
 import com.mainproject.server.utils.StubData;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,6 +37,8 @@ public class UserController {
     private final UserMapper userMapper;
 
     private final UserService userService;
+
+    private final ProfileService profileService;
 
     @GetMapping("/{userId}")
     public ResponseEntity getUser(
@@ -72,6 +73,7 @@ public class UserController {
             @RequestBody UserPatchDto userPatchDto
     ) {
         userPatchDto.setUserId(userId);
+        userPatchDto.setUserStatus(userPatchDto.getUserStatus().toUpperCase());
         User updateUser = userService.updateUser(
                 userMapper.userPatchDtoToEntity(userPatchDto));
         return new ResponseEntity<>(
@@ -94,21 +96,23 @@ public class UserController {
     @GetMapping("/tutors")
     public ResponseEntity getTutors(
             @RequestParam Map<String, String> params,
-            @PageableDefault(page = 0, size = 20, sort = "profileId")
+            @PageableDefault(page = 0, size = 20, sort = "createAt", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
         params.put("key", "TUTOR");
-        return getResponseEntity(pageable);
+        PageResponseDto response = profileService.getTutorOrTuteeList(params, pageable);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
     @GetMapping("/tutees")
     public ResponseEntity getTutees(
             @RequestParam Map<String, String> params,
-            @PageableDefault(page = 0, size = 20, sort = "profileId")
+            @PageableDefault(page = 0, size = 20, sort = "createAt", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
         params.put("key", "TUTEE");
-        return getResponseEntity(pageable);
+        PageResponseDto response = profileService.getTutorOrTuteeList(params, pageable);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
 
