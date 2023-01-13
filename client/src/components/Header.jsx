@@ -29,7 +29,7 @@ const Header = () => {
             <Link to="/tuteelist">학생 찾기</Link>
           </li>
           <li>
-            <Link to="/tutoring">과외 관리</Link>
+            <Link to="/tutoringlist">과외 관리</Link>
           </li>
         </ul>
       </nav>
