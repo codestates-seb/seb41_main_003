@@ -103,6 +103,12 @@
 .stars {
   margin: 0 8px;
   display: flex;
+  align-items: center;
+
+  > svg {
+    fill: #f0c24d;
+    font-size: 24px;
+  }
 }
 
 .reviewBtn {
