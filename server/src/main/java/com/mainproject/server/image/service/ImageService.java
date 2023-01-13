@@ -58,7 +58,10 @@ public class ImageService {
     ) {
         Profile findProfile = profileService.verifiedProfileById(profileId);
         ProfileImage profileImage = findProfile.getProfileImage();
-        deleteS3(profileImage.getFileName());
+        String fileName = profileImage.getFileName();
+        if (!fileName.equals("basic")) {
+            deleteS3(profileImage.getFileName());
+        }
         imageRepository.deleteById(profileImage.getProfileImageId());
         List<ProfileImage> list = getProfileImages(multipartFile, findProfile);
         return list;
