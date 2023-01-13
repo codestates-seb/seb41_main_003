@@ -69,7 +69,7 @@ const MyProfileCard = ({ user, isAnnounceOn, modalOpenOnHandler }) => {
   );
 };
 MyProfileCard.propTypes = {
-  isAnnounceOn: PropTypes.func,
+  isAnnounceOn: PropTypes.string,
   modalOpenOnHandler: PropTypes.func,
   user: PropTypes.object,
 };
