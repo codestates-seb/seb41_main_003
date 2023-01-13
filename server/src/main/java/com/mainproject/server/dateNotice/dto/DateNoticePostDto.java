@@ -20,10 +20,12 @@ public class DateNoticePostDto {
     @NotBlank
     private String endTime;
 
+    @NotBlank
     private String scheduleBody;
 
+    @NotNull
     private String noticeBody;
 
-    private List<HomeworkDto> homeworks;
+    private List<HomeworkPostDto> homeworks;
 
 }
