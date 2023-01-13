@@ -115,7 +115,12 @@ const TuteeList = () => {
         </div>
         <div className={styles.feedContainer}>
           {TuteeListData.map((tutee) => (
-            <Link to="" key={tutee.profileId} className={styles.list}>
+            // ! 프로필 ID 기준으로 링크 변경 필요
+            <Link
+              to="/tuteeprofile"
+              key={tutee.profileId}
+              className={styles.list}
+            >
               <FeedItem data={tutee} userStatus="TUTEE" />
             </Link>
           ))}

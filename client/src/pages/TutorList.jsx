@@ -197,7 +197,12 @@ const TutorList = () => {
         </div>
         <div className={styles.feedContainer}>
           {TutorListData.map((tutor) => (
-            <Link to="" key={tutor.profileId} className={styles.list}>
+            <Link
+              // ! 프로필 ID 기준으로 링크 변경 필요
+              to="/tutorprofile"
+              key={tutor.profileId}
+              className={styles.list}
+            >
               <FeedItem data={tutor} userStatus="TUTOR" />
             </Link>
           ))}
