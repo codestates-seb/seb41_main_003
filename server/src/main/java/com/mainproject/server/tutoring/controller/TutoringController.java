@@ -8,6 +8,7 @@ import com.mainproject.server.dateNotice.mapper.DateNoticeMapper;
 import com.mainproject.server.dateNotice.service.DateNoticeService;
 import com.mainproject.server.dto.PageResponseDto;
 import com.mainproject.server.dto.ResponseDto;
+import com.mainproject.server.message.service.MessageService;
 import com.mainproject.server.tutoring.dto.*;
 import com.mainproject.server.tutoring.entity.Tutoring;
 import com.mainproject.server.tutoring.mapper.TutoringMapper;
@@ -42,8 +43,10 @@ public class TutoringController {
             @PathVariable("profileId") Long profileId,
             @RequestBody TutoringPostDto tutoringPostDto
             ) {
+        Long messageRoomId = tutoringPostDto.getMessageRoomId();
+
         Tutoring postTutoring = tutoringMapper.tutoringPostDtoToTutoring(tutoringPostDto);
-        Tutoring tutoring = tutoringService.createTutoring(postTutoring, profileId);
+        Tutoring tutoring = tutoringService.createTutoring(postTutoring, profileId, messageRoomId);
 
         return new ResponseEntity(
                 ResponseDto.of(tutoringMapper.tutoringToTutoringSimpleResponseDto(tutoring)),
@@ -106,14 +109,14 @@ public class TutoringController {
             @PageableDefault(page = 0, size = 5, sort = "dateNoticeId", direction = Sort.Direction.DESC)
             Pageable pageable
             ) {
-        Tutoring tutoring = tutoringMapper.tutoringPatchDtoToTutoring(tutoringPatchDto);
+        Tutoring tutoring = tutoringService.updateTutoring(tutoringMapper.tutoringPatchDtoToTutoring(tutoringPatchDto));
 
-        TutoringResponseDto tutoringResponseDto = tutoringMapper.tutoringToTutoringResponseDto(tutoring);
-
-//        TutoringDto tutoringDto = stubData.createTutoringDto();
-//        TutoringResponseDto response = TutoringResponseDto.of(tutoringDto);
+        TutoringDto tutoringDto = tutoringService.getTutoring(tutoringId, pageable);
+        Page<DateNoticeResponseDto> dateNotices = tutoringDto.getDateNotices();
+        TutoringResponseDto responseDto = TutoringResponseDto.of(tutoringDto);
+        PageResponseDto response = PageResponseDto.of(responseDto, dateNotices);
         return new ResponseEntity(
-                ResponseDto.of(tutoringResponseDto),
+                response,
                 HttpStatus.OK);
     }
 

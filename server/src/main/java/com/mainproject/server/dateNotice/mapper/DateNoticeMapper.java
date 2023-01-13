@@ -31,7 +31,11 @@ public interface DateNoticeMapper {
 
     List<DateNoticeSimpleResponseDto> dateNoticeSetToDateNoticeSimpleResponseDtoList(Set<DateNotice> dateNoticeSet);
 
-    Set<Homework> HomeworkDtoListToHomeworkSet(List<HomeworkDto> homeworkDtoList);
+    Set<Homework> HomeworkPostDtoListToHomeworkSet(List<HomeworkPostDto> homeworkPostDtoList);
+
+    Set<Homework> HomeworkPatchDtoListToHomeworkSet(List<HomeworkPatchDto> homeworkPatchDtoList);
+
+
 
     List<HomeworkResponseDto> homeworkSetToHomeworkResponseDto(Set<Homework> homeworkSet);
 

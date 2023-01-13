@@ -23,9 +23,11 @@ public class DateNoticePatchDto {
     @NotBlank
     private String endTime;
 
+    @NotBlank
     private String scheduleBody;
 
+    @NotNull
     private String noticeBody;
 
-    private List<HomeworkDto> Homeworks;
+    private List<HomeworkPatchDto> Homeworks;
 }
