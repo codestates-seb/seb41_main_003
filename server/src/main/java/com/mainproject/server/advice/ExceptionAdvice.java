@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @RestControllerAdvice
@@ -70,7 +72,7 @@ public class ExceptionAdvice {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse exceptionHandler(Exception e) {
-        WebHookDto dto = getServerErrorWebHookDto();
+        WebHookDto dto = getServerErrorWebHookDto(e);
         webHookService.callEvent(dto);
         return ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
     }
@@ -79,8 +81,8 @@ public class ExceptionAdvice {
     public ResponseEntity serviceLogicExceptionHandler(
             ServiceLogicException e
     ) {
-        if (e.getErrorCode().equals(ErrorCode.INTERNAL_SERVER_ERROR)) {
-            WebHookDto dto = getServerErrorWebHookDto();
+        if (e.getErrorCode().getStatus() == 500) {
+            WebHookDto dto = getServerErrorWebHookDto(e.getErrorCode());
             webHookService.callEvent(dto);
         }
         return new ResponseEntity<>(
@@ -88,11 +90,29 @@ public class ExceptionAdvice {
                 HttpStatus.valueOf(e.getErrorCode().getStatus()));
     }
 
-    private static WebHookDto getServerErrorWebHookDto() {
-        String name = ErrorCode.INTERNAL_SERVER_ERROR.name();
-        String message = ErrorCode.INTERNAL_SERVER_ERROR.getMessage();
-        int status = ErrorCode.INTERNAL_SERVER_ERROR.getStatus();
-        return new WebHookDto(" 📢   " + status + " ❗ " + message +'\n' +"⏱️  Time: "+ LocalDateTime.now());
+    private static WebHookDto getServerErrorWebHookDto(ErrorCode ec) {
+        String name = ec.name();
+        String message = ec.getMessage();
+        int status = ec.getStatus();
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        String format = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return new WebHookDto(" 📢  " +
+                status + " ❗   " +
+                message +'\n' +"⏱️  KR Time: "+
+                format
+        );
+    }
+
+    private static WebHookDto getServerErrorWebHookDto(Exception e) {
+        String name = e.getClass().getSimpleName();
+        String message = e.getMessage();
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        String format = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return new WebHookDto(" 📢   500  " +
+                name + '\n' +" ❗Message:  " +
+                message +'\n' +"⏱️  KR Time: "+
+                format
+        );
     }
 }
 
