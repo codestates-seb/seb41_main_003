@@ -4,12 +4,15 @@ import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.ProfileStatus;
 import com.mainproject.server.constant.TutoringStatus;
 import com.mainproject.server.exception.ServiceLogicException;
+import com.mainproject.server.message.service.MessageService;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.service.ProfileService;
 import com.mainproject.server.tutoring.dto.TutoringDto;
 import com.mainproject.server.tutoring.entity.Tutoring;
+import com.mainproject.server.tutoring.mapper.TutoringMapper;
 import com.mainproject.server.tutoring.repository.TutoringRepository;
 import lombok.RequiredArgsConstructor;
+import org.jboss.logging.Messages;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,16 +25,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TutoringService {
     private final TutoringRepository tutoringRepository;
-
+    private final TutoringMapper mapper;
     private final ProfileService profileService;
+    private final MessageService messageService;
 
-    // Todo: ProfileService find Id -> Profile 찾아오기
-    public Tutoring createTutoring(Tutoring tutoring, Long profileId) {
+    public Tutoring createTutoring(Tutoring tutoring, Long profileId, Long messageRoomId) {
         tutoring.setTutoringStatus(getTutoringStatus(profileId));
         Profile tutor = profileService.verifiedProfileById(tutoring.getTutor().getProfileId());
         Profile tutee = profileService.verifiedProfileById(tutoring.getTutee().getProfileId());
         tutoring.addTutor(tutor);
         tutoring.addTutee(tutee);
+
+        messageService.updateMessageRoom(messageRoomId, tutoring.getTutoringId());
+
         return tutoringRepository.save(tutoring);
     }
 

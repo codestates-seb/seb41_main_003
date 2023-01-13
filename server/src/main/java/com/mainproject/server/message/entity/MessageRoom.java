@@ -25,6 +25,10 @@ public class MessageRoom extends Auditable {
     @Setter
     private MessageStatus messageStatus;
 
+    @Column(nullable = true)
+    @Setter
+    private Long tutoringId;
+
     /* 연관 관계 매핑 */
 
     @ToString.Exclude
