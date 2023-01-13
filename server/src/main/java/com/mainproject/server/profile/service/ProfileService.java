@@ -4,8 +4,12 @@ package com.mainproject.server.profile.service;
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.ProfileStatus;
 import com.mainproject.server.constant.WantedStatus;
+import com.mainproject.server.dto.PageResponseDto;
 import com.mainproject.server.exception.ServiceLogicException;
+import com.mainproject.server.image.entity.ProfileImage;
+import com.mainproject.server.profile.dto.ProfileListResponseDto;
 import com.mainproject.server.profile.dto.ProfilePageDto;
+import com.mainproject.server.profile.dto.ProfileQueryDto;
 import com.mainproject.server.profile.dto.WantedDto;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.repository.ProfileRepository;
@@ -19,16 +23,13 @@ import com.mainproject.server.user.entity.User;
 import com.mainproject.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -71,6 +72,8 @@ public class ProfileService {
     ) {
         User findUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ServiceLogicException(ErrorCode.USER_NOT_FOUND));
+        ProfileImage image = getBasicImage();
+        profile.addUserImage(image);
         profile.setWantedStatus(WantedStatus.NONE);
         profile.setProfileStatus(ProfileStatus.valueOf(findUser.getUserStatus().name()));
         profile.addUser(findUser);
@@ -110,6 +113,25 @@ public class ProfileService {
         profileRepository.save(profile);
     }
 
+    public PageResponseDto getTutorOrTuteeList(
+            Map<String, String> params,
+            Pageable defaultPageable
+    ) {
+        String sort = params.get("sort");
+        String subject = params.get("subject");
+        String name = params.get("name");
+        String key = params.get("key");
+        Pageable pageable = getCustomPageable(defaultPageable, sort);
+        Page<ProfileQueryDto> queryProfile = profileRepository.findQueryProfile(
+                key, subject, name, pageable
+        );
+        List<ProfileListResponseDto> dtoList = queryProfile.getContent()
+                .stream()
+                .map(ProfileListResponseDto::of)
+                .collect(Collectors.toList());
+        return PageResponseDto.of(dtoList, queryProfile);
+    }
+
 
 
     /* 검증 및 유틸 메소드 */
@@ -119,8 +141,29 @@ public class ProfileService {
                 .orElseThrow(() -> new ServiceLogicException(ErrorCode.PROFILE_NOT_FOUND));
     }
 
-    private void createSubjectProfile( Profile profile, List<SubjectDto> subjectDtos) {
+    private static Pageable getCustomPageable(Pageable defaultPageable, String sort) {
+        try {
+            if (sort != null && sort.equals("rate")) {
+                return PageRequest.of(
+                        defaultPageable.getPageNumber(),
+                        defaultPageable.getPageSize(),
+                        Sort.by(Sort.Order.desc(sort))
+                );
+            } else {
+                return PageRequest.of(
+                        defaultPageable.getPageNumber(),
+                        defaultPageable.getPageSize(),
+                        defaultPageable.getSort()
+                );
+            }
+        } catch (PropertyReferenceException e) {
+            throw new ServiceLogicException(ErrorCode.WRONG_SORT_PROPERTY);
+        }
+    }
+
+    private void createSubjectProfile(Profile profile, List<SubjectDto> subjectDtos) {
         if (subjectDtos != null) {
+            StringBuilder sb = new StringBuilder();
             profile.getSubjectProfiles().clear();
             subjectDtos
                     .forEach(s -> {
@@ -130,7 +173,12 @@ public class ProfileService {
                                 profile,
                                 subject,
                                 s.getContent());
+                        sb.append(subject.getSubjectTitle()).append(",");
                     });
+            String subjectString = sb.toString();
+            profile.setSubjectString(subjectString.replaceFirst(".$", ""));
+        } else {
+            throw new ServiceLogicException(ErrorCode.SUBJECT_NOT_NULL);
         }
     }
 
@@ -152,6 +200,13 @@ public class ProfileService {
         Optional.ofNullable(updateProfile.getWantDate()).ifPresent(findProfile::setWantDate);
         Optional.ofNullable(updateProfile.getPreTutoring()).ifPresent(findProfile::setPreTutoring);
         return findProfile;
+    }
+
+    private ProfileImage getBasicImage() {
+        return ProfileImage.builder()
+                .fileName("basic")
+                .url("https://image-test-suyoung.s3.ap-northeast-2.amazonaws.com/image/user.png")
+                .build();
     }
 
 }
