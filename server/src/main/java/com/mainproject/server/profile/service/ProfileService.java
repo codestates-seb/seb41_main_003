@@ -117,6 +117,8 @@ public class ProfileService {
             Map<String, String> params,
             Pageable defaultPageable
     ) {
+        // Todo PropertyReferenceException 예외 처리
+        // Todo params subject 여러개 들어올수 있도록 수정
         String sort = params.get("sort");
         String subject = params.get("subject");
         String name = params.get("name");

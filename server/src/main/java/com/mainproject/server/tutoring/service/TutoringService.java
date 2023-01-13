@@ -9,10 +9,9 @@ import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.service.ProfileService;
 import com.mainproject.server.tutoring.dto.TutoringDto;
 import com.mainproject.server.tutoring.entity.Tutoring;
-import com.mainproject.server.tutoring.mapper.TutoringMapper;
 import com.mainproject.server.tutoring.repository.TutoringRepository;
 import lombok.RequiredArgsConstructor;
-import org.jboss.logging.Messages;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,10 +22,11 @@ import java.util.Optional;
 @Transactional
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TutoringService {
     private final TutoringRepository tutoringRepository;
-    private final TutoringMapper mapper;
     private final ProfileService profileService;
+
     private final MessageService messageService;
 
     public Tutoring createTutoring(Tutoring tutoring, Long profileId, Long messageRoomId) {
@@ -35,10 +35,9 @@ public class TutoringService {
         Profile tutee = profileService.verifiedProfileById(tutoring.getTutee().getProfileId());
         tutoring.addTutor(tutor);
         tutoring.addTutee(tutee);
-
-        messageService.updateMessageRoom(messageRoomId, tutoring.getTutoringId());
-
-        return tutoringRepository.save(tutoring);
+        Tutoring save = tutoringRepository.save(tutoring);
+        messageService.updateMessageRoom(messageRoomId, save.getTutoringId());
+        return save;
     }
 
     public Page<Tutoring> getAllTutoring(Long profileId, Pageable pageable) {

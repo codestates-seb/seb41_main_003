@@ -11,7 +11,7 @@ import com.mainproject.server.message.repository.MessageRepository;
 import com.mainproject.server.message.repository.MessageRoomRepository;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.service.ProfileService;
-import com.mainproject.server.tutoring.service.TutoringService;
+import com.mainproject.server.tutoring.repository.TutoringRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,7 +33,8 @@ public class MessageService {
 
     private final ProfileService profileService;
 
-    private final TutoringService tutoringService;
+    private final TutoringRepository tutoringRepository;
+
 
     public MessageResponseDto createMessage(
             MessagePostDto postDto
@@ -105,15 +105,15 @@ public class MessageService {
     public void deleteMessageRoom(Long messageRoomId) {
         MessageRoom messageRoom = verifiedMessageRoom(messageRoomId);
 
-        if (messageRoom.getTutoringId() > 0) {
-            tutoringService.deleteTutoring(messageRoom.getTutoringId());
+        if (messageRoom.getTutoringId() != null) {
+            tutoringRepository.deleteById(messageRoom.getTutoringId());
         }
 
         messageRoomRepository.delete(messageRoom);
     }
 
     /* 검증 로직 */
-    private MessageRoom verifiedMessageRoom(Long messageRoomId) {
+    public MessageRoom verifiedMessageRoom(Long messageRoomId) {
         return messageRoomRepository.findById(messageRoomId)
                 .orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
     }
