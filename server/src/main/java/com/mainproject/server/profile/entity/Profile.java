@@ -78,6 +78,10 @@ public class Profile extends Auditable {
     @Column(nullable = true, columnDefinition = "LONGTEXT")
     private String difference;
 
+    @Setter
+    @Column(nullable = false)
+    private String subjectString;
+
 
     /* 연관 관계 매핑*/
     @ToString.Exclude
