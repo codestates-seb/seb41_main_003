@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 public interface CustomProfileRepository {
     Page<ProfileQueryDto> findQueryProfile(
             String key,
-            String subject,
+            String[] subjects,
             String name,
             Pageable pageable
     );

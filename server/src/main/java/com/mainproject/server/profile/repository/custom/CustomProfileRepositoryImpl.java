@@ -26,7 +26,7 @@ public class CustomProfileRepositoryImpl
     @Override
     public Page<ProfileQueryDto> findQueryProfile(
             String key,
-            String subject,
+            String[] subjects,
             String name,
             Pageable pageable
     ) {
@@ -53,8 +53,10 @@ public class CustomProfileRepositoryImpl
                     profile.profileStatus.eq(ProfileStatus.valueOf(key))
             );
         }
-        if (subject != null && !subject.isBlank()) {
-            query.where(profile.subjectString.containsIgnoreCase(subject));
+        for (String subject : subjects) {
+            if (subject != null && !subject.isBlank()) {
+                query.where(profile.subjectString.containsIgnoreCase(subject));
+            }
         }
         if (name != null && !name.isBlank()) {
             query.where(profile.name.containsIgnoreCase(name));
