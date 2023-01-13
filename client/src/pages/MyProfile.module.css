@@ -2,18 +2,19 @@
 
 .wrapper {
   width: 100%;
+  background-color: $snow;
 }
 
 .background {
-  background-color: $snow;
   max-width: 1048px;
   margin: 0 auto;
+  padding-top: 16px;
 }
 
 .container {
   display: flex;
   justify-content: center;
-  margin-top: 16px;
+  align-items: flex-start;
 }
 
 .modalText {
