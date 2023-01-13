@@ -11,7 +11,7 @@ const ChangeProfileCard = ({
   setIsConfirm,
   setIsRequired,
 }) => {
-  const { name, bio, school, subjects, profile_status } = user;
+  const { name, bio, school, subjects, profileStatus } = user;
 
   const subjectTitles = subjects.map((obj) => obj.subjectTitle);
 
@@ -22,8 +22,8 @@ const ChangeProfileCard = ({
 
   const submitHandler = (e) => {
     e.preventDefault();
-    const { way, gender, pay, want_date } = user;
-    if (!(way && gender && pay && want_date)) {
+    const { way, gender, pay, wantDate } = user;
+    if (!(way && gender && pay && wantDate)) {
       setIsRequired((prev) => !prev);
     } else {
       setIsConfirm((prev) => !prev);
@@ -85,8 +85,8 @@ const ChangeProfileCard = ({
           />
           <LabelTextInput
             id="school"
-            name={profile_status === 'TUTOR' ? '학교 / 학번' : '학년'}
-            placeHolder={profile_status === 'TUTEE' ? '학교 / 학번' : '학년'}
+            name={profileStatus === 'TUTOR' ? '학교 / 학번' : '학년'}
+            placeHolder={profileStatus === 'TUTEE' ? '학교 / 학번' : '학년'}
             type="text"
             value={school}
             handler={inputHandler}

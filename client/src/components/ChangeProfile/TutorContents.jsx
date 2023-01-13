@@ -10,8 +10,8 @@ const TutorContents = ({ user, setUser }) => {
     gender,
     character,
     pay,
-    want_date,
-    pre_tutoring,
+    wantDate,
+    preTutoring,
   } = user;
 
   const inputHandler = (e) => {
@@ -144,7 +144,7 @@ const TutorContents = ({ user, setUser }) => {
           </div>
         </div>
         <div className={styles.inputContainer}>
-          <label htmlFor="want_date">
+          <label htmlFor="wantDate">
             <h4>
               과외 가능 요일 / 시간
               <span className={styles.requiredIcon} />
@@ -152,26 +152,26 @@ const TutorContents = ({ user, setUser }) => {
           </label>
           <div className={styles.textareaContainer}>
             <Textarea
-              id="want_date"
+              id="wantDate"
               handler={inputHandler}
-              value={want_date}
+              value={wantDate}
               placeHolder="과외가 가능한 요일과 시간을 작성해주세요."
               required
             />
             <span className={styles.required}>
-              {!want_date && '내용을 작성해야 합니다.'}
+              {!wantDate && '내용을 작성해야 합니다.'}
             </span>
           </div>
         </div>
         <div className={styles.inputContainer}>
-          <label htmlFor="pre_tutoring">
+          <label htmlFor="preTutoring">
             <h4>시범 과외 가능 여부</h4>
           </label>
           <div className={styles.textareaContainer}>
             <Textarea
-              id="pre_tutoring"
+              id="preTutoring"
               handler={inputHandler}
-              value={pre_tutoring}
+              value={preTutoring}
               placeHolder="시범 과외 가능 여부를 작성해주세요."
             />
           </div>

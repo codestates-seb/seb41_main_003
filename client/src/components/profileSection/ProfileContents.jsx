@@ -12,7 +12,7 @@ const ProfileContents = ({ user }) => {
   const reviewRef = useRef(null);
   return (
     <div>
-      {user.profile_status === 'TUTOR' ? (
+      {user.profileStatus === 'TUTOR' ? (
         <section className={styles.container}>
           <div className={styles.way}>
             <p className={styles.font4}>수업방식</p>
@@ -49,11 +49,11 @@ const ProfileContents = ({ user }) => {
           </div>
           <div>
             <p className={styles.font4}>과외 가능 요일 / 시간</p>
-            <p className={styles.paragragh}>{user.want_date}</p>
+            <p className={styles.paragragh}>{user.wantDate}</p>
           </div>
           <div>
             <p className={styles.font4}>시범 과외 가능 여부</p>
-            <p className={styles.paragragh}>{user.pre_tutoring}</p>
+            <p className={styles.paragragh}>{user.preTutoring}</p>
           </div>
           <div className={styles.reviewContainer} ref={reviewRef}>
             <div className={styles.reviewTitleLine}>
@@ -150,11 +150,11 @@ const ProfileContents = ({ user }) => {
           </div>
           <div>
             <p className={styles.font4}>과외 가능 요일 / 시간대</p>
-            <p className={styles.paragragh}>{user.want_date}</p>
+            <p className={styles.paragragh}>{user.wantDate}</p>
           </div>
           <div>
             <p className={styles.font4}>시범 과외 가능 여부</p>
-            <p className={styles.paragragh}>{user.pre_tutoring}</p>
+            <p className={styles.paragragh}>{user.preTutoring}</p>
           </div>
         </section>
       )}

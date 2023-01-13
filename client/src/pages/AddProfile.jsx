@@ -6,18 +6,14 @@ import { ConfirmModal, AlertModal } from '../components/Modal';
 import { ButtonTop } from '../components/Button';
 
 const initialState = {
-  profile_id: 0,
-  user_id: 0,
   name: '',
-  rate: 0,
   bio: '',
-  want_date: '',
+  wantDate: '',
   pay: '',
   way: '',
-  profile_status: 'TUTOR',
-  wanted_status: null,
+  profileStatus: 'TUTOR',
   gender: '',
-  pre_tutoring: '',
+  preTutoring: '',
   difference: '',
   school: '',
   character: '',
