@@ -56,6 +56,7 @@ const EditProfile = () => {
   프로필을 수정하시겠습니까?`;
 
   const confirmHandler = (e) => {
+    e.preventDefault();
     if (e.target.name === 'yes') {
       console.log('수정 요청'); // TODO : PATCH 요청
       setIsConfirm(!isConfirm); // TODO : 리다이렉트 함수

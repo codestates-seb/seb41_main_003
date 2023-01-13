@@ -33,10 +33,19 @@ const SignUpForm = () => {
     confirmHandler();
   }, [signupData.passwordConfirm, signupData.password]);
 
+  // TODO : submit API 연결 필요
+  const submitHandler = (e) => {
+    e.preventDefault();
+    console.log('submit!');
+  };
+
   return (
-    <div className={styles.signUpContainer}>
-      <span className={styles.signupText}>회원가입</span>
-      <div className={styles.inputArea}>
+    <article className={styles.signUpContainer}>
+      <h2 className={styles.signupText}>회원가입</h2>
+      <span className={styles.required}>
+        <span className={styles.requiredIcon} />은 필수 입력 사항입니다.
+      </span>
+      <form id="signUp" className={styles.inputArea} onSubmit={submitHandler}>
         <LabelTextInput
           id="nickName"
           name="닉네임"
@@ -44,6 +53,7 @@ const SignUpForm = () => {
           type="text"
           value={signupData.nickName}
           handler={inputHandler}
+          required
         />
         <span>닉네임을 최소 2글자 이상이어야 합니다.</span>
         <LabelTextInput
@@ -53,6 +63,7 @@ const SignUpForm = () => {
           type="email"
           value={signupData.email}
           handler={inputHandler}
+          required
         />
         <span>유효하지 않은 이메일 형식입니다.</span>
         <LabelTextInput
@@ -62,6 +73,7 @@ const SignUpForm = () => {
           type="password"
           value={signupData.password}
           handler={inputHandler}
+          required
         />
         <TextInput
           id="passwordConfirm"
@@ -69,11 +81,14 @@ const SignUpForm = () => {
           placeHolder="비밀번호 확인"
           value={signupData.passwordConfirm}
           handler={inputHandler}
+          required
         />
         <span>비밀번호 입력이 잘못되었습니다.</span>
-      </div>
+      </form>
       <div className={styles.buttonContainer}>
-        <button className={styles.signupButton}>회원가입</button>
+        <button form="signUp" className={styles.signupButton}>
+          회원가입
+        </button>
         <button className={styles.kakaoLoginButton}>
           <svg
             width="22"
@@ -135,7 +150,7 @@ const SignUpForm = () => {
           <span>Google 계정으로 로그인</span>
         </button>
       </div>
-    </div>
+    </article>
   );
 };
 
