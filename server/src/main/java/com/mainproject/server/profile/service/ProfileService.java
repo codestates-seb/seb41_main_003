@@ -3,6 +3,7 @@ package com.mainproject.server.profile.service;
 
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.ProfileStatus;
+import com.mainproject.server.constant.UserStatus;
 import com.mainproject.server.constant.WantedStatus;
 import com.mainproject.server.dto.PageResponseDto;
 import com.mainproject.server.exception.ServiceLogicException;
@@ -72,10 +73,14 @@ public class ProfileService {
     ) {
         User findUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ServiceLogicException(ErrorCode.USER_NOT_FOUND));
+        UserStatus userStatus = findUser.getUserStatus();
+        if (userStatus.equals(UserStatus.NONE)) {
+            throw new ServiceLogicException(ErrorCode.USER_TYPE_NOT_NONE);
+        }
         ProfileImage image = getBasicImage();
         profile.addUserImage(image);
         profile.setWantedStatus(WantedStatus.NONE);
-        profile.setProfileStatus(ProfileStatus.valueOf(findUser.getUserStatus().name()));
+        profile.setProfileStatus(ProfileStatus.valueOf(userStatus.name()));
         profile.addUser(findUser);
         createSubjectProfile(profile, subjectDtos);
         Profile save = profileRepository.save(profile);
@@ -117,21 +122,23 @@ public class ProfileService {
             Map<String, String> params,
             Pageable defaultPageable
     ) {
-        // Todo PropertyReferenceException 예외 처리
-        // Todo params subject 여러개 들어올수 있도록 수정
-        String sort = params.get("sort");
-        String subject = params.get("subject");
-        String name = params.get("name");
-        String key = params.get("key");
-        Pageable pageable = getCustomPageable(defaultPageable, sort);
-        Page<ProfileQueryDto> queryProfile = profileRepository.findQueryProfile(
-                key, subject, name, pageable
-        );
-        List<ProfileListResponseDto> dtoList = queryProfile.getContent()
-                .stream()
-                .map(ProfileListResponseDto::of)
-                .collect(Collectors.toList());
-        return PageResponseDto.of(dtoList, queryProfile);
+        try {
+            String sort = params.get("sort");
+            String[] subjects = params.get("subject").split(",");
+            String name = params.get("name");
+            String key = params.get("key");
+            Pageable pageable = getCustomPageable(defaultPageable, sort);
+            Page<ProfileQueryDto> queryProfile = profileRepository.findQueryProfile(
+                    key, subjects, name, pageable
+            );
+            List<ProfileListResponseDto> dtoList = queryProfile.getContent()
+                    .stream()
+                    .map(ProfileListResponseDto::of)
+                    .collect(Collectors.toList());
+            return PageResponseDto.of(dtoList, queryProfile);
+        } catch (PropertyReferenceException e) {
+            throw new ServiceLogicException(ErrorCode.WRONG_SORT_PROPERTY);
+        }
     }
 
 
@@ -144,22 +151,18 @@ public class ProfileService {
     }
 
     private static Pageable getCustomPageable(Pageable defaultPageable, String sort) {
-        try {
-            if (sort != null && sort.equals("rate")) {
-                return PageRequest.of(
-                        defaultPageable.getPageNumber(),
-                        defaultPageable.getPageSize(),
-                        Sort.by(Sort.Order.desc(sort))
-                );
-            } else {
-                return PageRequest.of(
-                        defaultPageable.getPageNumber(),
-                        defaultPageable.getPageSize(),
-                        defaultPageable.getSort()
-                );
-            }
-        } catch (PropertyReferenceException e) {
-            throw new ServiceLogicException(ErrorCode.WRONG_SORT_PROPERTY);
+        if (sort != null && sort.equals("rate")) {
+            return PageRequest.of(
+                    defaultPageable.getPageNumber(),
+                    defaultPageable.getPageSize(),
+                    Sort.by(Sort.Order.desc(sort))
+            );
+        } else {
+            return PageRequest.of(
+                    defaultPageable.getPageNumber(),
+                    defaultPageable.getPageSize(),
+                    defaultPageable.getSort()
+            );
         }
     }
 
