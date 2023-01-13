@@ -4,16 +4,13 @@
   width: 100%;
 }
 
-.background {
-  background-color: $snow;
-  max-width: 1048px;
-  margin: 0 auto;
-}
-
 .container {
   display: flex;
   justify-content: center;
-  margin-top: 16px;
+  padding-top: 16px;
+  background-color: $snow;
+  min-width: 1048px;
+  margin: 0 auto;
 }
 
 .modalText {

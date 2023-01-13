@@ -1,0 +1,30 @@
+@import url('../../default.css');
+
+.container {
+  display: flex;
+  width: 125px;
+  height: 75px;
+  margin-right: 16px;
+}
+
+.textContainer {
+  .font1 {
+    font-size: $font1;
+    font-weight: $font1W;
+  }
+
+  .font4 {
+    font-size: $font5;
+    font-weight: $font4W;
+  }
+
+  .flexContainer {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.iconButton {
+  margin-top: 25px;
+  margin-left: 15px;
+}

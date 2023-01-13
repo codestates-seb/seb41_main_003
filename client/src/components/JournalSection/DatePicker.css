@@ -1,0 +1,93 @@
+.react-datepicker {
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%), 0 1px 3px rgb(0 0 0 / 8%);
+  border: none !important;
+  border-radius: 5px;
+  padding: 15px 0;
+}
+
+/* 다음 달 */
+.react-datepicker__navigation-icon--next {
+  left: -18px;
+}
+
+/* 이전 달 */
+.react-datepicker__navigation-icon--previous {
+  right: -18px;
+}
+
+.react-datepicker__navigation {
+  align-items: center;
+  background: none;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  position: absolute;
+  top: 4px;
+  padding: 0;
+  border: none;
+  z-index: 1;
+  height: 52px;
+  width: 52px;
+  text-indent: -999em;
+  overflow: hidden;
+}
+
+/* 헤더 */
+.react-datepicker__header {
+  width: 302px;
+  height: 36px !important;
+  background-color: white !important;
+  border: none !important;
+  position: relative;
+  text-align: center;
+}
+
+/* 바디 */
+.react-datepicker__month {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 170px;
+  margin-top: 35px !important;
+}
+
+/* 날짜 라인 */
+.react-datepicker__week {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 19px;
+}
+
+/* 요일 영역 */
+.react-datepicker__day-name {
+  margin-top: 10px;
+  color: #7a7a7a !important;
+  width: 30px !important;
+}
+
+/* 날짜 영역 */
+.react-datepicker__day {
+  width: 30px !important;
+  font-size: 15px;
+  line-height: 14px !important;
+}
+
+/* 오늘 */
+.react-datepicker__day--today {
+  background-color: #999;
+  color: #2b2b2b;
+  margin-top: 4px;
+  padding: 5px;
+}
+
+.react-datepicker-wrapper {
+  width: 200px;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background-color: white !important;
+  color: #2b2b2b !important;
+}
