@@ -4,7 +4,6 @@ import com.mainproject.server.audit.Auditable;
 import com.mainproject.server.constant.LoginType;
 import com.mainproject.server.constant.UserStatus;
 import com.mainproject.server.profile.entity.Profile;
-import com.mainproject.server.review.entity.Review;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,7 +25,7 @@ public class User extends Auditable {
     @Setter
     private Long userId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @Setter
     private String email;
 
@@ -42,7 +41,7 @@ public class User extends Auditable {
     @Setter
     private String secondPassword;
 
-    @Column(nullable = true)
+    @Column(nullable = true, unique = true)
     @Setter
     private String phoneNumber;
 
