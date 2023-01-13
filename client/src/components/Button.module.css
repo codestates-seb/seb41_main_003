@@ -44,3 +44,30 @@
   color: black;
   border-radius: 5px;
 }
+
+.top {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: $night;
+  box-shadow: $buttonShadow;
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 3;
+
+  > span {
+    color: $snow;
+    font-size: $font5;
+    font-weight: $font5W;
+  }
+
+  > svg {
+    fill: $snow;
+    margin-bottom: 4px;
+  }
+}

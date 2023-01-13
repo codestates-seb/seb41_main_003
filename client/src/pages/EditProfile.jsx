@@ -3,6 +3,7 @@ import ChangeProfileContents from '../components/ChangeProfile/ChangeProfileCont
 import styles from './ChangeProfile.module.css';
 import { useState } from 'react';
 import { ConfirmModal } from '../components/Modal';
+import { ButtonTop } from '../components/Button';
 
 const tutorDummyState = {
   profile_id: 1,
@@ -77,6 +78,7 @@ const EditProfile = () => {
       {isConfirm && (
         <ConfirmModal text={confirmText} modalHandler={confirmHandler} />
       )}
+      <ButtonTop />
     </div>
   );
 };

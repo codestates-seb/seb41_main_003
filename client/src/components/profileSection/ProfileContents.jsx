@@ -1,13 +1,15 @@
 import styles from './ProfileContents.module.css';
 import PropTypes from 'prop-types';
 import { BlueSubject } from '../Subject.jsx';
-import { MdStar } from 'react-icons/md';
+import { MdStar, MdTextsms } from 'react-icons/md';
+import { useRef } from 'react';
 
 const ProfileContentsMDSTAR = () => {
   return <MdStar fill="#F0C24D" size="24px" />;
 };
 
 const ProfileContents = ({ user }) => {
+  const reviewRef = useRef(null);
   return (
     <div>
       {user.profile_status === 'TUTOR' ? (
@@ -53,7 +55,7 @@ const ProfileContents = ({ user }) => {
             <p className={styles.font4}>시범 과외 가능 여부</p>
             <p className={styles.paragragh}>{user.pre_tutoring}</p>
           </div>
-          <div className={styles.reviewContainer}>
+          <div className={styles.reviewContainer} ref={reviewRef}>
             <div className={styles.reviewTitleLine}>
               <p className={styles.font3}>후기</p>
               <p className={styles.font5}>총 {user.reviews.length}개의 후기</p>
@@ -119,6 +121,17 @@ const ProfileContents = ({ user }) => {
               })}
             </div>
           </div>
+          <button
+            className={styles.reviewBtn}
+            onClick={() =>
+              reviewRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+              })
+            }
+          >
+            과외 후기 <MdTextsms />
+          </button>
         </section>
       ) : (
         <section className={styles.container}>

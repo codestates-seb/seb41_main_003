@@ -3,6 +3,7 @@ import { useState, useCallback } from 'react';
 import { ProfileContents, MyProfileCard } from '../components/profileSection';
 import { ConfirmModal } from '../components/Modal.jsx';
 import DummyData from '../components/profileSection/DummyData';
+import { ButtonTop } from '../components/Button';
 
 const MyProfile = () => {
   const [user, setUser] = useState(DummyData);
@@ -39,18 +40,10 @@ const MyProfile = () => {
       </div>
       {isModalOpen && (
         <div className={styles.modalWrapper}>
-          <ConfirmModal
-            modalHandler={modaInnerHandler}
-            text={modalText.split('\n').map((line) => {
-              return (
-                <p key={line.id} className={styles.modalText}>
-                  {line}
-                </p>
-              );
-            })}
-          />
+          <ConfirmModal modalHandler={modaInnerHandler} text={modalText} />
         </div>
       )}
+      <ButtonTop />
     </div>
   );
 };
