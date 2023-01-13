@@ -47,7 +47,6 @@
 
     .pickerContainer {
       margin-right: 15px;
-      border: 1px solid red;
     }
 
     .titleContainer {
@@ -77,26 +76,29 @@
     .noticeArea {
       width: 484px;
       height: 120px;
-      background-color: $snow;
+
+      /* background-color: $snow; */
     }
 
     .scheduleArea {
       width: 488px;
       height: 388px;
-      background-color: $snow;
+
+      /* background-color: $snow; */
     }
 
     .homeworkContainer {
-      margin-top: 16px;
+      margin-top: 36px;
     }
   }
 
   .homeworkArea {
     width: 100%;
+    margin-top: 0;
 
     .checkBoxContainer {
       display: flex;
-      margin-bottom: 8px;
+      margin-bottom: 15px;
     }
 
     .homeworkBody {

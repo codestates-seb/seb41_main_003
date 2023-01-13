@@ -2,10 +2,11 @@ import styles from './JournalForm.module.css';
 import PropType from 'prop-types';
 import { ButtonSilver } from '../Button';
 import { CheckBox } from '../Input';
-import { useState } from 'react';
 import DropDown from './DropDown';
+import { useState } from 'react';
 
 const JournalForm = ({ user, setUser }) => {
+  const [isChecked, setIsChecked] = useState();
   const {
     dateNoticeTitle,
     startTime,
@@ -14,17 +15,16 @@ const JournalForm = ({ user, setUser }) => {
     noticeBody,
     Homeworks,
   } = user;
-  // const [isChecked, setIsChecked] = useState();
-  // const checkHandler = () => {
-  //   setIsChecked();
-  // };
+
+  const checkHandler = () => {
+    setIsChecked();
+  };
   return (
     <div className={styles.container}>
       <h1>과외 일지 </h1>
       <div className={styles.exitButton}>
         <ButtonSilver text="나가기" />
       </div>
-
       <div className={styles.journalContainer}>
         <section className={styles.upperPart}>
           <div className={styles.pickerContainer}>
@@ -58,7 +58,6 @@ const JournalForm = ({ user, setUser }) => {
               <label htmlFor="noticeBody">
                 <h4>과제 체크리스트</h4>
               </label>
-
               <div className={styles.homeworkArea}>
                 {Homeworks.map((el) => {
                   return (
@@ -67,11 +66,7 @@ const JournalForm = ({ user, setUser }) => {
                       className={styles.checkBoxContainer}
                     >
                       <CheckBox value={el.HomeworkStatus} />
-                      <p className={styles.homeworkBody}>
-                        내용:{el.homeworkBody}
-                      </p>
-                      <p>....Id:{el.homeworkId}</p>
-                      <p>....T/F?:{el.HomeworkStatus}</p>
+                      <p className={styles.homeworkBody}>{el.homeworkBody}</p>
                     </div>
                   );
                 })}

@@ -17,6 +17,7 @@ const EditJournalForm = ({ user, setUser, confirmHandler }) => {
     Homeworks,
   } = user;
 
+  console.log(user, '자식 컴포넌트');
   const inputHandler = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
@@ -48,7 +49,7 @@ const EditJournalForm = ({ user, setUser, confirmHandler }) => {
           <ButtonNightBlue text="작성 완료" buttonHandler={blueButtonHandler} />
         </div>
         <section className={styles.upperPart}>
-          <DatePickerForm />
+          <DatePickerForm setUser={setUser} user={user} />
           <div className={styles.upperGoal}>
             <div className={styles.titleContainer}>
               <label htmlFor="dateNoticeTitle">
@@ -84,7 +85,6 @@ const EditJournalForm = ({ user, setUser, confirmHandler }) => {
               <label htmlFor="noticeBody">
                 <h4>과제 체크리스트</h4>
               </label>
-
               <div className={styles.homeworkArea}>
                 {Homeworks.map((el) => {
                   return (
@@ -98,10 +98,8 @@ const EditJournalForm = ({ user, setUser, confirmHandler }) => {
                         value={el.HomeworkStatus}
                       />
                       <div className={styles.homeworkBody}>
-                        내용::{el.homeworkBody}
+                        {el.homeworkBody}
                       </div>
-                      <div>....Id:{el.homeworkId}</div>
-                      <div>....T/F{el.HomeworkStatus}</div>
                     </div>
                   );
                 })}
@@ -110,7 +108,7 @@ const EditJournalForm = ({ user, setUser, confirmHandler }) => {
                   <input
                     onChange={homeworkInputHandler}
                     placeholder="과제를 입력하세요"
-                  ></input>
+                  />
                 </div>
               </div>
             </div>
