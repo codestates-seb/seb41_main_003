@@ -74,7 +74,7 @@ public class Tutoring extends Auditable {
     }
 
     public void addTutee(Profile tutee) {
-        setTutor(tutee);
+        setTutee(tutee);
     }
 
 }
