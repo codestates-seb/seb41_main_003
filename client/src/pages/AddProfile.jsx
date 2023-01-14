@@ -88,12 +88,6 @@ const AddProfile = () => {
         <ConfirmModal text={confirmSubmitText} modalHandler={confirmHandler} />
       )}
       <ButtonTop />
-      {isRequired && (
-        <AlertModal
-          text="필수 입력 사항을 모두 작성해주세요."
-          modalHandler={() => setIsRequired(!isRequired)}
-        />
-      )}
       {isDraft && (
         <ConfirmModal text={confirmDraftText} modalHandler={draftHandler} />
       )}
