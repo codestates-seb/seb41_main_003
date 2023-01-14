@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.mainproject.server.constant.ErrorCode;
+import com.mainproject.server.constant.ImageProperty;
 import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.image.entity.ProfileImage;
 import com.mainproject.server.image.repository.ImageRepository;
@@ -35,8 +36,6 @@ public class ImageService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    private String dirName = "profile_image";
-
     private final ImageRepository imageRepository;
 
     private final AmazonS3 amazonS3;
@@ -59,7 +58,7 @@ public class ImageService {
         Profile findProfile = profileService.verifiedProfileById(profileId);
         ProfileImage profileImage = findProfile.getProfileImage();
         String fileName = profileImage.getFileName();
-        if (!fileName.equals("basic")) {
+        if (!fileName.equals(ImageProperty.BASIC_IMAGE_FILE_NAME.getName())) {
             deleteS3(profileImage.getFileName());
         }
         imageRepository.deleteById(profileImage.getProfileImageId());
@@ -117,7 +116,9 @@ public class ImageService {
         for (MultipartFile file : multipartFile) {
             File uploadFile = convert(file)
                     .orElseThrow(() -> new ServiceLogicException(ErrorCode.FILE_CONVERT_ERROR));
-            ProfileImage fileEntity = upload(uploadFile, dirName);
+            ProfileImage fileEntity = upload(
+                    uploadFile,
+                    ImageProperty.BASIC_IMAGE_DIR_NAME.getName());
             ProfileImage save = imageRepository.save(fileEntity);
             list.add(fileEntity);
             findProfile.addUserImage(save);

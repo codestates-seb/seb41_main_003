@@ -1,10 +1,7 @@
 package com.mainproject.server.profile.service;
 
 
-import com.mainproject.server.constant.ErrorCode;
-import com.mainproject.server.constant.ProfileStatus;
-import com.mainproject.server.constant.UserStatus;
-import com.mainproject.server.constant.WantedStatus;
+import com.mainproject.server.constant.*;
 import com.mainproject.server.dto.PageResponseDto;
 import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.image.entity.ProfileImage;
@@ -211,7 +208,7 @@ public class ProfileService {
 
     private ProfileImage getBasicImage() {
         return ProfileImage.builder()
-                .fileName("basic")
+                .fileName(ImageProperty.BASIC_IMAGE_FILE_NAME.name())
                 .url("https://image-test-suyoung.s3.ap-northeast-2.amazonaws.com/image/user.png")
                 .build();
     }
