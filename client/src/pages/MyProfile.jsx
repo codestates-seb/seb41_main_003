@@ -20,9 +20,9 @@ const MyProfile = () => {
     }
   };
 
-  // const modalOpenOnHandler = useCallback(() => {
-  //   setIsModalOpen((prev) => !prev);
-  // }, []);
+  const modalOpenOnHandler = useCallback(() => {
+    setIsModalOpen((prev) => !prev);
+  }, []);
 
   const modalText = `공고 상태를 변경하시겠습니까?`;
 
@@ -34,6 +34,7 @@ const MyProfile = () => {
           isAnnounceOn={isAnnounceOn}
           setIsAnnounceOn={setIsAnnounceOn}
           setIsModalOpen={setIsModalOpen}
+          modalOpenOnHandler={modalOpenOnHandler}
         />
         <ProfileContents user={user} />
       </div>

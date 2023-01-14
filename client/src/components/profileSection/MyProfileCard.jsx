@@ -7,12 +7,7 @@ import defaultUser from '../../assets/defaultUser.png';
 import { MdStar } from 'react-icons/md';
 import Toggle from './Toggle';
 
-const MyProfileCard = ({
-  user,
-  isAnnounceOn,
-  setIsAnnounceOn,
-  setIsModalOpen,
-}) => {
+const MyProfileCard = ({ user, isAnnounceOn, modalOpenOnHandler }) => {
   return (
     <div className={styles.cardContainer}>
       <img alt="user img" src={defaultUser} />
@@ -80,6 +75,8 @@ MyProfileCard.propTypes = {
   isAnnounceOn: PropTypes.string,
   modalOpenOnHandler: PropTypes.func,
   user: PropTypes.object,
+  setIsAnnounceOn: PropTypes.func,
+  setIsModalOpen: PropTypes.func,
 };
 
 export default MyProfileCard;
