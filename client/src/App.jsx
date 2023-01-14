@@ -17,11 +17,11 @@ import MyProfile from './pages/MyProfile';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import TestPage from './pages/TestPage';
-import ModalTestPage from './pages/ModalTestPage';
 import AdminModal from './components/AdminModal';
 import EditJournal from './pages/EditJournal';
 import Journal from './pages/Journal';
 import { useState } from 'react';
+import { GlobalModal } from './components/Modal';
 
 const App = () => {
   const [isOpenAdminModal, setIsOpenAdminModal] = useState(false);
@@ -55,8 +55,9 @@ const App = () => {
             <AdminModal setIsOpenAdminModal={setIsOpenAdminModal} />
           )}
         </div>
-        <Footer />
       </Router>
+      <Footer />
+      <GlobalModal />
     </div>
   );
 };
