@@ -4,6 +4,8 @@ import styles from './ChangeProfileCard.module.css';
 import { MdMode } from 'react-icons/md';
 import PropType from 'prop-types';
 import SubjectsButtons from './SubjectsButtons';
+import ModalState from '../../recoil/modal.js';
+import { useSetRecoilState } from 'recoil';
 
 const ChangeProfileCard = ({
   isNew = true,
@@ -13,6 +15,14 @@ const ChangeProfileCard = ({
   setIsRequired,
 }) => {
   const { name, bio, school, subjects, profileStatus } = user;
+
+  const setModal = useSetRecoilState(ModalState);
+
+  const requiredProps = {
+    isOpen: true,
+    modalType: 'alert',
+    props: { text: '필수 입력 사항을 모두 작성해주세요.' },
+  };
 
   const subjectTitles = subjects.map((obj) => obj.subjectTitle);
 
@@ -25,7 +35,7 @@ const ChangeProfileCard = ({
     e.preventDefault();
     const { way, gender, pay, wantDate } = user;
     if (!(way && gender && pay && wantDate)) {
-      setIsRequired((prev) => !prev);
+      setModal(requiredProps);
     } else {
       setIsConfirm((prev) => !prev);
     }
