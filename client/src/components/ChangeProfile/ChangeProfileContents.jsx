@@ -3,11 +3,11 @@ import TutorContents from './TutorContents';
 import TuteeContents from './TuteeContents';
 
 const ChangeProfileContents = ({ user, setUser }) => {
-  const { profile_status } = user;
+  const { profileStatus } = user;
 
   return (
     <>
-      {profile_status === 'TUTOR' ? (
+      {profileStatus === 'TUTOR' ? (
         <TutorContents user={user} setUser={setUser} />
       ) : (
         <TuteeContents user={user} setUser={setUser} />

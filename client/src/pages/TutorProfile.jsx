@@ -3,6 +3,7 @@ import { useState, useCallback } from 'react';
 import { ProfileContents, ProfileCard } from '../components/profileSection';
 import { ConfirmModal } from '../components/Modal.jsx';
 import DummyData from '../components/profileSection/DummyData';
+import { ButtonTop } from '../components/Button';
 
 const TutorProfile = () => {
   const [isQuesModalOpen, setIsQuesModalOpen] = useState(false);
@@ -45,6 +46,7 @@ const TutorProfile = () => {
           />
         </div>
       )}
+      <ButtonTop />
     </div>
   );
 };

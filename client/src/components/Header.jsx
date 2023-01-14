@@ -2,9 +2,10 @@ import styles from './Header.module.css';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { MdNotifications } from 'react-icons/md';
+import { ButtonRed } from './Button';
 
 const Header = () => {
-  const [isLogin, setisLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
   const [isMenu, setIsMenu] = useState(false);
   const [isNoti, setIsNoti] = useState(false);
   return (
@@ -97,6 +98,10 @@ const Header = () => {
           </ul>
         </div>
       )}
+      <ButtonRed
+        text="⚠로그인 상태 변경"
+        buttonHandler={() => setIsLogin(!isLogin)}
+      />
     </header>
   );
 };

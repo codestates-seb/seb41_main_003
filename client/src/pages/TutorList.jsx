@@ -1,10 +1,11 @@
 import FeedItem from '../components/MainSection/FeedItem';
 import styles from '../pages/TutorList.module.css';
 import { MdSearch, MdFilterList } from 'react-icons/md';
-import defaultUser from '../assets/defaultUser.png';
 import { useState } from 'react';
 import FilterDropdown from '../components/MainSection/FilterDropdown';
 import { Link } from 'react-router-dom';
+import { ButtonTop } from '../components/Button';
+import MenuButtons from '../components/MainSection/FilterButton';
 
 const TutorListData = [
   {
@@ -25,7 +26,7 @@ const TutorListData = [
     bio: '대치동 원탑 수학 머신',
     profileImage: {
       profileImageId: 1,
-      url: defaultUser,
+      url: 'http://localhost:3000',
       createAt: '2023-01-10T11:07:29.0853286',
       updateAt: '2023-01-10T11:07:29.0853286',
     },
@@ -54,7 +55,7 @@ const TutorListData = [
     bio: '칸트 친구로 일 분 일 초를 낭비하는 것을 싫어하는 편입니다.',
     profileImage: {
       profileImageId: 1,
-      url: defaultUser,
+      url: 'http://localhost:3000',
       createAt: '2023-01-10T11:07:29.0853286',
       updateAt: '2023-01-10T11:07:29.0853286',
     },
@@ -75,7 +76,7 @@ const TutorListData = [
     bio: '센프란시스코 빌딩 건물주',
     profileImage: {
       profileImageId: 1,
-      url: defaultUser,
+      url: 'http://localhost:3000',
       createAt: '2023-01-10T11:07:29.0853286',
       updateAt: '2023-01-10T11:07:29.0853286',
     },
@@ -96,7 +97,7 @@ const TutorListData = [
     bio: 'Hallo! Wie geht es Ihnen?',
     profileImage: {
       profileImageId: 1,
-      url: defaultUser,
+      url: 'http://localhost:3000',
       createAt: '2023-01-10T11:07:29.0853286',
       updateAt: '2023-01-10T11:07:29.0853286',
     },
@@ -117,7 +118,7 @@ const TutorListData = [
     bio: '주인공이 되는 방법을 알려드립니다!',
     profileImage: {
       profileImageId: 1,
-      url: defaultUser,
+      url: 'http://localhost:3000',
       createAt: '2023-01-10T11:07:29.0853286',
       updateAt: '2023-01-10T11:07:29.0853286',
     },
@@ -138,7 +139,7 @@ const TutorListData = [
     bio: '한국어를 배우기 위해 고군분투했던 나날들을 경험삼아 가르칩니다!',
     profileImage: {
       profileImageId: 1,
-      url: defaultUser,
+      url: 'http://localhost:3000',
       createAt: '2023-01-10T11:07:29.0853286',
       updateAt: '2023-01-10T11:07:29.0853286',
     },
@@ -183,85 +184,7 @@ const TutorList = () => {
           </div>
         </div>
         <div className={styles.menuContainer}>
-          <div className={styles.menu}>
-            <button
-              value="국어"
-              className={
-                isClicked.includes('국어')
-                  ? styles.activeMenu
-                  : styles.defaultMenu
-              }
-              onClick={clickHandler}
-            >
-              국어
-            </button>
-            <button
-              value="수학"
-              className={
-                isClicked.includes('수학')
-                  ? styles.activeMenu
-                  : styles.defaultMenu
-              }
-              onClick={clickHandler}
-            >
-              수학
-            </button>
-            <button
-              value="사회"
-              className={
-                isClicked.includes('사회')
-                  ? styles.activeMenu
-                  : styles.defaultMenu
-              }
-              onClick={clickHandler}
-            >
-              사회
-            </button>
-            <button
-              value="과학"
-              className={
-                isClicked.includes('과학')
-                  ? styles.activeMenu
-                  : styles.defaultMenu
-              }
-              onClick={clickHandler}
-            >
-              과학
-            </button>
-            <button
-              value="영어"
-              className={
-                isClicked.includes('영어')
-                  ? styles.activeMenu
-                  : styles.defaultMenu
-              }
-              onClick={clickHandler}
-            >
-              영어
-            </button>
-            <button
-              value="자격증"
-              className={
-                isClicked.includes('자격증')
-                  ? styles.activeMenu
-                  : styles.defaultMenu
-              }
-              onClick={clickHandler}
-            >
-              자격증
-            </button>
-            <button
-              value="기타"
-              className={
-                isClicked.includes('기타')
-                  ? styles.activeMenu
-                  : styles.defaultMenu
-              }
-              onClick={clickHandler}
-            >
-              기타
-            </button>
-          </div>
+          <MenuButtons isClicked={isClicked} clickHandler={clickHandler} />
           <div
             className={styles.filter}
             onClick={filterHandler}
@@ -273,21 +196,19 @@ const TutorList = () => {
           </div>
         </div>
         <div className={styles.feedContainer}>
-          {TutorListData.map((el) => (
-            <Link to="" key={el.profileId} className={styles.list}>
-              <FeedItem
-                name={el.name}
-                userStatus="TUTOR"
-                school={el.school}
-                rate={el.rate}
-                subjects={el.subjects}
-                bio={el.bio}
-                img={el.profileImage.url}
-              />
+          {TutorListData.map((tutor) => (
+            <Link
+              // ! 프로필 ID 기준으로 링크 변경 필요
+              to="/tutorprofile"
+              key={tutor.profileId}
+              className={styles.list}
+            >
+              <FeedItem data={tutor} userStatus="TUTOR" />
             </Link>
           ))}
         </div>
       </div>
+      <ButtonTop />
     </div>
   );
 };

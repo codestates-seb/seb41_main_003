@@ -6,26 +6,45 @@
   justify-content: space-between;
   align-items: center;
   width: 520px;
-  height: 724px;
   background-color: $white;
   margin-top: 80px;
   margin-bottom: 80px;
   border-radius: 5px;
   box-shadow: 0 24px 38px 3px rgb(0 0 0 / 14%);
+}
 
-  > button:last-of-type {
-    padding: 8px 103px;
-    margin-bottom: 36px;
-  }
+.required {
+  align-self: flex-end;
+  margin-top: 16px;
+  margin-right: 90px;
+  font-size: $sub;
+  font-weight: 500;
+}
+
+.requiredIcon {
+  position: relative;
+  top: -4px;
+  margin: 0 4px;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: $red;
 }
 
 .userStatusBox {
   display: flex;
+  padding-left: 4px;
 
   > span {
     font-size: $font6;
     font-weight: $font6W;
     margin-right: 17px;
+    padding-top: 4px;
+  }
+
+  label {
+    cursor: pointer;
   }
 }
 
@@ -57,6 +76,11 @@
     font-weight: $subW;
     color: $black;
   }
+
+  > button:last-of-type {
+    padding: 8px 103px;
+    margin-bottom: 36px;
+  }
 }
 
 .userInfoText {
@@ -69,18 +93,20 @@
   display: flex;
   flex-direction: column;
   width: 316px;
-  height: 44px;
   margin-top: 14px;
+  padding-bottom: 14px;
 
   > span:first-of-type {
     font-size: $font6;
     font-weight: $font6W;
+    padding-left: 4px;
   }
 
   > span:last-of-type {
     font-size: $para;
-    font-weight: $para;
-    margin-top: 4px;
+    font-weight: $paraW;
+    margin-top: 8px;
+    padding-left: 8px;
   }
 }
 

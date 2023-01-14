@@ -2,11 +2,14 @@ import styles from './FeedItem.module.css';
 import PropTypes from 'prop-types';
 import { BlueSubject } from '../Subject';
 import { MdStar, MdStarHalf, MdStarOutline } from 'react-icons/md';
+import defaultUser from '../../assets/defaultUser.png';
 
-const FeedItem = ({ name, userStatus, school, bio, subjects, rate, img }) => {
+const FeedItem = ({ data, userStatus }) => {
+  const { name, school, bio, subjects, rate, img } = data;
   return (
     <div className={styles.container}>
-      <img className={styles.img} alt="프로필 이미지" src={img} />
+      {/* //! 프로필 이미지 주소 변경해야 함 */}
+      <img className={styles.img} alt="프로필 이미지" src={defaultUser} />
       <div className={styles.nameAndStars}>
         <div className={styles.name}>
           {userStatus === 'TUTOR' ? `${name} 튜터` : `${name} 튜티`}
@@ -56,13 +59,8 @@ const FeedItem = ({ name, userStatus, school, bio, subjects, rate, img }) => {
 };
 
 FeedItem.propTypes = {
-  name: PropTypes.string,
+  data: PropTypes.object,
   userStatus: PropTypes.string,
-  bio: PropTypes.string,
-  school: PropTypes.string,
-  subjects: PropTypes.array,
-  rate: PropTypes.number,
-  img: PropTypes.string,
 };
 
 export default FeedItem;

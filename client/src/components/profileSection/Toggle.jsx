@@ -1,22 +1,33 @@
 import styles from './Toggle.module.css';
 import PropTypes from 'prop-types';
-const Toggle = ({ setIsModalOpen, setIsAnnounceOn }) => {
+
+const Toggle = ({ modalOpenOnHandler, isAnnounceOn }) => {
   return (
     <div className={styles.toggleSwitch}>
-      <label>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          modalOpenOnHandler();
+        }}
+      >
         <input
+          className={styles.checkbox}
           type="checkbox"
-          onClick={() => {
-            setIsModalOpen((prev) => !prev), setIsAnnounceOn((prev) => prev);
-          }}
+          defaultChecked={isAnnounceOn === 'REQUEST' ? true : false}
         />
-        <span className={styles.slider}></span>
-      </label>
+        <span
+          className={`${styles.slider} ${
+            isAnnounceOn === 'REQUEST' ? '' : styles.unActive
+          }`}
+        ></span>
+      </button>
     </div>
   );
 };
+
 Toggle.propTypes = {
-  setIsModalOpen: PropTypes.func,
-  setIsAnnounceOn: PropTypes.func,
+  modalOpenOnHandler: PropTypes.func,
+  isAnnounceOn: PropTypes.string,
 };
+
 export default Toggle;

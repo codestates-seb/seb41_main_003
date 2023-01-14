@@ -10,6 +10,7 @@
   justify-content: space-between;
   margin-bottom: 32px;
   background-color: $white;
+  position: relative;
 
   > div {
     margin-bottom: 32px;
@@ -102,4 +103,29 @@
 .stars {
   margin: 0 8px;
   display: flex;
+  align-items: center;
+
+  > svg {
+    fill: #f0c24d;
+    font-size: 24px;
+  }
+}
+
+.reviewBtn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background-color: $ocean;
+  border-radius: 5px;
+  color: $snow;
+  font-size: $font5;
+  font-weight: $font5W;
+  padding: 6px 12px;
+  box-shadow: $buttonShadow;
+
+  > svg {
+    font-size: 22px;
+    fill: $snow;
+    vertical-align: text-bottom;
+  }
 }

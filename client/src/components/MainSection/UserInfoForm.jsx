@@ -22,6 +22,7 @@ const UserInfoForm = () => {
   const [userInfoData, setUserInfoData] = useState(initialUserInfo);
   const [userStatus, setUserStatus] = useState('');
   const [confirmPassword, setConfirmPassword] = useState(false);
+  const [secondConfirmPassword, setSecondConfirmPassword] = useState(false);
 
   const inputHandler = (e) => {
     const { id, value } = e.target;
@@ -32,7 +33,7 @@ const UserInfoForm = () => {
     setUserStatus(e.target.value);
   };
 
-  //비밀번호와 비밀번호 확인 체크하는 핸들러 함수
+  //* 비밀번호와 비밀번호 확인 체크하는 핸들러 함수
   const confirmHandler = () => {
     if (userInfoData.password === userInfoData.passwordConfirm) {
       console.log('같은데!');
@@ -41,17 +42,42 @@ const UserInfoForm = () => {
       console.log('다른데!');
       setConfirmPassword(false);
     }
+
+    if (userInfoData.secondPasswordConfirm === userInfoData.secondPassword) {
+      console.log('2차도 같은데!');
+      setSecondConfirmPassword(true);
+    } else {
+      console.log('2차도 다른데!');
+      setSecondConfirmPassword(false);
+    }
   };
 
-  //2차 비밀번호까지 확인하려면 다른 방법을 사용해야 할 것 같기도 함...
+  //* 비밀번호 확인용 핸들러
   useEffect(() => {
     confirmHandler();
   }, [userInfoData.passwordConfirm, userInfoData.password]);
 
+  useEffect(() => {
+    confirmHandler();
+  }, [userInfoData.secondPasswordConfirm, userInfoData.secondPassword]);
+
+  // TODO : submit API 연결 필요
+  const submitHandler = (e) => {
+    e.preventDefault();
+    console.log('submit!');
+  };
+
   return (
-    <div className={styles.userInfoContainer}>
-      <span className={styles.userInfoText}>회원 정보 수정</span>
-      <div className={styles.inputArea}>
+    <article className={styles.userInfoContainer}>
+      <h2 className={styles.userInfoText}>회원 정보 수정</h2>
+      <span className={styles.required}>
+        <span className={styles.requiredIcon} />은 필수 입력 사항입니다.
+      </span>
+      <form
+        id="editUserInfo"
+        onSubmit={submitHandler}
+        className={styles.inputArea}
+      >
         <LabelTextInput
           id="nickName"
           name="닉네임"
@@ -59,6 +85,7 @@ const UserInfoForm = () => {
           type="text"
           value={userInfoData.nickName}
           handler={inputHandler}
+          required
         />
         <span>닉네임은 최소 2글자 이상이어야 합니다.</span>
         <div className={styles.emailBox}>
@@ -72,6 +99,7 @@ const UserInfoForm = () => {
           type="password"
           value={userInfoData.password}
           handler={inputHandler}
+          required
         />
         <TextInput
           id="passwordConfirm"
@@ -88,11 +116,15 @@ const UserInfoForm = () => {
           type="tel"
           value={userInfoData.phoneNumner}
           handler={inputHandler}
+          required
         />
         <span>올바르지 않은 형식입니다.</span>
 
         <div className={styles.userStatusBox}>
-          <span className={styles.userType}>유저 타입</span>
+          <span className={styles.userType}>
+            유저 타입
+            <span className={styles.requiredIcon} />
+          </span>
           <div className={styles.radioBox}>
             <label
               className={
@@ -105,7 +137,7 @@ const UserInfoForm = () => {
                 checked={userStatus === '튜터'}
                 onChange={radioHandler}
                 className={styles.radioButton}
-              ></input>
+              />
               튜터
             </label>
             <label
@@ -133,6 +165,7 @@ const UserInfoForm = () => {
           type="password"
           value={userInfoData.secondPassword}
           handler={inputHandler}
+          required
         />
         <TextInput
           id="secondPasswordConfirm"
@@ -140,11 +173,12 @@ const UserInfoForm = () => {
           placeHolder="2차 비밀번호 확인"
           value={userInfoData.secondPasswordConfirm}
           handler={inputHandler}
+          required
         />
         <span>2차 비밀번호는 프로필 관리에 사용됩니다.</span>
-      </div>
-      <ButtonNightBlue text="수정 완료" />
-    </div>
+        <ButtonNightBlue text="수정 완료" form="editUserInfo" />
+      </form>
+    </article>
   );
 };
 

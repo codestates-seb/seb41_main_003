@@ -3,15 +3,16 @@ import { useState, useCallback } from 'react';
 import { ProfileContents, MyProfileCard } from '../components/profileSection';
 import { ConfirmModal } from '../components/Modal.jsx';
 import DummyData from '../components/profileSection/DummyData';
+import { ButtonTop } from '../components/Button';
 
 const MyProfile = () => {
   const [user, setUser] = useState(DummyData);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isAnnounceOn, setIsAnnounceOn] = useState(DummyData.wanted_status);
+  const [isAnnounceOn, setIsAnnounceOn] = useState(DummyData.wantedStatus);
 
   const modaInnerHandler = (e) => {
     if (e.target.name === 'yes') {
-      setIsAnnounceOn((prev) => !prev);
+      setIsAnnounceOn((prev) => (prev === 'REQUEST' ? 'NONE' : 'REQUEST'));
       setIsModalOpen((prev) => !prev);
       //TODO:바뀐 유저의 공고 상태를 서버에 전송 해야함
     } else {
@@ -38,18 +39,10 @@ const MyProfile = () => {
       </div>
       {isModalOpen && (
         <div className={styles.modalWrapper}>
-          <ConfirmModal
-            modalHandler={modaInnerHandler}
-            text={modalText.split('\n').map((line) => {
-              return (
-                <p key={line.id} className={styles.modalText}>
-                  {line}
-                </p>
-              );
-            })}
-          />
+          <ConfirmModal modalHandler={modaInnerHandler} text={modalText} />
         </div>
       )}
+      <ButtonTop />
     </div>
   );
 };

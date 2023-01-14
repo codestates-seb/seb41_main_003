@@ -8,6 +8,25 @@
   box-shadow: $bigShadow;
 }
 
+.required {
+  display: block;
+  text-align: right;
+  margin-top: 16px;
+  font-size: $sub;
+  font-weight: 500;
+}
+
+.requiredIcon {
+  position: relative;
+  top: -4px;
+  margin: 0 8px;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: $red;
+}
+
 .userImage {
   position: relative;
   width: 264px;

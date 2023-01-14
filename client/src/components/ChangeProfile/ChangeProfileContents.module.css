@@ -8,6 +8,28 @@
   box-shadow: $bigShadow;
 }
 
+.required {
+  display: block;
+  height: 8px;
+  text-align: right;
+  margin-top: 4px;
+  margin-left: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: $red;
+}
+
+.requiredIcon {
+  position: relative;
+  top: -10px;
+  margin: 0 4px;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: $red;
+}
+
 .inputContainer {
   margin-bottom: 24px;
 
@@ -24,6 +46,7 @@
 
   > .textareaContainer {
     display: flex;
+    flex-direction: column;
     align-items: stretch;
     height: auto;
     min-height: 80px;

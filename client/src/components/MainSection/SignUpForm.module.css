@@ -6,12 +6,30 @@
   justify-content: space-between;
   align-items: center;
   width: 344px;
-  height: 590px;
   background-color: $white;
   margin-top: 80px;
   margin-bottom: 80px;
   border-radius: 5px;
   box-shadow: 0 24px 38px 3px rgb(0 0 0 / 14%);
+}
+
+.required {
+  align-self: flex-end;
+  margin-top: 16px;
+  margin-right: 24px;
+  font-size: $sub;
+  font-weight: 500;
+
+  .requiredIcon {
+    position: relative;
+    top: -4px;
+    margin-right: 4px;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: $red;
+  }
 }
 
 .inputArea {
