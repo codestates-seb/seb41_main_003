@@ -1,6 +1,7 @@
 package com.mainproject.server.message.entity;
 
 import com.mainproject.server.audit.Auditable;
+import com.mainproject.server.constant.MessageStatus;
 import com.mainproject.server.profile.entity.Profile;
 import lombok.*;
 
@@ -46,6 +47,7 @@ public class Message extends Auditable {
     public void addMessageRoom(MessageRoom messageRoom) {
         setMessageRoom(messageRoom);
         messageRoom.addMessage(this);
+        messageRoom.setMessageStatus(MessageStatus.UNCHECK);
     }
 
     public void addSender (Profile sender) {
@@ -53,7 +55,7 @@ public class Message extends Auditable {
         this.senderName = sender.getName();
     }
 
-    public void addReceiver (Profile tuteeProfile) {
+    public void addReceiver (Profile receiver) {
         setReceiver(receiver);
         this.receiverName = receiver.getName();
     }

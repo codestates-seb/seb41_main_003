@@ -5,16 +5,13 @@
   background-color: $snow;
 }
 
-.background {
-  max-width: 1048px;
-  margin: 0 auto;
-  padding-top: 16px;
-}
-
 .container {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  padding-top: 16px;
+  background-color: $snow;
+  min-width: 1048px;
+  margin: 0 auto;
 }
 
 .modalText {

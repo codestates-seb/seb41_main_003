@@ -20,24 +20,22 @@ const MyProfile = () => {
     }
   };
 
-  const modalOpenOnHandler = useCallback(() => {
-    setIsModalOpen((prev) => !prev);
-  }, []);
+  // const modalOpenOnHandler = useCallback(() => {
+  //   setIsModalOpen((prev) => !prev);
+  // }, []);
 
-  let modalText = `공고 상태를 변경하시겠습니까?`;
+  const modalText = `공고 상태를 변경하시겠습니까?`;
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.background}>
-        <div className={styles.container}>
-          <MyProfileCard
-            user={user}
-            isAnnounceOn={isAnnounceOn}
-            setIsAnnounceOn={setIsAnnounceOn}
-            modalOpenOnHandler={modalOpenOnHandler}
-          />
-          <ProfileContents user={user} />
-        </div>
+      <div className={styles.container}>
+        <MyProfileCard
+          user={user}
+          isAnnounceOn={isAnnounceOn}
+          setIsAnnounceOn={setIsAnnounceOn}
+          setIsModalOpen={setIsModalOpen}
+        />
+        <ProfileContents user={user} />
       </div>
       {isModalOpen && (
         <div className={styles.modalWrapper}>

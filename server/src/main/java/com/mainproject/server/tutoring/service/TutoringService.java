@@ -1,12 +1,18 @@
 package com.mainproject.server.tutoring.service;
 
 import com.mainproject.server.constant.ErrorCode;
+import com.mainproject.server.constant.ProfileStatus;
 import com.mainproject.server.constant.TutoringStatus;
 import com.mainproject.server.exception.ServiceLogicException;
+import com.mainproject.server.message.entity.MessageRoom;
+import com.mainproject.server.message.service.MessageService;
 import com.mainproject.server.profile.entity.Profile;
+import com.mainproject.server.profile.service.ProfileService;
+import com.mainproject.server.tutoring.dto.TutoringDto;
 import com.mainproject.server.tutoring.entity.Tutoring;
 import com.mainproject.server.tutoring.repository.TutoringRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,68 +23,71 @@ import java.util.Optional;
 @Transactional
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TutoringService {
     private final TutoringRepository tutoringRepository;
+    private final ProfileService profileService;
 
-    // Todo: ProfileService find Id -> Profile 찾아오기
-    public Tutoring createTutoring(Tutoring tutoring, Long tutorId, Long tuteeId, Long profileId) {
-        tutoring.addTutor(new Profile());
-        tutoring.addTutee(new Profile());
+    private final MessageService messageService;
 
-        tutoring.setTutoringStatus(findTutoringStatus(profileId));
-
-        return tutoringRepository.save(tutoring);
+    public Tutoring createTutoring(Tutoring tutoring, Long profileId, Long messageRoomId) {
+        tutoring.setTutoringStatus(getTutoringStatus(profileId));
+        Profile tutor = profileService.verifiedProfileById(tutoring.getTutor().getProfileId());
+        Profile tutee = profileService.verifiedProfileById(tutoring.getTutee().getProfileId());
+        tutoring.addTutor(tutor);
+        tutoring.addTutee(tutee);
+        Tutoring save = tutoringRepository.save(tutoring);
+        MessageRoom messageRoom = messageService.updateMessageRoom(messageRoomId, save.getTutoringId());
+        messageService.sendMessage(profileId, messageRoom, tutor, tutee);
+        return save;
     }
 
-    public Page<Tutoring> findAllTutoring(Long profileId, Pageable pageable) {
+    public Page<Tutoring> getAllTutoring(Long profileId, Pageable pageable) {
         Page<Tutoring> tutorings = tutoringRepository.findAllByTutorProfileIdOrTuteeProfileId(profileId, profileId, pageable);
         return tutorings;
     }
 
-    public Tutoring findTutoring(Long tutoringId) {
-        return findVerifiedTutoring(tutoringId);
+    public TutoringDto getTutoring(Long tutoringId, Pageable pageable) {
+        return TutoringDto.of(verifiedTutoring(tutoringId),pageable);
     }
 
-    public Tutoring updateTutoring(Tutoring tutoring) {
-        Tutoring findTutoring = findVerifiedTutoring(tutoring.getTutoringId());
+    public TutoringDto updateTutoring(Tutoring tutoring, Pageable pageable) {
+        Tutoring findTutoring = verifiedTutoring(tutoring.getTutoringId());
 
         Optional.ofNullable(tutoring.getTutoringTitle())
                 .ifPresent(findTutoring::setTutoringTitle);
         Optional.ofNullable(tutoring.getTutoringStatus())
                 .ifPresent(findTutoring::setTutoringStatus);
 
-        return tutoringRepository.save(findTutoring);
+        return TutoringDto.of(tutoringRepository.save(findTutoring), pageable);
     }
 
     public void deleteTutoring(Long tutoringId) {
-        Tutoring findTutoring = findVerifiedTutoring(tutoringId);
+        Tutoring findTutoring = verifiedTutoring(tutoringId);
 
         tutoringRepository.delete(findTutoring);
     }
 
-    // 리뷰 작성이 되면 과외 종료
+
     public void setTutoringStatusFinish(Long tutoringId) {
-        Tutoring tutoring = findVerifiedTutoring(tutoringId);
+        Tutoring tutoring = verifiedTutoring(tutoringId);
         tutoring.setTutoringStatus(TutoringStatus.FINISH);
 
         tutoringRepository.save(tutoring);
     }
 
     public void setTutoringStatusUncheck(Long tutoringId) {
-        Tutoring tutoring = findVerifiedTutoring(tutoringId);
+        Tutoring tutoring = verifiedTutoring(tutoringId);
         tutoring.setTutoringStatus(TutoringStatus.UNCHECK);
 
         tutoringRepository.save(tutoring);
     }
 
-    // 과외가 성사되면 (매칭 요청이 수락되면) 진행중 상태로 변경
-    // Todo: profileId가 receiverId인 사람이 요청했을 때만 되도록 설정
-    public Tutoring setTutoringStatusProgress(Long tutoringId) {
-        Tutoring tutoring = findVerifiedTutoring(tutoringId);
+    public TutoringDto setTutoringStatusProgress(Long tutoringId, Pageable pageable) {
+        Tutoring tutoring = verifiedTutoring(tutoringId);
         tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
         Tutoring progressTutoring = tutoringRepository.save(tutoring);
-
-        return progressTutoring;
+        return TutoringDto.of(progressTutoring,pageable);
     }
 
     public void updateLatestNoticeBody(Tutoring tutoring, String noticeBody) {
@@ -86,16 +95,19 @@ public class TutoringService {
         tutoringRepository.save(tutoring);
     }
 
-    private Tutoring findVerifiedTutoring(Long tutoringId) {
+    public Tutoring verifiedTutoring(Long tutoringId) {
         Optional<Tutoring> optionalTutoring = tutoringRepository.findById(tutoringId);
         Tutoring tutoring = optionalTutoring.orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
 
         return tutoring;
     }
 
-    // Todo: profileId 통해 profile 찾고, profile에서 user 찾고, tutoringStatus 정해주기 (User가 Tutor인 경우에 TUTEE_WAITING 등..)
-    private TutoringStatus findTutoringStatus(Long profileId) {
-
-        return TutoringStatus.UNCHECK;
+    private TutoringStatus getTutoringStatus(Long profileId) {
+        Profile profile = profileService.verifiedProfileById(profileId);
+        if (profile.getProfileStatus().equals(ProfileStatus.TUTEE)) {
+            return TutoringStatus.TUTOR_WAITING;
+        } else {
+            return TutoringStatus.TUTEE_WAITING;
+        }
     }
 }

@@ -64,12 +64,13 @@ public class MessageController {
     }
 
 
-    @GetMapping("/rooms/{messageRoomId}")
+    @GetMapping("/rooms/{profileId}/{messageRoomId}")
     public ResponseEntity getMessages(
+            @PathVariable ("profileId") Long profileId,
             @PathVariable ("messageRoomId") Long messageRoomId
     ) {
         ResponseDto response =
-                ResponseDto.of(messageService.getMessageRoom(messageRoomId));
+                ResponseDto.of(messageService.getMessageRoom(messageRoomId, profileId));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

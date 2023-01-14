@@ -1,0 +1,25 @@
+@import url('../../default.css');
+
+.dropDownButton {
+  width: 45px;
+  height: 45px;
+  border-radius: 5px;
+  background-color: $snow;
+  position: relative;
+
+  .buttonImg {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  > ul {
+    width: 121px;
+    background-color: transparent;
+    position: absolute;
+    right: 0;
+    top: 53px;
+  }
+}

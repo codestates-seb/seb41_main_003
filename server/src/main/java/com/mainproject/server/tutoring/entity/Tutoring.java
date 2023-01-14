@@ -15,7 +15,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-@Builder
 public class Tutoring extends Auditable {
 
     @Id
@@ -75,7 +74,7 @@ public class Tutoring extends Auditable {
     }
 
     public void addTutee(Profile tutee) {
-        setTutor(tutee);
+        setTutee(tutee);
     }
 
 }

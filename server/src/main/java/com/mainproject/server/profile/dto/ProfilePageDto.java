@@ -34,6 +34,8 @@ public class ProfilePageDto {
 
     private String wantedStatus;
 
+    private String profileStatus;
+
     private String way;
 
     private List<SubjectProfileResponseDto> subjects;
@@ -63,6 +65,7 @@ public class ProfilePageDto {
         this.bio = profile.getBio();
         this.school = profile.getSchool();
         this.wantedStatus = profile.getWantedStatus().name();
+        this.profileStatus = profile.getProfileStatus().name();
         this.way = profile.getWay();
         if (!profile.getSubjectProfiles().isEmpty()) {
             this.subjects = profile.getSubjectProfiles()

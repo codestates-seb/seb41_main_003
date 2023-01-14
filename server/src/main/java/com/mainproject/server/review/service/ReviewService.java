@@ -6,7 +6,6 @@ import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.service.ProfileService;
 import com.mainproject.server.review.entity.Review;
 import com.mainproject.server.review.repository.ReviewRepository;
-import com.mainproject.server.tutoring.entity.Tutoring;
 import com.mainproject.server.tutoring.service.TutoringService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ import java.util.Optional;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final TutoringService tutoringService;
-//    private final ProfileService profileService;
+    private final ProfileService profileService;
 
     public Review findReview(Long tutoringId) {
         return findVerifiedReviewById(tutoringId);
@@ -30,17 +29,13 @@ public class ReviewService {
     public Review createReview(Review review, Long tutoringId) {
         tutoringService.setTutoringStatusFinish(tutoringId);
 
-        Profile tutee = tutoringService.findTutoring(tutoringId).getTutee();
+        Profile tutee = tutoringService.verifiedTutoring(tutoringId).getTutee();
+        review.addProfile(tutee);
 
-        // Todo: ProfileService를 통한 profile 조회
-        review.addProfile(new Profile());
-        Review saveReview = reviewRepository.save(review);
-
-        return saveReview;
+        return reviewRepository.save(review);
     }
 
     public Review updateReview(Review review) {
-        // profile은 안바뀌니 reviewRepository에서 tutee 정보를 받아옴
         Long reviewId = review.getReviewId();
         Review findReview = findVerifiedReviewById(reviewId);
 
@@ -65,9 +60,8 @@ public class ReviewService {
         reviewRepository.delete(review);
     }
 
-    // Todo: ProfileService를 통한 프로필 조회
     public double createRate(Long profileId) {
-        Profile profile = new Profile();
+        Profile profile = profileService.verifiedProfileById(profileId);
         List<Review> reviews = reviewRepository.findAllByProfile(profile);
 
         double rate = reviews.stream()
@@ -84,7 +78,7 @@ public class ReviewService {
         return averageRate;
     }
 
-    private Review findVerifiedReviewById(Long tutoringId) {
+    public Review findVerifiedReviewById(Long tutoringId) {
         Optional<Review> optionalReview = reviewRepository.findById(tutoringId);
         Review findReview = optionalReview.orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
 

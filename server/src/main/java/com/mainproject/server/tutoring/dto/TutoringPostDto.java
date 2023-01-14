@@ -18,4 +18,7 @@ public class TutoringPostDto {
 
     @NotBlank
     private String tutoringTitle;
+
+    @NotNull
+    private Long messageRoomId;
 }

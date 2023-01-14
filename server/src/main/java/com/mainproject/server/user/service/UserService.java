@@ -35,7 +35,7 @@ public class UserService {
 
     public User createUser(User user) {
         verifyUserByEmail(user.getEmail());
-        if (user.getLoginType()==null) {
+        if (user.getLoginType() == null) {
             String pw = passwordEncoder
                     .encode(user.getPassword());
             user.setPassword(pw);
@@ -59,11 +59,15 @@ public class UserService {
                 .ifPresent(findUser::setPassword);
         Optional.ofNullable(user.getSecondPassword())
                 .ifPresent(findUser::setSecondPassword);
-        Optional.ofNullable(user.getUserStatus())
-                .ifPresent(findUser::setUserStatus);
-        Optional.ofNullable(user.getPhoneNumber())
+        if (findUser.getUserStatus().equals(UserStatus.NONE)) {
+            findUser.setUserStatus(user.getUserStatus());
+        } else {
+            throw new ServiceLogicException(ErrorCode.NOT_CHANGE_USER_STATUS);
+        }
+        Optional.ofNullable(verifyPhoneNumber(user.getPhoneNumber()))
                 .ifPresent(findUser::setPhoneNumber);
         return userRepository.save(findUser);
+
     }
 
     public void deleteUser(Long userId) {
@@ -73,11 +77,18 @@ public class UserService {
 
     /* 검증 로직 */
 
-    public void verifySecondPassword(Long userId,String secondPassword) {
+    public void verifySecondPassword(Long userId, String secondPassword) {
         User findUser = verifiedUserById(userId);
         String comp = findUser.getSecondPassword();
         if (!secondPassword.equals(comp))
             throw new ServiceLogicException(ErrorCode.WRONG_SECOND_PASSWORD);
+    }
+
+    public String verifyPhoneNumber(String phoneNumber) {
+        if (userRepository.findByPhoneNumber(phoneNumber).isPresent()) {
+            throw new ServiceLogicException(ErrorCode.PHONE_NUMBER_EMAIL_EXISTS);
+        }
+        return phoneNumber;
     }
 
     public User verifiedUserById(Long userId) {
