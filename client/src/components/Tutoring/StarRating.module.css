@@ -3,6 +3,7 @@
 .star {
   fill: $yellow;
   font-size: 32px;
+  cursor: pointer;
 }
 
 .yellowStar {

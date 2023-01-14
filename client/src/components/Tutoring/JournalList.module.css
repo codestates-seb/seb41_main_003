@@ -19,7 +19,6 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  padding-bottom: 76px;
   border-radius: 5px;
 }
 
@@ -39,10 +38,11 @@
   display: flex;
   align-items: center;
   width: 752px;
-  height: 40px;
+  padding: 8px 4px;
   font-size: $font6;
   font-weight: $font6W;
   background-color: $whiteBlue;
+  margin-bottom: 16px;
 }
 
 .icon {
@@ -55,7 +55,6 @@
 .list {
   overflow: hidden auto;
   width: 752px;
-  height: 432px;
 
   &::-webkit-scrollbar {
     width: 0;

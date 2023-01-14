@@ -34,12 +34,14 @@ const StarRating = ({ name, reviewData, setReviewData }) => {
         return clicked[el] ? (
           <MdStar
             className={styles.star}
+            role="button"
             key={idx}
             onClick={() => handleStarClick(el)}
           />
         ) : (
           <MdStarOutline
             className={styles.star}
+            role="button"
             key={idx}
             onClick={() => {
               handleStarClick(el);
