@@ -30,7 +30,7 @@
   .exitButton {
     position: absolute;
     top: 60px;
-    right: 195px;
+    right: 437px;
   }
 }
 
@@ -44,6 +44,21 @@
 
   .upperPart {
     display: flex;
+
+    .font1 {
+      font-size: $font1;
+      font-weight: $font1W;
+    }
+
+    .font5 {
+      font-size: $font5;
+      font-weight: $font5W;
+    }
+
+    .font6 {
+      font-size: $font6;
+      font-weight: $font6W;
+    }
 
     .pickerContainer {
       margin-right: 15px;
@@ -76,15 +91,11 @@
     .noticeArea {
       width: 484px;
       height: 120px;
-
-      /* background-color: $snow; */
     }
 
     .scheduleArea {
       width: 488px;
       height: 388px;
-
-      /* background-color: $snow; */
     }
 
     .homeworkContainer {

@@ -6,7 +6,9 @@ import DropDown from './DropDown';
 import { useState } from 'react';
 
 const JournalForm = ({ user, setUser }) => {
-  const [isChecked, setIsChecked] = useState();
+  // const [isChecked, setIsChecked] = useState();
+  // 일지랑 일지 수정 둘다 체크박스 상태 변경할수 있어야 한다?
+
   const {
     dateNoticeTitle,
     startTime,
@@ -16,9 +18,6 @@ const JournalForm = ({ user, setUser }) => {
     Homeworks,
   } = user;
 
-  const checkHandler = () => {
-    setIsChecked();
-  };
   return (
     <div className={styles.container}>
       <h1>과외 일지 </h1>
@@ -28,10 +27,9 @@ const JournalForm = ({ user, setUser }) => {
       <div className={styles.journalContainer}>
         <section className={styles.upperPart}>
           <div className={styles.pickerContainer}>
-            <p>05</p>
-            <p>2023년 1월</p>
-            <p>{startTime}</p>
-            <p>{endTime}</p>
+            <p className={styles.font1}>05</p>
+            <p className={styles.font5}>{startTime}</p>
+            <p className={styles.font6}>{endTime}</p>
           </div>
           <div className={styles.upperGoal}>
             <div className={styles.titleContainer}>
@@ -41,7 +39,6 @@ const JournalForm = ({ user, setUser }) => {
                 </label>
                 <DropDown />
               </div>
-
               <h5 className={styles.noticeArea}>{dateNoticeTitle}</h5>
             </div>
           </div>
