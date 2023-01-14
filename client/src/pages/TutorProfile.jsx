@@ -24,14 +24,12 @@ const TutorProfile = () => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.background}>
-        <div className={styles.container}>
-          <ProfileCard
-            user={DummyData}
-            QuestionModalHandler={QuestionModalHandler}
-          />
-          <ProfileContents user={DummyData} />
-        </div>
+      <div className={styles.container}>
+        <ProfileCard
+          user={DummyData}
+          QuestionModalHandler={QuestionModalHandler}
+        />
+        <ProfileContents user={DummyData} />
       </div>
       {isQuesModalOpen && (
         <div className={styles.modalWrapper}>

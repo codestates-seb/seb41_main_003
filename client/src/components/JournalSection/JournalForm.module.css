@@ -1,0 +1,131 @@
+@import url('../../default.css');
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 32px;
+  padding-bottom: 63px;
+  position: relative;
+
+  h1 {
+    font-size: $font1;
+    font-weight: $font1W;
+    margin-bottom: 32px;
+    margin-right: 870px;
+    display: flex;
+  }
+
+  h4 {
+    font-size: $font4;
+    font-weight: $font4W;
+  }
+
+  h5 {
+    margin-top: 8px;
+    font-size: $font5;
+    font-weight: $font5W;
+  }
+
+  .exitButton {
+    position: absolute;
+    top: 60px;
+    right: 437px;
+  }
+}
+
+.journalContainer {
+  width: 1048px;
+  height: 100%;
+  background-color: $white;
+  border-radius: 5px;
+  box-shadow: $bigShadow;
+  padding: 32px;
+
+  .upperPart {
+    display: flex;
+
+    .font1 {
+      font-size: $font1;
+      font-weight: $font1W;
+    }
+
+    .font5 {
+      font-size: $font5;
+      font-weight: $font5W;
+    }
+
+    .font6 {
+      font-size: $font6;
+      font-weight: $font6W;
+    }
+
+    .pickerContainer {
+      margin-right: 15px;
+    }
+
+    .titleContainer {
+      width: 843px;
+      height: 36px;
+
+      .menuLine {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+    }
+  }
+
+  .lowerPart {
+    display: flex;
+    margin-top: 40px;
+
+    h4 {
+      margin-bottom: 16px;
+    }
+
+    .noticeHomework {
+      margin-right: 12px;
+    }
+
+    .noticeArea {
+      width: 484px;
+      height: 120px;
+    }
+
+    .scheduleArea {
+      width: 488px;
+      height: 388px;
+    }
+
+    .homeworkContainer {
+      margin-top: 36px;
+    }
+  }
+
+  .homeworkArea {
+    width: 100%;
+    margin-top: 0;
+
+    .checkBoxContainer {
+      display: flex;
+      margin-bottom: 15px;
+    }
+
+    .homeworkBody {
+      margin-left: 8px;
+      font-size: $para;
+      font-weight: $para;
+    }
+
+    .addHomework {
+      display: flex;
+
+      input {
+        margin-left: 8px;
+        border: 0;
+        outline: none;
+      }
+    }
+  }
+}

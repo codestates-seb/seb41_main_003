@@ -19,6 +19,8 @@ import Footer from './components/Footer';
 import TestPage from './pages/TestPage';
 import ModalTestPage from './pages/ModalTestPage';
 import AdminModal from './components/AdminModal';
+import EditJournal from './pages/EditJournal';
+import Journal from './pages/Journal';
 import { useState } from 'react';
 
 const App = () => {
@@ -45,7 +47,9 @@ const App = () => {
             <Route path="/message" element={<Message />} />
             <Route path="/myprofile" element={<MyProfile />} />
             <Route path="/test" element={<TestPage />} />
-            <Route path="/modaltest" element={<ModalTestPage />} />
+            <Route path="/journal" element={<Journal />} />
+            <Route path="/test" element={<TestPage />} />
+            <Route path="/editjournal" element={<EditJournal />} />
           </Routes>
           {isOpenAdminModal && (
             <AdminModal setIsOpenAdminModal={setIsOpenAdminModal} />

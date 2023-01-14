@@ -1,13 +1,13 @@
 import styles from './Toggle.module.css';
 import PropTypes from 'prop-types';
-const Toggle = ({ modalOpenOnHandler }) => {
+const Toggle = ({ setIsModalOpen, setIsAnnounceOn }) => {
   return (
     <div className={styles.toggleSwitch}>
       <label>
         <input
           type="checkbox"
           onClick={() => {
-            modalOpenOnHandler();
+            setIsModalOpen((prev) => !prev), setIsAnnounceOn((prev) => prev);
           }}
         />
         <span className={styles.slider}></span>
@@ -16,6 +16,7 @@ const Toggle = ({ modalOpenOnHandler }) => {
   );
 };
 Toggle.propTypes = {
-  modalOpenOnHandler: PropTypes.func,
+  setIsModalOpen: PropTypes.func,
+  setIsAnnounceOn: PropTypes.func,
 };
 export default Toggle;

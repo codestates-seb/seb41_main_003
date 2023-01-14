@@ -7,6 +7,7 @@
   font-weight: $font4W;
   color: black;
   border-radius: 5px;
+  box-shadow: $buttonShadow;
 }
 
 .nightBlue {
@@ -16,6 +17,7 @@
   font-weight: $font4W;
   color: $white;
   border-radius: 5px;
+  box-shadow: $buttonShadow;
 }
 
 .red {
@@ -34,6 +36,7 @@
   font-weight: $font4W;
   color: black;
   border-radius: 5px;
+  box-shadow: $buttonShadow;
 }
 
 .silver {
@@ -43,4 +46,5 @@
   font-weight: $font4W;
   color: black;
   border-radius: 5px;
+  box-shadow: $buttonShadow;
 }
