@@ -40,7 +40,6 @@ public class MessageController {
             @PathVariable("profileId") Long profileId,
             @RequestBody @Validated MessageRoomPostDto messageRoomPostDto
     ) {
-        //Todo 이미 튜터와 튜티 메세지 룸이 존재한다면, 에러 반환
         MessageRoomSimpleResponseDto createMessageRoom
                 = messageService.createMessageRoom(messageRoomPostDto, profileId);
 
@@ -65,13 +64,13 @@ public class MessageController {
     }
 
 
-    @GetMapping("/rooms/{messageRoomId}")
+    @GetMapping("/rooms/{profileId}/{messageRoomId}")
     public ResponseEntity getMessages(
+            @PathVariable ("profileId") Long profileId,
             @PathVariable ("messageRoomId") Long messageRoomId
     ) {
-        //Todo 메세지 룸 조회시 센더인지 리시버인지 확인후 UNCHECK 상태 변화 로직 추가
         ResponseDto response =
-                ResponseDto.of(messageService.getMessageRoom(messageRoomId));
+                ResponseDto.of(messageService.getMessageRoom(messageRoomId, profileId));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

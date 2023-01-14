@@ -32,9 +32,7 @@ public class ReviewService {
         Profile tutee = tutoringService.verifiedTutoring(tutoringId).getTutee();
         review.addProfile(tutee);
 
-        Review saveReview = reviewRepository.save(review);
-
-        return saveReview;
+        return reviewRepository.save(review);
     }
 
     public Review updateReview(Review review) {
