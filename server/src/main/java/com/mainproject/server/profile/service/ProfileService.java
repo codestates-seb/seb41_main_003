@@ -71,6 +71,7 @@ public class ProfileService {
             List<SubjectDto> subjectDtos,
             Pageable pageable
     ) {
+        // Todo 하나의 회원에 프로필은 최대 4개만 생성가능하도록 유효성 검증
         User findUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ServiceLogicException(ErrorCode.USER_NOT_FOUND));
         UserStatus userStatus = findUser.getUserStatus();
@@ -122,6 +123,7 @@ public class ProfileService {
             Map<String, String> params,
             Pageable defaultPageable
     ) {
+        // Todo 프로필의 wantedStatus가 REQUEST 일때만 출력되도록 수정
         try {
             String sort = params.get("sort");
             String[] subjects = params.get("subject").split(",");

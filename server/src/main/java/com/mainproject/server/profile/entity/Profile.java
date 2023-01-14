@@ -29,7 +29,7 @@ public class Profile extends Auditable {
     private String name;
 
     @Setter
-    @Column(nullable = false)
+    @Column(nullable = true)
     private double rate;
 
     @Setter
