@@ -66,7 +66,7 @@ export const ConfirmValiModal = ({ text, modalHandler, validation }) => {
             handler={(e) => setValue(e.target.value)}
           />
           <span>
-            {value !== validation && `${validation}을 정확히 입력해주세요.`}
+            {value !== validation && `${validation}를(을) 정확히 입력해주세요.`}
           </span>
         </div>
         <div className={styles.buttonBox}>

@@ -1,0 +1,108 @@
+@import url('../../default.css');
+
+.backdrop {
+  z-index: 2;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(0 0 0 / 35%);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.view {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-radius: 10px;
+  background-color: $white;
+  width: 872px;
+  height: 475px;
+  padding: 36px;
+
+  > button {
+    margin-bottom: 32px;
+  }
+}
+
+.titleBox {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: $font4;
+  font-weight: $font4W;
+  margin-bottom: 8px;
+}
+
+.textBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 800px;
+  margin-bottom: 36px;
+
+  > div:first-child {
+    margin-bottom: 8px;
+    font-size: $font6;
+    font-weight: $font6W;
+  }
+}
+
+.starBox {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+
+  > div:first-child {
+    font-size: $font6;
+    font-weight: $font6W;
+  }
+
+  .stars {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: $para;
+    font-weight: $paraW;
+    width: 454px;
+
+    > div:nth-child(odd) {
+      margin-right: 16px;
+    }
+
+    .star {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 8px;
+
+      > span {
+        margin-right: 4px;
+      }
+    }
+  }
+}
+
+.buttonBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 800px;
+}
+
+.editButtonBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 800px;
+
+  > button:first-child {
+    margin-right: 24px;
+  }
+}
