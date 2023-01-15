@@ -53,23 +53,24 @@ public class TutoringService {
                 throw new ServiceLogicException(ErrorCode.NOT_NULL_WRONG_PROFILE_STATUS_PROPERTY);
             }
             String get = params.get("get");
-            String check = params.get("check");
             ProfileStatus profileStatus = profileService
                     .verifiedProfileById(profileId)
                     .getProfileStatus();
             if (TutoringStatus.valueOf(get).equals(TutoringStatus.FINISH)) {
-                check = TutoringStatus.FINISH.name();
+                params.put("check",TutoringStatus.FINISH.name());
+            } else if (TutoringStatus.valueOf(get).equals(TutoringStatus.PROGRESS)) {
+                params.put("check",TutoringStatus.UNCHECK.name());
             }
             if (profileStatus.equals(ProfileStatus.TUTEE)) {
                 return tutoringRepository.findAllByTutoringStatusOrTutoringStatusAndTuteeProfileId(
                         TutoringStatus.valueOf(get),
-                        TutoringStatus.valueOf(check),
+                        TutoringStatus.valueOf(params.get("check")),
                         profileId,
                         pageable);
             } else {
                 return tutoringRepository.findAllByTutoringStatusOrTutoringStatusAndTutorProfileId(
                         TutoringStatus.valueOf(get),
-                        TutoringStatus.valueOf(check),
+                        TutoringStatus.valueOf(params.get("check")),
                         profileId,
                         pageable);
             }
@@ -79,6 +80,7 @@ public class TutoringService {
 
     }
 
+    //Todo 특정 과외 조회시 TutoringStatus UNCHECK -> PROGRESS 로 변경 로직 추가
     public TutoringDto getTutoring(Long tutoringId, Pageable pageable) {
         return TutoringDto.of(verifiedTutoring(tutoringId), pageable);
     }
