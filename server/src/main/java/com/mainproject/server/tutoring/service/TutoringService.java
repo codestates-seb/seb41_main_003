@@ -62,16 +62,18 @@ public class TutoringService {
                 params.put("check",TutoringStatus.UNCHECK.name());
             }
             if (profileStatus.equals(ProfileStatus.TUTEE)) {
-                return tutoringRepository.findAllByTutoringStatusOrTutoringStatusAndTuteeProfileId(
-                        TutoringStatus.valueOf(get),
-                        TutoringStatus.valueOf(params.get("check")),
+                return tutoringRepository.findAllByTuteeProfileIdAndTutoringStatusOrTuteeProfileIdAndTutoringStatus(
                         profileId,
+                        TutoringStatus.valueOf(get),
+                        profileId,
+                        TutoringStatus.valueOf(params.get("check")),
                         pageable);
             } else {
-                return tutoringRepository.findAllByTutoringStatusOrTutoringStatusAndTutorProfileId(
-                        TutoringStatus.valueOf(get),
-                        TutoringStatus.valueOf(params.get("check")),
+                return tutoringRepository.findAllByTutorProfileIdAndTutoringStatusOrTutorProfileIdAndTutoringStatus(
                         profileId,
+                        TutoringStatus.valueOf(get),
+                        profileId,
+                        TutoringStatus.valueOf(params.get("check")),
                         pageable);
             }
         } catch (IllegalArgumentException e) {
@@ -85,8 +87,8 @@ public class TutoringService {
         return TutoringDto.of(verifiedTutoring(tutoringId), pageable);
     }
 
-    public TutoringDto updateTutoring(Tutoring tutoring, Pageable pageable) {
-        Tutoring findTutoring = verifiedTutoring(tutoring.getTutoringId());
+    public TutoringDto updateTutoring(Tutoring tutoring, Long tutoringId, Pageable pageable) {
+        Tutoring findTutoring = verifiedTutoring(tutoringId);
         Optional.ofNullable(tutoring.getTutoringTitle())
                 .ifPresent(findTutoring::setTutoringTitle);
         Optional.ofNullable(tutoring.getTutoringStatus())
