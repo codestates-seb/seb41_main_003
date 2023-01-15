@@ -111,7 +111,7 @@ public class MessageService {
         messageRoomRepository.delete(messageRoom);
     }
 
-    public void sendMessage(
+    public void sendTutoringRequestMessage(
             Long profileId,
             MessageRoom messageRoom,
             Profile tutor,
