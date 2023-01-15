@@ -2,10 +2,12 @@ package com.mainproject.server.dateNotice.service;
 
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.NoticeStatus;
+import com.mainproject.server.constant.TutoringStatus;
 import com.mainproject.server.constant.UserStatus;
 import com.mainproject.server.dateNotice.entity.DateNotice;
 import com.mainproject.server.dateNotice.repository.DateNoticeRepository;
 import com.mainproject.server.exception.ServiceLogicException;
+import com.mainproject.server.tutoring.entity.Tutoring;
 import com.mainproject.server.tutoring.service.TutoringService;
 import com.mainproject.server.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,17 +25,17 @@ public class DateNoticeService {
     private final TutoringService tutoringService;
     private final UserService userService;
 
-    public DateNotice createDateNotice(DateNotice dateNotice) {
-        tutoringService.setTutoringStatusUncheck(dateNotice.getTutoring().getTutoringId());
-
-        updateNotice(dateNotice);
-
-        DateNotice saveDateNotice = dateNoticeRepository.save(dateNotice);
-        return saveDateNotice;
+    public DateNotice createDateNotice(DateNotice dateNotice, Long tutoringId) {
+        Tutoring findTutoring = tutoringService.verifiedTutoring(tutoringId);
+        findTutoring.setTutoringStatus(TutoringStatus.UNCHECK);
+        dateNotice.addTutoring(findTutoring);
+        dateNotice.getHomeworks().forEach(h -> h.addDateNotice(dateNotice));
+        DateNotice updateNotice = updateCheckNotice(dateNotice,findTutoring);
+        return dateNoticeRepository.save(updateNotice);
     }
 
     public DateNotice findDateNotice(Long dateNoticeId, String email) {
-        DateNotice verifiedDateNotice = findVerifiedDateNoticeById(dateNoticeId);
+        DateNotice verifiedDateNotice = verifiedDateNoticeById(dateNoticeId);
 
         if (userService.verifiedUserByEmail(email).getUserStatus().equals(UserStatus.TUTEE)) {
             tutoringService.setTutoringStatusProgress(
@@ -41,14 +43,13 @@ public class DateNoticeService {
                     PageRequest.of(0,5)
             );
         }
-
         return verifiedDateNotice;
     }
     
     public DateNotice updateDateNotice(DateNotice dateNotice) {
-        DateNotice findDateNotice = findVerifiedDateNoticeById(dateNotice.getDateNoticeId());
+        DateNotice findDateNotice = verifiedDateNoticeById(dateNotice.getDateNoticeId());
 
-        updateNotice(dateNotice);
+        updateCheckNotice(dateNotice,findDateNotice.getTutoring());
 
         Optional.ofNullable(dateNotice.getDateNoticeTitle())
                 .ifPresent(findDateNotice::setDateNoticeTitle);
@@ -67,24 +68,25 @@ public class DateNoticeService {
     }
 
     public void deleteDateNotice(Long dateNoticeId) {
-        DateNotice verifiedDateNotice = findVerifiedDateNoticeById(dateNoticeId);
+        DateNotice verifiedDateNotice = verifiedDateNoticeById(dateNoticeId);
 
         dateNoticeRepository.delete(verifiedDateNotice);
     }
 
-    private void updateNotice(DateNotice dateNotice) {
-        if (dateNotice.getNotice().getNoticeBody().trim().equals("")) {
-            tutoringService.updateLatestNoticeBody(dateNotice.getTutoring(), dateNotice.getNotice().getNoticeBody());
+    private DateNotice updateCheckNotice(DateNotice dateNotice, Tutoring tutoring) {
+        if (!dateNotice.getNotice().getNoticeBody().isBlank()) {
+            tutoring.setLatestNoticeBody(dateNotice.getNotice().getNoticeBody());
             dateNotice.setNoticeStatus(NoticeStatus.NOTICE);
         }
-        dateNoticeRepository.save(dateNotice);
+        return dateNotice;
     }
 
-    private DateNotice findVerifiedDateNoticeById(Long dateNoticeId) {
+    private DateNotice verifiedDateNoticeById(Long dateNoticeId) {
         Optional<DateNotice> optionalDateNotice = dateNoticeRepository.findById(dateNoticeId);
-        DateNotice dateNotice = optionalDateNotice.orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
 
-        return dateNotice;
+        return optionalDateNotice.orElseThrow(
+                () -> new ServiceLogicException(ErrorCode.NOT_FOUND)
+        );
     }
 }
 
