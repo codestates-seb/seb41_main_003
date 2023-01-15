@@ -8,7 +8,7 @@ const DummyData = {
   pay: '많이 주면 감사',
   way: '알잘딱하게 합니다',
   profileStatus: 'TUTOR',
-  wantedStatus: 'REQUEST',
+  wantedStatus: 'NONE',
   gender: '남자',
   preTutoring: '안할래요',
   difference: '뭔가 달라도 다르다니까요',
