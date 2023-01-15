@@ -38,7 +38,7 @@ public class TutoringService {
         tutoring.addTutee(tutee);
         Tutoring save = tutoringRepository.save(tutoring);
         MessageRoom messageRoom = messageService.updateMessageRoom(messageRoomId, save.getTutoringId());
-        messageService.sendMessage(profileId, messageRoom, tutor, tutee);
+        messageService.sendTutoringRequestMessage(profileId, messageRoom, tutor, tutee);
         return save;
     }
 
