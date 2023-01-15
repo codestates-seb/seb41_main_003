@@ -1,10 +1,11 @@
 import styles from './MyProfile.module.css';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { ProfileContents, MyProfileCard } from '../components/profileSection';
 import { ConfirmModal } from '../components/modal/DefaultModal';
 import DummyData from '../components/profileSection/DummyData';
 import { ButtonTop } from '../components/Button';
 
+// TODO: 모달상태,토글 refactoring 필요
 const MyProfile = () => {
   const [user, setUser] = useState(DummyData);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,10 +21,6 @@ const MyProfile = () => {
     }
   };
 
-  const modalOpenOnHandler = useCallback(() => {
-    setIsModalOpen((prev) => !prev);
-  }, []);
-
   const modalText = `공고 상태를 변경하시겠습니까?`;
 
   return (
@@ -34,7 +31,6 @@ const MyProfile = () => {
           isAnnounceOn={isAnnounceOn}
           setIsAnnounceOn={setIsAnnounceOn}
           setIsModalOpen={setIsModalOpen}
-          modalOpenOnHandler={modalOpenOnHandler}
         />
         <ProfileContents user={user} />
       </div>

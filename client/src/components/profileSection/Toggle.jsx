@@ -1,13 +1,13 @@
 import styles from './Toggle.module.css';
 import PropTypes from 'prop-types';
 
-const Toggle = ({ modalOpenOnHandler, isAnnounceOn }) => {
+const Toggle = ({ isAnnounceOn, setIsModalOpen }) => {
   return (
     <div className={styles.toggleSwitch}>
       <button
         onClick={(e) => {
           e.preventDefault();
-          modalOpenOnHandler();
+          setIsModalOpen((prev) => !prev);
         }}
       >
         <input
@@ -27,6 +27,7 @@ const Toggle = ({ modalOpenOnHandler, isAnnounceOn }) => {
 
 Toggle.propTypes = {
   modalOpenOnHandler: PropTypes.func,
+  setIsModalOpen: PropTypes.func,
   isAnnounceOn: PropTypes.string,
 };
 

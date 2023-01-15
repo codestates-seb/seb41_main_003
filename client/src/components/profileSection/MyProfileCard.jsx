@@ -7,7 +7,7 @@ import defaultUser from '../../assets/defaultUser.png';
 import { MdStar } from 'react-icons/md';
 import Toggle from './Toggle';
 
-const MyProfileCard = ({ user, isAnnounceOn, modalOpenOnHandler }) => {
+const MyProfileCard = ({ user, isAnnounceOn, setIsModalOpen }) => {
   return (
     <div className={styles.cardContainer}>
       <img alt="user img" src={defaultUser} />
@@ -44,7 +44,7 @@ const MyProfileCard = ({ user, isAnnounceOn, modalOpenOnHandler }) => {
         </div>
       </section>
       <div className={styles.buttonBox}>
-        <Link to="/pages/EditProfile">
+        <Link to="/EditProfile">
           <ButtonNightBlue text="수정하기" />
         </Link>
       </div>
@@ -62,10 +62,7 @@ const MyProfileCard = ({ user, isAnnounceOn, modalOpenOnHandler }) => {
               상태입니다
             </div>
           </div>
-          <Toggle
-            isAnnounceOn={isAnnounceOn}
-            modalOpenOnHandler={modalOpenOnHandler}
-          />
+          <Toggle isAnnounceOn={isAnnounceOn} setIsModalOpen={setIsModalOpen} />
         </div>
       </section>
     </div>
@@ -73,7 +70,6 @@ const MyProfileCard = ({ user, isAnnounceOn, modalOpenOnHandler }) => {
 };
 MyProfileCard.propTypes = {
   isAnnounceOn: PropTypes.string,
-  modalOpenOnHandler: PropTypes.func,
   user: PropTypes.object,
   setIsAnnounceOn: PropTypes.func,
   setIsModalOpen: PropTypes.func,

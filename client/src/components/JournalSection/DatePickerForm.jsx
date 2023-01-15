@@ -1,5 +1,5 @@
 import styles from './DatePickerForm.module.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import PropTypes from 'prop-types';
 import { VscTriangleDown } from 'react-icons/vsc';
@@ -14,10 +14,6 @@ const DatePickerForm = ({ user, setUser }) => {
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [day, setDay] = useState(new Date().getDate());
 
-  useEffect(() => {
-    // console.log('날짜 변경이 반영되어서 랜더');
-  }, startDate);
-
   const getPickedDate = (date) => {
     setYear(date.getFullYear());
     setDay(('0' + date.getDate()).slice(-2));
@@ -30,14 +26,12 @@ const DatePickerForm = ({ user, setUser }) => {
     </button>
   );
 
-  //실제로 데이터 바꿔주는 함수
   const userEditHandler = () => {
-    setUser({ ...user, startTime: 'Change to', endTime: 'Change to' });
+    setUser({ ...user, startTime: '', endTime: '' });
     console.log('startTime이 변경되었습니다');
+    // TODO: startTime = 날짜 + 시작시간
+    // TODO: endTime = 날짜 + 끝시간
   };
-
-  // TODO: startTime = 날짜 + 시작시간
-  // TODO: endTime = 날짜 + 끝시간
 
   return (
     <div className={styles.container}>
@@ -45,11 +39,9 @@ const DatePickerForm = ({ user, setUser }) => {
         <p className={styles.font1}>{day}</p>
         <DatePicker
           showPopperArrow={false}
-          className={styles.calendar}
-          onChange={(date) => setStartDate(date)}
+          onChange={(data) => setStartDate(data)}
           onSelect={getPickedDate}
           selected={startDate}
-          dateFormat="h:mm aa" //"h:mm aa"
           customInput={<DateCustomButton />}
         />
       </div>
@@ -60,7 +52,7 @@ const DatePickerForm = ({ user, setUser }) => {
       </div>
       <div className={styles.line3}>
         <div className={styles.font6}>09:00~18:00</div>
-        <div></div>
+        {/* TODO: TimePicker */}
       </div>
     </div>
   );

@@ -32,6 +32,7 @@ const EditJournalForm = ({ user, setUser }) => {
       modalHandler: () => {
         console.log('작성 완료');
         //TODO: 서버에 user 정보 수정 patch
+        //TODO: 과외 일지 상세 페이지로 이동(useParam)
         resetModal();
       },
     },
@@ -56,7 +57,7 @@ const EditJournalForm = ({ user, setUser }) => {
   };
 
   const deleteHomeworkHandler = (e) => {
-    //TODO: 과제삭제 함수 구현
+    //TODO: 과제삭제 함수 구현(못끝냄)
     const { id } = e.target;
     setUser({
       ...user,
@@ -207,6 +208,5 @@ const EditJournalForm = ({ user, setUser }) => {
 EditJournalForm.propTypes = {
   user: PropType.object,
   setUser: PropType.func,
-  confirmHandler: PropType.func,
 };
 export default EditJournalForm;

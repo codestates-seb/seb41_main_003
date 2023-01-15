@@ -41,26 +41,11 @@ const jounalDummy = {
 
 const EditJournal = () => {
   const [user, setUser] = useState(jounalDummy);
-  const [isConfirm, setIsConfirm] = useState(false);
-
-  const confirmHandler = (e) => {
-    if (e.target.name === 'yes') {
-      setIsConfirm((prev) => !prev);
-      // TODO: 서버에 수정된 데이터 PATCH (특정 날짜 일지 수정)요청
-      // TODO: 과외일지 상세페이지로 이동
-    } else {
-      setIsConfirm((prev) => !prev);
-    }
-  };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.background}>
-        <EditJournalForm
-          user={user}
-          setUser={setUser}
-          confirmHandler={confirmHandler}
-        />
+        <EditJournalForm user={user} setUser={setUser} />
       </div>
     </div>
   );
