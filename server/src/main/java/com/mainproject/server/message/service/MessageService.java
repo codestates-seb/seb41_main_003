@@ -87,9 +87,11 @@ public class MessageService {
     public MessageRoomResponseDto getMessageRoom(Long messageRoomId, Long profileId) {
         MessageRoom findMessageRoom = verifiedMessageRoom(messageRoomId);
         ArrayList<Message> messages = new ArrayList<>(findMessageRoom.getMessages());
-        Message message = messages.get(messages.size() - 1);
-        if (profileId.equals(message.getReceiver().getProfileId())) {
-            findMessageRoom.setMessageStatus(MessageStatus.CHECK);
+        if (!messages.isEmpty()) {
+            Message message = messages.get(messages.size() - 1);
+            if (profileId.equals(message.getReceiver().getProfileId())) {
+                findMessageRoom.setMessageStatus(MessageStatus.CHECK);
+            }
         }
         return MessageRoomResponseDto.of(messageRoomRepository.save(findMessageRoom));
     }
@@ -130,7 +132,7 @@ public class MessageService {
         sendMessage.addReceiver(receiver);
         sendMessage.setMessageContent("REQ_UEST");
         Message saveSendMessage = messageRepository.save(sendMessage);
-        messageRoom.addMessage(saveSendMessage);
+        saveSendMessage.addMessageRoom(messageRoom);
         messageRoomRepository.save(messageRoom);
     }
 
