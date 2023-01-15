@@ -82,9 +82,15 @@ public class TutoringService {
 
     }
 
-    //Todo 특정 과외 조회시 TutoringStatus UNCHECK -> PROGRESS 로 변경 로직 추가
-    public TutoringDto getTutoring(Long tutoringId, Pageable pageable) {
-        return TutoringDto.of(verifiedTutoring(tutoringId), pageable);
+    public TutoringDto getTutoring(Long tutoringId, Long profileId, Pageable pageable) {
+        Tutoring tutoring = verifiedTutoring(tutoringId);
+        if (tutoring.getTutee().getProfileId().equals(profileId)) {
+            tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
+            Tutoring progressTutoring = tutoringRepository.save(tutoring);
+            return TutoringDto.of(progressTutoring, pageable);
+        } else {
+            return TutoringDto.of(tutoring, pageable);
+        }
     }
 
     public TutoringDto updateTutoring(Tutoring tutoring, Long tutoringId, Pageable pageable) {
@@ -103,11 +109,21 @@ public class TutoringService {
 
     /* 검증 및 유틸 로직 */
 
-    public TutoringDto setTutoringStatusProgress(Long tutoringId, Pageable pageable) {
+    public TutoringDto setTutoringStatusProgress(
+            Long tutoringId,
+            Long profileId,
+            Pageable pageable
+    ) {
         Tutoring tutoring = verifiedTutoring(tutoringId);
-        tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
-        Tutoring progressTutoring = tutoringRepository.save(tutoring);
-        return TutoringDto.of(progressTutoring, pageable);
+        if (tutoring.getTutor().getProfileId().equals(profileId) ||
+                tutoring.getTutee().getProfileId().equals(profileId)
+        ) {
+            tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
+            Tutoring progressTutoring = tutoringRepository.save(tutoring);
+            return TutoringDto.of(progressTutoring, pageable);
+        } else {
+            throw new ServiceLogicException(ErrorCode.ACCESS_DENIED);
+        }
     }
 
     public Tutoring verifiedTutoring(Long tutoringId) {

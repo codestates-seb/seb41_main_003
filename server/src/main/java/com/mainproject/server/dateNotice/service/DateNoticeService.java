@@ -3,7 +3,6 @@ package com.mainproject.server.dateNotice.service;
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.NoticeStatus;
 import com.mainproject.server.constant.TutoringStatus;
-import com.mainproject.server.constant.UserStatus;
 import com.mainproject.server.dateNotice.entity.DateNotice;
 import com.mainproject.server.dateNotice.repository.DateNoticeRepository;
 import com.mainproject.server.exception.ServiceLogicException;
@@ -11,7 +10,6 @@ import com.mainproject.server.tutoring.entity.Tutoring;
 import com.mainproject.server.tutoring.service.TutoringService;
 import com.mainproject.server.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,15 +32,8 @@ public class DateNoticeService {
         return dateNoticeRepository.save(updateNotice);
     }
 
-    public DateNotice getDateNotice(Long dateNoticeId, String email) {
-        DateNotice verifiedDateNotice = verifiedDateNoticeById(dateNoticeId);
-        if (userService.verifiedUserByEmail(email).getUserStatus().equals(UserStatus.TUTEE)) {
-            tutoringService.setTutoringStatusProgress(
-                    verifiedDateNotice.getTutoring().getTutoringId(),
-                    PageRequest.of(0,5)
-            );
-        }
-        return verifiedDateNotice;
+    public DateNotice getDateNotice(Long dateNoticeId) {
+        return verifiedDateNoticeById(dateNoticeId);
     }
     
     public DateNotice updateDateNotice(DateNotice dateNotice) {
