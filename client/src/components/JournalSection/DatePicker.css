@@ -5,27 +5,37 @@
   border-radius: 5px;
   padding: 15px 0;
   background-color: white !important;
-  width: 400px !important;
+  width: 302px !important;
+}
+
+.react-datepicker__day-names {
+  margin-bottom: -8px;
 }
 
 /* 다음 달 */
 .react-datepicker__navigation-icon--next {
-  left: -18px;
+  left: -12px;
 }
 
 /* 이전 달 */
 .react-datepicker__navigation-icon--previous {
-  right: -18px;
+  right: -12px;
+}
+
+.react-datepicker__navigation-icon {
+  position: relative;
+  font-size: 20px;
+  top: 5px;
 }
 
 /* 헤더 */
 .react-datepicker__header {
   width: 302px;
   height: 36px !important;
-  background-color: white !important;
   border: none !important;
   position: relative;
   text-align: center;
+  background-color: white;
 }
 
 /* 바디 */
@@ -83,7 +93,9 @@
 }
 
 .react-datepicker-wrapper {
-  width: 200px;
+  width: 100%;
+  position: absolute;
+  right: -90px;
 }
 
 .react-datepicker__day--keyboard-selected {

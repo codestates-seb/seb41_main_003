@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import PropTypes from 'prop-types';
 import { VscTriangleDown } from 'react-icons/vsc';
 import './react-datepicker.css'; //기본 CSS 파일
-// import './DatePicker.css'; // Custom CSS 파일
+import './DatePicker.css'; // Custom CSS 파일
 
 const DatePickerForm = ({ user, setUser }) => {
   //"1월 10일 09:00" or "Thu Jan 05 2023 22:20:58"\
@@ -14,17 +14,9 @@ const DatePickerForm = ({ user, setUser }) => {
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [day, setDay] = useState(new Date().getDate());
 
-  const [startTime, setStartTime] = useState(new Date());
-  const [hours, setHours] = useState(new Date().getHours());
-  const [minutes, setMinutes] = useState(new Date().getMinutes());
-  const [seconds, setSeconds] = useState(new Date().getSeconds());
-
   useEffect(() => {
     // console.log('날짜 변경이 반영되어서 랜더');
   }, startDate);
-  useEffect(() => {
-    // console.log('시간 변경이 반영되어서 랜더');
-  }, startTime);
 
   const getPickedDate = (date) => {
     setYear(date.getFullYear());
@@ -32,20 +24,9 @@ const DatePickerForm = ({ user, setUser }) => {
     setMonth(('0' + (date.getMonth() + 1)).slice(-2));
   };
 
-  const getPickedTime = (date) => {
-    setHours(('0' + date.getHours()).slice(-2));
-    setMinutes(('0' + date.getMinutes()).slice(-2));
-    setSeconds(('0' + date.getSeconds()).slice(-2));
-  };
-
   const DateCustomButton = ({ onClick }) => (
     <button className={styles.iconButton} onClick={onClick}>
       <VscTriangleDown size="24px" />
-    </button>
-  );
-  const TimeCustomButton = ({ onClick }) => (
-    <button className={styles.iconButton} onClick={onClick}>
-      <VscTriangleDown size="17px" />
     </button>
   );
 
@@ -86,7 +67,6 @@ const DatePickerForm = ({ user, setUser }) => {
 };
 DatePickerForm.propTypes = {
   onClick: PropTypes.func,
-  value: PropTypes.func,
   user: PropTypes.object,
   setUser: PropTypes.func,
 };

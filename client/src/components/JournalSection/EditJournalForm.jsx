@@ -1,9 +1,9 @@
 import styles from './EditJournalForm.module.css';
 import PropType from 'prop-types';
+import { useState } from 'react';
 import DatePickerForm from './DatePickerForm';
 import { Textarea, TextInput, CheckBox } from '../Input';
 import { ButtonNightBlue, ButtonRed } from '../Button';
-import { useState } from 'react';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 import { MdDelete } from 'react-icons/md';
@@ -54,7 +54,9 @@ const EditJournalForm = ({ user, setUser }) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
+
   const deleteHomeworkHandler = (e) => {
+    //TODO: 과제삭제 함수 구현
     const { id } = e.target;
     setUser({
       ...user,
@@ -65,7 +67,7 @@ const EditJournalForm = ({ user, setUser }) => {
       // 다른 친구들만 남긴다
     });
   };
-  console.log(Homeworks);
+
   const addHomeworkHandler = (e) => {
     if (e.key === 'Enter' && e.target.value) {
       setUser({
@@ -81,22 +83,6 @@ const EditJournalForm = ({ user, setUser }) => {
       });
       setHomeworkVal('');
     }
-  };
-  const convertCheckedHandler = () => {
-    setUser({
-      ...user,
-      Homeworks: user.Homeworks.map((homework) => {
-        return homework.homeworkId === homeworkId
-          ? {
-              ...homework,
-              HomeworkStatus:
-                homework.HomeworkStatus === 'FINISHED'
-                  ? 'PROGRESS'
-                  : 'FINISHED',
-            }
-          : homework;
-      }),
-    });
   };
 
   return (
@@ -177,7 +163,6 @@ const EditJournalForm = ({ user, setUser }) => {
                           {homeworkBody}
                         </div>
                         <div className={styles.homeworkMenu}>
-                          {/* sss */}
                           <button
                             id={homeworkId}
                             onClick={deleteHomeworkHandler}

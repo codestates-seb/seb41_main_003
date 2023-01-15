@@ -466,10 +466,12 @@
 .react-datepicker__day-names,
 .react-datepicker__week {
   white-space: nowrap;
+  background-color: transparent;
 }
 
 .react-datepicker__day-names {
   margin-bottom: -8px;
+  background-color: transparent;
 }
 
 .react-datepicker__day-name,

@@ -68,6 +68,10 @@
 
     > * {
       resize: none;
+
+      &::-webkit-scrollbar {
+        display: none; /* Chrome , Safari , Opera */
+      }
     }
   }
 
@@ -77,6 +81,10 @@
 
     > * {
       resize: none;
+
+      &::-webkit-scrollbar {
+        display: none; /* Chrome , Safari , Opera */
+      }
     }
   }
 
@@ -88,6 +96,14 @@
 
 .homeworkArea {
   width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 209px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome , Safari , Opera */
+  }
 
   .checkBoxContainer {
     display: flex;
@@ -100,7 +116,7 @@
       position: absolute;
       right: 4px;
       opacity: 0;
-      transition: opacity 0.2s ease-in-out;
+      transition: 0.2s ease-in-out;
 
       > button svg {
         font-size: 20px;
