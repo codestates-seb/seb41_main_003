@@ -82,6 +82,7 @@
 
   .homeworkContainer {
     margin-top: 16px;
+    width: 484px;
   }
 }
 
@@ -90,23 +91,52 @@
 
   .checkBoxContainer {
     display: flex;
-    margin-bottom: 10px;
+    padding: 4px;
+    margin-bottom: 8px;
+    position: relative;
+    border-radius: 3px;
+
+    .homeworkMenu {
+      position: absolute;
+      right: 4px;
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+
+      > button svg {
+        font-size: 20px;
+        fill: $nickel;
+      }
+    }
+
+    &:hover {
+      background-color: $snow;
+
+      .homeworkMenu {
+        opacity: 1;
+      }
+    }
   }
 
   .homeworkBody {
     margin-left: 8px;
     font-size: $para;
     font-weight: $para;
+    overflow: hidden;
+    word-wrap: break-word;
+    padding-right: 20px;
   }
 
   .addHomework {
     display: flex;
+    padding: 4px;
 
     input {
+      width: 300px;
       margin-left: 8px;
       border: 0;
       border-bottom: 2px solid $moon;
       outline: none;
+      flex: 1 0 0;
     }
   }
 }

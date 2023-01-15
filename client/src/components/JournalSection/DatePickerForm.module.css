@@ -33,18 +33,10 @@
   height: 18px;
   width: 125px;
   margin-top: 7px;
-
-  > div {
-  }
-
-  /* width: 117px; */
 }
 
 .iconButton {
   margin-top: 13px;
   margin-left: 15px;
   position: absolute;
-}
-
-.iconButtonT {
 }

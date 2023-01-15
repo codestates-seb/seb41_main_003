@@ -1,5 +1,4 @@
 import styles from './Journal.module.css';
-import { ConfirmModal } from '../components/modal/DefaultModal';
 import JournalForm from '../components/JournalSection/JournalForm';
 import { useState } from 'react';
 
@@ -20,22 +19,22 @@ const jounalDummy = {
     {
       homeworkId: 1,
       homeworkBody: '과제 1',
-      HomeworkStatus: true,
+      HomeworkStatus: 'PROGRESS',
     },
     {
       homeworkId: 2,
       homeworkBody: '과제 2',
-      HomeworkStatus: false,
+      HomeworkStatus: 'FINISHED',
     },
     {
       homeworkId: 3,
       homeworkBody: '과제 3',
-      HomeworkStatus: 'true',
+      HomeworkStatus: 'PROGRESS',
     },
     {
       homeworkId: 4,
       homeworkBody: '과제 4',
-      HomeworkStatus: 'false',
+      HomeworkStatus: 'FINISHED',
     },
   ],
 };

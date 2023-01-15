@@ -1,6 +1,5 @@
 import styles from './EditJournal.module.css';
 import { useState } from 'react';
-import { ConfirmModal } from '../components/modal/DefaultModal';
 import EditJournalForm from '../components/JournalSection/EditJournalForm';
 
 const jounalDummy = {
@@ -20,22 +19,22 @@ const jounalDummy = {
     {
       homeworkId: 1,
       homeworkBody: '과제 1',
-      HomeworkStatus: true,
+      HomeworkStatus: 'PROGRESS',
     },
     {
       homeworkId: 2,
       homeworkBody: '과제 2',
-      HomeworkStatus: false,
+      HomeworkStatus: 'FINISHED',
     },
     {
       homeworkId: 3,
       homeworkBody: '과제 3',
-      HomeworkStatus: 'true',
+      HomeworkStatus: 'PROGRESS',
     },
     {
       homeworkId: 4,
       homeworkBody: '과제 4',
-      HomeworkStatus: 'false',
+      HomeworkStatus: 'FINISHED',
     },
   ],
 };
@@ -43,9 +42,6 @@ const jounalDummy = {
 const EditJournal = () => {
   const [user, setUser] = useState(jounalDummy);
   const [isConfirm, setIsConfirm] = useState(false);
-
-  const confirmText = `취소하시겠습니까?
-  작성 중인 내용이 모두 사라집니다.`;
 
   const confirmHandler = (e) => {
     if (e.target.name === 'yes') {
@@ -56,6 +52,7 @@ const EditJournal = () => {
       setIsConfirm((prev) => !prev);
     }
   };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.background}>
@@ -65,9 +62,6 @@ const EditJournal = () => {
           confirmHandler={confirmHandler}
         />
       </div>
-      {isConfirm && (
-        <ConfirmModal text={confirmText} modalHandler={confirmHandler} />
-      )}
     </div>
   );
 };
