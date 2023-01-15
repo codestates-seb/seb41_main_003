@@ -73,8 +73,8 @@ public class MessageService {
         List<MessageRoom> messageRoomList = messageRooms.getContent();
         List<MessageRoomSimpleResponseDto> simpleResponseDtoList =
                 messageRoomList.stream()
-                .map(mr -> MessageRoomSimpleResponseDto.of(profileStatus, mr))
-                .collect(Collectors.toList());
+                        .map(mr -> MessageRoomSimpleResponseDto.of(profileStatus, mr))
+                        .collect(Collectors.toList());
 
         return new PageImpl<>(
                 simpleResponseDtoList,
@@ -86,6 +86,9 @@ public class MessageService {
 
     public MessageRoomResponseDto getMessageRoom(Long messageRoomId, Long profileId) {
         MessageRoom findMessageRoom = verifiedMessageRoom(messageRoomId);
+        if (!findMessageRoom.getTutor().getProfileId().equals(profileId) ||
+                !findMessageRoom.getTutee().getProfileId().equals(profileId))
+            throw new ServiceLogicException(ErrorCode.ACCESS_DENIED);
         ArrayList<Message> messages = new ArrayList<>(findMessageRoom.getMessages());
         if (!messages.isEmpty()) {
             Message message = messages.get(messages.size() - 1);
