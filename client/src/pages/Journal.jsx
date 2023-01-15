@@ -1,5 +1,5 @@
 import styles from './Journal.module.css';
-import { ConfirmModal } from '../components/Modal.jsx';
+import { ConfirmModal } from '../components/modal/DefaultModal';
 import JournalForm from '../components/JournalSection/JournalForm';
 import { useState } from 'react';
 

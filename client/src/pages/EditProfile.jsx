@@ -2,7 +2,7 @@ import ChangeProfileCard from '../components/ChangeProfile/ChangeProfileCard';
 import ChangeProfileContents from '../components/ChangeProfile/ChangeProfileContents';
 import styles from './ChangeProfile.module.css';
 import { useState } from 'react';
-import { ConfirmModal, AlertModal } from '../components/Modal';
+import { ConfirmModal, AlertModal } from '../components/modal/DefaultModal';
 import { ButtonTop } from '../components/Button';
 
 const tutorDummyState = {

@@ -1,10 +1,10 @@
-import styles from './Modal.module.css';
+import styles from './DefaultModal.module.css';
 import PropTypes from 'prop-types';
-import { ButtonNightBlue, ButtonSilver } from './Button';
-import { TextInput } from './Input';
+import { ButtonNightBlue, ButtonSilver } from '../Button';
+import { TextInput } from '../Input';
 import { useState } from 'react';
-import { useResetRecoilState, useRecoilValue } from 'recoil';
-import ModalState from '../recoil/modal';
+import { useResetRecoilState } from 'recoil';
+import ModalState from '../../recoil/modal.js';
 
 export const AlertModal = ({ text }) => {
   const reset = useResetRecoilState(ModalState);
@@ -134,23 +134,4 @@ ConfirmTextModal.propTypes = {
   text: PropTypes.string,
   modalHandler: PropTypes.func,
   placeHolder: PropTypes.string,
-};
-
-export const GlobalModal = () => {
-  const reset = useResetRecoilState(ModalState);
-  const { isOpen, modalType, props } = useRecoilValue(ModalState);
-  if (!isOpen) return;
-
-  const modal = {
-    alert: <AlertModal {...props} />,
-    confirm: <ConfirmModal {...props} />,
-    confirmVali: <ConfirmValiModal {...props} />,
-    confirmText: <ConfirmTextModal {...props} />,
-  };
-
-  return (
-    <div className={styles.backdrop} onClick={() => reset()} aria-hidden="true">
-      {modal[modalType]}
-    </div>
-  );
 };

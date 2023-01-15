@@ -3,7 +3,11 @@ import { TextInput } from '../Input';
 import { MdMenu } from 'react-icons/md';
 import PropType from 'prop-types';
 import { useState } from 'react';
-import { AlertModal, ConfirmModal, ConfirmTextModal } from '../Modal';
+import {
+  AlertModal,
+  ConfirmModal,
+  ConfirmTextModal,
+} from '../modal/DefaultModal';
 import Chat from './Chat';
 
 const MessageContent = ({ messages }) => {

@@ -21,7 +21,7 @@ import AdminModal from './components/AdminModal';
 import EditJournal from './pages/EditJournal';
 import Journal from './pages/Journal';
 import { useState } from 'react';
-import { GlobalModal } from './components/Modal';
+import { GlobalModal } from './components/modal/GlobalModal';
 
 const App = () => {
   const [isOpenAdminModal, setIsOpenAdminModal] = useState(false);

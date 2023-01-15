@@ -1,4 +1,4 @@
-import { AlertModal } from '../components/Modal';
+import { AlertModal } from '../components/modal/DefaultModal';
 
 const TestPage = () => {
   return (

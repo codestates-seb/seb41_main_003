@@ -3,7 +3,11 @@ import { HiSpeakerphone } from 'react-icons/hi';
 import { MdEdit } from 'react-icons/md';
 import { ButtonNightBlue, ButtonRed } from '../Button';
 import dummyTutoringData from './dummyTutoringData';
-import { ConfirmValiModal, AlertModal, ConfirmTextModal } from '../Modal';
+import {
+  ConfirmValiModal,
+  AlertModal,
+  ConfirmTextModal,
+} from '../modal/DefaultModal';
 import { useState } from 'react';
 import ReviewModal from './ReviewModal';
 

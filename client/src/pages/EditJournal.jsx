@@ -1,6 +1,6 @@
 import styles from './EditJournal.module.css';
 import { useState } from 'react';
-import { ConfirmModal } from '../components/Modal.jsx';
+import { ConfirmModal } from '../components/modal/DefaultModal';
 import EditJournalForm from '../components/JournalSection/EditJournalForm';
 
 const jounalDummy = {
