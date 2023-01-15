@@ -104,7 +104,7 @@ public class ProfilePageDto {
                             .explanation(r.getExplanation())
                             .punctuality(r.getPunctuality())
                             .reviewBody(r.getReviewBody())
-                            .tuteeName(r.getProfile().getName())
+                            .tuteeName(r.getTutee().getName())
                             .createAt(r.getCreateAt())
                             .updateAt(r.getUpdateAt())
                             .build())
