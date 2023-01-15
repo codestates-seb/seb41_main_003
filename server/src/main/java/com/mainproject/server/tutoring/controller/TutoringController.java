@@ -167,6 +167,7 @@ public class TutoringController {
             @PathVariable("dateNoticeId") Long dateNoticeId,
             @RequestBody DateNoticePatchDto dateNoticePatchDto
             ) {
+        dateNoticePatchDto.setDateNoticeId(dateNoticeId);
         DateNotice patchDateNotice = dateNoticeMapper.dateNoticePatchDtoToDateNotice(dateNoticePatchDto);
         DateNotice dateNotice = dateNoticeService.updateDateNotice(patchDateNotice);
 
