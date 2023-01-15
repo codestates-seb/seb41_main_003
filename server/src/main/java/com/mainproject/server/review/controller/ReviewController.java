@@ -25,25 +25,41 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping("/{tutoringId}")
-    public ResponseEntity getReview(@PathVariable("tutoringId") Long tutoringId) {
+    public ResponseEntity getReview(
+            @PathVariable("tutoringId") Long tutoringId
+    ) {
         Review review = reviewService.getReview(tutoringId);
-        return new ResponseEntity(ResponseDto.of(mapper.reviewToReviewResponseDto(review)), HttpStatus.OK);
+        return new ResponseEntity(
+                ResponseDto.of(mapper.reviewToReviewResponseDto(review)),
+                HttpStatus.OK);
     }
 
     @PostMapping("/{tutoringId}")
-    public ResponseEntity postReview(@PathVariable("tutoringId") Long tutoringId,
-                                     @RequestBody @Valid ReviewPostDto reviewPostDto) {
+    public ResponseEntity postReview(
+            @PathVariable("tutoringId") Long tutoringId,
+            @RequestBody @Valid ReviewPostDto reviewPostDto
+    ) {
         Review review = reviewService.createReview(
                 mapper.reviewPostDtoToReview(reviewPostDto),
                 tutoringId);
-        return new ResponseEntity(ResponseDto.of(mapper.reviewToReviewResponseDto(review)), HttpStatus.CREATED);
+        return new ResponseEntity(
+                ResponseDto.of(mapper.reviewToReviewResponseDto(review)),
+                HttpStatus.CREATED);
     }
 
     @PatchMapping("/{tutoringId}")
-    public ResponseEntity patchReview(@PathVariable("tutoringId") Long tutoringId,
-                                      @RequestBody ReviewPatchDto reviewPatchDto) {
-        Review review = reviewService.updateReview(mapper.reviewPatchDtoToReview(reviewPatchDto));
+    public ResponseEntity patchReview(
+            @PathVariable("tutoringId") Long tutoringId,
+            @RequestBody ReviewPatchDto reviewPatchDto
+    ) {
+        Review review = reviewService
+                .updateReview(
+                        mapper.reviewPatchDtoToReview(reviewPatchDto),
+                        tutoringId
+                );
 
-        return new ResponseEntity(ResponseDto.of(mapper.reviewToReviewResponseDto(review)), HttpStatus.OK);
+        return new ResponseEntity(
+                ResponseDto.of(mapper.reviewToReviewResponseDto(review)),
+                HttpStatus.OK);
     }
 }
