@@ -7,6 +7,9 @@ import {
   ConfirmTextModal,
   ConfirmValiModal,
 } from './DefaultModal.jsx';
+import ReviewModal from './ReviewModal';
+import ReviewDetailModal from './ReviewDetail';
+import EditReviewModal from './EditReviewModal';
 
 export const GlobalModal = () => {
   const reset = useResetRecoilState(ModalState);
@@ -18,6 +21,9 @@ export const GlobalModal = () => {
     confirm: <ConfirmModal {...props} />,
     confirmVali: <ConfirmValiModal {...props} />,
     confirmText: <ConfirmTextModal {...props} />,
+    review: <ReviewModal {...props} />,
+    reviewDetail: <ReviewDetailModal {...props} />,
+    editReview: <EditReviewModal {...props} />,
   };
 
   return (
