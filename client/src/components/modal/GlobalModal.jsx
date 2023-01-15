@@ -7,6 +7,7 @@ import {
   ConfirmTextModal,
   ConfirmValiModal,
 } from './DefaultModal.jsx';
+import AdminModal from './AdminModal';
 
 export const GlobalModal = () => {
   const reset = useResetRecoilState(ModalState);
@@ -18,6 +19,7 @@ export const GlobalModal = () => {
     confirm: <ConfirmModal {...props} />,
     confirmVali: <ConfirmValiModal {...props} />,
     confirmText: <ConfirmTextModal {...props} />,
+    admin: <AdminModal />,
   };
 
   return (

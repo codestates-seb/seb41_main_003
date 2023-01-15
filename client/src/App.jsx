@@ -17,14 +17,11 @@ import MyProfile from './pages/MyProfile';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import TestPage from './pages/TestPage';
-import AdminModal from './components/AdminModal';
 import EditJournal from './pages/EditJournal';
 import Journal from './pages/Journal';
-import { useState } from 'react';
 import { GlobalModal } from './components/modal/GlobalModal';
 
 const App = () => {
-  const [isOpenAdminModal, setIsOpenAdminModal] = useState(false);
   return (
     <div className="app">
       <Router basename="/">
@@ -51,9 +48,6 @@ const App = () => {
             <Route path="/test" element={<TestPage />} />
             <Route path="/editjournal" element={<EditJournal />} />
           </Routes>
-          {isOpenAdminModal && (
-            <AdminModal setIsOpenAdminModal={setIsOpenAdminModal} />
-          )}
         </div>
       </Router>
       <Footer />
