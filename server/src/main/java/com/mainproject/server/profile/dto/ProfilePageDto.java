@@ -113,8 +113,9 @@ public class ProfilePageDto {
                     reviewList,
                     reviews.getPageable(),
                     reviewList.size());
+        } else {
+            this.reviews = new PageImpl<>(List.of(), reviews.getPageable(), reviews.getTotalElements());
         }
-        this.reviews = new PageImpl<>(List.of(), reviews.getPageable(), reviews.getTotalElements());
     }
 
     public static ProfilePageDto of(Profile profile, Page<Review> reviews) {
