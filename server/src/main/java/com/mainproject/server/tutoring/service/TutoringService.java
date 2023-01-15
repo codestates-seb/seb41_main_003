@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Transactional
@@ -42,9 +43,26 @@ public class TutoringService {
         return save;
     }
 
-    public Page<Tutoring> getAllTutoring(Long profileId, Pageable pageable) {
-        Page<Tutoring> tutorings = tutoringRepository.findAllByTutorProfileIdOrTuteeProfileId(profileId, profileId, pageable);
-        return tutorings;
+    public Page<Tutoring> getAllTutoring(
+            Map<String, String> params,
+            Long profileId,
+            Pageable pageable
+    ) {
+        String get = params.get("get");
+        ProfileStatus profileStatus = profileService
+                .verifiedProfileById(profileId)
+                .getProfileStatus();
+        if (profileStatus.equals(ProfileStatus.TUTEE)) {
+            return tutoringRepository.findAllByTutoringStatusAndTuteeProfileId(
+                    TutoringStatus.valueOf(get),
+                    profileId,
+                    pageable);
+        } else {
+            return tutoringRepository.findAllByTutoringStatusAndTutorProfileId(
+                    TutoringStatus.valueOf(get),
+                    profileId,
+                    pageable);
+        }
     }
 
     public TutoringDto getTutoring(Long tutoringId, Pageable pageable) {
@@ -76,13 +94,6 @@ public class TutoringService {
         tutoringRepository.save(tutoring);
     }
 
-    public void setTutoringStatusUncheck(Long tutoringId) {
-        Tutoring tutoring = verifiedTutoring(tutoringId);
-        tutoring.setTutoringStatus(TutoringStatus.UNCHECK);
-
-        tutoringRepository.save(tutoring);
-    }
-
     public TutoringDto setTutoringStatusProgress(Long tutoringId, Pageable pageable) {
         Tutoring tutoring = verifiedTutoring(tutoringId);
         tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
@@ -90,16 +101,9 @@ public class TutoringService {
         return TutoringDto.of(progressTutoring,pageable);
     }
 
-    public void updateLatestNoticeBody(Tutoring tutoring, String noticeBody) {
-        tutoring.setLatestNoticeBody(noticeBody);
-        tutoringRepository.save(tutoring);
-    }
-
     public Tutoring verifiedTutoring(Long tutoringId) {
-        Optional<Tutoring> optionalTutoring = tutoringRepository.findById(tutoringId);
-        Tutoring tutoring = optionalTutoring.orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
-
-        return tutoring;
+        return tutoringRepository.findById(tutoringId)
+                .orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
     }
 
     private TutoringStatus getTutoringStatus(Long profileId) {

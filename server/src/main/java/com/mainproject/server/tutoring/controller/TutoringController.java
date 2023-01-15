@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -54,11 +55,12 @@ public class TutoringController {
 
     @GetMapping("/{profileId}")
     public ResponseEntity getAllTutoring(
+            @RequestParam Map<String, String> params,
             @PathVariable("profileId") Long profileId,
-            @PageableDefault(page = 0, size = 10, sort = "profileId", direction = Sort.Direction.DESC)
+            @PageableDefault(page = 0, size = 10, sort = "tutoringId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
-        Page<Tutoring> pageTutoring = tutoringService.getAllTutoring(profileId, pageable);
+        Page<Tutoring> pageTutoring = tutoringService.getAllTutoring(params, profileId, pageable);
         List<Tutoring> tutoringList = pageTutoring.getContent();
         List<TutoringSimpleResponseDto> tutoringSimpleList = tutoringMapper.tutoringListToTutoringSimpleResponseDtoList(tutoringList);
         Page<TutoringSimpleResponseDto> page = new PageImpl<>(
@@ -130,13 +132,15 @@ public class TutoringController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/date-notice")
+    @PostMapping("/date-notice/{tutoringId}")
     public ResponseEntity postDateNotice(
+            @PathVariable("tutoringId") Long tutoringId,
             @RequestBody DateNoticePostDto dateNoticePostDto
             ) {
-        DateNotice postDateNotice = dateNoticeMapper.dateNoticePostDtoToDateNotice(dateNoticePostDto);
-        DateNotice dateNotice = dateNoticeService.createDateNotice(postDateNotice);
-
+        DateNotice postDateNotice =
+                dateNoticeMapper.dateNoticePostDtoToDateNotice(dateNoticePostDto);
+        DateNotice dateNotice =
+                dateNoticeService.createDateNotice(postDateNotice, tutoringId);
         return new ResponseEntity(
                 ResponseDto.of(dateNoticeMapper.dateNoticeToDateNoticeResponseDto(dateNotice)),
                 HttpStatus.CREATED);
