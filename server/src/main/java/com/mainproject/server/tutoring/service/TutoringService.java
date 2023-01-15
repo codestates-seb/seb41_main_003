@@ -48,21 +48,29 @@ public class TutoringService {
             Long profileId,
             Pageable pageable
     ) {
-        String get = params.get("get");
-        ProfileStatus profileStatus = profileService
-                .verifiedProfileById(profileId)
-                .getProfileStatus();
-        if (profileStatus.equals(ProfileStatus.TUTEE)) {
-            return tutoringRepository.findAllByTutoringStatusAndTuteeProfileId(
-                    TutoringStatus.valueOf(get),
-                    profileId,
-                    pageable);
-        } else {
-            return tutoringRepository.findAllByTutoringStatusAndTutorProfileId(
-                    TutoringStatus.valueOf(get),
-                    profileId,
-                    pageable);
+        try {
+            if (params.isEmpty()) {
+                throw new ServiceLogicException(ErrorCode.NOT_NULL_WRONG_PROFILE_STATUS_PROPERTY);
+            }
+            String get = params.get("get");
+            ProfileStatus profileStatus = profileService
+                    .verifiedProfileById(profileId)
+                    .getProfileStatus();
+            if (profileStatus.equals(ProfileStatus.TUTEE)) {
+                return tutoringRepository.findAllByTutoringStatusAndTuteeProfileId(
+                        TutoringStatus.valueOf(get),
+                        profileId,
+                        pageable);
+            } else {
+                return tutoringRepository.findAllByTutoringStatusAndTutorProfileId(
+                        TutoringStatus.valueOf(get),
+                        profileId,
+                        pageable);
+            }
+        } catch (IllegalArgumentException e) {
+            throw new ServiceLogicException(ErrorCode.NOT_NULL_WRONG_PROFILE_STATUS_PROPERTY);
         }
+
     }
 
     public TutoringDto getTutoring(Long tutoringId, Pageable pageable) {
