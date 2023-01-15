@@ -35,7 +35,8 @@ public class DateNoticeService {
     public DateNotice getDateNotice(Long dateNoticeId) {
         return verifiedDateNoticeById(dateNoticeId);
     }
-    
+
+    // Todo 업데이트 할때 Homework 전체 삭제 후 새로 등록
     public DateNotice updateDateNotice(DateNotice dateNotice) {
         DateNotice findDateNotice = verifiedDateNoticeById(dateNotice.getDateNoticeId());
         Optional.ofNullable(dateNotice.getDateNoticeTitle())
