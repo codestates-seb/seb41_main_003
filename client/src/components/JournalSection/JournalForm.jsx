@@ -3,12 +3,8 @@ import PropType from 'prop-types';
 import { ButtonSilver } from '../Button';
 import { CheckBox } from '../Input';
 import DropDown from './DropDown';
-import { useState } from 'react';
 
 const JournalForm = ({ user, setUser }) => {
-  // const [isChecked, setIsChecked] = useState();
-  // 일지랑 일지 수정 둘다 체크박스 상태 변경할수 있어야 한다?
-
   const {
     dateNoticeTitle,
     startTime,
@@ -21,13 +17,15 @@ const JournalForm = ({ user, setUser }) => {
   return (
     <div className={styles.container}>
       <h1>과외 일지 </h1>
-      <div className={styles.exitButton}>
-        <ButtonSilver text="나가기" />
-      </div>
       <div className={styles.journalContainer}>
+        <div className={styles.exitButton}>
+          <ButtonSilver text="나가기" />
+          {/* TODO: 과외 리스트 페이지로 이동 */}
+        </div>
         <section className={styles.upperPart}>
           <div className={styles.pickerContainer}>
-            <p className={styles.font1}>05</p>
+            <p className={styles.font1}>19</p>
+            {/* TODO: 서버에서 받아온  startTime 또는 endTime에서 day 부분만 추출*/}
             <p className={styles.font5}>{startTime}</p>
             <p className={styles.font6}>{endTime}</p>
           </div>
