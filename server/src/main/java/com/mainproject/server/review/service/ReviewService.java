@@ -1,18 +1,21 @@
 package com.mainproject.server.review.service;
 
 import com.mainproject.server.constant.ErrorCode;
+import com.mainproject.server.constant.TutoringStatus;
 import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.profile.entity.Profile;
-import com.mainproject.server.profile.service.ProfileService;
 import com.mainproject.server.review.entity.Review;
 import com.mainproject.server.review.repository.ReviewRepository;
+import com.mainproject.server.tutoring.entity.Tutoring;
 import com.mainproject.server.tutoring.service.TutoringService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Transactional
 @Service
@@ -20,32 +23,37 @@ import java.util.Optional;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final TutoringService tutoringService;
-    private final ProfileService profileService;
 
-    public Review findReview(Long tutoringId) {
-        return findVerifiedReviewById(tutoringId);
+    public Review getReview(Long tutoringId) {
+        return verifiedReviewById(tutoringId);
     }
 
     public Review createReview(Review review, Long tutoringId) {
-        tutoringService.setTutoringStatusFinish(tutoringId);
-        Profile tutee = tutoringService.verifiedTutoring(tutoringId).getTutee();
-        review.addProfile(tutee);
+        Tutoring tutoring = tutoringService.verifiedTutoring(tutoringId);
+        tutoring.setTutoringStatus(TutoringStatus.FINISH);
+        Profile tutee = tutoring.getTutee();
+        Profile tutor = tutoring.getTutor();
+        review.addTutor(tutor);
+        review.addTutee(tutee);
+        tutoring.addReview(review);
+        setRate(tutor);
         return reviewRepository.save(review);
     }
 
-    public Review updateReview(Review review) {
-        Long reviewId = review.getReviewId();
-        Review findReview = findVerifiedReviewById(reviewId);
+    public Review updateReview(Review review, Long tutoringId) {
+        Tutoring tutoring = tutoringService.verifiedTutoring(tutoringId);
+        Review findReview = Optional.ofNullable(tutoring.getReview())
+                .orElseThrow(
+                        () -> new ServiceLogicException(ErrorCode.REVIEW_NOT_FOUND)
+                );
 
-        review.addProfile(findReview.getProfile());
-
-        Optional.ofNullable(review.getProfessional())
+        Optional.of(review.getProfessional())
                 .ifPresent(findReview::setProfessional);
-        Optional.ofNullable(review.getExplanation())
+        Optional.of(review.getExplanation())
                 .ifPresent(findReview::setExplanation);
-        Optional.ofNullable(review.getPunctuality())
+        Optional.of(review.getPunctuality())
                 .ifPresent(findReview::setPunctuality);
-        Optional.ofNullable(review.getReadiness())
+        Optional.of(review.getReadiness())
                 .ifPresent(findReview::setReadiness);
         Optional.ofNullable(review.getReviewBody())
                 .ifPresent(findReview::setReviewBody);
@@ -53,33 +61,29 @@ public class ReviewService {
         return reviewRepository.save(findReview);
     }
 
-    public void deleteReview(Long reviewId) {
-        Review review = findVerifiedReviewById(reviewId);
-        reviewRepository.delete(review);
+    public void setRate(Profile tutor) {
+        Set<Review> reviewSet = tutor.getReviews();
+        if (!reviewSet.isEmpty()) {
+            List<Review> reviews = new ArrayList<>(reviewSet);
+            double rate = reviews.stream()
+                    .map(review -> (review.getProfessional() +
+                            review.getPunctuality() +
+                            review.getExplanation() +
+                            review.getReadiness()) / 4)
+                    .mapToInt(i -> i)
+                    .average()
+                    .orElseThrow(
+                            () -> new ServiceLogicException(ErrorCode.REVIEW_NOT_FOUND)
+                    );
+            double countRate = Math.round(rate * 2) / 2.0;
+            tutor.setRate(countRate);
+        }
     }
 
-    public double createRate(Long profileId) {
-        Profile profile = profileService.verifiedProfileById(profileId);
-        List<Review> reviews = reviewRepository.findAllByProfile(profile);
-
-        double rate = reviews.stream()
-                .map(review -> review.getProfessional() +
-                        review.getPunctuality() +
-                        review.getExplanation() +
-                        review.getReadiness())
-                .mapToInt(i -> i)
-                .average()
-                .getAsDouble();
-
-        double averageRate = Math.round(rate * 2) / 2.0;
-
-        return averageRate;
-    }
-
-    public Review findVerifiedReviewById(Long tutoringId) {
-        Optional<Review> optionalReview = reviewRepository.findById(tutoringId);
-        Review findReview = optionalReview.orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
-
-        return findReview;
+    public Review verifiedReviewById(Long reviewId) {
+        return reviewRepository.findById(reviewId)
+                .orElseThrow(
+                        () -> new ServiceLogicException(ErrorCode.REVIEW_NOT_FOUND)
+                );
     }
 }
