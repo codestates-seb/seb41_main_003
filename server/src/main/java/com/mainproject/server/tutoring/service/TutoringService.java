@@ -53,17 +53,23 @@ public class TutoringService {
                 throw new ServiceLogicException(ErrorCode.NOT_NULL_WRONG_PROFILE_STATUS_PROPERTY);
             }
             String get = params.get("get");
+            String check = params.get("check");
             ProfileStatus profileStatus = profileService
                     .verifiedProfileById(profileId)
                     .getProfileStatus();
+            if (TutoringStatus.valueOf(get).equals(TutoringStatus.FINISH)) {
+                check = TutoringStatus.FINISH.name();
+            }
             if (profileStatus.equals(ProfileStatus.TUTEE)) {
-                return tutoringRepository.findAllByTutoringStatusAndTuteeProfileId(
+                return tutoringRepository.findAllByTutoringStatusOrTutoringStatusAndTuteeProfileId(
                         TutoringStatus.valueOf(get),
+                        TutoringStatus.valueOf(check),
                         profileId,
                         pageable);
             } else {
-                return tutoringRepository.findAllByTutoringStatusAndTutorProfileId(
+                return tutoringRepository.findAllByTutoringStatusOrTutoringStatusAndTutorProfileId(
                         TutoringStatus.valueOf(get),
+                        TutoringStatus.valueOf(check),
                         profileId,
                         pageable);
             }
@@ -74,7 +80,7 @@ public class TutoringService {
     }
 
     public TutoringDto getTutoring(Long tutoringId, Pageable pageable) {
-        return TutoringDto.of(verifiedTutoring(tutoringId),pageable);
+        return TutoringDto.of(verifiedTutoring(tutoringId), pageable);
     }
 
     public TutoringDto updateTutoring(Tutoring tutoring, Pageable pageable) {
@@ -91,20 +97,13 @@ public class TutoringService {
         tutoringRepository.delete(findTutoring);
     }
 
-
     /* 검증 및 유틸 로직 */
-
-    public void setTutoringStatusFinish(Long tutoringId) {
-        Tutoring tutoring = verifiedTutoring(tutoringId);
-        tutoring.setTutoringStatus(TutoringStatus.FINISH);
-        tutoringRepository.save(tutoring);
-    }
 
     public TutoringDto setTutoringStatusProgress(Long tutoringId, Pageable pageable) {
         Tutoring tutoring = verifiedTutoring(tutoringId);
         tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
         Tutoring progressTutoring = tutoringRepository.save(tutoring);
-        return TutoringDto.of(progressTutoring,pageable);
+        return TutoringDto.of(progressTutoring, pageable);
     }
 
     public Tutoring verifiedTutoring(Long tutoringId) {
