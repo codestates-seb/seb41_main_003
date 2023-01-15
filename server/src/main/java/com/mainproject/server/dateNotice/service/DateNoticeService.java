@@ -49,8 +49,6 @@ public class DateNoticeService {
     public DateNotice updateDateNotice(DateNotice dateNotice) {
         DateNotice findDateNotice = verifiedDateNoticeById(dateNotice.getDateNoticeId());
 
-        updateCheckNotice(dateNotice,findDateNotice.getTutoring());
-
         Optional.ofNullable(dateNotice.getDateNoticeTitle())
                 .ifPresent(findDateNotice::setDateNoticeTitle);
         Optional.ofNullable(dateNotice.getStartTime())
@@ -63,6 +61,8 @@ public class DateNoticeService {
                 .ifPresent(findDateNotice::setNotice);
         Optional.ofNullable(dateNotice.getHomeworks())
                 .ifPresent(findDateNotice::setHomeworks);
+
+        updateCheckNotice(findDateNotice,findDateNotice.getTutoring());
 
         return dateNoticeRepository.save(findDateNotice);
     }
