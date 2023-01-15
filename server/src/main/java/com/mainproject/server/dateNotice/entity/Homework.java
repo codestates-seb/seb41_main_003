@@ -24,7 +24,7 @@ public class Homework extends Auditable {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     @Setter
-    private HomeworkStatus homeworkStatus = HomeworkStatus.UNFINISHED;
+    private HomeworkStatus homeworkStatus = HomeworkStatus.PROGRESS;
 
 
     /* 연관 관계 매핑 */
@@ -38,7 +38,6 @@ public class Homework extends Auditable {
 
     public void addDateNotice(DateNotice dateNotice) {
         setDateNotice(dateNotice);
-        dateNotice.addHomework(this);
     }
 
 

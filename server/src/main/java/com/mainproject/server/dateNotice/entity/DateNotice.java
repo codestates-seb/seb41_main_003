@@ -49,7 +49,7 @@ public class DateNotice extends Auditable {
     private Schedule schedule;
 
     @ToString.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @Setter
     private Tutoring tutoring;
 
