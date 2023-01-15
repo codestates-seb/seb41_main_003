@@ -110,9 +110,9 @@ public class TutoringController {
             @PageableDefault(page = 0, size = 5, sort = "dateNoticeId", direction = Sort.Direction.DESC)
             Pageable pageable
             ) {
-        tutoringPatchDto.setTutoringId(tutoringId);
         TutoringDto tutoring = tutoringService.updateTutoring(
                 tutoringMapper.tutoringPatchDtoToTutoring(tutoringPatchDto),
+                tutoringId,
                 pageable
         );
         Page<DateNoticeResponseDto> dateNotices = tutoring.getDateNotices();
