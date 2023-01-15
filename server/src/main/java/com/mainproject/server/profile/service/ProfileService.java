@@ -123,7 +123,11 @@ public class ProfileService {
     ) {
         try {
             String sort = params.get("sort");
-            String[] subjects = params.get("subject").split(",");
+            String subjectString = params.get("subject");
+            String[] subjects = null;
+            if (subjectString != null) {
+                subjects = subjectString.split(",");
+            }
             String name = params.get("name");
             String key = params.get("key");
             Pageable pageable = getCustomPageable(defaultPageable, sort);
