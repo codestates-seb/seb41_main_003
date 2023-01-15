@@ -8,6 +8,7 @@ import {
   ConfirmValiModal,
 } from './DefaultModal.jsx';
 import AdminModal from './AdminModal';
+import { BothHandlerModal } from './BothHandlerModal';
 
 export const GlobalModal = () => {
   const reset = useResetRecoilState(ModalState);
@@ -20,6 +21,7 @@ export const GlobalModal = () => {
     confirmVali: <ConfirmValiModal {...props} />,
     confirmText: <ConfirmTextModal {...props} />,
     admin: <AdminModal />,
+    bothHandler: <BothHandlerModal {...props} />,
   };
 
   return (
