@@ -1,10 +1,7 @@
 package com.mainproject.server.profile.service;
 
 
-import com.mainproject.server.constant.ErrorCode;
-import com.mainproject.server.constant.ProfileStatus;
-import com.mainproject.server.constant.UserStatus;
-import com.mainproject.server.constant.WantedStatus;
+import com.mainproject.server.constant.*;
 import com.mainproject.server.dto.PageResponseDto;
 import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.image.entity.ProfileImage;
@@ -71,6 +68,7 @@ public class ProfileService {
             List<SubjectDto> subjectDtos,
             Pageable pageable
     ) {
+        // Todo 하나의 회원에 프로필은 최대 4개만 생성가능하도록 유효성 검증
         User findUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ServiceLogicException(ErrorCode.USER_NOT_FOUND));
         UserStatus userStatus = findUser.getUserStatus();
@@ -122,6 +120,7 @@ public class ProfileService {
             Map<String, String> params,
             Pageable defaultPageable
     ) {
+        // Todo 프로필의 wantedStatus가 REQUEST 일때만 출력되도록 수정
         try {
             String sort = params.get("sort");
             String[] subjects = params.get("subject").split(",");
@@ -209,7 +208,7 @@ public class ProfileService {
 
     private ProfileImage getBasicImage() {
         return ProfileImage.builder()
-                .fileName("basic")
+                .fileName(ImageProperty.BASIC_IMAGE_FILE_NAME.name())
                 .url("https://image-test-suyoung.s3.ap-northeast-2.amazonaws.com/image/user.png")
                 .build();
     }
