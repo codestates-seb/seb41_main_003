@@ -28,10 +28,8 @@ public class ReviewService {
 
     public Review createReview(Review review, Long tutoringId) {
         tutoringService.setTutoringStatusFinish(tutoringId);
-
         Profile tutee = tutoringService.verifiedTutoring(tutoringId).getTutee();
         review.addProfile(tutee);
-
         return reviewRepository.save(review);
     }
 

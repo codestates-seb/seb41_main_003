@@ -79,26 +79,24 @@ public class TutoringService {
 
     public TutoringDto updateTutoring(Tutoring tutoring, Pageable pageable) {
         Tutoring findTutoring = verifiedTutoring(tutoring.getTutoringId());
-
         Optional.ofNullable(tutoring.getTutoringTitle())
                 .ifPresent(findTutoring::setTutoringTitle);
         Optional.ofNullable(tutoring.getTutoringStatus())
                 .ifPresent(findTutoring::setTutoringStatus);
-
         return TutoringDto.of(tutoringRepository.save(findTutoring), pageable);
     }
 
     public void deleteTutoring(Long tutoringId) {
         Tutoring findTutoring = verifiedTutoring(tutoringId);
-
         tutoringRepository.delete(findTutoring);
     }
 
 
+    /* 검증 및 유틸 로직 */
+
     public void setTutoringStatusFinish(Long tutoringId) {
         Tutoring tutoring = verifiedTutoring(tutoringId);
         tutoring.setTutoringStatus(TutoringStatus.FINISH);
-
         tutoringRepository.save(tutoring);
     }
 

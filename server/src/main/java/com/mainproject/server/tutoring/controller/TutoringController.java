@@ -153,7 +153,7 @@ public class TutoringController {
     ) {
         String email = principal.getName();
 
-        DateNotice dateNotice = dateNoticeService.findDateNotice(dateNoticeId, email);
+        DateNotice dateNotice = dateNoticeService.getDateNotice(dateNoticeId, email);
 
         return new ResponseEntity(
                 ResponseDto.of(dateNoticeMapper.dateNoticeToDateNoticeResponseDto(dateNotice)),

@@ -34,9 +34,8 @@ public class DateNoticeService {
         return dateNoticeRepository.save(updateNotice);
     }
 
-    public DateNotice findDateNotice(Long dateNoticeId, String email) {
+    public DateNotice getDateNotice(Long dateNoticeId, String email) {
         DateNotice verifiedDateNotice = verifiedDateNoticeById(dateNoticeId);
-
         if (userService.verifiedUserByEmail(email).getUserStatus().equals(UserStatus.TUTEE)) {
             tutoringService.setTutoringStatusProgress(
                     verifiedDateNotice.getTutoring().getTutoringId(),
@@ -48,7 +47,6 @@ public class DateNoticeService {
     
     public DateNotice updateDateNotice(DateNotice dateNotice) {
         DateNotice findDateNotice = verifiedDateNoticeById(dateNotice.getDateNoticeId());
-
         Optional.ofNullable(dateNotice.getDateNoticeTitle())
                 .ifPresent(findDateNotice::setDateNoticeTitle);
         Optional.ofNullable(dateNotice.getStartTime())
@@ -61,17 +59,16 @@ public class DateNoticeService {
                 .ifPresent(findDateNotice::setNotice);
         Optional.ofNullable(dateNotice.getHomeworks())
                 .ifPresent(findDateNotice::setHomeworks);
-
         updateCheckNotice(findDateNotice,findDateNotice.getTutoring());
-
         return dateNoticeRepository.save(findDateNotice);
     }
 
     public void deleteDateNotice(Long dateNoticeId) {
         DateNotice verifiedDateNotice = verifiedDateNoticeById(dateNoticeId);
-
         dateNoticeRepository.delete(verifiedDateNotice);
     }
+
+    /* 검증 및 유틸 로직 */
 
     private DateNotice updateCheckNotice(DateNotice dateNotice, Tutoring tutoring) {
         if (!dateNotice.getNotice().getNoticeBody().isBlank()) {
