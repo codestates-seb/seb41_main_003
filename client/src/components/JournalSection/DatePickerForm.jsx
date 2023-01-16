@@ -69,13 +69,14 @@ const DatePickerForm = ({ user, setUser }) => {
     <button ref={ref} className={styles.iconButtonT} onClick={onClick}>
       <div className={styles.time}>
         <div className={styles.font6}>
-          {time.toTimeString().slice(0, 5)} <VscTriangleDown size="8px" />
+          {new Date(time).toTimeString().slice(0, 5)}{' '}
+          <VscTriangleDown size="8px" />
         </div>
       </div>
     </button>
   ));
   TimeButton.propTypes = {
-    time: PropTypes.object,
+    time: PropTypes.number,
   };
 
   const filterPassedTime = (time) => {
