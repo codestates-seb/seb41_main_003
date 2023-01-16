@@ -5,6 +5,7 @@ import { ButtonNightBlue, ButtonRed } from '../Button';
 import dummyTutoringData from './dummyTutoringData';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
+import { Link } from 'react-router-dom';
 
 const JournalList = () => {
   const {
@@ -15,6 +16,7 @@ const JournalList = () => {
     updateAt,
     createAt,
     latestNotice,
+    latestNoticeId,
   } = dummyTutoringData;
 
   //TODO:현재 이 컴포넌트는 튜터 기준으로 만들어짐 이후 튜터, 튜티 분기해 수정 필요
@@ -75,39 +77,45 @@ const JournalList = () => {
   return (
     <div className={styles.container}>
       <div className={styles.leftCard}>
-        <div className={styles.noti}>
-          <HiSpeakerphone className={styles.icon} />
-          {latestNotice > 20
-            ? `최근 공지사항 | ${latestNotice.slice(0, 20)}...`
-            : `최근 공지사항 | ${latestNotice}`}
-        </div>
+        {/* TODO: Link 컴포넌트를 통해 들어간 일지 페이지에서는 /tutoring/date-notice/{latestNoticeId} 와 같은 파라미터 추가해서 특정 날짜 일지 API 요청 */}
+        <Link to="/journal">
+          <div className={styles.noti}>
+            <HiSpeakerphone className={styles.icon} />
+            {latestNotice > 20
+              ? `최근 공지사항 | ${latestNotice.slice(0, 20)}...`
+              : `최근 공지사항 | ${latestNotice}`}
+          </div>
+        </Link>
         <ul className={styles.list}>
           {dateNotices.map((el) => (
-            <li key={el.dateNoticeId} className={styles.li}>
-              <div className={styles.dateBox}>
-                <span className={styles.day}>
-                  {new Date(el.startTime).getDate()}
-                </span>
-                <span className={styles.yearMonth}>{`${new Date(
-                  el.startTime
-                ).getFullYear()}년 ${
-                  new Date(el.startTime).getMonth() + 1
-                }월`}</span>
-              </div>
-              <div className={styles.textBox}>
-                <span
-                  className={styles.goal}
-                >{`학습 목표 | ${el.dateNoticeTitle} `}</span>
-                <span
-                  className={styles.homework}
-                >{`과제 제출 완료 (${el.finishHomeworkCount}/${el.homeworkCount})`}</span>
-              </div>
-              {/* TODO: 최근 공지를 눌렀을 때 해당 공지가 있는 일지 상세 페이지로 이동해야 함  */}
-              <div className={styles.notiIcon}>
-                <HiSpeakerphone className={styles.hiSpeaker} />
-                공지
-              </div>
-            </li>
+            // TODO: 해당 일지 id에 따른 조회 필요
+            <Link to="/journal" key={el.dateNoticeId}>
+              <li className={styles.li}>
+                <div className={styles.dateBox}>
+                  <span className={styles.day}>
+                    {new Date(el.startTime).getDate()}
+                  </span>
+                  <span className={styles.yearMonth}>{`${new Date(
+                    el.startTime
+                  ).getFullYear()}년 ${
+                    new Date(el.startTime).getMonth() + 1
+                  }월`}</span>
+                </div>
+                <div className={styles.textBox}>
+                  <span
+                    className={styles.goal}
+                  >{`학습 목표 | ${el.dateNoticeTitle} `}</span>
+                  <span
+                    className={styles.homework}
+                  >{`과제 제출 완료 (${el.finishHomeworkCount}/${el.homeworkCount})`}</span>
+                </div>
+                {/* TODO: 최근 공지를 눌렀을 때 해당 공지가 있는 일지 상세 페이지로 이동해야 함  */}
+                <div className={styles.notiIcon}>
+                  <HiSpeakerphone className={styles.hiSpeaker} />
+                  공지
+                </div>
+              </li>
+            </Link>
           ))}
         </ul>
       </div>
