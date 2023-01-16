@@ -7,7 +7,6 @@ const DetailStar = ({ rate }) => {
     <div>
       {new Array(5).fill('star').map((_, count) => {
         const checkStar = count + 1 > rate ? 'dimmed' : 'colored';
-        console.log(checkStar);
 
         const renderStar = (color) => {
           switch (color) {

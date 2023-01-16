@@ -1,23 +1,45 @@
 import styles from './Toggle.module.css';
 import PropTypes from 'prop-types';
+import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import ModalState from '../../recoil/modal';
 
-const Toggle = ({ modalOpenOnHandler, isAnnounceOn }) => {
+const Toggle = ({ user, setUser }) => {
+  const setModal = useSetRecoilState(ModalState);
+  const resetModal = useResetRecoilState(ModalState);
+
+  const confirm = {
+    isOpen: true,
+    modalType: 'confirm',
+    props: {
+      text: '공고 상태를 변경하시겠습니까?',
+      modalHandler: () => {
+        setUser({
+          ...user,
+          wantedStatus: user.wantedStatus === 'NONE' ? 'REQUEST' : 'NONE',
+        });
+        //TODO: 수정된 공고 상태로 변경해달라는 API 요청을 보내야 함.
+        console.log('공고상태 변경 완료');
+        resetModal();
+      },
+    },
+  };
+
   return (
     <div className={styles.toggleSwitch}>
       <button
         onClick={(e) => {
           e.preventDefault();
-          modalOpenOnHandler();
+          setModal(confirm);
         }}
       >
         <input
           className={styles.checkbox}
           type="checkbox"
-          defaultChecked={isAnnounceOn === 'REQUEST' ? true : false}
+          defaultChecked={user.wantedStatus === 'REQUEST' ? true : false}
         />
         <span
           className={`${styles.slider} ${
-            isAnnounceOn === 'REQUEST' ? '' : styles.unActive
+            user.wantedStatus === 'REQUEST' ? '' : styles.unActive
           }`}
         ></span>
       </button>
@@ -26,8 +48,8 @@ const Toggle = ({ modalOpenOnHandler, isAnnounceOn }) => {
 };
 
 Toggle.propTypes = {
-  modalOpenOnHandler: PropTypes.func,
-  isAnnounceOn: PropTypes.string,
+  user: PropTypes.object,
+  setUser: PropTypes.func,
 };
 
 export default Toggle;

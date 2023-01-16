@@ -16,6 +16,7 @@
   height: 16px;
   background-color: $snow;
   border-radius: 3px;
+  border: 0.5px solid $silver;
 
   > svg {
     fill: $snow;
@@ -30,6 +31,7 @@
   align-items: center;
   background-color: $night;
   border-radius: 3px;
+  border: none;
 
   > svg {
     font-size: 14px;

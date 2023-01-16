@@ -68,12 +68,13 @@ public class ProfileService {
             List<SubjectDto> subjectDtos,
             Pageable pageable
     ) {
-        // Todo 하나의 회원에 프로필은 최대 4개만 생성가능하도록 유효성 검증
         User findUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ServiceLogicException(ErrorCode.USER_NOT_FOUND));
         UserStatus userStatus = findUser.getUserStatus();
         if (userStatus.equals(UserStatus.NONE)) {
             throw new ServiceLogicException(ErrorCode.USER_TYPE_NOT_NONE);
+        } else if (findUser.getProfiles().size() >= 4) {
+            throw new ServiceLogicException(ErrorCode.EXCEEDED_MAXIMUM_PROFILE_COUNT);
         }
         ProfileImage image = getBasicImage();
         profile.addUserImage(image);
@@ -120,15 +121,18 @@ public class ProfileService {
             Map<String, String> params,
             Pageable defaultPageable
     ) {
-        // Todo 프로필의 wantedStatus가 REQUEST 일때만 출력되도록 수정
         try {
             String sort = params.get("sort");
-            String[] subjects = params.get("subject").split(",");
+            String subjectString = params.get("subject");
+            String[] subjects = null;
+            if (subjectString != null) {
+                subjects = subjectString.split(",");
+            }
             String name = params.get("name");
             String key = params.get("key");
             Pageable pageable = getCustomPageable(defaultPageable, sort);
             Page<ProfileQueryDto> queryProfile = profileRepository.findQueryProfile(
-                    key, subjects, name, pageable
+                    key, subjects, name, WantedStatus.REQUEST, pageable
             );
             List<ProfileListResponseDto> dtoList = queryProfile.getContent()
                     .stream()
@@ -149,6 +153,7 @@ public class ProfileService {
                 .orElseThrow(() -> new ServiceLogicException(ErrorCode.PROFILE_NOT_FOUND));
     }
 
+    // Todo 쿼리파라미터로 sort 변수가 이미 지정되어 있어 필요 없을것 같다. 추후 리팩토링시 삭제 예정
     private static Pageable getCustomPageable(Pageable defaultPageable, String sort) {
         if (sort != null && sort.equals("rate")) {
             return PageRequest.of(

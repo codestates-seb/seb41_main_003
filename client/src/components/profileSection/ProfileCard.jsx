@@ -2,11 +2,32 @@ import styles from './ProfileCard.module.css';
 import PropTypes from 'prop-types';
 import { ButtonNightBlue } from '../Button.jsx';
 import { BlueSubject } from '../Subject.jsx';
+import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import ModalState from '../../recoil/modal';
 import defaultUser from '../../assets/defaultUser.png';
 import { MdStar } from 'react-icons/md';
+import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import ModalState from '../../recoil/modal.js';
 
-const ProfileCard = ({ user, QuestionModalHandler }) => {
+const ProfileCard = ({ user }) => {
   const { name, rate, bio, school, subjects } = user;
+
+  const setModal = useSetRecoilState(ModalState);
+  const reset = useResetRecoilState(ModalState);
+
+  const confirm = {
+    isOpen: true,
+    modalType: 'confirm',
+    props: {
+      text: '상대방에게 문의를 요청하시겠습니까?',
+      modalHandler: () => {
+        console.log('문의요청 완료');
+        reset();
+        //TODO:모달창에서 확인 버튼을 누르면 MessagePage로 이동
+      },
+    },
+  };
+
   return (
     <div className={styles.cardContainer}>
       {/* //! API 연결 시 유저 이미지 수정 필요 */}
@@ -39,15 +60,18 @@ const ProfileCard = ({ user, QuestionModalHandler }) => {
         </div>
       </section>
       <div className={styles.buttonBox}>
-        <ButtonNightBlue buttonHandler={QuestionModalHandler} text="문의하기" />
+        <ButtonNightBlue
+          buttonHandler={(e) => {
+            e.preventDefault();
+            buttonHandler={() => setModal(confirm)}
+          text="문의하기"
+        />
       </div>
     </div>
   );
 };
 
 ProfileCard.propTypes = {
-  isAnnounceOn: PropTypes.func,
-  QuestionModalHandler: PropTypes.func,
   user: PropTypes.object,
 };
 

@@ -104,7 +104,7 @@ public class ProfilePageDto {
                             .explanation(r.getExplanation())
                             .punctuality(r.getPunctuality())
                             .reviewBody(r.getReviewBody())
-                            .tuteeName(r.getProfile().getName())
+                            .tuteeName(r.getTutee().getName())
                             .createAt(r.getCreateAt())
                             .updateAt(r.getUpdateAt())
                             .build())
@@ -113,8 +113,9 @@ public class ProfilePageDto {
                     reviewList,
                     reviews.getPageable(),
                     reviewList.size());
+        } else {
+            this.reviews = new PageImpl<>(List.of(), reviews.getPageable(), reviews.getTotalElements());
         }
-        this.reviews = new PageImpl<>(List.of(), reviews.getPageable(), reviews.getTotalElements());
     }
 
     public static ProfilePageDto of(Profile profile, Page<Review> reviews) {

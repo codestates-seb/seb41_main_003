@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Transactional
@@ -38,68 +39,99 @@ public class TutoringService {
         tutoring.addTutee(tutee);
         Tutoring save = tutoringRepository.save(tutoring);
         MessageRoom messageRoom = messageService.updateMessageRoom(messageRoomId, save.getTutoringId());
-        messageService.sendMessage(profileId, messageRoom, tutor, tutee);
+        messageService.sendTutoringRequestMessage(profileId, messageRoom, tutor, tutee);
         return save;
     }
 
-    public Page<Tutoring> getAllTutoring(Long profileId, Pageable pageable) {
-        Page<Tutoring> tutorings = tutoringRepository.findAllByTutorProfileIdOrTuteeProfileId(profileId, profileId, pageable);
-        return tutorings;
+    public Page<Tutoring> getAllTutoring(
+            Map<String, String> params,
+            Long profileId,
+            Pageable pageable
+    ) {
+        try {
+            if (params.isEmpty())
+                throw new ServiceLogicException(ErrorCode.NOT_NULL_WRONG_PROFILE_STATUS_PROPERTY);
+            String get = params.get("get");
+            ProfileStatus profileStatus = profileService
+                    .verifiedProfileById(profileId)
+                    .getProfileStatus();
+            if (TutoringStatus.valueOf(get).equals(TutoringStatus.FINISH)) {
+                params.put("check",TutoringStatus.FINISH.name());
+            } else if (TutoringStatus.valueOf(get).equals(TutoringStatus.PROGRESS)) {
+                params.put("check",TutoringStatus.UNCHECK.name());
+            }
+            if (profileStatus.equals(ProfileStatus.TUTEE)) {
+                return tutoringRepository
+                        .findAllByTuteeProfileIdAndTutoringStatusOrTuteeProfileIdAndTutoringStatus(
+                        profileId,
+                        TutoringStatus.valueOf(get),
+                        profileId,
+                        TutoringStatus.valueOf(params.get("check")),
+                        pageable);
+            } else {
+                return tutoringRepository
+                        .findAllByTutorProfileIdAndTutoringStatusOrTutorProfileIdAndTutoringStatus(
+                        profileId,
+                        TutoringStatus.valueOf(get),
+                        profileId,
+                        TutoringStatus.valueOf(params.get("check")),
+                        pageable);
+            }
+        } catch (IllegalArgumentException e) {
+            throw new ServiceLogicException(ErrorCode.NOT_NULL_WRONG_PROFILE_STATUS_PROPERTY);
+        }
+
     }
 
-    public TutoringDto getTutoring(Long tutoringId, Pageable pageable) {
-        return TutoringDto.of(verifiedTutoring(tutoringId),pageable);
+    public TutoringDto getTutoring(Long tutoringId, Long profileId, Pageable pageable) {
+        Tutoring tutoring = verifiedTutoring(tutoringId);
+        if (tutoring.getTutee().getProfileId().equals(profileId) &&
+                !tutoring.getTutoringStatus().equals(TutoringStatus.FINISH)
+        ) {
+            tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
+            Tutoring progressTutoring = tutoringRepository.save(tutoring);
+            return TutoringDto.of(progressTutoring, pageable);
+        } else {
+            return TutoringDto.of(tutoring, pageable);
+        }
     }
 
-    public TutoringDto updateTutoring(Tutoring tutoring, Pageable pageable) {
-        Tutoring findTutoring = verifiedTutoring(tutoring.getTutoringId());
-
+    public TutoringDto updateTutoring(Tutoring tutoring, Long tutoringId, Pageable pageable) {
+        Tutoring findTutoring = verifiedTutoring(tutoringId);
         Optional.ofNullable(tutoring.getTutoringTitle())
                 .ifPresent(findTutoring::setTutoringTitle);
         Optional.ofNullable(tutoring.getTutoringStatus())
                 .ifPresent(findTutoring::setTutoringStatus);
-
         return TutoringDto.of(tutoringRepository.save(findTutoring), pageable);
     }
 
     public void deleteTutoring(Long tutoringId) {
-        Tutoring findTutoring = verifiedTutoring(tutoringId);
-
-        tutoringRepository.delete(findTutoring);
+        tutoringRepository.delete(verifiedTutoring(tutoringId));
     }
 
+    /* 검증 및 유틸 로직 */
 
-    public void setTutoringStatusFinish(Long tutoringId) {
+    public TutoringDto setTutoringStatusProgress(
+            Long tutoringId,
+            Long profileId,
+            Pageable pageable
+    ) {
         Tutoring tutoring = verifiedTutoring(tutoringId);
-        tutoring.setTutoringStatus(TutoringStatus.FINISH);
-
-        tutoringRepository.save(tutoring);
-    }
-
-    public void setTutoringStatusUncheck(Long tutoringId) {
-        Tutoring tutoring = verifiedTutoring(tutoringId);
-        tutoring.setTutoringStatus(TutoringStatus.UNCHECK);
-
-        tutoringRepository.save(tutoring);
-    }
-
-    public TutoringDto setTutoringStatusProgress(Long tutoringId, Pageable pageable) {
-        Tutoring tutoring = verifiedTutoring(tutoringId);
-        tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
-        Tutoring progressTutoring = tutoringRepository.save(tutoring);
-        return TutoringDto.of(progressTutoring,pageable);
-    }
-
-    public void updateLatestNoticeBody(Tutoring tutoring, String noticeBody) {
-        tutoring.setLatestNoticeBody(noticeBody);
-        tutoringRepository.save(tutoring);
+        if (tutoring.getTutor().getProfileId().equals(profileId) ||
+                tutoring.getTutee().getProfileId().equals(profileId) &&
+                !tutoring.getTutoringStatus().equals(TutoringStatus.FINISH)
+        ) {
+            tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
+            Tutoring progressTutoring = tutoringRepository.save(tutoring);
+            return TutoringDto.of(progressTutoring, pageable);
+        } else {
+            throw new ServiceLogicException(ErrorCode.ACCESS_DENIED);
+        }
     }
 
     public Tutoring verifiedTutoring(Long tutoringId) {
-        Optional<Tutoring> optionalTutoring = tutoringRepository.findById(tutoringId);
-        Tutoring tutoring = optionalTutoring.orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
-
-        return tutoring;
+        return tutoringRepository.findById(tutoringId)
+                .orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
     }
 
     private TutoringStatus getTutoringStatus(Long profileId) {

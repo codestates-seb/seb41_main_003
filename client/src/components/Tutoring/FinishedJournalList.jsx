@@ -3,48 +3,80 @@ import dummyTutoringData from './dummyTutoringData';
 import { HiSpeakerphone } from 'react-icons/hi';
 import { MdEdit } from 'react-icons/md';
 import { ButtonNightBlue, ButtonRed } from '../Button';
-import {
-  ConfirmModal,
-  ConfirmTextModal,
-  AlertModal,
-} from '../modal/DefaultModal';
-import { useState } from 'react';
-import EditReviewModal from './EditReviewModal';
-import ReviewDetail from './ReviewDetail';
+import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import ModalState from '../../recoil/modal.js';
 
 const FinishedJournalList = () => {
   //TODO:현재 이 컴포넌트는 튜티 기준으로 만들어짐 이후 튜터, 튜티 분기해 수정 필요
   //name부분과 과외 일지 작성 버튼 부분이 튜터와 튜티가 달라야 함
   // 작성된 리뷰 확인 버튼은 튜티인 경우에만 존재함
 
-  const [alertModal, setAlertModal] = useState({
-    text: '리뷰가 수정되었습니다.',
-    isOpen: false,
-  });
+  const setModal = useSetRecoilState(ModalState);
+  const reset = useResetRecoilState(ModalState);
 
-  const [confirmModal, setConfirmModal] = useState({
-    text: `과외를 삭제 하시겠습니까?
-    과외 삭제 시 과외 관리 내역이 모두 삭제됩니다.`,
-    isOpen: false,
-  });
-  const [confirmTextModal, setConfirmTextModal] = useState({
-    text: '과외 제목을 아래와 같이 수정합니다.',
-    isOpen: false,
-    value: '',
-  });
+  const confirmTextProps = {
+    isOpen: true,
+    modalType: 'confirmText',
+    props: {
+      text: '과외 제목을 아래와 같이 수정합니다.',
+      modalHandler: (e, value) => {
+        console.log(value);
+        reset();
+        //TODO : 과외 제목 수정 관련 API 요청
+      },
+      placeHolder: '새로운 과외 제목 입력',
+    },
+  };
 
-  //리뷰 수정 상태
-  //TODO: 여기 초기값으로 특정 과외 조회한 내용을 들려주어야 함...
-  const [reviewData, setReviewData] = useState({
-    isOpen: false,
-    professional: 0,
-    readiness: 0,
-    explanation: 0,
-    punctuality: 0,
-    value: '',
-  });
+  const confirmProps = {
+    isOpen: true,
+    modalType: 'confirm',
+    props: {
+      text: `과외를 삭제 하시겠습니까?
+      과외 삭제 시 과외 관리 내역이 모두 삭제됩니다.`,
+      modalHandler: () => {
+        console.log('과외 삭제 요청이 갑니다~');
+        reset();
+        //TODO : 과외 삭제 요청
+      },
+    },
+  };
 
-  const [reviewDetailData, setDetailReviewData] = useState(false);
+  const reviewDetailProps = {
+    isOpen: true,
+    modalType: 'reviewDetail',
+    props: {
+      modalHandler: (e) => {
+        if (e.target.name === 'edit') {
+          console.log('리뷰 수정 하러 갑시다!');
+          setModal(editReviewProps);
+        } else if (e.target.name === 'delete') {
+          console.log('리뷰를 삭제해야 합니다');
+          reset();
+        }
+      },
+    },
+  };
+
+  const editReviewProps = {
+    isOpen: true,
+    modalType: 'editReview',
+    props: {
+      modalHandler: (e, value, reviewData) => {
+        //TODO: 후기 수정 요청 보내기
+        console.log('후기 수정 요청 할 겁니다!');
+        setModal(alertProps);
+      },
+    },
+  };
+
+  const alertProps = {
+    isOpen: true,
+    modalType: 'alert',
+    props: {
+      text: '리뷰가 수정되었습니다.',
+    },
+  };
 
   const {
     tutoringTitle,
@@ -56,60 +88,6 @@ const FinishedJournalList = () => {
     latestNotice,
   } = dummyTutoringData;
 
-  const confirmHandler = (e) => {
-    const { name } = e.target;
-    setConfirmModal({
-      ...confirmModal,
-      isOpen: !confirmModal.isOpen,
-    });
-
-    if (name === 'yes') {
-      //TODO : 과외 삭제 관련 API 요청(중요도:하)
-      console.log('과외 삭제 요청 갑니다!');
-    }
-  };
-
-  const confirmTextHandler = (e) => {
-    const { name } = e.target;
-    setConfirmTextModal({
-      ...confirmTextModal,
-      isOpen: !confirmTextModal.isOpen,
-      value: '',
-    });
-
-    if (name === 'yes') {
-      //TODO : 과외 제목 수정 관련 API 요청
-      console.log(confirmTextModal.value);
-    }
-  };
-
-  //리뷰 수정 모달
-  const reviewHandler = (e) => {
-    const { name } = e.target;
-    setReviewData({
-      ...reviewData,
-      isOpen: !reviewData.isOpen,
-      value: '',
-    });
-    if (name === 'yes') {
-      //TODO: 과외 리뷰 작성 API 요청
-      console.log(reviewData);
-      setAlertModal({ ...alertModal, isOpen: !alertModal.isOpen });
-    }
-  };
-
-  const reviewDetailHandler = (e) => {
-    const { name } = e.target;
-    setDetailReviewData(!reviewDetailData);
-
-    if (name === 'edit') {
-      console.log('리뷰를 수정하러 갈거라네~');
-      setReviewData({ ...reviewData, isOpen: !reviewData.isOpen });
-    } else if (name === 'delete') {
-      console.log('리뷰를 삭제할 거라네~');
-      //TODO: 리뷰 삭제 로직 & 리뷰 삭제 완료되었다는 모달창 띄워야 함.
-    }
-  };
   return (
     <div className={styles.container}>
       <div className={styles.leftCard}>
@@ -154,24 +132,15 @@ const FinishedJournalList = () => {
           <div className={styles.nameBox}>
             {/* TODO: user status에 따라 tutorName이 뜨거나 tuteeName이 떠야 함  */}
             <span>{tutorName}</span>
-            <button onClick={confirmTextHandler}>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setModal(confirmTextProps);
+              }}
+            >
               <MdEdit className={styles.mdEdit} />
               <span>제목 수정하기</span>
             </button>
-            {confirmTextModal.isOpen && (
-              <ConfirmTextModal
-                text={confirmTextModal.text}
-                modalHandler={confirmTextHandler}
-                value={confirmTextModal.value}
-                valueHandler={(e) => {
-                  setConfirmTextModal({
-                    ...confirmTextModal,
-                    value: e.target.value,
-                  });
-                }}
-                placeHolder="새로운 과외 제목"
-              />
-            )}
           </div>
           <span className={styles.tutoringTitle}>{tutoringTitle}</span>
           <span className={styles.tutoringDate}>
@@ -183,29 +152,18 @@ const FinishedJournalList = () => {
         <div className={styles.buttonBox}>
           <ButtonNightBlue
             text="작성된 리뷰 확인"
-            buttonHandler={reviewDetailHandler}
+            buttonHandler={(e) => {
+              e.preventDefault();
+              setModal(reviewDetailProps);
+            }}
           />
-          {reviewDetailData && (
-            <ReviewDetail modalHandler={reviewDetailHandler} />
-          )}
-          {reviewData.isOpen && (
-            <EditReviewModal
-              modalHandler={reviewHandler}
-              value={reviewData.value}
-              valueHandler={(e) => {
-                setReviewData({ ...reviewData, value: e.target.value });
-              }}
-              reviewData={reviewData}
-              setReviewData={setReviewData}
-            />
-          )}
-          <ButtonRed text="과외 삭제" buttonHandler={confirmHandler} />
-          {confirmModal.isOpen && (
-            <ConfirmModal
-              text={confirmModal.text}
-              modalHandler={confirmHandler}
-            />
-          )}
+          <ButtonRed
+            text="과외 삭제"
+            buttonHandler={(e) => {
+              e.preventDefault();
+              setModal(confirmProps);
+            }}
+          />
         </div>
       </div>
     </div>

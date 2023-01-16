@@ -23,8 +23,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -54,13 +54,16 @@ public class TutoringController {
 
     @GetMapping("/{profileId}")
     public ResponseEntity getAllTutoring(
+            @RequestParam Map<String, String> params,
             @PathVariable("profileId") Long profileId,
-            @PageableDefault(page = 0, size = 10, sort = "profileId", direction = Sort.Direction.DESC)
+            @PageableDefault(page = 0, size = 10, sort = "tutoringId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
-        Page<Tutoring> pageTutoring = tutoringService.getAllTutoring(profileId, pageable);
+        Page<Tutoring> pageTutoring =
+                tutoringService.getAllTutoring(params, profileId, pageable);
         List<Tutoring> tutoringList = pageTutoring.getContent();
-        List<TutoringSimpleResponseDto> tutoringSimpleList = tutoringMapper.tutoringListToTutoringSimpleResponseDtoList(tutoringList);
+        List<TutoringSimpleResponseDto> tutoringSimpleList =
+                tutoringMapper.tutoringListToTutoringSimpleResponseDtoList(tutoringList);
         Page<TutoringSimpleResponseDto> page = new PageImpl<>(
                 tutoringSimpleList,
                 pageTutoring.getPageable(),
@@ -70,13 +73,15 @@ public class TutoringController {
                 HttpStatus.OK);
     }
 
-    @PostMapping("/details/{tutoringId}")
-    public ResponseEntity postTutoringMatch(
+    @PatchMapping("/details/{profileId}/{tutoringId}")
+    public ResponseEntity patchTutoringMatch(
+            @PathVariable("profileId") Long profileId,
             @PathVariable("tutoringId") Long tutoringId,
             @PageableDefault(page = 0, size = 5, sort = "dateNoticeId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
-        TutoringDto tutoring = tutoringService.setTutoringStatusProgress(tutoringId, pageable);
+        TutoringDto tutoring =
+                tutoringService.setTutoringStatusProgress(tutoringId, profileId, pageable);
         Page<DateNoticeResponseDto> dateNotices = tutoring.getDateNotices();
         TutoringResponseDto responseDto = TutoringResponseDto.of(tutoring);
         PageResponseDto response = PageResponseDto.of(responseDto, dateNotices);
@@ -86,13 +91,15 @@ public class TutoringController {
     }
 
 
-    @GetMapping("/details/{tutoringId}")
+    @GetMapping("/details/{profileId}/{tutoringId}")
     public ResponseEntity getTutoring(
+            @PathVariable("profileId") Long profileId,
             @PathVariable("tutoringId") Long tutoringId,
             @PageableDefault(page = 0, size = 5, sort = "dateNoticeId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
-        TutoringDto tutoring = tutoringService.getTutoring(tutoringId, pageable);
+        TutoringDto tutoring =
+                tutoringService.getTutoring(tutoringId, profileId, pageable);
         Page<DateNoticeResponseDto> dateNotices = tutoring.getDateNotices();
         TutoringResponseDto responseDto = TutoringResponseDto.of(tutoring);
         PageResponseDto response = PageResponseDto.of(responseDto, dateNotices);
@@ -108,9 +115,9 @@ public class TutoringController {
             @PageableDefault(page = 0, size = 5, sort = "dateNoticeId", direction = Sort.Direction.DESC)
             Pageable pageable
             ) {
-        tutoringPatchDto.setTutoringId(tutoringId);
         TutoringDto tutoring = tutoringService.updateTutoring(
                 tutoringMapper.tutoringPatchDtoToTutoring(tutoringPatchDto),
+                tutoringId,
                 pageable
         );
         Page<DateNoticeResponseDto> dateNotices = tutoring.getDateNotices();
@@ -130,13 +137,15 @@ public class TutoringController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/date-notice")
+    @PostMapping("/date-notice/{tutoringId}")
     public ResponseEntity postDateNotice(
+            @PathVariable("tutoringId") Long tutoringId,
             @RequestBody DateNoticePostDto dateNoticePostDto
             ) {
-        DateNotice postDateNotice = dateNoticeMapper.dateNoticePostDtoToDateNotice(dateNoticePostDto);
-        DateNotice dateNotice = dateNoticeService.createDateNotice(postDateNotice);
-
+        DateNotice postDateNotice =
+                dateNoticeMapper.dateNoticePostDtoToDateNotice(dateNoticePostDto);
+        DateNotice dateNotice =
+                dateNoticeService.createDateNotice(postDateNotice, tutoringId);
         return new ResponseEntity(
                 ResponseDto.of(dateNoticeMapper.dateNoticeToDateNoticeResponseDto(dateNotice)),
                 HttpStatus.CREATED);
@@ -144,12 +153,9 @@ public class TutoringController {
 
     @GetMapping("/date-notice/{dateNoticeId}")
     public ResponseEntity getDateNotice(
-            @PathVariable("dateNoticeId") Long dateNoticeId,
-            Principal principal
+            @PathVariable("dateNoticeId") Long dateNoticeId
     ) {
-        String email = principal.getName();
-
-        DateNotice dateNotice = dateNoticeService.findDateNotice(dateNoticeId, email);
+        DateNotice dateNotice = dateNoticeService.getDateNotice(dateNoticeId);
 
         return new ResponseEntity(
                 ResponseDto.of(dateNoticeMapper.dateNoticeToDateNoticeResponseDto(dateNotice)),
@@ -161,6 +167,7 @@ public class TutoringController {
             @PathVariable("dateNoticeId") Long dateNoticeId,
             @RequestBody DateNoticePatchDto dateNoticePatchDto
             ) {
+        dateNoticePatchDto.setDateNoticeId(dateNoticeId);
         DateNotice patchDateNotice = dateNoticeMapper.dateNoticePatchDtoToDateNotice(dateNoticePatchDto);
         DateNotice dateNotice = dateNoticeService.updateDateNotice(patchDateNotice);
 

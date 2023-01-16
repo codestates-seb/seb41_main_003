@@ -17,9 +17,9 @@ public class TutoringResponseDto {
 
     private String tutoringTitle;
 
-    private String latestNoticeBody;
-
     private String tutoringStatus;
+
+    private String latestNoticeBody;
 
     private Long tuteeId;
 
@@ -39,6 +39,7 @@ public class TutoringResponseDto {
         this.tutoringId = dto.getTutoringId();
         this.tutoringTitle = dto.getTutoringTitle();
         this.tutoringStatus = dto.getTutoringStatus();
+        this.latestNoticeBody = dto.getLatestNoticeBody();
         this.tuteeId = dto.getTuteeId();
         this.tuteeName = dto.getTuteeName();
         this.tutorId = dto.getTutorId();

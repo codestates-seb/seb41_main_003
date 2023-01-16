@@ -1,6 +1,7 @@
 package com.mainproject.server.profile.dto;
 
 import com.mainproject.server.constant.ProfileStatus;
+import com.mainproject.server.constant.WantedStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,8 @@ public class ProfileQueryDto {
     private Long profileId;
 
     private ProfileStatus profileStatus;
+
+    private WantedStatus wantedStatus;
 
     private String name;
 

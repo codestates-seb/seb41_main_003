@@ -68,6 +68,10 @@
 
     > * {
       resize: none;
+
+      &::-webkit-scrollbar {
+        display: none; /* Chrome , Safari , Opera */
+      }
     }
   }
 
@@ -77,36 +81,78 @@
 
     > * {
       resize: none;
+
+      &::-webkit-scrollbar {
+        display: none; /* Chrome , Safari , Opera */
+      }
     }
   }
 
   .homeworkContainer {
     margin-top: 16px;
+    width: 484px;
   }
 }
 
 .homeworkArea {
   width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 209px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome , Safari , Opera */
+  }
 
   .checkBoxContainer {
     display: flex;
-    margin-bottom: 10px;
+    padding: 4px;
+    margin-bottom: 8px;
+    position: relative;
+    border-radius: 3px;
+
+    .homeworkMenu {
+      position: absolute;
+      right: 4px;
+      opacity: 0;
+      transition: 0.2s ease-in-out;
+
+      > button svg {
+        font-size: 20px;
+        fill: $nickel;
+      }
+    }
+
+    &:hover {
+      background-color: $snow;
+
+      .homeworkMenu {
+        opacity: 1;
+      }
+    }
   }
 
   .homeworkBody {
     margin-left: 8px;
     font-size: $para;
     font-weight: $para;
+    overflow: hidden;
+    word-wrap: break-word;
+    padding-right: 20px;
   }
 
   .addHomework {
     display: flex;
+    padding: 4px;
 
     input {
+      width: 300px;
       margin-left: 8px;
       border: 0;
       border-bottom: 2px solid $moon;
       outline: none;
+      flex: 1 0 0;
     }
   }
 }

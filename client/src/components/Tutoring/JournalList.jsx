@@ -3,39 +3,10 @@ import { HiSpeakerphone } from 'react-icons/hi';
 import { MdEdit } from 'react-icons/md';
 import { ButtonNightBlue, ButtonRed } from '../Button';
 import dummyTutoringData from './dummyTutoringData';
-import {
-  ConfirmValiModal,
-  AlertModal,
-  ConfirmTextModal,
-} from '../modal/DefaultModal';
-import { useState } from 'react';
-import ReviewModal from './ReviewModal';
+import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import ModalState from '../../recoil/modal.js';
 
 const JournalList = () => {
-  const [alertModal, setAlertModal] = useState({
-    text: '상대방에게 과외 종료가 요청되었습니다 \n 상대방이 종료를 수락하면 과외가 종료됩니다',
-    isOpen: false,
-  });
-  const [valModal, setValModal] = useState({
-    text: '과외 종료를 원하신다면 \n 아래의 입력창에 "과외 종료" 를 입력 후 \n 확인 버튼을 눌러주세요.',
-    validation: '과외 종료',
-    isOpen: false,
-  });
-  const [confirmModal, setConfirmModal] = useState({
-    text: '과외 제목을 아래와 같이 수정합니다.',
-    isOpen: false,
-    value: '',
-  });
-
-  const [reviewData, setReviewData] = useState({
-    isOpen: false,
-    professional: 0,
-    readiness: 0,
-    explanation: 0,
-    punctuality: 0,
-    value: '',
-  });
-
   const {
     tutoringTitle,
     tuteeName,
@@ -46,50 +17,60 @@ const JournalList = () => {
     latestNotice,
   } = dummyTutoringData;
 
-  const valModalHandler = (e) => {
-    const { name } = e.target;
-    setValModal({
-      ...valModal,
-      isOpen: !valModal.isOpen,
-      value: '',
-    });
-    if (name === 'yes') {
-      // TODO : 과외 종료 관련 API 연결 필요
-      setReviewData({ ...reviewData, isOpen: !reviewData.isOpen });
-    }
-  };
-
-  const confirmHandler = (e) => {
-    const { name } = e.target;
-    setConfirmModal({
-      ...confirmModal,
-      isOpen: !confirmModal.isOpen,
-      value: '',
-    });
-
-    if (name === 'yes') {
-      //TODO : 과외 제목 수정 관련 API 요청
-      console.log(confirmModal.value);
-    }
-  };
-
-  const reviewHandler = (e) => {
-    const { name } = e.target;
-    setReviewData({
-      ...reviewData,
-      isOpen: !reviewData.isOpen,
-      value: '',
-    });
-    if (name === 'yes') {
-      //TODO: 과외 리뷰 작성 API 요청
-      console.log(reviewData);
-      setAlertModal({ ...alertModal, isOpen: !alertModal.isOpen });
-    }
-  };
-
   //TODO:현재 이 컴포넌트는 튜터 기준으로 만들어짐 이후 튜터, 튜티 분기해 수정 필요
   //name부분과 과외 일지 작성 버튼 부분이 튜터와 튜티가 달라야 함
   // 과외 일지 작성 버튼은 튜터인 경우에만 존재함
+
+  const setModal = useSetRecoilState(ModalState);
+  const reset = useResetRecoilState(ModalState);
+
+  const alertProps = {
+    isOpen: true,
+    modalType: 'alert',
+    props: {
+      text: '상대방에게 과외 종료가 요청되었습니다 \n 상대방이 종료를 수락하면 과외가 종료됩니다',
+    },
+  };
+
+  const confirmTextProps = {
+    isOpen: true,
+    modalType: 'confirmText',
+    props: {
+      text: '과외 제목을 아래와 같이 수정합니다.',
+      modalHandler: (e, value) => {
+        console.log(value);
+        reset();
+        //TODO : 과외 제목 수정 관련 API 요청
+      },
+      placeHolder: '새로운 과외 제목 입력',
+    },
+  };
+
+  const confirmValiProps = {
+    isOpen: true,
+    modalType: 'confirmVali',
+    props: {
+      text: '과외 종료를 원하신다면 \n 아래의 입력창에 "과외 종료" 를 입력 후 \n 확인 버튼을 눌러주세요.',
+      validation: '과외 종료',
+      modalHandler: () => {
+        setModal(reviewProps);
+      },
+    },
+  };
+
+  const reviewProps = {
+    isOpen: true,
+    modalType: 'review',
+    props: {
+      modalHandler: (e, value, reviewData) => {
+        //TODO: 리뷰를 작성하는 API 요청을 여기서 보냅니다.
+        //value는 튜터에게 남기고 싶은 말이 담긴 상태이고, reviewData는 별점이 객체 형식으로 담겨있습니다.
+        //ReviewModal.jsx 파일에서 자세한 코드 확인 가능
+        console.log('리뷰 작성을 완료했다!');
+        setModal(alertProps);
+      },
+    },
+  };
 
   return (
     <div className={styles.container}>
@@ -135,21 +116,15 @@ const JournalList = () => {
           <div className={styles.nameBox}>
             {/* TODO: user status에 따라 tutorName이 뜨거나 tuteeName이 떠야 함  */}
             <span>{tuteeName}</span>
-            <button onClick={confirmHandler}>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setModal(confirmTextProps);
+              }}
+            >
               <MdEdit className={styles.mdEdit} />
               <span>제목 수정하기</span>
             </button>
-            {confirmModal.isOpen && (
-              <ConfirmTextModal
-                valueHandler={(e) => {
-                  setConfirmModal({ ...confirmModal, value: e.target.value });
-                }}
-                text={confirmModal.text}
-                value={confirmModal.value}
-                modalHandler={confirmHandler}
-                placeHolder="새로운 과외 제목"
-              />
-            )}
           </div>
           <span className={styles.tutoringTitle}>{tutoringTitle}</span>
           <span className={styles.tutoringDate}>
@@ -160,34 +135,13 @@ const JournalList = () => {
           {/* TODO: 버튼 눌렀을 때 과외 일지 작성 페이지로 이동  */}
           <ButtonNightBlue text="과외 일지 작성" />
           {/* TODO: 만약 과외 종료 요청을 보내고 대기 중인 상태라면 AlertModal을 띄워야 함 */}
-          <ButtonRed text="과외 종료" buttonHandler={valModalHandler} />
-          {valModal.isOpen && (
-            <ConfirmValiModal
-              text={valModal.text}
-              placeHolder="과외 종료"
-              validation={valModal.validation}
-              modalHandler={valModalHandler}
-            />
-          )}
-          {reviewData.isOpen && (
-            <ReviewModal
-              modalHandler={reviewHandler}
-              value={reviewData.value}
-              valueHandler={(e) => {
-                setReviewData({ ...reviewData, value: e.target.value });
-              }}
-              reviewData={reviewData}
-              setReviewData={setReviewData}
-            />
-          )}
-          {alertModal.isOpen && (
-            <AlertModal
-              text={alertModal.text}
-              modalHandler={() =>
-                setAlertModal({ ...alertModal, isOpen: !alertModal.isOpen })
-              }
-            />
-          )}
+          <ButtonRed
+            text="과외 종료"
+            buttonHandler={(e) => {
+              e.preventDefault();
+              setModal(confirmValiProps);
+            }}
+          />
         </div>
       </div>
     </div>

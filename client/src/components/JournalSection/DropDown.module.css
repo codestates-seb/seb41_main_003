@@ -20,6 +20,10 @@
     background-color: transparent;
     position: absolute;
     right: 0;
-    top: 53px;
+    top: 49px;
+
+    :first-child {
+      margin-bottom: 2px;
+    }
   }
 }
