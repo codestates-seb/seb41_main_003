@@ -12,7 +12,6 @@ const JournalForm = ({ user }) => {
   const resetModal = useResetRecoilState(ModalState);
 
   const Navigate = useNavigate();
-
   const {
     dateNoticeTitle,
     startTime,
@@ -45,9 +44,11 @@ const JournalForm = ({ user }) => {
         <section className={styles.upperPart}>
           <div className={styles.pickerContainer}>
             <p className={styles.font1}>19</p>
-            {/* TODO: 서버에서 받아온  startTime 또는 endTime에서 day 부분만 추출*/}
-            <p className={styles.font5}>{startTime}</p>
-            <p className={styles.font6}>{endTime}</p>
+            <p className={styles.font5}>{new Date(startTime).toDateString}</p>
+            <p className={styles.font6}>
+              {new Date(startTime).toTimeString().slice(0, 5)}~
+              {new Date(endTime).toTimeString().slice(0, 5)}
+            </p>
           </div>
           <div className={styles.upperGoal}>
             <div className={styles.titleContainer}>

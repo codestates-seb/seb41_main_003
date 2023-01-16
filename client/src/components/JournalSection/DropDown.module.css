@@ -5,7 +5,9 @@
   height: 45px;
   border-radius: 5px;
   background-color: $snow;
-  position: relative;
+  position: absolute;
+  top: 32px;
+  right: 32px;
 
   .buttonImg {
     width: 45px;

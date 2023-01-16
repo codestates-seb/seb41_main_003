@@ -99,10 +99,21 @@
   overflow-x: hidden;
   overflow-y: auto;
   height: 209px;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: auto;
+  scrollbar-color: #666 #f00;
+
   &::-webkit-scrollbar {
-    display: none; /* Chrome , Safari , Opera */
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $nickel;
+    border-radius: 10px;
+    border: none;
   }
 
   .checkBoxContainer {
@@ -148,7 +159,7 @@
 
     input {
       width: 300px;
-      margin-left: 8px;
+      margin: 0 8px;
       border: 0;
       border-bottom: 2px solid $moon;
       outline: none;

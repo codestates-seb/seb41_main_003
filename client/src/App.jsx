@@ -20,6 +20,7 @@ import TestPage from './pages/TestPage';
 import EditJournal from './pages/EditJournal';
 import Journal from './pages/Journal';
 import { GlobalModal } from './components/modal/GlobalModal';
+import AddJournal from './pages/AddJournal';
 
 const App = () => {
   return (
@@ -47,6 +48,7 @@ const App = () => {
             <Route path="/journal" element={<Journal />} />
             <Route path="/test" element={<TestPage />} />
             <Route path="/editjournal" element={<EditJournal />} />
+            <Route path="/addjournal" element={<AddJournal />} />
           </Routes>
         </div>
       </Router>

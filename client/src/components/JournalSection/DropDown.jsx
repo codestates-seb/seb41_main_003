@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const DropDown = () => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
+  const navigate = useNavigate();
 
   const Navigate = useNavigate();
 
@@ -24,6 +25,7 @@ const DropDown = () => {
         console.log('일지 수정페이지로 이동');
         Navigate('/editjournal');
         resetModal();
+        navigate('/editjournal');
       },
     },
   };

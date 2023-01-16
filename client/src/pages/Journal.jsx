@@ -5,8 +5,8 @@ import { useState } from 'react';
 const jounalDummy = {
   dateNoticeId: 1,
   dateNoticeTitle: '우리 식당 정상 영업 하는 법',
-  startTime: '2023년 1월',
-  endTime: '09:00~18:00',
+  startTime: '2023-01-12T03:00:30.000Z',
+  endTime: '2023-01-12T09:00:30.000Z',
   scheduleBody:
     '대법원장의 임기는 6년으로 하며, 중임할 수 없다. 대법원장은 국회의 동의를 얻어 대통령이 임명한다. 모든 국민은 학문과 예술의 자유를 가진다. 대통령은 전시·사변 또는 이에 준하는 국가비상사태에 있어서 병력으로써 군사상의 필요에 응하거나 공공의 안녕질서를 유지할 필요가 있을 때에는 법률이 정하는 바에 의하여 계엄을 선포할 수 있다.국정의 중요한 사항에 관한 대통령의 자문에 응하기 위하여 국가원로로 구성되는 국가원로자문회의를 둘 수 있다. 모든 국민은 주거의 자유를 침해받지 아니한다. 주거에 대한 압수나 수색을 할 때에는 검사의 신청에 의하여 법관이 발부한 영장을 제시하여야 한다. 국가의 세입·세출의 결산, 국가 및 법률이 정한 단체의 회계검사와 행정기관 및 공무원의 직무에 관한 감찰을 하기 위하여 대통령 소속하에 감사원을 둔다.',
   noticeBody:
@@ -40,11 +40,11 @@ const jounalDummy = {
 };
 
 const Journal = () => {
-  const [user, setUser] = useState(jounalDummy);
+  const [user] = useState(jounalDummy);
   return (
     <div className={styles.wrapper}>
       <div className={styles.background}>
-        <JournalForm user={user} setUser={setUser} />
+        <JournalForm user={user} />
       </div>
     </div>
   );

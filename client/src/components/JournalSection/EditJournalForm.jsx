@@ -7,11 +7,14 @@ import { ButtonNightBlue, ButtonRed } from '../Button';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 import { MdDelete } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const EditJournalForm = ({ user, setUser }) => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const isAdd = pathname === '/addjournal';
 
   const Navigate = useNavigate();
 
@@ -24,15 +27,19 @@ const EditJournalForm = ({ user, setUser }) => {
     isOpen: true,
     modalType: 'confirm',
     props: {
-      text: `현재 입력된 내용으로
-      일지를 수정 하시겠습니까?`,
+      text: `현재 입력된 내용으로 일지를 ${
+        isAdd ? '작성' : '수정'
+      }하시겠습니까?`,
       modalHandler: () => {
-        //TODO:서버에 user 정보 수정 patch
-        //TODO:??수정 완료 하고 나면 수정완료 버튼으로 변경
+        //TODO: 서버에 POST or PATCH API 연결 필요
+        if (isAdd) {
+          console.log('작성완료');
+        } else {
+          console.log('수정완료');
+        }
         //TODO: 해당 프로필Id ,dateNoticeId의 일지 페이지로 이동 (useParam)
         console.log('일지 수정 확인, patch요청');
         setModal(confirmProps);
-        resetModal();
         Navigate(`/journal`);
       },
     },
@@ -42,7 +49,7 @@ const EditJournalForm = ({ user, setUser }) => {
     isOpen: true,
     modalType: 'alert',
     props: {
-      text: '일지가 수정 되었습니다.',
+      text: '일지가 ${ isAdd ? '작성' : '수정' } 되었습니다.',
     },
   };
 
@@ -76,11 +83,13 @@ const EditJournalForm = ({ user, setUser }) => {
   };
 
   const deleteHomeworkHandler = (e) => {
-    const { name } = e.target;
-
+    const { id } = e.currentTarget;
     setUser({
       ...user,
-      Homeworks: Homeworks.filter((obj) => obj.homeworkId !== e.target.value),
+      Homeworks: Homeworks.filter((el) => {
+        console.log(el);
+        return el.homeworkId !== Number(id);
+      }),
     });
   };
 
@@ -91,7 +100,9 @@ const EditJournalForm = ({ user, setUser }) => {
         Homeworks: [
           ...Homeworks,
           {
-            homeworkId: Homeworks[Homeworks.length - 1].homeworkId + 1,
+            homeworkId: Homeworks.length
+              ? Homeworks[Homeworks.length - 1].homeworkId + 1
+              : 1,
             homeworkBody: homeworkVal,
             HomeworkStatus: 'PROGRESS',
           },
