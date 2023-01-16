@@ -4,24 +4,35 @@ import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.NoticeStatus;
 import com.mainproject.server.constant.TutoringStatus;
 import com.mainproject.server.dateNotice.entity.DateNotice;
+import com.mainproject.server.dateNotice.entity.Homework;
+import com.mainproject.server.dateNotice.entity.Notice;
+import com.mainproject.server.dateNotice.entity.Schedule;
 import com.mainproject.server.dateNotice.repository.DateNoticeRepository;
+import com.mainproject.server.dateNotice.repository.HomeworkRepository;
 import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.tutoring.entity.Tutoring;
 import com.mainproject.server.tutoring.service.TutoringService;
-import com.mainproject.server.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
 @RequiredArgsConstructor
 public class DateNoticeService {
+
     private final DateNoticeRepository dateNoticeRepository;
+
     private final TutoringService tutoringService;
-    private final UserService userService;
+
+    private final HomeworkRepository homeworkRepository;
+
+
+
 
     public DateNotice createDateNotice(DateNotice dateNotice, Long tutoringId) {
         Tutoring findTutoring = tutoringService.verifiedTutoring(tutoringId);
@@ -36,7 +47,7 @@ public class DateNoticeService {
         return verifiedDateNoticeById(dateNoticeId);
     }
 
-    // Todo 업데이트 할때 Homework 전체 삭제 후 새로 등록
+
     public DateNotice updateDateNotice(DateNotice dateNotice) {
         DateNotice findDateNotice = verifiedDateNoticeById(dateNotice.getDateNoticeId());
         Optional.ofNullable(dateNotice.getDateNoticeTitle())
@@ -45,12 +56,29 @@ public class DateNoticeService {
                 .ifPresent(findDateNotice::setStartTime);
         Optional.ofNullable(dateNotice.getEndTime())
                 .ifPresent(findDateNotice::setEndTime);
-        Optional.ofNullable(dateNotice.getSchedule())
-                .ifPresent(findDateNotice::setSchedule);
-        Optional.ofNullable(dateNotice.getNotice())
-                .ifPresent(findDateNotice::setNotice);
-        Optional.ofNullable(dateNotice.getHomeworks())
-                .ifPresent(findDateNotice::setHomeworks);
+        Schedule schedule = dateNotice.getSchedule();
+        Schedule findSchedule = findDateNotice.getSchedule();
+        Optional.ofNullable(schedule)
+                .ifPresent(s -> findSchedule.setScheduleBody(schedule.getScheduleBody()));
+        Notice notice = dateNotice.getNotice();
+        Notice findNotice = findDateNotice.getNotice();
+        Optional.ofNullable(notice)
+                .ifPresent(n -> findNotice.setNoticeBody(notice.getNoticeBody()));
+        Set<Homework> homeworks = dateNotice.getHomeworks();
+        Set<Homework> findHomeworks = findDateNotice.getHomeworks();
+        Optional.ofNullable(homeworks)
+                .ifPresent( h -> {
+                    homeworkRepository.deleteAllById(
+                            findHomeworks.stream()
+                                    .map(Homework::getHomeworkId)
+                                    .collect(Collectors.toList()));
+                            findHomeworks.clear();
+                    h.forEach(hw -> {
+                        // Todo 리팩토링 방법 찾아보자 Mapper 때문에 편의 메소드 두개 다 호출 중
+                        hw.addDateNotice(findDateNotice);
+                        findDateNotice.addHomework(hw);
+                    });
+                        });
         updateCheckNotice(findDateNotice,findDateNotice.getTutoring());
         return dateNoticeRepository.save(findDateNotice);
     }

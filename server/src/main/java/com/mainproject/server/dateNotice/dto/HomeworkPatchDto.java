@@ -11,9 +11,6 @@ import javax.validation.constraints.NotNull;
 public class HomeworkPatchDto {
 
     @NotNull
-    private Long homeworkId;
-
-    @NotNull
     private String homeworkBody;
 
     @NotBlank
