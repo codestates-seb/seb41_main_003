@@ -4,7 +4,7 @@ import { ButtonSilver } from '../Button';
 import { CheckBox } from '../Input';
 import DropDown from './DropDown';
 
-const JournalForm = ({ user, setUser }) => {
+const JournalForm = ({ user }) => {
   const {
     dateNoticeTitle,
     startTime,

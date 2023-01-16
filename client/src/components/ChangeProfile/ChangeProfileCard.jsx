@@ -5,23 +5,32 @@ import { MdMode } from 'react-icons/md';
 import PropType from 'prop-types';
 import SubjectsButtons from './SubjectsButtons';
 import ModalState from '../../recoil/modal.js';
-import { useSetRecoilState } from 'recoil';
+import { useSetRecoilState, useResetRecoilState } from 'recoil';
 
-const ChangeProfileCard = ({
-  isNew = true,
-  user,
-  setUser,
-  setIsConfirm,
-  setIsRequired,
-}) => {
+const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
   const { name, bio, school, subjects, profileStatus } = user;
 
   const setModal = useSetRecoilState(ModalState);
+  const resetModal = useResetRecoilState(ModalState);
 
   const requiredProps = {
     isOpen: true,
     modalType: 'alert',
     props: { text: '필수 입력 사항을 모두 작성해주세요.' },
+  };
+
+  const confirmHandler = () => {
+    console.log('PATCH 요청'); // TODO : PATCH 요청
+    resetModal();
+  };
+  const confirmProps = {
+    isOpen: true,
+    modalType: 'confirm',
+    props: {
+      text: `현재 입력된 내용으로
+    프로필을 수정하시겠습니까?`,
+      modalHandler: confirmHandler,
+    },
   };
 
   const subjectTitles = subjects.map((obj) => obj.subjectTitle);
@@ -37,7 +46,7 @@ const ChangeProfileCard = ({
     if (!(way && gender && pay && wantDate)) {
       setModal(requiredProps);
     } else {
-      setIsConfirm((prev) => !prev);
+      setModal(confirmProps);
     }
   };
 
@@ -101,8 +110,6 @@ ChangeProfileCard.propTypes = {
   isNew: PropType.bool,
   user: PropType.object,
   setUser: PropType.func,
-  setIsConfirm: PropType.func,
-  setIsRequired: PropType.func,
 };
 
 export default ChangeProfileCard;

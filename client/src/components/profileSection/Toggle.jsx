@@ -17,6 +17,7 @@ const Toggle = ({ user, setUser }) => {
           ...user,
           wantedStatus: user.wantedStatus === 'NONE' ? 'REQUEST' : 'NONE',
         });
+        //TODO: 수정된 공고 상태로 변경해달라는 API 요청을 보내야 함.
         console.log('공고상태 변경 완료');
         resetModal();
       },

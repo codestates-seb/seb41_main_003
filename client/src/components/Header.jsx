@@ -3,11 +3,21 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { MdNotifications } from 'react-icons/md';
 import { ButtonRed } from './Button';
+import { useSetRecoilState } from 'recoil';
+import ModalState from '../recoil/modal.js';
 
 const Header = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [isMenu, setIsMenu] = useState(false);
   const [isNoti, setIsNoti] = useState(false);
+
+  const setModal = useSetRecoilState(ModalState);
+  const adminProps = {
+    isOpen: true,
+    modalType: 'admin',
+    props: {},
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
@@ -71,7 +81,9 @@ const Header = () => {
                 <Link to="/message">메세지함</Link>
               </li>
               <li>
-                <Link to="">프로필 전환</Link>
+                <button onClick={() => setModal(adminProps)}>
+                  프로필 전환
+                </button>
               </li>
               <li>
                 <Link to="/admin">전체 프로필 관리</Link>

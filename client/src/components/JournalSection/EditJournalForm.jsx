@@ -14,15 +14,8 @@ const EditJournalForm = ({ user, setUser }) => {
 
   const [homeworkVal, setHomeworkVal] = useState('');
 
-  const {
-    dateNoticeId,
-    dateNoticeTitle,
-    startTime,
-    endTime,
-    scheduleBody,
-    noticeBody,
-    Homeworks,
-  } = user;
+  const { dateNoticeId, dateNoticeTitle, scheduleBody, noticeBody, Homeworks } =
+    user;
 
   const confirm = {
     isOpen: true,
