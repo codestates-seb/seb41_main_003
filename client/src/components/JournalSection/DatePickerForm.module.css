@@ -5,6 +5,7 @@
   flex-direction: column;
   width: 123px;
   margin-right: 16px;
+  position: relative;
 
   .font1 {
     font-size: $font1;
@@ -23,20 +24,47 @@
   }
 }
 
-.line1 {
-  display: flex;
-}
-
-.line3 {
+.day {
   display: flex;
   justify-content: space-between;
-  height: 18px;
-  width: 125px;
-  margin-top: 7px;
+  align-items: center;
 }
 
-.iconButton {
-  margin-top: 13px;
-  margin-left: 15px;
+.iconButtonT {
+  margin-top: 8px;
+}
+
+.time {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.timePopup {
   position: absolute;
+  left: -4px;
+  bottom: -84px;
+  background-color: $white;
+  box-shadow: $buttonShadow;
+  display: flex;
+  padding: 16px;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &:first-child {
+      margin-right: 16px;
+    }
+  }
+
+  span {
+    font-size: $font6;
+    font-weight: 700;
+    display: inline-block;
+    width: 70px;
+    margin-bottom: 4px;
+    text-align: center;
+  }
 }

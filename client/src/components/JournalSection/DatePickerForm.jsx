@@ -1,59 +1,153 @@
+/* eslint-disable react/display-name */
 import styles from './DatePickerForm.module.css';
-import { useState } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 import DatePicker from 'react-datepicker';
 import PropTypes from 'prop-types';
 import { VscTriangleDown } from 'react-icons/vsc';
-import './react-datepicker.css'; //기본 CSS 파일
-import './DatePicker.css'; // Custom CSS 파일
+import { ko } from 'date-fns/esm/locale';
+import 'react-datepicker/dist/react-datepicker.css';
+import './DatePicker.css';
 
 const DatePickerForm = ({ user, setUser }) => {
-  //"1월 10일 09:00" or "Thu Jan 05 2023 22:20:58"\
+  const [isTimePopup, setIsTimePopup] = useState(false);
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [year, setYear] = useState(new Date().getFullYear());
-  const [month, setMonth] = useState(new Date().getMonth() + 1);
-  const [day, setDay] = useState(new Date().getDate());
-
-  const getPickedDate = (date) => {
-    setYear(date.getFullYear());
-    setDay(('0' + date.getDate()).slice(-2));
-    setMonth(('0' + (date.getMonth() + 1)).slice(-2));
-  };
-
-  const DateCustomButton = ({ onClick }) => (
-    <button className={styles.iconButton} onClick={onClick}>
-      <VscTriangleDown size="24px" />
-    </button>
+  const [date, setDate] = useState(
+    user.startTime.length > 0 ? new Date(user.startTime) : new Date()
   );
 
-  const userEditHandler = () => {
-    setUser({ ...user, startTime: '', endTime: '' });
-    console.log('startTime이 변경되었습니다');
-    // TODO: startTime = 날짜 + 시작시간
-    // TODO: endTime = 날짜 + 끝시간
+  const [sTime, setStartTime] = useState(
+    user.startTime.length > 0
+      ? new Date(user.startTime)
+      : new Date().setHours(9, 0)
+  );
+  const [eTime, setEndTime] = useState(
+    user.startTime.length > 0
+      ? new Date(user.endTime)
+      : new Date().setHours(18, 0)
+  );
+
+  useEffect(() => {
+    const start = new Date(sTime).getTime();
+    const end = new Date(eTime).getTime();
+
+    if (start > end) setEndTime(new Date(start + 900000));
+
+    const selectDate = [date.getFullYear(), date.getMonth(), date.getDate()];
+
+    const startTime = new Date(
+      ...selectDate,
+      new Date(sTime).getHours(),
+      new Date(sTime).getMinutes()
+    ).toISOString();
+
+    const endTime = new Date(
+      ...selectDate,
+      new Date(eTime).getHours(),
+      new Date(eTime).getMinutes()
+    ).toISOString();
+
+    setUser({ ...user, startTime, endTime });
+    console.log(startTime);
+    console.log('time이 변경되었습니다');
+  }, [date, sTime, eTime]);
+
+  const DateButton = forwardRef(({ onClick }, ref) => (
+    <button ref={ref} className={styles.iconButton} onClick={onClick}>
+      <div className={styles.day}>
+        <p className={styles.font1}>{date.getDate().toLocaleString()}</p>
+        <VscTriangleDown size="24px" />
+      </div>
+      <div className={styles.monthYear}>
+        <p className={styles.font4}>
+          {date.getFullYear().toString()}년 {(date.getMonth() + 1).toString()}월
+        </p>
+      </div>
+    </button>
+  ));
+
+  const TimeButton = forwardRef(({ onClick, time }, ref) => (
+    <button ref={ref} className={styles.iconButtonT} onClick={onClick}>
+      <div className={styles.time}>
+        <div className={styles.font6}>
+          {time.toTimeString().slice(0, 5)} <VscTriangleDown size="8px" />
+        </div>
+      </div>
+    </button>
+  ));
+  TimeButton.propTypes = {
+    time: PropTypes.object,
+  };
+
+  const filterPassedTime = (time) => {
+    const current = new Date(sTime);
+    const selected = new Date(time);
+
+    return current.getTime() < selected.getTime();
+  };
+
+  const TimePopup = () => {
+    return (
+      <div className={styles.timePopup}>
+        <div>
+          <span>시작 시간</span>
+          <DatePicker
+            showPopperArrow={false}
+            onChange={(date) => setStartTime(date)}
+            selected={sTime}
+            showTimeSelect
+            showTimeSelectOnly
+            timeIntervals={15}
+            dateFormat="h:mm"
+            customInput={<TimeButton time={sTime} />}
+            timeCaption="시작 시간"
+            locale={ko}
+          />
+        </div>
+        <div>
+          <span>종료 시간</span>
+          <DatePicker
+            showPopperArrow={false}
+            onChange={(date) => setEndTime(date)}
+            selected={eTime}
+            showTimeSelect
+            showTimeSelectOnly
+            timeIntervals={15}
+            dateFormat="h:mm"
+            customInput={<TimeButton time={eTime} />}
+            timeCaption="종료 시간"
+            locale={ko}
+            filterTime={filterPassedTime}
+          />
+        </div>
+      </div>
+    );
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.line1}>
-        <p className={styles.font1}>{day}</p>
-        <DatePicker
-          showPopperArrow={false}
-          onChange={(data) => setStartDate(data)}
-          onSelect={getPickedDate}
-          selected={startDate}
-          customInput={<DateCustomButton />}
-        />
-      </div>
-      <div className={styles.line2}>
-        <p className={styles.font4}>
-          {year}년 {month}월
-        </p>
-      </div>
-      <div className={styles.line3}>
-        <div className={styles.font6}>09:00~18:00</div>
-        {/* TODO: TimePicker */}
-      </div>
+      <DatePicker
+        id="date"
+        showPopperArrow={false}
+        className={styles.calendar}
+        onChange={(date) => setDate(date)}
+        selected={date}
+        dateFormat="h:mm aa"
+        customInput={<DateButton />}
+        locale={ko}
+      />
+      <button
+        className={styles.iconButtonT}
+        onClick={() => setIsTimePopup(!isTimePopup)}
+      >
+        <div className={styles.time}>
+          <div className={styles.font6}>
+            {new Date(sTime).toTimeString().slice(0, 5)}~
+            {new Date(eTime).toTimeString().slice(0, 5)}
+          </div>
+          <VscTriangleDown size="12px" />
+        </div>
+      </button>
+      {isTimePopup && <TimePopup />}
     </div>
   );
 };
