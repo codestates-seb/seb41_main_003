@@ -4,11 +4,12 @@ import com.mainproject.server.audit.Auditable;
 import com.mainproject.server.constant.LoginType;
 import com.mainproject.server.constant.UserStatus;
 import com.mainproject.server.profile.entity.Profile;
-import com.mainproject.server.review.entity.Review;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -21,9 +22,10 @@ public class User extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter
     private Long userId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @Setter
     private String email;
 
@@ -35,11 +37,11 @@ public class User extends Auditable {
     @Setter
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     @Setter
     private String secondPassword;
 
-    @Column(nullable = false)
+    @Column(nullable = true, unique = true)
     @Setter
     private String phoneNumber;
 
@@ -52,6 +54,10 @@ public class User extends Auditable {
     @Enumerated(EnumType.STRING)
     @Setter
     private UserStatus userStatus;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Setter
+    private List<String> roles = new ArrayList<>();
 
     /* 연관 관계 매핑 */
 

@@ -29,7 +29,7 @@ public class Profile extends Auditable {
     private String name;
 
     @Setter
-    @Column(nullable = false)
+    @Column(nullable = true)
     private double rate;
 
     @Setter
@@ -67,7 +67,7 @@ public class Profile extends Auditable {
     private String school;
 
     @Setter
-    @Column(nullable = false, columnDefinition = "LONGTEXT")
+    @Column(nullable = false, columnDefinition = "LONGTEXT", name = "characters")
     private String character;
 
     @Setter
@@ -78,28 +78,32 @@ public class Profile extends Auditable {
     @Column(nullable = true, columnDefinition = "LONGTEXT")
     private String difference;
 
+    @Setter
+    @Column(nullable = false)
+    private String subjectString;
+
 
     /* 연관 관계 매핑*/
     @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @Setter
     private User user;
 
 
     @ToString.Exclude
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Setter
     private ProfileImage profileImage;
 
     @ToString.Exclude
     @OrderBy("reviewId")
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
     @Setter
     private Set<Review> reviews = new LinkedHashSet<>();
 
     @ToString.Exclude
     @OrderBy("subjectProfileId")
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     @Setter
     private Set<SubjectProfile> subjectProfiles = new LinkedHashSet<>();
 
@@ -119,6 +123,7 @@ public class Profile extends Auditable {
     public void addReview(Review review) {
         this.reviews.add(review);
     }
+
 
     public void addSubjectProfile(SubjectProfile subjectProfile) {
         this.subjectProfiles.add(subjectProfile);

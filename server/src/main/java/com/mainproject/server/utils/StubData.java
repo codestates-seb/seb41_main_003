@@ -127,11 +127,11 @@ public class StubData {
                 .tutoringStatus(TutoringStatus.TUTOR_WAITING.name())
                 .createAt(LocalDateTime.now())
                 .updateAt(LocalDateTime.now())
-                .tutor(createProfileListResponse())
-                .tutee(createProfileListResponse())
-                .review(createReviewResponse())
+                .tutorId(createProfileListResponse().getProfileId())
+                .tuteeId(createProfileListResponse().getProfileId())
+                .tutorName(createProfileListResponse().getName())
+                .tuteeName(createProfileListResponse().getName())
                 .dateNotices(page).build();
-
     }
 
     public TutoringSimpleResponseDto createTutoringSimpleResponse() {
@@ -220,6 +220,7 @@ public class StubData {
                 .profileId(1L)
                 .name("어때요")
                 .url("https://www.google.com/url?sa=i&url=http%3A%2F%2Fm.blog.naver.com%2Fcjswodnajs%2F222138892587&psig=AOvVaw0Ef_d9Jqh-dQm9Q7RRDiIg&ust=1673341195393000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCMjWyO2PuvwCFQAAAAAdAAAAABAE")
+                .school("서운대 철학과 17학번")
                 .build();
     }
 
@@ -247,7 +248,6 @@ public class StubData {
     public MessageRoomResponseDto createMessageRoomResponse() {
         return MessageRoomResponseDto.builder()
                 .messageRoomId(1L)
-                .targetName("너에게")
                 .messages(List.of(
                         createMessageResponse(),
                         createMessageResponse(),

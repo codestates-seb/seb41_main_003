@@ -1,0 +1,75 @@
+@import url('../../default.css');
+
+.container {
+  background-color: $snow;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 256px;
+  height: 360px;
+}
+
+.img {
+  width: 224px;
+  height: 150px;
+  object-fit: cover;
+  margin-top: 16px;
+}
+
+.nameAndStars {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  width: 217px;
+  height: 29px;
+}
+
+.name {
+  margin-right: 15px;
+  font-size: $font4;
+  font-weight: $font4W;
+}
+
+.yellowStar {
+  fill: $yellow;
+  font-size: 18px;
+}
+
+.emptyStar {
+  fill: $yellow;
+  font-size: 18px;
+}
+
+.halfStar {
+  fill: $yellow;
+  font-size: 18px;
+}
+
+.subjectBox {
+  display: flex;
+  justify-content: flex-start;
+  width: 217px;
+  margin-top: 8px;
+}
+
+.subject {
+  margin-right: 4px;
+}
+
+.school {
+  width: 217px;
+  margin-top: 16px;
+  font-size: $font6;
+  font-weight: $font6W;
+}
+
+.bio {
+  width: 217px;
+  margin-top: 8px;
+  font-size: $para;
+  font-weight: $paraW;
+}

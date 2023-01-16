@@ -17,15 +17,18 @@ import MyProfile from './pages/MyProfile';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import TestPage from './pages/TestPage';
-import ModalTestPage from './pages/ModalTestPage';
+import AdminModal from './components/AdminModal';
+import EditJournal from './pages/EditJournal';
+import Journal from './pages/Journal';
+import { useState } from 'react';
+import { GlobalModal } from './components/modal/GlobalModal';
 
 const App = () => {
+  const [isOpenAdminModal, setIsOpenAdminModal] = useState(false);
   return (
     <div className="app">
       <Router basename="/">
-        <div className="header">
-          <Header />
-        </div>
+        <Header />
         <div className="content">
           <Routes>
             <Route path="/" element={<TutorList />} />
@@ -44,13 +47,17 @@ const App = () => {
             <Route path="/message" element={<Message />} />
             <Route path="/myprofile" element={<MyProfile />} />
             <Route path="/test" element={<TestPage />} />
-            <Route path="/mpdaltest" element={<ModalTestPage />} />
+            <Route path="/journal" element={<Journal />} />
+            <Route path="/test" element={<TestPage />} />
+            <Route path="/editjournal" element={<EditJournal />} />
           </Routes>
-        </div>
-        <div className="footer">
-          <Footer />
+          {isOpenAdminModal && (
+            <AdminModal setIsOpenAdminModal={setIsOpenAdminModal} />
+          )}
         </div>
       </Router>
+      <Footer />
+      <GlobalModal />
     </div>
   );
 };

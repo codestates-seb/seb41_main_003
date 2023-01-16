@@ -1,6 +1,7 @@
 package com.mainproject.server.dateNotice.entity;
 
 import com.mainproject.server.audit.Auditable;
+import com.mainproject.server.constant.NoticeStatus;
 import com.mainproject.server.tutoring.entity.Tutoring;
 import lombok.*;
 
@@ -30,20 +31,25 @@ public class DateNotice extends Auditable {
     @Setter
     private String endTime;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Setter
+    private NoticeStatus noticeStatus = NoticeStatus.NONE;
+
     /* 연관 관계 매핑 */
 
     @ToString.Exclude
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Setter
     private Notice notice;
 
     @ToString.Exclude
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Setter
     private Schedule schedule;
 
     @ToString.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @Setter
     private Tutoring tutoring;
 

@@ -1,0 +1,79 @@
+@import url('../../default.css');
+
+.container {
+  width: 696px;
+  background-color: $white;
+  border-radius: 5px;
+  padding: 32px;
+  box-shadow: $bigShadow;
+}
+
+.required {
+  display: block;
+  height: 8px;
+  text-align: right;
+  margin-top: 4px;
+  margin-left: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: $red;
+}
+
+.requiredIcon {
+  position: relative;
+  top: -10px;
+  margin: 0 4px;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: $red;
+}
+
+.inputContainer {
+  margin-bottom: 24px;
+
+  & label {
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  h4 {
+    font-size: $font4;
+    font-weight: $font4W;
+    margin-bottom: 8px;
+  }
+
+  > .textareaContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+    min-height: 80px;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.subjectInput {
+  margin-bottom: 16px;
+
+  div {
+    width: 64px;
+    height: 24px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: $dirty;
+    color: $white;
+    font-size: $font6;
+    font-weight: $font6W;
+    line-height: 24px;
+    margin-bottom: 8px;
+  }
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}

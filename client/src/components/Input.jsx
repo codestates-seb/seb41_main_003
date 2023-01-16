@@ -21,6 +21,11 @@ export const CheckBox = ({ id = '', value = false, handler = () => {} }) => {
     </>
   );
 };
+CheckBox.propTypes = {
+  id: PropType.string,
+  value: PropType.bool,
+  handler: PropType.func,
+};
 
 export const TextInput = ({
   id = '',
@@ -28,6 +33,7 @@ export const TextInput = ({
   type = 'text',
   value = '',
   handler = () => {},
+  required,
 }) => {
   return (
     <input
@@ -37,9 +43,18 @@ export const TextInput = ({
       id={id}
       value={value}
       placeholder={placeHolder}
-      onChange={(e) => handler(e.target.value)}
+      onChange={handler}
+      {...(required ? { required: required } : {})}
     />
   );
+};
+TextInput.propTypes = {
+  id: PropType.string,
+  type: PropType.string,
+  placeHolder: PropType.string,
+  value: PropType.string,
+  handler: PropType.func,
+  required: PropType.bool,
 };
 
 export const LabelTextInput = ({
@@ -49,11 +64,13 @@ export const LabelTextInput = ({
   type = 'text',
   value = '',
   handler = () => {},
+  required = false,
 }) => {
   return (
     <div className={styles.container}>
       <label htmlFor={id} className={styles.textLabel}>
         {name}
+        {required && <span className={styles.required} />}
       </label>
       <input
         className={styles.textInput}
@@ -62,10 +79,20 @@ export const LabelTextInput = ({
         id={id}
         value={value}
         placeholder={placeHolder}
-        onChange={(e) => handler(e.target.value)}
+        onChange={handler}
+        {...(required ? { required: required } : {})}
       />
     </div>
   );
+};
+LabelTextInput.propTypes = {
+  id: PropType.string,
+  name: PropType.string,
+  type: PropType.string,
+  placeHolder: PropType.string,
+  value: PropType.string,
+  handler: PropType.func,
+  required: PropType.bool,
 };
 
 export const Textarea = ({
@@ -74,6 +101,7 @@ export const Textarea = ({
   type = 'text',
   value = '',
   handler = () => {},
+  required = false,
 }) => {
   return (
     <textarea
@@ -83,38 +111,16 @@ export const Textarea = ({
       id={id}
       value={value}
       placeholder={placeHolder}
-      onChange={(e) => handler(e.target.value)}
+      onChange={handler}
+      {...(required ? { required: required } : {})}
     />
   );
 };
-
-CheckBox.propTypes = {
-  id: PropType.string,
-  value: PropType.bool,
-  handler: PropType.func,
-};
-
-TextInput.propTypes = {
-  id: PropType.string,
-  type: PropType.string,
-  placeHolder: PropType.string,
-  value: PropType.string,
-  handler: PropType.func,
-};
-
-LabelTextInput.propTypes = {
-  id: PropType.string,
-  name: PropType.string,
-  type: PropType.string,
-  placeHolder: PropType.string,
-  value: PropType.string,
-  handler: PropType.func,
-};
-
 Textarea.propTypes = {
   id: PropType.string,
   type: PropType.string,
   placeHolder: PropType.string,
   value: PropType.string,
   handler: PropType.func,
+  required: PropType.bool,
 };

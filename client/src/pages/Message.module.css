@@ -1,0 +1,25 @@
+@import url('../default.css');
+
+.wrapper {
+  width: 100%;
+  background-color: $white;
+}
+
+.container {
+  max-width: 1048px;
+  margin: 0 auto;
+
+  h2 {
+    font-size: $font1;
+    font-weight: $font1W;
+    color: $black;
+    margin: 24px 8px 16px;
+  }
+}
+
+.message {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}

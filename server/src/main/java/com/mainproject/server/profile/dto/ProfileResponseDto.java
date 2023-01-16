@@ -28,6 +28,8 @@ public class ProfileResponseDto {
 
     private String wantedStatus;
 
+    private String profileStatus;
+
     private String way;
 
     private List<SubjectProfileResponseDto> subjects;
@@ -57,6 +59,7 @@ public class ProfileResponseDto {
         this.bio = dto.getBio();
         this.school = dto.getSchool();
         this.wantedStatus = dto.getWantedStatus();
+        this.profileStatus = dto.getProfileStatus();
         this.way = dto.getWay();
         this.subjects = dto.getSubjects();
         this.difference = dto.getDifference();

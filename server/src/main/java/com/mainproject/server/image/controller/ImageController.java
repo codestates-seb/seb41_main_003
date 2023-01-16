@@ -1,8 +1,10 @@
 package com.mainproject.server.image.controller;
 
 
-import com.mainproject.server.image.dto.ImageResponseDto;
-import com.mainproject.server.utils.StubData;
+import com.mainproject.server.dto.ResponseDto;
+import com.mainproject.server.image.entity.ProfileImage;
+import com.mainproject.server.image.mapper.ImageMapper;
+import com.mainproject.server.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUpload;
@@ -12,21 +14,29 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/upload")
 public class ImageController {
 
-    private final StubData stubData;
+
+    private final ImageMapper imageMapper;
+
+    private final ImageService imageService;
 
     @PostMapping("/profile-image/{profileId}")
     public ResponseEntity postProfileImage(
             @PathVariable Long profileId,
             @RequestParam("image") MultipartFile[] multipartFile
     ) {
-        ImageResponseDto response = stubData.createImageResponse();
-        return new ResponseEntity(response, HttpStatus.CREATED);
+        List<ProfileImage> imageList =
+                imageService.uploadProfileImage(profileId, multipartFile);
+        return new ResponseEntity(
+                ResponseDto.of(imageMapper.entityListToImageResponseDtoList(imageList)),
+                HttpStatus.CREATED);
     }
 
     @PatchMapping("/profile-image/{profileId}")
@@ -34,14 +44,18 @@ public class ImageController {
             @PathVariable Long profileId,
             @RequestParam("image") MultipartFile[] multipartFile
     ) {
-        ImageResponseDto response = stubData.createImageResponse();
-        return new ResponseEntity(response, HttpStatus.OK);
+        List<ProfileImage> imageList =
+                imageService.updateProfileImage(profileId, multipartFile);
+        return new ResponseEntity(
+                ResponseDto.of(imageMapper.entityListToImageResponseDtoList(imageList)),
+                HttpStatus.OK);
     }
 
     @DeleteMapping("/profile-image/{profileId}")
     public ResponseEntity deleteProfileImage(
             @PathVariable Long profileId
     ) {
+        imageService.deleteProfileImage(profileId);
         return ResponseEntity.noContent().build();
     }
 }

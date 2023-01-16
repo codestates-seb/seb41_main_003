@@ -24,12 +24,12 @@ public class Homework extends Auditable {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     @Setter
-    private HomeworkStatus homeworkStatus;
+    private HomeworkStatus homeworkStatus = HomeworkStatus.PROGRESS;
 
 
     /* 연관 관계 매핑 */
     @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @Setter
     private DateNotice dateNotice;
 
@@ -38,7 +38,6 @@ public class Homework extends Auditable {
 
     public void addDateNotice(DateNotice dateNotice) {
         setDateNotice(dateNotice);
-        dateNotice.addHomework(this);
     }
 
 

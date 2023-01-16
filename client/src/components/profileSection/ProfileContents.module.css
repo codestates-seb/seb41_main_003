@@ -1,0 +1,131 @@
+@import url('../../default.css');
+
+.container {
+  width: 696px;
+  padding: 32px 32px 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: $bigShadow;
+  border-radius: 5px;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  background-color: $white;
+  position: relative;
+
+  > div {
+    margin-bottom: 32px;
+  }
+}
+
+.font3 {
+  font-size: $font3;
+  font-weight: $font3W;
+}
+
+.font4 {
+  font-size: $font4;
+  font-weight: $font4W;
+  margin-bottom: 12px;
+}
+
+.font5 {
+  font-size: $font5;
+  font-weight: $font5W;
+}
+
+.paragragh {
+  font-size: $para;
+  font-weight: $paraW;
+}
+
+.subject {
+  > .subjectList {
+    margin-top: 8px;
+
+    > .paragragh {
+      margin-top: 8px;
+    }
+  }
+}
+
+.reviewContainer {
+  margin-top: 51px;
+
+  > hr {
+    height: 2px;
+    background-color: black;
+    border: 0;
+    margin-top: 4px;
+  }
+}
+
+.reviewTitleLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.reviewContentBox {
+  background-color: $snow;
+  border-radius: 5px;
+  margin-top: 16px;
+  padding: 16px;
+}
+
+.reviewTitle {
+  font-size: $font5;
+  font-weight: $font5W;
+}
+
+.reviewProfileId {
+  font-size: $font6;
+  font-weight: $font6W;
+}
+
+.rating {
+  display: flex;
+  flex-wrap: wrap;
+  width: 400px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+
+  .flexbox {
+    display: flex;
+    margin-bottom: 8px;
+
+    > p {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+.stars {
+  margin: 0 8px;
+  display: flex;
+  align-items: center;
+
+  > svg {
+    fill: #f0c24d;
+    font-size: 24px;
+  }
+}
+
+.reviewBtn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background-color: $ocean;
+  border-radius: 5px;
+  color: $snow;
+  font-size: $font5;
+  font-weight: $font5W;
+  padding: 6px 12px;
+  box-shadow: $buttonShadow;
+
+  > svg {
+    font-size: 22px;
+    fill: $snow;
+    vertical-align: text-bottom;
+  }
+}

@@ -1,0 +1,54 @@
+@import url('../../default.css');
+
+.messageList {
+  width: 344px;
+  height: 640px;
+  border-radius: 5px;
+  background-color: $snow;
+  padding: 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.person {
+  width: 312px;
+  height: 72px;
+  background-color: $white;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+
+  img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 12px;
+  }
+
+  > div {
+    text-align: left;
+
+    h4 {
+      font-size: $font5;
+      font-weight: $font5W;
+      margin-bottom: 4px;
+    }
+
+    p {
+      font-size: $para;
+    }
+  }
+
+  .badge {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background-color: $red;
+  }
+}

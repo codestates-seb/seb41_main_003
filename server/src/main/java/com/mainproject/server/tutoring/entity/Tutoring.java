@@ -15,7 +15,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-@Builder
 public class Tutoring extends Auditable {
 
     @Id
@@ -25,6 +24,14 @@ public class Tutoring extends Auditable {
     @Column(nullable = false)
     @Setter
     private String tutoringTitle;
+
+    @Column
+    @Setter
+    private Long latestNoticeId;
+
+    @Column
+    @Setter
+    private String latestNoticeBody;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -71,7 +78,7 @@ public class Tutoring extends Auditable {
     }
 
     public void addTutee(Profile tutee) {
-        setTutor(tutee);
+        setTutee(tutee);
     }
 
 }

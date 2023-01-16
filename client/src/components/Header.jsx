@@ -2,9 +2,10 @@ import styles from './Header.module.css';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { MdNotifications } from 'react-icons/md';
+import { ButtonRed } from './Button';
 
 const Header = () => {
-  const [isLogin, setisLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
   const [isMenu, setIsMenu] = useState(false);
   const [isNoti, setIsNoti] = useState(false);
   return (
@@ -29,7 +30,7 @@ const Header = () => {
             <Link to="/tuteelist">학생 찾기</Link>
           </li>
           <li>
-            <Link to="/tutoring">과외 관리</Link>
+            <Link to="/tutoringlist">과외 관리</Link>
           </li>
         </ul>
       </nav>
@@ -57,11 +58,11 @@ const Header = () => {
               </button>
             </li>
           </ul>
-          {isNoti ? (
+          {isNoti && (
             <div className={styles.noti}>기능 추가 될 예정입니다.</div>
-          ) : undefined}
+          )}
 
-          {isMenu ? (
+          {isMenu && (
             <ul className={styles.dropdown}>
               <li>
                 <Link to="/myprofile">프로필</Link>
@@ -82,7 +83,7 @@ const Header = () => {
                 <Link to="">로그아웃</Link>
               </li>
             </ul>
-          ) : undefined}
+          )}
         </div>
       ) : (
         <div className={styles.memberMenu}>
@@ -97,6 +98,10 @@ const Header = () => {
           </ul>
         </div>
       )}
+      <ButtonRed
+        text="⚠로그인 상태 변경"
+        buttonHandler={() => setIsLogin(!isLogin)}
+      />
     </header>
   );
 };

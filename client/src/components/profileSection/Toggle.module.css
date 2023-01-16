@@ -1,0 +1,54 @@
+@import url('../../default.css');
+
+.toggleSwitch {
+  position: relative;
+  width: 72px;
+  height: 40px;
+
+  button {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 36px;
+    cursor: pointer;
+    background-color: #4ecb71;
+  }
+
+  .checkbox {
+    position: absolute;
+    display: none;
+  }
+
+  .slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 36px;
+    transition: 0.4s;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 45px;
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      background-color: white;
+      transition: 0.4s;
+    }
+  }
+
+  .unActive {
+    background-color: $nickel;
+
+    &::before {
+      transform: translateX(-35px);
+      background-color: white;
+    }
+  }
+}

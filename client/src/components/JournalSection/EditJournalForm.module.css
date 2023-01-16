@@ -1,0 +1,158 @@
+@import url('../../default.css');
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 32px;
+  padding-bottom: 63px;
+
+  h1 {
+    font-size: $font1;
+    font-weight: $font1W;
+    margin-bottom: 32px;
+    display: flex;
+    margin-right: 777px;
+  }
+
+  h4 {
+    font-size: $font4;
+    font-weight: $font4W;
+  }
+}
+
+.journalContainer {
+  width: 1048px;
+  height: 100%;
+  background-color: $white;
+  border-radius: 5px;
+  box-shadow: $bigShadow;
+  padding: 32px;
+  position: relative;
+
+  .buttonContainer {
+    display: flex;
+    width: 203px;
+    position: absolute;
+    right: 32px;
+    top: 20px;
+    justify-content: space-between;
+  }
+}
+
+.upperPart {
+  display: flex;
+  margin-bottom: 32px;
+
+  .titleContainer {
+    width: 843px;
+    height: 36px;
+    margin-top: 17px;
+  }
+}
+
+.lowerPart {
+  display: flex;
+
+  h4 {
+    margin-bottom: 16px;
+  }
+
+  .noticeHomework {
+    margin-right: 12px;
+  }
+
+  .noticeArea {
+    width: 484px;
+    height: 120px;
+
+    > * {
+      resize: none;
+
+      &::-webkit-scrollbar {
+        display: none; /* Chrome , Safari , Opera */
+      }
+    }
+  }
+
+  .scheduleArea {
+    width: 488px;
+    height: 388px;
+
+    > * {
+      resize: none;
+
+      &::-webkit-scrollbar {
+        display: none; /* Chrome , Safari , Opera */
+      }
+    }
+  }
+
+  .homeworkContainer {
+    margin-top: 16px;
+    width: 484px;
+  }
+}
+
+.homeworkArea {
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 209px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome , Safari , Opera */
+  }
+
+  .checkBoxContainer {
+    display: flex;
+    padding: 4px;
+    margin-bottom: 8px;
+    position: relative;
+    border-radius: 3px;
+
+    .homeworkMenu {
+      position: absolute;
+      right: 4px;
+      opacity: 0;
+      transition: 0.2s ease-in-out;
+
+      > button svg {
+        font-size: 20px;
+        fill: $nickel;
+      }
+    }
+
+    &:hover {
+      background-color: $snow;
+
+      .homeworkMenu {
+        opacity: 1;
+      }
+    }
+  }
+
+  .homeworkBody {
+    margin-left: 8px;
+    font-size: $para;
+    font-weight: $para;
+    overflow: hidden;
+    word-wrap: break-word;
+    padding-right: 20px;
+  }
+
+  .addHomework {
+    display: flex;
+    padding: 4px;
+
+    input {
+      width: 300px;
+      margin-left: 8px;
+      border: 0;
+      border-bottom: 2px solid $moon;
+      outline: none;
+      flex: 1 0 0;
+    }
+  }
+}

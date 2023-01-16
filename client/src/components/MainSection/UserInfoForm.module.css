@@ -1,0 +1,147 @@
+@import url('../../default.css');
+
+.userInfoContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 520px;
+  background-color: $white;
+  margin-top: 80px;
+  margin-bottom: 80px;
+  border-radius: 5px;
+  box-shadow: 0 24px 38px 3px rgb(0 0 0 / 14%);
+}
+
+.required {
+  align-self: flex-end;
+  margin-top: 16px;
+  margin-right: 90px;
+  font-size: $sub;
+  font-weight: 500;
+}
+
+.requiredIcon {
+  position: relative;
+  top: -4px;
+  margin: 0 4px;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: $red;
+}
+
+.userStatusBox {
+  display: flex;
+  padding-left: 4px;
+
+  > span {
+    font-size: $font6;
+    font-weight: $font6W;
+    margin-right: 17px;
+    padding-top: 4px;
+  }
+
+  label {
+    cursor: pointer;
+  }
+}
+
+.inputArea {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+
+  > input {
+    width: 344px;
+    margin-bottom: 4px;
+  }
+
+  > div {
+    margin-bottom: 4px;
+    margin-top: 4px;
+  }
+
+  > span {
+    margin-bottom: 14px;
+    font-size: $sub;
+    font-weight: $subW;
+    color: $red;
+  }
+
+  > span:last-of-type {
+    margin-bottom: 14px;
+    font-size: $sub;
+    font-weight: $subW;
+    color: $black;
+  }
+
+  > button:last-of-type {
+    padding: 8px 103px;
+    margin-bottom: 36px;
+  }
+}
+
+.userInfoText {
+  font-size: $font3;
+  font-weight: $font3W;
+  margin-top: 36px;
+}
+
+.emailBox {
+  display: flex;
+  flex-direction: column;
+  width: 316px;
+  margin-top: 14px;
+  padding-bottom: 14px;
+
+  > span:first-of-type {
+    font-size: $font6;
+    font-weight: $font6W;
+    padding-left: 4px;
+  }
+
+  > span:last-of-type {
+    font-size: $para;
+    font-weight: $paraW;
+    margin-top: 8px;
+    padding-left: 8px;
+  }
+}
+
+.radioBox {
+  > label:first-of-type {
+    margin-right: 8px;
+  }
+}
+
+.radioButton {
+  display: none;
+}
+
+.normalLabel {
+  text-align: center;
+  line-height: 25px;
+  display: inline-block;
+  background-color: $silver;
+  width: 80px;
+  height: 27px;
+  border-radius: 5px;
+  font-size: $font6;
+  font-weight: $font6W;
+  color: $black;
+}
+
+.checkedLabel {
+  text-align: center;
+  line-height: 25px;
+  display: inline-block;
+  background-color: $night;
+  width: 80px;
+  height: 27px;
+  border-radius: 5px;
+  font-size: $font6;
+  font-weight: $font6W;
+  color: $snow;
+}

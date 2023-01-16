@@ -20,4 +20,15 @@ public class ImageResponseDto {
     private LocalDateTime createAt;
 
     private LocalDateTime updateAt;
+
+    public ImageResponseDto(Long profileImageId, String url) {
+        this.profileImageId = profileImageId;
+        this.url = url;
+        this.createAt = null;
+        this.updateAt = null;
+    }
+
+    public static ImageResponseDto of(Long profileImageId, String url) {
+        return new ImageResponseDto(profileImageId, url);
+    }
 }

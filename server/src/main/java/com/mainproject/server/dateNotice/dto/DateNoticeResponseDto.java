@@ -1,15 +1,16 @@
 package com.mainproject.server.dateNotice.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.mainproject.server.dateNotice.entity.DateNotice;
+import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DateNoticeResponseDto {
 
     private Long dateNoticeId;
@@ -25,4 +26,30 @@ public class DateNoticeResponseDto {
     private NoticeResponseDto notice;
 
     private List<HomeworkResponseDto> homeworks;
+
+    private String noticeStatus;
+
+    public DateNoticeResponseDto(DateNotice dateNotice) {
+        this.dateNoticeId = dateNotice.getDateNoticeId();
+        this.dateNoticeTitle = dateNotice.getDateNoticeTitle();
+        this.startTime = dateNotice.getStartTime();
+        this.endTime = dateNotice.getEndTime();
+        this.schedule = new ScheduleResponseDto(
+                dateNotice.getSchedule().getScheduleId(),
+                dateNotice.getSchedule().getScheduleBody()
+        );
+        this.notice = new NoticeResponseDto(
+                dateNotice.getNotice().getNoticeId(),
+                dateNotice.getNotice().getNoticeBody()
+        );
+        this.homeworks = dateNotice.getHomeworks()
+                .stream()
+                .map(HomeworkResponseDto::of)
+                .collect(Collectors.toList());
+        this.noticeStatus = dateNotice.getNoticeStatus().name();
+    }
+
+    public static DateNoticeResponseDto of(DateNotice dateNotice) {
+        return new DateNoticeResponseDto(dateNotice);
+    }
 }

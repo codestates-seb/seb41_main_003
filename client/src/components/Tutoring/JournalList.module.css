@@ -1,0 +1,183 @@
+@import url('../../default.css');
+
+.container {
+  width: 1048px;
+  height: 580px;
+  top: 118px;
+  margin-bottom: 60px;
+  display: flex;
+}
+
+.leftCard {
+  width: 784px;
+  height: 580px;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+  margin-right: 8px;
+  background-color: $white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-radius: 5px;
+}
+
+.rightCard {
+  width: 256px;
+  height: 580px;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+  background-color: $white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 25px 16px;
+  border-radius: 5px;
+}
+
+.noti {
+  display: flex;
+  align-items: center;
+  width: 752px;
+  padding: 8px 4px;
+  font-size: $font6;
+  font-weight: $font6W;
+  background-color: $whiteBlue;
+  margin-bottom: 16px;
+}
+
+.icon {
+  fill: $nickel;
+  font-size: 24px;
+  margin-right: 8px;
+  margin-left: 11px;
+}
+
+.list {
+  overflow: hidden auto;
+  width: 752px;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}
+
+.li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  background-color: $snow;
+  border-radius: 5px;
+  padding: 11px 16px 11px 8px;
+}
+
+.dateBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  border-right: 2px solid $black;
+  width: 100px;
+  height: 57px;
+  padding-right: 8px;
+  margin-left: 4px;
+}
+
+.day {
+  font-size: $font3;
+  font-weight: $font3W;
+}
+
+.yearMonth {
+  font-size: $font6;
+  font-weight: $font6W;
+}
+
+.textBox {
+  display: flex;
+  flex-direction: column;
+  width: 565px;
+  padding-left: 12px;
+}
+
+.goal {
+  font-size: $font5;
+  font-weight: $font5W;
+}
+
+.homework {
+  font-size: $para;
+  font-weight: $paraW;
+}
+
+.notiIcon {
+  display: flex;
+  align-items: center;
+  font-size: $font6;
+  width: 61px;
+  height: 32px;
+  background-color: $night;
+  color: $white;
+  border-radius: 5px;
+}
+
+.hiSpeaker {
+  font-size: 16px;
+  fill: $white;
+  margin: 4px;
+}
+
+.nameBox {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 24px;
+
+  > span {
+    font-size: $font2;
+    font-weight: $font2W;
+    margin-right: 16px;
+  }
+
+  > button {
+    display: flex;
+    justify-content: flex-start;
+
+    > span {
+      color: $nickel;
+      font-size: $sub;
+      font-weight: $subW;
+    }
+  }
+}
+
+.buttonBox {
+  display: flex;
+  flex-direction: column;
+
+  > button:first-child {
+    margin-bottom: 8px;
+  }
+}
+
+.tutoringTitle {
+  font-size: $font4;
+  font-weight: $font4W;
+  width: 200px;
+  margin-bottom: 16px;
+}
+
+.tutoringDate {
+  font-size: $para;
+  font-weight: $paraW;
+}
+
+.mdEdit {
+  fill: $nickel;
+  font-size: 12px;
+  margin-right: 4px;
+}
+
+.rightTextBox {
+  display: flex;
+  flex-direction: column;
+  padding-left: 12px;
+}

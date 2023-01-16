@@ -3,12 +3,14 @@ package com.mainproject.server.user.controller;
 import com.mainproject.server.dto.PageResponseDto;
 import com.mainproject.server.dto.ResponseDto;
 import com.mainproject.server.profile.dto.ProfileListResponseDto;
+import com.mainproject.server.profile.service.ProfileService;
 import com.mainproject.server.user.dto.UserPatchDto;
 import com.mainproject.server.user.dto.UserPostDto;
-import com.mainproject.server.user.dto.UserResponseDto;
+import com.mainproject.server.user.entity.User;
+import com.mainproject.server.user.mapper.UserMapper;
+import com.mainproject.server.user.service.UserService;
 import com.mainproject.server.utils.StubData;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -32,12 +34,21 @@ public class UserController {
 
     private final StubData stubData;
 
+    private final UserMapper userMapper;
+
+    private final UserService userService;
+
+    private final ProfileService profileService;
+
     @GetMapping("/{userId}")
     public ResponseEntity getUser(
             @PathVariable Long userId
     ) {
         return new ResponseEntity<>(
-                ResponseDto.of(stubData.createUserResponse()),
+                ResponseDto.of(
+                        userMapper.entityToUserResponseDto(
+                                userService.getUser(userId)
+                        )),
                 HttpStatus.OK);
     }
 
@@ -45,8 +56,13 @@ public class UserController {
     public ResponseEntity postUser(
             @RequestBody @Validated UserPostDto userPostDto
     ) {
+        User saveUser = userService.createUser(
+                userMapper.userPostDtoToEntity(userPostDto));
         return new ResponseEntity<>(
-                ResponseDto.of(stubData.createUserResponse()),
+                ResponseDto.of(
+                        userMapper.entityToUserResponseDto(
+                                saveUser
+                        )),
                 HttpStatus.CREATED
         );
     }
@@ -56,8 +72,17 @@ public class UserController {
             @PathVariable Long userId,
             @RequestBody UserPatchDto userPatchDto
     ) {
+        userPatchDto.setUserId(userId);
+        if (userPatchDto.getUserStatus() != null && !userPatchDto.getUserStatus().isBlank()) {
+            userPatchDto.setUserStatus(userPatchDto.getUserStatus().toUpperCase());
+        }
+        User updateUser = userService.updateUser(
+                userMapper.userPatchDtoToEntity(userPatchDto));
         return new ResponseEntity<>(
-                ResponseDto.of(stubData.createUserResponse()),
+                ResponseDto.of(
+                        userMapper.entityToUserResponseDto(
+                                updateUser
+                        )),
                 HttpStatus.OK
         );
     }
@@ -66,30 +91,34 @@ public class UserController {
     public ResponseEntity deleteUser(
             @PathVariable Long userId
     ) {
+        userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/tutors")
     public ResponseEntity getTutors(
             @RequestParam Map<String, String> params,
-            @PageableDefault(page = 0, size = 10, sort = "profileId", direction = Sort.Direction.DESC)
+            @PageableDefault(page = 0, size = 20, sort = "createAt", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
-        return getResponseEntity(pageable);
+        params.put("key", "TUTOR");
+        PageResponseDto response = profileService.getTutorOrTuteeList(params, pageable);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
     @GetMapping("/tutees")
     public ResponseEntity getTutees(
             @RequestParam Map<String, String> params,
-            @PageableDefault(page = 0, size = 10, sort = "profileId", direction = Sort.Direction.DESC)
+            @PageableDefault(page = 0, size = 20, sort = "createAt", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
-        return getResponseEntity(pageable);
+        params.put("key", "TUTEE");
+        PageResponseDto response = profileService.getTutorOrTuteeList(params, pageable);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
 
     private ResponseEntity getResponseEntity(
-            @PageableDefault(page = 0, size = 10, sort = "profileId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
         ProfileListResponseDto userResponse = stubData.createProfileListResponse();

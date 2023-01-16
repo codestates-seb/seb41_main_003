@@ -14,6 +14,13 @@
   font-size: $font5;
   font-weight: $font5W;
   color: $black;
+  z-index: 1;
+
+  > button {
+    position: absolute;
+    top: 10px;
+    right: 200px;
+  }
 }
 
 .logo {
@@ -92,11 +99,12 @@
     right: 5px;
     background-color: $snow;
     padding: 24px;
-    border-radius: 3px;
+    border-radius: 5px;
     box-shadow: $defaultShadow;
 
     li {
       margin-bottom: 24px;
+      text-align: center;
 
       &:last-child {
         margin: 0;

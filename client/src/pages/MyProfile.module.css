@@ -1,0 +1,21 @@
+@import url('../default.css');
+
+.wrapper {
+  width: 100%;
+  background-color: $snow;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  padding-top: 16px;
+  background-color: $snow;
+  min-width: 1048px;
+  margin: 0 auto;
+}
+
+.modalText {
+  text-align: center;
+  font-size: $font5;
+  font-weight: $font5W;
+}

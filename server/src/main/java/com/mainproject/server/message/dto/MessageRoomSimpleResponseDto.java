@@ -1,8 +1,14 @@
 package com.mainproject.server.message.dto;
 
+import com.mainproject.server.constant.ProfileStatus;
+import com.mainproject.server.message.entity.Message;
+import com.mainproject.server.message.entity.MessageRoom;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -11,15 +17,41 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 public class MessageRoomSimpleResponseDto {
-    // 메세지 방 ID, 메세지 상대 이름, 최근 메세지(messageResponseDto), 읽음 상태, 생성 시간
+
     private Long messageRoomId;
 
     private String messageStatus;
 
     private String lastMessage;
 
-    private String targetName; //메세지 상대 이름 ex) 내가 튜티면 targetName은 튜터 이름
+    private String targetName;
 
     private LocalDateTime createAt;
+
+    public MessageRoomSimpleResponseDto(
+            ProfileStatus status,
+            MessageRoom messageRoom
+    ) {
+        this.messageRoomId = messageRoom.getMessageRoomId();
+        this.messageStatus = messageRoom.getMessageStatus().name();
+        if (status.equals(ProfileStatus.TUTEE)) {
+            this.targetName = messageRoom.getTutor().getName();
+        } else {
+            this.targetName = messageRoom.getTutee().getName();
+        }
+        this.createAt = messageRoom.getCreateAt();
+        List<Message> messages = new ArrayList<>(messageRoom.getMessages());
+        if (!messages.isEmpty()) {
+            this.lastMessage = messages.get(messages.size() - 1)
+                    .getMessageContent();
+        }
+    }
+
+    public static MessageRoomSimpleResponseDto of(
+            ProfileStatus status,
+            MessageRoom messageRoom
+    ) {
+        return new MessageRoomSimpleResponseDto(status, messageRoom);
+    }
 
 }

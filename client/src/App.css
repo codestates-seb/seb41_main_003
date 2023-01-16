@@ -6,19 +6,7 @@
   align-items: center;
 }
 
-.header {
-  height: 64px;
-  width: 100%;
-  text-align: center;
-}
-
 .content {
   width: 100%;
-  max-width: 1048px;
-}
-
-.footer {
-  height: 160px;
-  width: 100%;
-  text-align: center;
+  margin-top: 64px;
 }

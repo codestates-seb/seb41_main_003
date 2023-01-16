@@ -6,7 +6,9 @@ import com.mainproject.server.subject.dto.SubjectResponseDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -33,4 +35,24 @@ public class ProfileListResponseDto {
     private LocalDateTime createAt;
 
     private LocalDateTime updateAt;
+
+    public ProfileListResponseDto(ProfileQueryDto dto) {
+        this.profileId = dto.getProfileId();
+        this.name = dto.getName();
+        this.rate = dto.getRate();
+        this.school = dto.getSchool();
+        this.bio = dto.getBio();
+        this.profileImage = ImageResponseDto.of(
+                dto.getProfileImageId(),
+                dto.getProfileImageUrl());
+        this.createAt = dto.getCreateAt();
+        this.updateAt = dto.getUpdateAt();
+        this.subjects = Arrays.stream(dto.getSubjectString().split(","))
+                .map(SubjectResponseDto::of)
+                .collect(Collectors.toList());
+    }
+
+    public static ProfileListResponseDto of(ProfileQueryDto dto) {
+        return new ProfileListResponseDto(dto);
+    }
 }

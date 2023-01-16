@@ -1,6 +1,8 @@
 package com.mainproject.server.home;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.mainproject.server.constant.ErrorCode;
+import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.webhook.WebHookDto;
 import com.mainproject.server.webhook.WebHookService;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +25,7 @@ public class HomeController {
         );
     }
     @PostMapping("web-hook")
-    public ResponseEntity postWebHook(
-            @RequestBody WebHookDto request
-    ) throws JsonProcessingException {
-        webHookService.callEvent(request);
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity postWebHook() {
+        throw new ServiceLogicException(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 }

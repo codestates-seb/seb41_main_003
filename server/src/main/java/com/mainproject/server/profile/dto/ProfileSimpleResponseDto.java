@@ -16,4 +16,6 @@ public class ProfileSimpleResponseDto {
     private String name;
 
     private String url;
+
+    private String school;
 }
