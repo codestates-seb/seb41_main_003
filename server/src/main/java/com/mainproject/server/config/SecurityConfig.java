@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -78,7 +79,16 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/auth/logout")
                 .and().authorizeRequests(
                         auth -> auth
-                                .anyRequest().permitAll()
+                                .mvcMatchers(HttpMethod.POST,"/login").permitAll()
+                                .mvcMatchers(HttpMethod.POST,"/users").permitAll()
+                                .mvcMatchers(HttpMethod.GET,"/users/tutors").permitAll()
+                                .mvcMatchers(HttpMethod.GET,"/users/tutors/**").permitAll()
+                                .mvcMatchers(HttpMethod.GET,"/users/tutees").permitAll()
+                                .mvcMatchers(HttpMethod.GET,"/users/tutees/**").permitAll()
+                                .mvcMatchers(HttpMethod.GET,"/profiles/details/**").permitAll()
+                                .mvcMatchers(HttpMethod.POST,"/auth/reissue-token/**").permitAll()
+                                .anyRequest().hasAnyRole("USER")
+//                                .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(oAuth2UserSuccessHandler)
@@ -94,12 +104,13 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(
                 Arrays.asList("http://localhost:3000",
-                        "http://localhost:8080"));
+                        "http://localhost:8080","*"));
         corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE", "OPTIONS"));
         corsConfiguration.setMaxAge(493772L);
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addExposedHeader("Authorization");
         corsConfiguration.addExposedHeader("userId");
+        corsConfiguration.addExposedHeader("userStatus");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
