@@ -61,6 +61,8 @@ public class UserService {
                 .ifPresent(findUser::setSecondPassword);
         if (findUser.getUserStatus().equals(UserStatus.NONE)) {
             findUser.setUserStatus(user.getUserStatus());
+        } else if (user.getUserStatus() == null) {
+
         } else {
             throw new ServiceLogicException(ErrorCode.NOT_CHANGE_USER_STATUS);
         }
