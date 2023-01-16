@@ -37,6 +37,8 @@ const SignUpForm = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     console.log('submit!');
+    //회원가입 성공 시 홈 화면으로 리다이렉션
+    // window.location.href = '/';
   };
 
   return (
@@ -86,7 +88,11 @@ const SignUpForm = () => {
         <span>비밀번호 입력이 잘못되었습니다.</span>
       </form>
       <div className={styles.buttonContainer}>
-        <button form="signUp" className={styles.signupButton}>
+        <button
+          form="signUp"
+          className={styles.signupButton}
+          onClick={submitHandler}
+        >
           회원가입
         </button>
         <button className={styles.kakaoLoginButton}>

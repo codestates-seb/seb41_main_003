@@ -16,9 +16,12 @@ const EditJournalForm = ({ user, setUser }) => {
   const { pathname } = useLocation();
   const isAdd = pathname === '/addjournal';
 
+  const Navigate = useNavigate();
+
   const [homeworkVal, setHomeworkVal] = useState('');
 
-  const { dateNoticeTitle, scheduleBody, noticeBody, Homeworks } = user;
+  const { dateNoticeId, dateNoticeTitle, scheduleBody, noticeBody, Homeworks } =
+    user;
 
   const confirm = {
     isOpen: true,
@@ -34,23 +37,43 @@ const EditJournalForm = ({ user, setUser }) => {
         } else {
           console.log('수정완료');
         }
-        resetModal();
-        navigate('/journal');
+        //TODO: 해당 프로필Id ,dateNoticeId의 일지 페이지로 이동 (useParam)
+        console.log('일지 수정 확인, patch요청');
+        setModal(confirmProps);
+        Navigate(`/journal`);
       },
+    },
+  };
+
+  const confirmProps = {
+    isOpen: true,
+    modalType: 'alert',
+    props: {
+      text: '일지가 ${ isAdd ? '작성' : '수정' } 되었습니다.',
     },
   };
 
   const cancel = {
     isOpen: true,
-    modalType: 'cancelConfirm',
+    modalType: 'redConfirm',
     props: {
-      text: '취소하시겠습니까? 작성 중인 내용이 모두 사라집니다.',
+      text: `취소 하시겠습니까?
+      작성 중인 내용이 모두 사라집니다.`,
       modalHandler: () => {
-        console.log('작성 취소 확인 버튼');
-        //TODO: Journal Page로 리다이렉션
+        //TODO: 해당 프로필Id,dateNoticeId의 일지 수정 페이지로 이동 (useParam)
+        console.log('일지 수정 취소');
         resetModal();
-        navigate('/journal');
+        Navigate('/journal');
+        setModal(redAlertModal);
       },
+    },
+  };
+
+  const redAlertModal = {
+    isOpen: true,
+    modalType: 'redAlert',
+    props: {
+      text: '일지가 수정이 취소되었습니다.',
     },
   };
 
@@ -169,6 +192,8 @@ const EditJournalForm = ({ user, setUser }) => {
                         <div className={styles.homeworkMenu}>
                           <button
                             id={homeworkId}
+                            name={homeworkId}
+                            value={homeworkId}
                             onClick={deleteHomeworkHandler}
                           >
                             <MdDelete />

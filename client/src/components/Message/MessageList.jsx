@@ -1,21 +1,43 @@
 import styles from './MessageList.module.css';
 import defaultUser from '../../assets/defaultUser.png';
 
+const MessageListData = [
+  {
+    messageRoomId: 2,
+    messageStatus: 'UNCHECK',
+    lastMessage: '안녕하세요 튜티에요~',
+    targetName: '김과학',
+    createAt: '2023-01-16T10:11:52.102063',
+  },
+  {
+    messageRoomId: 1,
+    messageStatus: 'UNCHECK',
+    lastMessage: 'REQ_UEST',
+    targetName: '33번회원이다',
+    createAt: '2023-01-16T10:05:39.041577',
+  },
+];
+
 const MessageList = () => {
   return (
     <>
       <ul className={styles.messageList}>
-        {/* // TODO : API 나오면 배열 순회해서 출력하도록 수정해야함 */}
-        <li>
-          <button className={styles.person}>
-            <img src={defaultUser} alt="user" className={styles.userImg} />
-            <div>
-              <h4>김민경</h4>
-              <p>and i also 까 치 조 아</p>
-            </div>
-            <span className={styles.badge} />
-          </button>
-        </li>
+        {MessageListData.map((el) => {
+          return (
+            <li key={el.messageRoomId} className={styles.message}>
+              <button className={styles.person}>
+                <img src={defaultUser} alt="user" className={styles.userImg} />
+                <div>
+                  <h4>{el.targetName}</h4>
+                  <p>{el.lastMessage}</p>
+                </div>
+                {el.messageStatus === 'UNCHECK' && (
+                  <span className={styles.badge} />
+                )}
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </>
   );

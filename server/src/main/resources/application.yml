@@ -8,17 +8,22 @@ spring:
   redis:
     host: localhost
     port: 6379
+  datasource:
+    url: ${MAIN_DB_URL}
+    username: ${MAIN_DB_ID}
+    password: ${MAIN_DB_PW}
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 1000
-  sql:
-    init:
-      mode: always
+#  sql:
+#    init:
+#      mode: always
   security:
     oauth2:
       client:

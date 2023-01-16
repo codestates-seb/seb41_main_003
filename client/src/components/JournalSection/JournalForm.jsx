@@ -3,9 +3,15 @@ import PropType from 'prop-types';
 import { ButtonSilver } from '../Button';
 import { CheckBox } from '../Input';
 import DropDown from './DropDown';
+import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import ModalState from '../../recoil/modal';
 import { useNavigate } from 'react-router-dom';
 
 const JournalForm = ({ user }) => {
+  const setModal = useSetRecoilState(ModalState);
+  const resetModal = useResetRecoilState(ModalState);
+
+  const Navigate = useNavigate();
   const {
     dateNoticeTitle,
     startTime,
@@ -14,17 +20,26 @@ const JournalForm = ({ user }) => {
     noticeBody,
     Homeworks,
   } = user;
-  const navigate = useNavigate();
+
+  const confirm = {
+    isOpen: true,
+    modalType: 'confirm',
+    props: {
+      text: '과외 리스트 페이지로 이동하시겠습니까?',
+      modalHandler: () => {
+        //TODO: 해당 프로필Id의 과외 리스트 페이지로 이동 (useParam)
+        Navigate('/tutoring');
+        resetModal();
+      },
+    },
+  };
 
   return (
     <div className={styles.container}>
       <h1>과외 일지 </h1>
       <div className={styles.journalContainer}>
         <div className={styles.exitButton}>
-          <ButtonSilver
-            text="나가기"
-            buttonHandler={() => navigate('/tutoring')}
-          />
+          <ButtonSilver text="나가기" buttonHandler={() => setModal(confirm)} />
         </div>
         <section className={styles.upperPart}>
           <div className={styles.pickerContainer}>

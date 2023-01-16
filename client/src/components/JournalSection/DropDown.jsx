@@ -11,6 +11,8 @@ const DropDown = () => {
   const resetModal = useResetRecoilState(ModalState);
   const navigate = useNavigate();
 
+  const Navigate = useNavigate();
+
   const [isClicked, setIsClicked] = useState(false);
 
   const confirm = {
@@ -19,7 +21,9 @@ const DropDown = () => {
     props: {
       text: '일지 수정 페이지로 이동 하시겠습니까?',
       modalHandler: () => {
-        console.log('일지 수정 페이지로 이동');
+        //TODO: 해당 dateNoticeId의 일지 수정 페이지로 이동 (useParam)
+        console.log('일지 수정페이지로 이동');
+        Navigate('/editjournal');
         resetModal();
         navigate('/editjournal');
       },
@@ -28,15 +32,26 @@ const DropDown = () => {
 
   const cancel = {
     isOpen: true,
-    modalType: 'cancelConfirm',
+    modalType: 'redConfirm',
     props: {
-      text: '삭제 하시겠습니까? 삭제한 일지는 되돌릴 수 없습니다.',
+      text: `삭제 하시겠습니까?
+      삭제한 일지는 되돌릴 수 없습니다.`,
       modalHandler: () => {
-        console.log('삭제 취소 확인 버튼');
-        // TODO : 삭제 API 연결 필요
+        //TODO: 서버에 일지 삭제 요청
+        //TODO: 해당 프로필Id의 과외 리스트 페이지로 이동 (useParam)
+        console.log('일지 삭제');
         resetModal();
-        navigate('/tutoring');
+        setModal(redAlertModal);
+        Navigate(`/tutoring`);
       },
+    },
+  };
+
+  const redAlertModal = {
+    isOpen: true,
+    modalType: 'redAlert',
+    props: {
+      text: '일지가 삭제 되었습니다.',
     },
   };
 

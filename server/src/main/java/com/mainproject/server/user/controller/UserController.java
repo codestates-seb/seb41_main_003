@@ -73,7 +73,9 @@ public class UserController {
             @RequestBody UserPatchDto userPatchDto
     ) {
         userPatchDto.setUserId(userId);
-        userPatchDto.setUserStatus(userPatchDto.getUserStatus().toUpperCase());
+        if (userPatchDto.getUserStatus() != null && !userPatchDto.getUserStatus().isBlank()) {
+            userPatchDto.setUserStatus(userPatchDto.getUserStatus().toUpperCase());
+        }
         User updateUser = userService.updateUser(
                 userMapper.userPatchDtoToEntity(userPatchDto));
         return new ResponseEntity<>(

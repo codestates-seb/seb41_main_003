@@ -28,5 +28,5 @@ public class DateNoticePatchDto {
     @NotNull
     private String noticeBody;
 
-    private List<HomeworkPatchDto> Homeworks;
+    private List<HomeworkPatchDto> homeworks;
 }

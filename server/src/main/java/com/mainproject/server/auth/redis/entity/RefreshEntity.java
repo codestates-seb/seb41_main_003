@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@RedisHash(value = "Refresh",timeToLive = 120)
+// 1달 43200 sec
+@RedisHash(value = "Refresh", timeToLive = 300)
 public class RefreshEntity {
 
     @Id

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { ButtonNightBlue } from '../Button.jsx';
 import { BlueSubject } from '../Subject.jsx';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 import ModalState from '../../recoil/modal';
 import defaultUser from '../../assets/defaultUser.png';
 import { MdStar } from 'react-icons/md';
@@ -13,15 +14,17 @@ const ProfileCard = ({ user }) => {
   const setModal = useSetRecoilState(ModalState);
   const reset = useResetRecoilState(ModalState);
 
+  const Navigate = useNavigate();
+
   const confirm = {
     isOpen: true,
     modalType: 'confirm',
     props: {
       text: '상대방에게 문의를 요청하시겠습니까?',
       modalHandler: () => {
-        console.log('문의요청 완료');
+        //TODO: 해당 프로필Id를 가지고 메세지 페이지로 이동 (useParam)
+        Navigate('/message');
         reset();
-        //TODO:모달창에서 확인 버튼을 누르면 MessagePage로 이동
       },
     },
   };

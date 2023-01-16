@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from './AdminModal.module.css';
 import defaultUser from '../../assets/defaultUser.png';
+import { Link } from 'react-router-dom';
 
 const initialState = {
   data: [
@@ -39,6 +40,9 @@ const AdminModal = () => {
   const switchHandler = (e) => {
     let { name } = e.currentTarget;
     // TODO : 프로필 전환 로직 추가 필요
+    //특정 프로필 조회 요청을 통해 switchHandler로 받은 profileId를 파라미터로 붙여 아래와 같이 요청 보낸다
+    // GET 요청 : /profiles/details/{profileId}
+    //응답으로 받은 profileId로 로컬이나 전역 상태에 저장되어 있는 프로필 아이디로 업데이트 해준다.
     console.log(name.slice(7));
   };
   return (

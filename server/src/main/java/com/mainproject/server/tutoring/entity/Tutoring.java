@@ -27,6 +27,10 @@ public class Tutoring extends Auditable {
 
     @Column
     @Setter
+    private Long latestNoticeId;
+
+    @Column
+    @Setter
     private String latestNoticeBody;
 
     @Column(nullable = false)

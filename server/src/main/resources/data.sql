@@ -82,7 +82,7 @@ values
     ('basic','https://image-test-suyoung.s3.ap-northeast-2.amazonaws.com/image/user.png')
 ;
 
-insert into `profile` (`bio`, `character`, `difference`, `gender`, `name`, `pay`, `pre_tutoring`, `profile_status`, `rate`, `school`, `subject_string`, `want_date`, `wanted_status`, `way`, `profile_image_profile_image_id`, `user_user_id`)
+insert into `profile` (`bio`, `characters`, `difference`, `gender`, `name`, `pay`, `pre_tutoring`, `profile_status`, `rate`, `school`, `subject_string`, `want_date`, `wanted_status`, `way`, `profile_image_profile_image_id`, `user_user_id`)
 values
     ('수학 갈아드립니다', '소심함', null, '남', '1번회원이다', '시간당 20마넌', '가능합니다', 'TUTEE', 0.0, '제주대 철학과 19학번',
      '수학,영어,과학', '암때나 가능', 'REQUEST', '알아서 합니다', 1, 10),
@@ -279,4 +279,24 @@ values
     ('잘알려드릴게',58,4),('잘알려드릴게',58,5),
     ('잘알려드릴게',59,1),('잘알려드릴게',59,5),
     ('잘알려드릴게',60,1),('잘알려드릴게',60,2)
+;
+
+insert into `user_roles`(`user_user_id`, `roles`)
+values
+    (1, 'USER'),
+    (2, 'USER'),
+    (3, 'USER'),
+    (4, 'USER'),
+    (5, 'USER'),
+    (6, 'USER'),
+    (7, 'USER'),
+    (8, 'USER'),
+    (9, 'USER'),
+    (10, 'USER'),
+    (11, 'USER'),
+    (12, 'USER'),
+    (13, 'USER'),
+    (14, 'USER'),
+    (15, 'USER'),
+    (16, 'USER')
 ;

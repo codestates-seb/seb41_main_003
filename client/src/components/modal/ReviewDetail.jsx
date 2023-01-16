@@ -1,7 +1,9 @@
 import styles from './ReviewDetail.module.css';
 import PropTypes from 'prop-types';
-import { ButtonNightBlue, ButtonRed } from '../Button';
+import { ButtonNightBlue, ButtonSilver } from '../Button';
 import DetailStar from '../../util/DetailStar';
+import { useResetRecoilState } from 'recoil';
+import ModalState from '../../recoil/modal.js';
 
 const reviewDetailData = {
   reviewId: 1,
@@ -18,6 +20,7 @@ const reviewDetailData = {
 const ReviewDetailModal = ({ modalHandler }) => {
   //TODO: GET 매서드를 이용해서 특정 과외의 후기 조회 후 별점(number)을 차례로 담은 starRates 변수 생성
   const starRates = Object.values(reviewDetailData).slice(1, 5);
+  const reset = useResetRecoilState(ModalState);
 
   return (
     <div
@@ -52,7 +55,7 @@ const ReviewDetailModal = ({ modalHandler }) => {
       <div className={styles.textBox}>{reviewDetailData.reviewBody}</div>
       <div className={styles.buttonBox}>
         <ButtonNightBlue name="edit" buttonHandler={modalHandler} text="수정" />
-        <ButtonRed name="delete" buttonHandler={modalHandler} text="삭제" />
+        <ButtonSilver name="close" buttonHandler={() => reset()} text="닫기" />
       </div>
     </div>
   );

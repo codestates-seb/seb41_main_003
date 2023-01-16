@@ -1,69 +1,71 @@
 import styles from '../../pages/TuteeList.module.css';
 import PropType from 'prop-types';
 
-const MenuButtons = ({ isClicked, clickHandler }) => {
+const MenuButtons = ({ subjectMenu, subjectHandler }) => {
   return (
     <div className={styles.menu}>
       <button
         value="국어"
         className={
-          isClicked.includes('국어') ? styles.activeMenu : styles.defaultMenu
+          subjectMenu.includes('국어') ? styles.activeMenu : styles.defaultMenu
         }
-        onClick={clickHandler}
+        onClick={subjectHandler}
       >
         국어
       </button>
       <button
         value="수학"
         className={
-          isClicked.includes('수학') ? styles.activeMenu : styles.defaultMenu
+          subjectMenu.includes('수학') ? styles.activeMenu : styles.defaultMenu
         }
-        onClick={clickHandler}
+        onClick={subjectHandler}
       >
         수학
       </button>
       <button
         value="사회"
         className={
-          isClicked.includes('사회') ? styles.activeMenu : styles.defaultMenu
+          subjectMenu.includes('사회') ? styles.activeMenu : styles.defaultMenu
         }
-        onClick={clickHandler}
+        onClick={subjectHandler}
       >
         사회
       </button>
       <button
         value="과학"
         className={
-          isClicked.includes('과학') ? styles.activeMenu : styles.defaultMenu
+          subjectMenu.includes('과학') ? styles.activeMenu : styles.defaultMenu
         }
-        onClick={clickHandler}
+        onClick={subjectHandler}
       >
         과학
       </button>
       <button
         value="영어"
         className={
-          isClicked.includes('영어') ? styles.activeMenu : styles.defaultMenu
+          subjectMenu.includes('영어') ? styles.activeMenu : styles.defaultMenu
         }
-        onClick={clickHandler}
+        onClick={subjectHandler}
       >
         영어
       </button>
       <button
         value="자격증"
         className={
-          isClicked.includes('자격증') ? styles.activeMenu : styles.defaultMenu
+          subjectMenu.includes('자격증')
+            ? styles.activeMenu
+            : styles.defaultMenu
         }
-        onClick={clickHandler}
+        onClick={subjectHandler}
       >
         자격증
       </button>
       <button
         value="기타"
         className={
-          isClicked.includes('기타') ? styles.activeMenu : styles.defaultMenu
+          subjectMenu.includes('기타') ? styles.activeMenu : styles.defaultMenu
         }
-        onClick={clickHandler}
+        onClick={subjectHandler}
       >
         기타
       </button>
@@ -72,8 +74,8 @@ const MenuButtons = ({ isClicked, clickHandler }) => {
 };
 
 MenuButtons.propTypes = {
-  isClicked: PropType.array,
-  clickHandler: PropType.func,
+  subjectMenu: PropType.array,
+  subjectHandler: PropType.func,
 };
 
 export default MenuButtons;
