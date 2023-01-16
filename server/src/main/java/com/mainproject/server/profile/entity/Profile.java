@@ -67,7 +67,7 @@ public class Profile extends Auditable {
     private String school;
 
     @Setter
-    @Column(nullable = false, columnDefinition = "LONGTEXT")
+    @Column(nullable = false, columnDefinition = "LONGTEXT", name = "characters")
     private String character;
 
     @Setter
