@@ -79,6 +79,8 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/auth/logout")
                 .and().authorizeRequests(
                         auth -> auth
+                                .antMatchers("/h2/**").permitAll()
+                                .antMatchers("/h2").permitAll()
                                 .mvcMatchers(HttpMethod.POST,"/login").permitAll()
                                 .mvcMatchers(HttpMethod.POST,"/users").permitAll()
                                 .mvcMatchers(HttpMethod.GET,"/users/tutors").permitAll()
