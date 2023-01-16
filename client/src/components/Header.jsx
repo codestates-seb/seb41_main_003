@@ -5,6 +5,7 @@ import { MdNotifications } from 'react-icons/md';
 import { ButtonRed } from './Button';
 import { useSetRecoilState } from 'recoil';
 import ModalState from '../recoil/modal.js';
+import defaultUser from '../assets/defaultUser.png';
 
 const Header = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -64,7 +65,11 @@ const Header = () => {
                   setTimeout(() => setIsMenu(false), 100);
                 }}
               >
-                <div className={styles.profileImage} />
+                <img
+                  src={defaultUser}
+                  className={styles.profileImage}
+                  alt="프로필 이미지"
+                />
               </button>
             </li>
           </ul>
