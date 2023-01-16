@@ -3,6 +3,7 @@ import PropType from 'prop-types';
 import { ButtonSilver } from '../Button';
 import { CheckBox } from '../Input';
 import DropDown from './DropDown';
+import { useNavigate } from 'react-router-dom';
 
 const JournalForm = ({ user }) => {
   const {
@@ -13,19 +14,21 @@ const JournalForm = ({ user }) => {
     noticeBody,
     Homeworks,
   } = user;
+  const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
       <h1>과외 일지 </h1>
       <div className={styles.journalContainer}>
         <div className={styles.exitButton}>
-          <ButtonSilver text="나가기" />
-          {/* TODO: 과외 리스트 페이지로 이동 */}
+          <ButtonSilver
+            text="나가기"
+            buttonHandler={() => navigate('/tutoring')}
+          />
         </div>
         <section className={styles.upperPart}>
           <div className={styles.pickerContainer}>
             <p className={styles.font1}>19</p>
-            {/* TODO: 서버에서 받아온  startTime 또는 endTime에서 day 부분만 추출*/}
             <p className={styles.font5}>{new Date(startTime).toDateString}</p>
             <p className={styles.font6}>
               {new Date(startTime).toTimeString().slice(0, 5)}~

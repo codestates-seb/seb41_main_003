@@ -7,11 +7,14 @@ import { ButtonNightBlue, ButtonRed } from '../Button';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 import { MdDelete } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const EditJournalForm = ({ user, setUser }) => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const isAdd = pathname === '/addjournal';
 
   const [homeworkVal, setHomeworkVal] = useState('');
 
@@ -21,12 +24,18 @@ const EditJournalForm = ({ user, setUser }) => {
     isOpen: true,
     modalType: 'confirm',
     props: {
-      text: '현재 입력된 내용으로 일지를 수정하시겠습니까?',
+      text: `현재 입력된 내용으로 일지를 ${
+        isAdd ? '작성' : '수정'
+      }하시겠습니까?`,
       modalHandler: () => {
-        console.log('작성 완료');
-        //TODO: 서버에 user 정보 수정 patch
-        //TODO: 과외 일지 상세 페이지로 이동(useParam)
+        //TODO: 서버에 POST or PATCH API 연결 필요
+        if (isAdd) {
+          console.log('작성완료');
+        } else {
+          console.log('수정완료');
+        }
         resetModal();
+        navigate('/journal');
       },
     },
   };
@@ -40,6 +49,7 @@ const EditJournalForm = ({ user, setUser }) => {
         console.log('작성 취소 확인 버튼');
         //TODO: Journal Page로 리다이렉션
         resetModal();
+        navigate('/journal');
       },
     },
   };

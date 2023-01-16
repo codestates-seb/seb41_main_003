@@ -5,6 +5,7 @@ import { ButtonNightBlue, ButtonRed } from '../Button';
 import dummyTutoringData from './dummyTutoringData';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
+import { useNavigate } from 'react-router-dom';
 
 const JournalList = () => {
   const {
@@ -23,6 +24,7 @@ const JournalList = () => {
 
   const setModal = useSetRecoilState(ModalState);
   const reset = useResetRecoilState(ModalState);
+  const navigate = useNavigate();
 
   const alertProps = {
     isOpen: true,
@@ -132,8 +134,10 @@ const JournalList = () => {
           </span>
         </div>
         <div className={styles.buttonBox}>
-          {/* TODO: 버튼 눌렀을 때 과외 일지 작성 페이지로 이동  */}
-          <ButtonNightBlue text="과외 일지 작성" />
+          <ButtonNightBlue
+            text="과외 일지 작성"
+            buttonHandler={() => navigate('/addjournal')}
+          />
           {/* TODO: 만약 과외 종료 요청을 보내고 대기 중인 상태라면 AlertModal을 띄워야 함 */}
           <ButtonRed
             text="과외 종료"
