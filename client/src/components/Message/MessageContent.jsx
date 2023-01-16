@@ -45,6 +45,7 @@ const MessageContent = ({ messages }) => {
         console.log('상담 취소');
         resetModal();
         setModal(cancelAlertProps);
+        //상담 취소 후에는 Message 페이지 새로고침 필요
       },
     },
   };
