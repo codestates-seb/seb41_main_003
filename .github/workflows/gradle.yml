@@ -39,15 +39,29 @@ jobs:
       - name: Generate Environment Variables File for Production
         run: |
           echo "WEBHOOK_URL: $WEBHOOK_URL" >> ./src/main/resources/env.yml
-          echo "AWS_S3_ACCESS_KEY: AWS_S3_ACCESS_KEY" >> ./src/main/resources/env.yml
-          echo "AWS_S3_SECRET_KEY: AWS_S3_SECRET_KEY" >> ./src/main/resources/env.yml
-          echo "JWT_SECRET_KEY: JWT_SECRET_KEY" >> ./src/main/resources/env.yml
+          echo "AWS_S3_ACCESS_KEY: $AWS_S3_ACCESS_KEY" >> ./src/main/resources/env.yml
+          echo "AWS_S3_SECRET_KEY: $AWS_S3_SECRET_KEY" >> ./src/main/resources/env.yml
+          echo "JWT_SECRET_KEY: $JWT_SECRET_KEY" >> ./src/main/resources/env.yml
+          echo "GOOGLE_OAUTH2_MAIN_ID: $GOOGLE_OAUTH2_MAIN_ID" >> ./src/main/resources/env.yml
+          echo "GOOGLE_OAUTH2_MAINPROJECT_SECRETKEY: $GOOGLE_OAUTH2_MAINPROJECT_SECRETKEY" >> ./src/main/resources/env.yml
+          echo "KAKAO_OAUTH2_MAIN_ID: $KAKAO_OAUTH2_MAIN_ID" >> ./src/main/resources/env.yml
+          echo "KAKAO_OAUTH2_MAINPROJECT_SECRETKEY: $KAKAO_OAUTH2_MAINPROJECT_SECRETKEY" >> ./src/main/resources/env.yml
+          echo "MAIN_DB_URL: $MAIN_DB_URL" >> ./src/main/resources/env.yml
+          echo "MAIN_DB_ID: $MAIN_DB_ID" >> ./src/main/resources/env.yml
+          echo "MAIN_DB_PW: $MAIN_DB_PW" >> ./src/main/resources/env.yml
 
         env:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           AWS_S3_ACCESS_KEY: ${{ secrets.AWS_S3_ACCESS_KEY }}
           AWS_S3_SECRET_KEY: ${{ secrets.AWS_S3_SECRET_KEY }}
           JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          GOOGLE_OAUTH2_MAIN_ID: ${{ secrets.GOOGLE_OAUTH2_MAIN_ID }}
+          GOOGLE_OAUTH2_MAINPROJECT_SECRETKEY: ${{ secrets.GOOGLE_OAUTH2_MAINPROJECT_SECRETKEY }}
+          KAKAO_OAUTH2_MAIN_ID: ${{ secrets.KAKAO_OAUTH2_MAIN_ID }}
+          KAKAO_OAUTH2_MAINPROJECT_SECRETKEY: ${{ secrets.KAKAO_OAUTH2_MAINPROJECT_SECRETKEY }}
+          MAIN_DB_URL: ${{ secrets.MAIN_DB_URL }}
+          MAIN_DB_ID: ${{ secrets.MAIN_DB_ID }}
+          MAIN_DB_PW: ${{ secrets.MAIN_DB_PW }}
 
 
       - name: Run chmod to make gradlew executable
