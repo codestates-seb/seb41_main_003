@@ -1,12 +1,19 @@
 import styles from './EditJournalForm.module.css';
 import PropType from 'prop-types';
+import { useState } from 'react';
 import DatePickerForm from './DatePickerForm';
 import { Textarea, TextInput, CheckBox } from '../Input';
 import { ButtonNightBlue, ButtonRed } from '../Button';
-import { useState } from 'react';
+import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import ModalState from '../../recoil/modal';
+import { MdDelete } from 'react-icons/md';
 
-const EditJournalForm = ({ user, setUser, confirmHandler }) => {
-  const [isChecked, setIsChecked] = useState(false);
+const EditJournalForm = ({ user, setUser }) => {
+  const setModal = useSetRecoilState(ModalState);
+  const resetModal = useResetRecoilState(ModalState);
+
+  const [homeworkVal, setHomeworkVal] = useState('');
+
   const {
     dateNoticeId,
     dateNoticeTitle,
@@ -17,36 +24,78 @@ const EditJournalForm = ({ user, setUser, confirmHandler }) => {
     Homeworks,
   } = user;
 
-  console.log(user, '자식 컴포넌트');
+  const confirm = {
+    isOpen: true,
+    modalType: 'confirm',
+    props: {
+      text: '현재 입력된 내용으로 일지를 수정하시겠습니까?',
+      modalHandler: () => {
+        console.log('작성 완료');
+        //TODO: 서버에 user 정보 수정 patch
+        //TODO: 과외 일지 상세 페이지로 이동(useParam)
+        resetModal();
+      },
+    },
+  };
+
+  const cancel = {
+    isOpen: true,
+    modalType: 'cancelConfirm',
+    props: {
+      text: '취소하시겠습니까? 작성 중인 내용이 모두 사라집니다.',
+      modalHandler: () => {
+        console.log('작성 취소 확인 버튼');
+        //TODO: Journal Page로 리다이렉션
+        resetModal();
+      },
+    },
+  };
+
   const inputHandler = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
-    // name 키를 가진 값을 value로 대체
   };
 
-  const homeworkInputHandler = (e) => {
-    const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+  const deleteHomeworkHandler = (e) => {
+    //TODO: 과제삭제 함수 구현(못끝냄)
+    const { id } = e.target;
+    setUser({
+      ...user,
+      Homeworks: Homeworks.map.filter((el) => el.homeworkId !== id),
+      // Homeworks: Homeworks.filter((el) => el.homeworkId === id),
+
+      // ooo과 버튼을 누른 친구의 id 가 같으면 지운다
+      // 다른 친구들만 남긴다
+    });
   };
 
-  const checkHandler = (e) => {
-    const { id, value } = e.target;
-    // 맵 도는중이고 id 1이랑 밸류 트루 들고 왔어
-    // setUser({ ...user, Homeworks[id].HomeworkStatus: value });
-    // const new = {
-
-    // }
-    setUser({ ...user, [id]: value });
+  const addHomeworkHandler = (e) => {
+    if (e.key === 'Enter' && e.target.value) {
+      setUser({
+        ...user,
+        Homeworks: [
+          ...Homeworks,
+          {
+            homeworkId: Homeworks[Homeworks.length - 1].homeworkId + 1,
+            homeworkBody: homeworkVal,
+            HomeworkStatus: 'PROGRESS',
+          },
+        ],
+      });
+      setHomeworkVal('');
+    }
   };
-  const blueButtonHandler = () => {};
 
   return (
     <div className={styles.container}>
       <h1>과외 일지 작성</h1>
       <div className={styles.journalContainer}>
         <div className={styles.buttonContainer}>
-          <ButtonRed text="취소" buttonHandler={confirmHandler} />
-          <ButtonNightBlue text="작성 완료" buttonHandler={blueButtonHandler} />
+          <ButtonRed text="취소" buttonHandler={() => setModal(cancel)} />
+          <ButtonNightBlue
+            text="작성 완료"
+            buttonHandler={() => setModal(confirm)}
+          />
         </div>
         <section className={styles.upperPart}>
           <DatePickerForm setUser={setUser} user={user} />
@@ -85,32 +134,57 @@ const EditJournalForm = ({ user, setUser, confirmHandler }) => {
               <label htmlFor="noticeBody">
                 <h4>과제 체크리스트</h4>
               </label>
-              <div className={styles.homeworkArea}>
-                {Homeworks.map((el) => {
-                  return (
-                    <div
-                      key={el.homeworkId}
-                      className={styles.checkBoxContainer}
-                    >
-                      <CheckBox
-                        id={el.homeworkId}
-                        handler={checkHandler}
-                        value={el.HomeworkStatus}
-                      />
-                      <div className={styles.homeworkBody}>
-                        {el.homeworkBody}
-                      </div>
-                    </div>
-                  );
-                })}
+              <ul className={styles.homeworkArea}>
+                {Homeworks.map(
+                  ({ homeworkId, homeworkBody, HomeworkStatus }) => {
+                    const checked = HomeworkStatus === 'FINISHED';
+                    return (
+                      <li key={homeworkId} className={styles.checkBoxContainer}>
+                        <CheckBox
+                          id={`homework${homeworkId}`}
+                          handler={() =>
+                            setUser({
+                              ...user,
+                              Homeworks: user.Homeworks.map((homework) => {
+                                return homework.homeworkId === homeworkId
+                                  ? {
+                                      ...homework,
+                                      HomeworkStatus:
+                                        homework.HomeworkStatus === 'FINISHED'
+                                          ? 'PROGRESS'
+                                          : 'FINISHED',
+                                    }
+                                  : homework;
+                              }),
+                            })
+                          }
+                          value={checked}
+                        />
+                        <div className={styles.homeworkBody}>
+                          {homeworkBody}
+                        </div>
+                        <div className={styles.homeworkMenu}>
+                          <button
+                            id={homeworkId}
+                            onClick={deleteHomeworkHandler}
+                          >
+                            <MdDelete />
+                          </button>
+                        </div>
+                      </li>
+                    );
+                  }
+                )}
                 <div className={styles.addHomework}>
                   <CheckBox />
                   <input
-                    onChange={homeworkInputHandler}
+                    value={homeworkVal}
+                    onKeyUp={addHomeworkHandler}
+                    onChange={(e) => setHomeworkVal(e.target.value)}
                     placeholder="과제를 입력하세요"
                   />
                 </div>
-              </div>
+              </ul>
             </div>
           </div>
           <div className={styles.scheduleContainer}>
@@ -134,6 +208,5 @@ const EditJournalForm = ({ user, setUser, confirmHandler }) => {
 EditJournalForm.propTypes = {
   user: PropType.object,
   setUser: PropType.func,
-  confirmHandler: PropType.func,
 };
 export default EditJournalForm;

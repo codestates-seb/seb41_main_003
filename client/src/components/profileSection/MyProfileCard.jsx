@@ -7,7 +7,7 @@ import defaultUser from '../../assets/defaultUser.png';
 import { MdStar } from 'react-icons/md';
 import Toggle from './Toggle';
 
-const MyProfileCard = ({ user, isAnnounceOn, setIsAnnounceOn }) => {
+const MyProfileCard = ({ user, setUser }) => {
   return (
     <div className={styles.cardContainer}>
       <img alt="user img" src={defaultUser} />
@@ -44,7 +44,7 @@ const MyProfileCard = ({ user, isAnnounceOn, setIsAnnounceOn }) => {
         </div>
       </section>
       <div className={styles.buttonBox}>
-        <Link to="/pages/EditProfile">
+        <Link to="/EditProfile">
           <ButtonNightBlue text="수정하기" />
         </Link>
       </div>
@@ -54,7 +54,7 @@ const MyProfileCard = ({ user, isAnnounceOn, setIsAnnounceOn }) => {
             <p className={styles.announceText1}>공고 상태</p>
             <div className={styles.announceText2}>
               지금은{' '}
-              {isAnnounceOn === 'REQUEST' ? (
+              {user.wantedStatus === 'REQUEST' ? (
                 <span className={styles.announceOnText}>공고 중</span>
               ) : (
                 <span>공고 안함</span>
@@ -62,21 +62,15 @@ const MyProfileCard = ({ user, isAnnounceOn, setIsAnnounceOn }) => {
               상태입니다
             </div>
           </div>
-          <Toggle
-            isAnnounceOn={isAnnounceOn}
-            setIsAnnounceOn={setIsAnnounceOn}
-          />
+          <Toggle user={user} setUser={setUser} />
         </div>
       </section>
     </div>
   );
 };
 MyProfileCard.propTypes = {
-  isAnnounceOn: PropTypes.string,
-  modalOpenOnHandler: PropTypes.func,
   user: PropTypes.object,
-  setIsAnnounceOn: PropTypes.func,
-  setIsModalOpen: PropTypes.func,
+  setUser: PropTypes.func,
 };
 
 export default MyProfileCard;

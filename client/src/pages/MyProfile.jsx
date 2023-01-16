@@ -6,16 +6,11 @@ import { ButtonTop } from '../components/Button';
 
 const MyProfile = () => {
   const [user, setUser] = useState(DummyData);
-  const [isAnnounceOn, setIsAnnounceOn] = useState(DummyData.wantedStatus);
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
-        <MyProfileCard
-          user={user}
-          isAnnounceOn={isAnnounceOn}
-          setIsAnnounceOn={setIsAnnounceOn}
-        />
+        <MyProfileCard user={user} setUser={setUser} />
         <ProfileContents user={user} />
       </div>
       <ButtonTop />

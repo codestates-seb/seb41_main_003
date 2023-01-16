@@ -1,6 +1,6 @@
 import styles from './DefaultModal.module.css';
 import PropTypes from 'prop-types';
-import { ButtonNightBlue, ButtonSilver } from '../Button';
+import { ButtonNightBlue, ButtonSilver, ButtonRed } from '../Button';
 import { TextInput } from '../Input';
 import { useState } from 'react';
 import { useResetRecoilState } from 'recoil';
@@ -134,4 +134,27 @@ ConfirmTextModal.propTypes = {
   text: PropTypes.string,
   modalHandler: PropTypes.func,
   placeHolder: PropTypes.string,
+};
+
+export const CancelConfirmModal = ({ text, modalHandler }) => {
+  const reset = useResetRecoilState(ModalState);
+  return (
+    <div
+      className={styles.view}
+      onClick={(e) => e.stopPropagation()}
+      role="dialog"
+      aria-hidden
+    >
+      <div className={styles.text}>{text}</div>
+      <div className={styles.buttonBox}>
+        <ButtonRed name="yes" buttonHandler={modalHandler} text="확인" />
+        <ButtonSilver name="no" buttonHandler={() => reset()} text="취소" />
+      </div>
+    </div>
+  );
+};
+
+CancelConfirmModal.propTypes = {
+  text: PropTypes.string,
+  modalHandler: PropTypes.func,
 };
