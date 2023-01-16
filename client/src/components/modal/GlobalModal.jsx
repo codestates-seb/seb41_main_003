@@ -8,6 +8,8 @@ import {
   ConfirmTextModal,
   ConfirmValiModal,
 } from './DefaultModal.jsx';
+import AdminModal from './AdminModal';
+import BothHandlerModal from './BothHandlerModal';
 import ReviewModal from './ReviewModal';
 import ReviewDetailModal from './ReviewDetail';
 import EditReviewModal from './EditReviewModal';
@@ -22,6 +24,8 @@ export const GlobalModal = () => {
     confirm: <ConfirmModal {...props} />,
     confirmVali: <ConfirmValiModal {...props} />,
     confirmText: <ConfirmTextModal {...props} />,
+    admin: <AdminModal />,
+    bothHandler: <BothHandlerModal {...props} />,
     review: <ReviewModal {...props} />,
     reviewDetail: <ReviewDetailModal {...props} />,
     editReview: <EditReviewModal {...props} />,
