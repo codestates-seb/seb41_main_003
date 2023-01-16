@@ -7,10 +7,13 @@ import { ButtonNightBlue, ButtonRed } from '../Button';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 import { MdDelete } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 const EditJournalForm = ({ user, setUser }) => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
+
+  const Navigate = useNavigate();
 
   const [homeworkVal, setHomeworkVal] = useState('');
 
@@ -21,26 +24,49 @@ const EditJournalForm = ({ user, setUser }) => {
     isOpen: true,
     modalType: 'confirm',
     props: {
-      text: '현재 입력된 내용으로 일지를 수정하시겠습니까?',
+      text: `현재 입력된 내용으로
+      일지를 수정 하시겠습니까?`,
       modalHandler: () => {
-        console.log('작성 완료');
-        //TODO: 서버에 user 정보 수정 patch
-        //TODO: 과외 일지 상세 페이지로 이동(useParam)
+        //TODO:서버에 user 정보 수정 patch
+        //TODO:??수정 완료 하고 나면 수정완료 버튼으로 변경
+        //TODO: 해당 프로필Id ,dateNoticeId의 일지 페이지로 이동 (useParam)
+        console.log('일지 수정 확인, patch요청');
+        setModal(confirmProps);
         resetModal();
+        Navigate(`/journal`);
       },
+    },
+  };
+
+  const confirmProps = {
+    isOpen: true,
+    modalType: 'alert',
+    props: {
+      text: '일지가 수정 되었습니다.',
     },
   };
 
   const cancel = {
     isOpen: true,
-    modalType: 'cancelConfirm',
+    modalType: 'redConfirm',
     props: {
-      text: '취소하시겠습니까? 작성 중인 내용이 모두 사라집니다.',
+      text: `취소 하시겠습니까?
+      작성 중인 내용이 모두 사라집니다.`,
       modalHandler: () => {
-        console.log('작성 취소 확인 버튼');
-        //TODO: Journal Page로 리다이렉션
+        //TODO: 해당 프로필Id,dateNoticeId의 일지 수정 페이지로 이동 (useParam)
+        console.log('일지 수정 취소');
         resetModal();
+        Navigate('/journal');
+        setModal(redAlertModal);
       },
+    },
+  };
+
+  const redAlertModal = {
+    isOpen: true,
+    modalType: 'redAlert',
+    props: {
+      text: '일지가 수정이 취소되었습니다.',
     },
   };
 
@@ -50,15 +76,11 @@ const EditJournalForm = ({ user, setUser }) => {
   };
 
   const deleteHomeworkHandler = (e) => {
-    //TODO: 과제삭제 함수 구현(못끝냄)
-    const { id } = e.target;
+    const { name } = e.target;
+
     setUser({
       ...user,
-      Homeworks: Homeworks.map.filter((el) => el.homeworkId !== id),
-      // Homeworks: Homeworks.filter((el) => el.homeworkId === id),
-
-      // ooo과 버튼을 누른 친구의 id 가 같으면 지운다
-      // 다른 친구들만 남긴다
+      Homeworks: Homeworks.filter((obj) => obj.homeworkId !== e.target.value),
     });
   };
 
@@ -159,6 +181,8 @@ const EditJournalForm = ({ user, setUser }) => {
                         <div className={styles.homeworkMenu}>
                           <button
                             id={homeworkId}
+                            name={homeworkId}
+                            value={homeworkId}
                             onClick={deleteHomeworkHandler}
                           >
                             <MdDelete />
