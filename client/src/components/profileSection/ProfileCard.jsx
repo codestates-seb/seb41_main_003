@@ -6,12 +6,14 @@ import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 import defaultUser from '../../assets/defaultUser.png';
 import { MdStar } from 'react-icons/md';
+import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import ModalState from '../../recoil/modal.js';
 
 const ProfileCard = ({ user }) => {
-  const setModal = useSetRecoilState(ModalState);
-  const resetModal = useResetRecoilState(ModalState);
-
   const { name, rate, bio, school, subjects } = user;
+
+  const setModal = useSetRecoilState(ModalState);
+  const reset = useResetRecoilState(ModalState);
 
   const confirm = {
     isOpen: true,
@@ -20,8 +22,8 @@ const ProfileCard = ({ user }) => {
       text: '상대방에게 문의를 요청하시겠습니까?',
       modalHandler: () => {
         console.log('문의요청 완료');
-        //TODO: 메세지 페이지로 이동, 새로운 대화 생성
-        resetModal();
+        reset();
+        //TODO:모달창에서 확인 버튼을 누르면 MessagePage로 이동
       },
     },
   };
@@ -59,7 +61,9 @@ const ProfileCard = ({ user }) => {
       </section>
       <div className={styles.buttonBox}>
         <ButtonNightBlue
-          buttonHandler={() => setModal(confirm)}
+          buttonHandler={(e) => {
+            e.preventDefault();
+            buttonHandler={() => setModal(confirm)}
           text="문의하기"
         />
       </div>
