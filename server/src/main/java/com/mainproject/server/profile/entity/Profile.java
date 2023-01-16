@@ -97,7 +97,7 @@ public class Profile extends Auditable {
 
     @ToString.Exclude
     @OrderBy("reviewId")
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
     @Setter
     private Set<Review> reviews = new LinkedHashSet<>();
 
@@ -123,6 +123,7 @@ public class Profile extends Auditable {
     public void addReview(Review review) {
         this.reviews.add(review);
     }
+
 
     public void addSubjectProfile(SubjectProfile subjectProfile) {
         this.subjectProfiles.add(subjectProfile);

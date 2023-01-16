@@ -25,6 +25,8 @@ public class TutoringDto {
 
     private String tutoringStatus;
 
+    private String latestNoticeBody;
+
     private LocalDateTime createAt;
 
     private LocalDateTime updateAt;
@@ -43,6 +45,7 @@ public class TutoringDto {
         this.tutoringId = tutoring.getTutoringId();
         this.tutoringTitle = tutoring.getTutoringTitle();
         this.tutoringStatus = tutoring.getTutoringStatus().name();
+        this.latestNoticeBody = tutoring.getLatestNoticeBody();
         this.createAt = tutoring.getCreateAt();
         this.updateAt = tutoring.getUpdateAt();
         this.tutorId = tutoring.getTutor().getProfileId();

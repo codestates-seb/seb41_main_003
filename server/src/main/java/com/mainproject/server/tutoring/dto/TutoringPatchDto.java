@@ -9,8 +9,6 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class TutoringPatchDto {
 
-    private Long tutoringId;
-
     @NotBlank
     private String tutoringTitle;
 }

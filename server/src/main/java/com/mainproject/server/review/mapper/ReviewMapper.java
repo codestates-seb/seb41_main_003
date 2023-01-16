@@ -13,7 +13,7 @@ public interface ReviewMapper {
 
     Review reviewPatchDtoToReview(ReviewPatchDto reviewPatchDto);
 
-    @Mapping(source = "profile.name", target = "tuteeName")
+    @Mapping(source = "tutee.name", target = "tuteeName")
     ReviewResponseDto reviewToReviewResponseDto(Review review);
 
 }

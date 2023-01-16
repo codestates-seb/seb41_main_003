@@ -2,6 +2,7 @@ package com.mainproject.server.profile.repository.custom;
 
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.ProfileStatus;
+import com.mainproject.server.constant.WantedStatus;
 import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.profile.dto.ProfileQueryDto;
 import com.mainproject.server.profile.entity.Profile;
@@ -28,6 +29,7 @@ public class CustomProfileRepositoryImpl
             String key,
             String[] subjects,
             String name,
+            WantedStatus wantedStatus,
             Pageable pageable
     ) {
         QProfile profile = QProfile.profile;
@@ -38,6 +40,7 @@ public class CustomProfileRepositoryImpl
                                 ProfileQueryDto.class,
                                 profile.profileId,
                                 profile.profileStatus,
+                                profile.wantedStatus,
                                 profile.name,
                                 profile.rate,
                                 profile.school,
@@ -48,6 +51,11 @@ public class CustomProfileRepositoryImpl
                                 profile.createAt,
                                 profile.updateAt
                         ));
+        if (wantedStatus != null) {
+            query.where(
+                    profile.wantedStatus.eq(wantedStatus)
+            );
+        }
         if (key != null && !key.isBlank()) {
             query.where(
                     profile.profileStatus.eq(ProfileStatus.valueOf(key))

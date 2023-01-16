@@ -11,7 +11,6 @@ import java.util.List;
 @Setter
 public class DateNoticePatchDto {
 
-    @NotNull
     private Long dateNoticeId;
 
     @NotBlank
