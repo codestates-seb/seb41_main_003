@@ -65,6 +65,7 @@ const Header = () => {
                   setTimeout(() => setIsMenu(false), 100);
                 }}
               >
+                {/* TODO: 프로필이 전환되면 이미지도 변경되어야 함 */}
                 <img
                   src={defaultUser}
                   className={styles.profileImage}
