@@ -39,8 +39,9 @@ public class DateNoticeService {
         findTutoring.setTutoringStatus(TutoringStatus.UNCHECK);
         dateNotice.addTutoring(findTutoring);
         dateNotice.getHomeworks().forEach(h -> h.addDateNotice(dateNotice));
-        DateNotice updateNotice = updateCheckNotice(dateNotice,findTutoring);
-        return dateNoticeRepository.save(updateNotice);
+        dateNotice.setNoticeStatus(NoticeStatus.NONE);
+        DateNotice saveNotice = dateNoticeRepository.save(dateNotice);
+        return updateCheckNotice(saveNotice, findTutoring);
     }
 
     public DateNotice getDateNotice(Long dateNoticeId) {
@@ -92,8 +93,11 @@ public class DateNoticeService {
 
     private DateNotice updateCheckNotice(DateNotice dateNotice, Tutoring tutoring) {
         if (!dateNotice.getNotice().getNoticeBody().isBlank()) {
+            tutoring.setLatestNoticeId(dateNotice.getNotice().getNoticeId());
             tutoring.setLatestNoticeBody(dateNotice.getNotice().getNoticeBody());
             dateNotice.setNoticeStatus(NoticeStatus.NOTICE);
+        } else {
+            dateNotice.setNoticeStatus(NoticeStatus.NONE);
         }
         return dateNotice;
     }
