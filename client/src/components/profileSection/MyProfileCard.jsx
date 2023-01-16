@@ -1,13 +1,32 @@
 import styles from './MyProfileCard.module.css';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { ButtonNightBlue } from '../Button.jsx';
 import { BlueSubject } from '../Subject.jsx';
 import defaultUser from '../../assets/defaultUser.png';
 import { MdStar } from 'react-icons/md';
 import Toggle from './Toggle';
+import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import ModalState from '../../recoil/modal';
 
 const MyProfileCard = ({ user, setUser }) => {
+  const setModal = useSetRecoilState(ModalState);
+  const resetModal = useResetRecoilState(ModalState);
+
+  const Navigate = useNavigate();
+
+  const confirm = {
+    isOpen: true,
+    modalType: 'confirm',
+    props: {
+      text: '프로필 수정 페이지로 이동 하시겠습니까?',
+      modalHandler: () => {
+        //TODO: 해당 프로필Id,dateNoticeId의 프로필 수정 페이지로 이동 (useParam)
+        Navigate('/editProfile');
+        resetModal();
+      },
+    },
+  };
   return (
     <div className={styles.cardContainer}>
       <img alt="user img" src={defaultUser} />
@@ -44,9 +63,10 @@ const MyProfileCard = ({ user, setUser }) => {
         </div>
       </section>
       <div className={styles.buttonBox}>
-        <Link to="/EditProfile">
-          <ButtonNightBlue text="수정하기" />
-        </Link>
+        <ButtonNightBlue
+          text="수정하기"
+          buttonHandler={() => setModal(confirm)}
+        />
       </div>
       <section>
         <div className={styles.toggleContainer}>

@@ -17,11 +17,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: $font5;
-  font-weight: $font5W;
   margin-bottom: 24px;
 
   &:last-child {
     margin: 0;
+  }
+
+  > button {
+    font-size: $font5;
+    font-weight: $font5W;
   }
 }

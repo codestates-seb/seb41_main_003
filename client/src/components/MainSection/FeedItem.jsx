@@ -5,7 +5,8 @@ import { MdStar, MdStarHalf, MdStarOutline } from 'react-icons/md';
 import defaultUser from '../../assets/defaultUser.png';
 
 const FeedItem = ({ data, userStatus }) => {
-  const { name, school, bio, subjects, rate, img } = data;
+  const { name, school, bio, subjects, rate, profileImage } = data;
+  //profile img 경로는 profileImage.url로 받을 수 있음
   return (
     <div className={styles.container}>
       {/* //! 프로필 이미지 주소 변경해야 함 */}

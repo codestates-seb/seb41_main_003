@@ -18,6 +18,13 @@ const LoginForm = () => {
     setLoginData({ ...loginData, [id]: value });
   };
 
+  const submitHandler = () => {
+    //TODO : 로그인 요청 보내기
+    console.log(loginData);
+    //로그인 요청 성공 시 홈 화면으로 리다이렉션
+    // window.location.href = '/';
+  };
+
   return (
     <div className={styles.loginContainer}>
       <span className={styles.loginText}>로그인 후 이용하실 수 있습니다.</span>
@@ -54,7 +61,9 @@ const LoginForm = () => {
         <span> 자동 로그인 </span>
       </div>
       <div className={styles.buttonContainer}>
-        <button className={styles.loginButton}>로그인</button>
+        <button className={styles.loginButton} onClick={submitHandler}>
+          로그인
+        </button>
         <button className={styles.kakaoLoginButton}>
           <svg
             width="22"
