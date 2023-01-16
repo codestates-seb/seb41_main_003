@@ -29,7 +29,7 @@ public class Homework extends Auditable {
 
     /* 연관 관계 매핑 */
     @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @Setter
     private DateNotice dateNotice;
 

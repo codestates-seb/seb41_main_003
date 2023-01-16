@@ -61,9 +61,11 @@ public class CustomProfileRepositoryImpl
                     profile.profileStatus.eq(ProfileStatus.valueOf(key))
             );
         }
-        for (String subject : subjects) {
-            if (subject != null && !subject.isBlank()) {
-                query.where(profile.subjectString.containsIgnoreCase(subject));
+        if (subjects != null) {
+            for (String subject : subjects) {
+                if (subject != null && !subject.isBlank()) {
+                    query.where(profile.subjectString.containsIgnoreCase(subject));
+                }
             }
         }
         if (name != null && !name.isBlank()) {

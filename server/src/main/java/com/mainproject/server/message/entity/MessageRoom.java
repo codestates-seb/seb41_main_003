@@ -32,18 +32,18 @@ public class MessageRoom extends Auditable {
     /* 연관 관계 매핑 */
 
     @ToString.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @Setter
     private Profile tutor;
 
     @ToString.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @Setter
     private Profile tutee;
 
     @ToString.Exclude
     @OrderBy("messageId")
-    @OneToMany(mappedBy = "messageRoom", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "messageRoom", cascade = CascadeType.ALL)
     @Setter
     private Set<Message> messages = new LinkedHashSet<>();
 

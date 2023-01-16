@@ -39,12 +39,12 @@ public class DateNotice extends Auditable {
     /* 연관 관계 매핑 */
 
     @ToString.Exclude
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Setter
     private Notice notice;
 
     @ToString.Exclude
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Setter
     private Schedule schedule;
 

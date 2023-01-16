@@ -71,6 +71,7 @@ public class ImageService {
         ProfileImage profileImage = findProfile.getProfileImage();
         deleteS3(profileImage.getFileName());
         imageRepository.delete(profileImage);
+        findProfile.setProfileImage(getBasicImage());
         profileService.updateProfileForImage(findProfile);
     }
 
@@ -143,6 +144,13 @@ public class ImageService {
         }
 
         return Optional.empty();
+    }
+
+    private ProfileImage getBasicImage() {
+        return ProfileImage.builder()
+                .fileName(ImageProperty.BASIC_IMAGE_FILE_NAME.name())
+                .url("https://image-test-suyoung.s3.ap-northeast-2.amazonaws.com/image/user.png")
+                .build();
     }
 
 }
