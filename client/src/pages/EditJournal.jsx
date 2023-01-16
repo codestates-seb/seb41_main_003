@@ -1,4 +1,4 @@
-import styles from './EditJournal.module.css';
+import styles from './ChangeJournal.module.css';
 import { useState } from 'react';
 import EditJournalForm from '../components/JournalSection/EditJournalForm';
 
