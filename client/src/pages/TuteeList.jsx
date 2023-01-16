@@ -76,18 +76,27 @@ const TuteeListData = [
   },
 ];
 
-//ToDo: 필터 버튼이 눌릴 때마다 (onClick value 등이 바뀔 때마다) - 아마 useEffect 사용할듯
-//tutorData 새롭게 갱신될 수 있도록 해당 필터 API 데이터 통신과 연결 필요함
+//TODO: 튜티 리스트를 불러오는 GET 요청 필요
+//정렬 필터 파라미터 : 튜티는 정렬 필터 없음
+//과목 버튼 필터 파라미터 : subjectMenu 상태에서 꺼내와서 subject = 수학,영어,과학 같은 형식으로 요청
+//검색창에서 검색 시 name = 강호수 와 같이 요청함
 
 const TuteeList = () => {
-  const [isClicked, setIsClicked] = useState([]);
+  //과목 필터 메뉴에서 선택한 과목들
+  const [subjectMenu, setSubjectMenu] = useState([]);
+  //검색창에서 입력한 검색어
+  const [search, setSearch] = useState('');
 
-  const clickHandler = (e) => {
-    if (isClicked.includes(e.target.value)) {
-      setIsClicked(isClicked.filter((el) => el !== e.target.value));
+  const subjectHandler = (e) => {
+    if (subjectMenu.includes(e.target.value)) {
+      setSubjectMenu(subjectMenu.filter((el) => el !== e.target.value));
     } else {
-      setIsClicked([e.target.value, ...isClicked]);
+      setSubjectMenu([e.target.value, ...subjectMenu]);
     }
+  };
+
+  const searchHandler = (e) => {
+    setSearch(e.target.value);
   };
 
   return (
@@ -102,12 +111,20 @@ const TuteeList = () => {
               <div className={styles.iconBox}>
                 <MdSearch className={styles.mdSearch} />
               </div>
-              <input className={styles.input} placeholder="서울대학교"></input>
+              <input
+                className={styles.input}
+                placeholder="서울대학교"
+                value={search}
+                onChange={searchHandler}
+              ></input>
             </div>
           </div>
         </div>
         <div className={styles.menuContainer}>
-          <MenuButtons isClicked={isClicked} clickHandler={clickHandler} />
+          <MenuButtons
+            subjectMenu={subjectMenu}
+            subjectHandler={subjectHandler}
+          />
           <div className={styles.filter}>
             <MdFilterList className={styles.mdFilterList} />
             <span>최신 순</span>
