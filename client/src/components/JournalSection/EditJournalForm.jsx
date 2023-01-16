@@ -49,7 +49,7 @@ const EditJournalForm = ({ user, setUser }) => {
     isOpen: true,
     modalType: 'alert',
     props: {
-      text: '일지가 ${ isAdd ? '작성' : '수정' } 되었습니다.',
+      text: `일지가 ${isAdd ? '작성' : '수정'} 되었습니다.`,
     },
   };
 

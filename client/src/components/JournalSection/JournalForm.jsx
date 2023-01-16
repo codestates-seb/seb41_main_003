@@ -81,7 +81,9 @@ const JournalForm = ({ user }) => {
                       key={el.homeworkId}
                       className={styles.checkBoxContainer}
                     >
-                      <CheckBox value={el.HomeworkStatus} />
+                      <CheckBox
+                        value={el.HomeworkStatus === 'FINISHED' ? true : false}
+                      />
                       <p className={styles.homeworkBody}>{el.homeworkBody}</p>
                     </div>
                   );
