@@ -7,6 +7,7 @@ import { ButtonNightBlue, ButtonRed } from '../Button';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 import { MdDelete } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 const EditJournalForm = ({ user, setUser }) => {
   const setModal = useSetRecoilState(ModalState);
@@ -49,15 +50,13 @@ const EditJournalForm = ({ user, setUser }) => {
   };
 
   const deleteHomeworkHandler = (e) => {
-    //TODO: 과제삭제 함수 구현(못끝냄)
-    const { id } = e.target;
+    const { id } = e.currentTarget;
     setUser({
       ...user,
-      Homeworks: Homeworks.map.filter((el) => el.homeworkId !== id),
-      // Homeworks: Homeworks.filter((el) => el.homeworkId === id),
-
-      // ooo과 버튼을 누른 친구의 id 가 같으면 지운다
-      // 다른 친구들만 남긴다
+      Homeworks: Homeworks.filter((el) => {
+        console.log(el);
+        return el.homeworkId !== Number(id);
+      }),
     });
   };
 
@@ -68,7 +67,9 @@ const EditJournalForm = ({ user, setUser }) => {
         Homeworks: [
           ...Homeworks,
           {
-            homeworkId: Homeworks[Homeworks.length - 1].homeworkId + 1,
+            homeworkId: Homeworks.length
+              ? Homeworks[Homeworks.length - 1].homeworkId + 1
+              : 1,
             homeworkBody: homeworkVal,
             HomeworkStatus: 'PROGRESS',
           },

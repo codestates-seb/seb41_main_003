@@ -10,21 +10,9 @@ import './DatePicker.css';
 
 const DatePickerForm = ({ user, setUser }) => {
   const [isTimePopup, setIsTimePopup] = useState(false);
-
-  const [date, setDate] = useState(
-    user.startTime.length > 0 ? new Date(user.startTime) : new Date()
-  );
-
-  const [sTime, setStartTime] = useState(
-    user.startTime.length > 0
-      ? new Date(user.startTime)
-      : new Date().setHours(9, 0)
-  );
-  const [eTime, setEndTime] = useState(
-    user.startTime.length > 0
-      ? new Date(user.endTime)
-      : new Date().setHours(18, 0)
-  );
+  const [date, setDate] = useState(new Date(user.startTime));
+  const [sTime, setStartTime] = useState(new Date(user.startTime));
+  const [eTime, setEndTime] = useState(new Date(user.endTime));
 
   useEffect(() => {
     const start = new Date(sTime).getTime();
@@ -47,8 +35,6 @@ const DatePickerForm = ({ user, setUser }) => {
     ).toISOString();
 
     setUser({ ...user, startTime, endTime });
-    console.log(startTime);
-    console.log('time이 변경되었습니다');
   }, [date, sTime, eTime]);
 
   const DateButton = forwardRef(({ onClick }, ref) => (
@@ -76,7 +62,7 @@ const DatePickerForm = ({ user, setUser }) => {
     </button>
   ));
   TimeButton.propTypes = {
-    time: PropTypes.number,
+    time: PropTypes.object,
   };
 
   const filterPassedTime = (time) => {
