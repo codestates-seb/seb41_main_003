@@ -6,8 +6,6 @@ import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 import defaultUser from '../../assets/defaultUser.png';
 import { MdStar } from 'react-icons/md';
-import { useSetRecoilState, useResetRecoilState } from 'recoil';
-import ModalState from '../../recoil/modal.js';
 
 const ProfileCard = ({ user }) => {
   const { name, rate, bio, school, subjects } = user;
@@ -63,7 +61,8 @@ const ProfileCard = ({ user }) => {
         <ButtonNightBlue
           buttonHandler={(e) => {
             e.preventDefault();
-            buttonHandler={() => setModal(confirm)}
+            setModal(confirm);
+          }}
           text="문의하기"
         />
       </div>
