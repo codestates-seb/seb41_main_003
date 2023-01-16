@@ -86,7 +86,7 @@ public class MessageService {
 
     public MessageRoomResponseDto getMessageRoom(Long messageRoomId, Long profileId) {
         MessageRoom findMessageRoom = verifiedMessageRoom(messageRoomId);
-        if (!findMessageRoom.getTutor().getProfileId().equals(profileId) ||
+        if (!findMessageRoom.getTutor().getProfileId().equals(profileId) &&
                 !findMessageRoom.getTutee().getProfileId().equals(profileId))
             throw new ServiceLogicException(ErrorCode.ACCESS_DENIED);
         ArrayList<Message> messages = new ArrayList<>(findMessageRoom.getMessages());
@@ -108,12 +108,13 @@ public class MessageService {
 
     public void deleteMessageRoom(Long messageRoomId) {
         MessageRoom messageRoom = verifiedMessageRoom(messageRoomId);
-
         if (messageRoom.getTutoringId() != null) {
             tutoringRepository.deleteById(messageRoom.getTutoringId());
         }
-
-        messageRoomRepository.delete(messageRoom);
+        messageRepository.deleteAllById(messageRoom.getMessages()
+                .stream().map(Message::getMessageId)
+                .collect(Collectors.toList()));
+        messageRoomRepository.deleteById(messageRoomId);
     }
 
     public void sendTutoringRequestMessage(
