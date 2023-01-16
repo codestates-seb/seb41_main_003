@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Tutoring from '../components/TutoringList/Tutoring';
 import styles from './TutoringList.module.css';
 import PropType from 'prop-types';
@@ -119,6 +119,13 @@ const TutoringList = () => {
       </div>
     );
   };
+
+  useEffect(() => {
+    //TODO: isFinished 상태 변경에 따라서
+    //tutorings 상태를 변경시킨다
+    //특정 프로필 과외 리스트를 조회하는 API 요청을 보내면 되는데
+    //tutoring/{profileId}?get=FINISH 와 같은 엔드 포인트로 요청을 보내면 됨
+  }, [isFinished]);
 
   Pagenation.propTypes = {
     pageInfo: PropType.object,
