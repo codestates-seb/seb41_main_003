@@ -280,3 +280,23 @@ values
     ('잘알려드릴게',59,1),('잘알려드릴게',59,5),
     ('잘알려드릴게',60,1),('잘알려드릴게',60,2)
 ;
+
+insert into `user_roles`(`user_user_id`, `roles`)
+values
+    (1, 'USER'),
+    (2, 'USER'),
+    (3, 'USER'),
+    (4, 'USER'),
+    (5, 'USER'),
+    (6, 'USER'),
+    (7, 'USER'),
+    (8, 'USER'),
+    (9, 'USER'),
+    (10, 'USER'),
+    (11, 'USER'),
+    (12, 'USER'),
+    (13, 'USER'),
+    (14, 'USER'),
+    (15, 'USER'),
+    (16, 'USER')
+;
