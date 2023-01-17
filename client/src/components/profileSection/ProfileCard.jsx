@@ -2,11 +2,13 @@ import styles from './ProfileCard.module.css';
 import PropTypes from 'prop-types';
 import { ButtonNightBlue } from '../Button.jsx';
 import { BlueSubject } from '../Subject.jsx';
-import { useSetRecoilState, useResetRecoilState } from 'recoil';
-import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
+import { useNavigate, useParams } from 'react-router-dom';
 import ModalState from '../../recoil/modal';
 import defaultUser from '../../assets/defaultUser.png';
 import { MdStar } from 'react-icons/md';
+import axios from 'axios';
+import Profile from '../../recoil/profile';
 
 const ProfileCard = ({ user }) => {
   const { name, rate, bio, school, subjects } = user;
@@ -14,7 +16,28 @@ const ProfileCard = ({ user }) => {
   const setModal = useSetRecoilState(ModalState);
   const reset = useResetRecoilState(ModalState);
 
+  //상대방의 profileId
+  const { profileId } = useParams();
+  //내 프로필 아이디 myProfileId : 코드 작성 시점에는 0으로 고정되어 있는데,
+  //로그인 시 혹은 프로필 전환 시 해당 프로필의 id 값으로 세팅 될 예정
+  const myProfileId = useRecoilValue(Profile).profileId;
+  //UserStatus를 꺼내와서 그걸 확인한 다음에 상대가 누구인지 정한다.
+  const postData =
+    sessionStorage.getItem('userStatus') === 'TUTOR'
+      ? { tutorId: myProfileId, tuteeId: Number(profileId) }
+      : { tutorId: Number(profileId), tuteeId: myProfileId };
+
   const Navigate = useNavigate();
+
+  const postNewMessageRoom = async () => {
+    await axios.post(
+      `${process.env.REACT_APP_BASE_URL}/messages/${myProfileId}`,
+      postData,
+      {
+        headers: { Authorization: sessionStorage.getItem('authorization') },
+      }
+    );
+  };
 
   const confirm = {
     isOpen: true,
@@ -22,8 +45,8 @@ const ProfileCard = ({ user }) => {
     props: {
       text: '상대방에게 문의를 요청하시겠습니까?',
       modalHandler: () => {
-        //TODO: 해당 프로필Id를 가지고 메세지 페이지로 이동 (useParam)
-        Navigate('/message');
+        postNewMessageRoom();
+        Navigate(`/message/${myProfileId}`);
         reset();
       },
     },
