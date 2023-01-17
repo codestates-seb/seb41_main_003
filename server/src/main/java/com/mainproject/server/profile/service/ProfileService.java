@@ -101,7 +101,9 @@ public class ProfileService {
     }
 
     public ProfilePageDto updateWantedStatus(Long profileId, WantedDto wantedDto, Pageable pageable) {
-        WantedStatus wantedStatus = WantedStatus.valueOf(wantedDto.getWantedStatus());
+        WantedStatus wantedStatus = WantedStatus.valueOf(
+                wantedDto.getWantedStatus().toUpperCase()
+        );
         Profile findProfile = verifiedProfileById(profileId);
         findProfile.setWantedStatus(wantedStatus);
         Profile save = profileRepository.save(findProfile);
