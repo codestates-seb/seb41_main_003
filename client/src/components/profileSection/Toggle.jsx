@@ -1,11 +1,17 @@
 import styles from './Toggle.module.css';
 import PropTypes from 'prop-types';
-import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
 import ModalState from '../../recoil/modal';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+// import Profile from '../../recoil/profile';
 
 const Toggle = ({ user, setUser }) => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
+  //TODO: useParams 말고 저장되어 있는 myprofileId를 사용해야 할 듯
+  // const { profileId } = useRecoilValue(Profile);
+  const { profileId } = useParams();
 
   const confirm = {
     isOpen: true,
@@ -17,11 +23,26 @@ const Toggle = ({ user, setUser }) => {
           ...user,
           wantedStatus: user.wantedStatus === 'NONE' ? 'REQUEST' : 'NONE',
         });
-        //TODO: 수정된 공고 상태로 변경해달라는 API 요청을 보내야 함.
-        console.log('공고상태 변경 완료');
+        patchWantedStatus();
+        console.log(user.wantedStatus);
         resetModal();
       },
     },
+  };
+
+  const patchWantedStatus = async () => {
+    await axios
+      .patch(
+        `${process.env.REACT_APP_BASE_URL}/profiles/status/${profileId}`,
+        {
+          wantedStatus: user.wantedStatus,
+        },
+        {
+          headers: { Authorization: sessionStorage.getItem('authorization') },
+        }
+      )
+      .then((res) => console.log(res.data.data))
+      .catch((err) => console.log(err));
   };
 
   return (
