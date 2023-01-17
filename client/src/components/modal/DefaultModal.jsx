@@ -136,7 +136,7 @@ ConfirmTextModal.propTypes = {
   placeHolder: PropTypes.string,
 };
 
-export const CancelConfirmModal = ({ text, modalHandler }) => {
+export const RedConfirmModal = ({ text, modalHandler }) => {
   const reset = useResetRecoilState(ModalState);
   return (
     <div
@@ -154,7 +154,27 @@ export const CancelConfirmModal = ({ text, modalHandler }) => {
   );
 };
 
-CancelConfirmModal.propTypes = {
+RedConfirmModal.propTypes = {
+  text: PropTypes.string,
+  modalHandler: PropTypes.func,
+};
+
+export const RedAlertModal = ({ text }) => {
+  const reset = useResetRecoilState(ModalState);
+  return (
+    <div
+      className={styles.view}
+      onClick={(e) => e.stopPropagation()}
+      role="dialog"
+      aria-hidden
+    >
+      <div className={styles.text}>{text}</div>
+      <ButtonRed buttonHandler={() => reset()} text="확인" />
+    </div>
+  );
+};
+
+RedAlertModal.propTypes = {
   text: PropTypes.string,
   modalHandler: PropTypes.func,
 };

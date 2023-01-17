@@ -3,10 +3,11 @@ import { useResetRecoilState, useRecoilValue } from 'recoil';
 import ModalState from '../../recoil/modal.js';
 import {
   AlertModal,
-  CancelConfirmModal,
   ConfirmModal,
   ConfirmTextModal,
   ConfirmValiModal,
+  RedConfirmModal,
+  RedAlertModal,
 } from './DefaultModal.jsx';
 import AdminModal from './AdminModal';
 import BothHandlerModal from './BothHandlerModal';
@@ -29,7 +30,8 @@ export const GlobalModal = () => {
     review: <ReviewModal {...props} />,
     reviewDetail: <ReviewDetailModal {...props} />,
     editReview: <EditReviewModal {...props} />,
-    cancelConfirm: <CancelConfirmModal {...props} />,
+    redConfirm: <RedConfirmModal {...props} />,
+    redAlert: <RedAlertModal {...props} />,
   };
 
   return (

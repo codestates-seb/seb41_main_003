@@ -48,6 +48,7 @@ const LoginForm = () => {
           isLogin: true,
           userStatus: res.data.userStatus,
         }));
+        console.log('로그인 완료');
       })
       .catch(() => console.log('오류'));
     //로그인 요청 성공 시 홈 화면으로 리다이렉션
