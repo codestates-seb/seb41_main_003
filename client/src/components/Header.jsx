@@ -1,5 +1,5 @@
 import styles from './Header.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { MdNotifications } from 'react-icons/md';
 import { ButtonRed } from './Button';
@@ -9,9 +9,9 @@ import defaultUser from '../assets/defaultUser.png';
 import Profile from '../recoil/profile';
 
 const Header = () => {
-  // const [isLogin, setIsLogin] = useState(false);
   const [isMenu, setIsMenu] = useState(false);
   const [isNoti, setIsNoti] = useState(false);
+  const navigate = useNavigate();
 
   const [profile, setProfile] = useRecoilState(Profile);
   const setModal = useSetRecoilState(ModalState);
@@ -20,6 +20,11 @@ const Header = () => {
     isOpen: true,
     modalType: 'admin',
     props: {},
+  };
+
+  const notAuthNavigate = (path) => {
+    if (!profile.isLogin) navigate('/login');
+    else navigate(path);
   };
 
   return (
@@ -44,7 +49,9 @@ const Header = () => {
             <Link to="/tuteelist">학생 찾기</Link>
           </li>
           <li>
-            <Link to="/tutoringlist">과외 관리</Link>
+            <button onClick={() => notAuthNavigate('/tutoringlist')}>
+              과외 관리
+            </button>
           </li>
         </ul>
       </nav>

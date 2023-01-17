@@ -38,7 +38,8 @@
     justify-content: space-evenly;
     align-items: center;
 
-    li > a {
+    li > a,
+    button {
       font-size: $font4;
       font-weight: $font4W;
     }
@@ -53,15 +54,15 @@
     font-size: $font4;
     font-weight: $font4W;
     position: relative;
+
+    > button {
+      width: 40px;
+      height: 40px;
+    }
   }
 
   li {
     margin: 0 8px;
-  }
-
-  > button {
-    width: 40px;
-    height: 40px;
   }
 
   svg {
