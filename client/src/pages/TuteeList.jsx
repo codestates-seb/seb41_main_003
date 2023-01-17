@@ -6,13 +6,15 @@ import { Link } from 'react-router-dom';
 import { ButtonTop } from '../components/Button';
 import MenuButtons from '../components/MainSection/FilterButton';
 import axios from 'axios';
+import useScroll from '../util/useScroll';
+import PropType from 'prop-types';
 
 //TODO: 튜티 리스트를 불러오는 GET 요청 필요
 //정렬 필터 파라미터 : 튜티는 정렬 필터 없음
 //과목 버튼 필터 파라미터 : subjectMenu 상태에서 꺼내와서 subject = 수학,영어,과학 같은 형식으로 요청
 //검색창에서 검색 시 name = 강호수 와 같이 요청함
 
-const TuteeList = () => {
+const TuteeList = ({ footerRef }) => {
   // API에서 받아온 데이터
   const [tuteeData, setTuteeData] = useState([]);
   const [pageInfo, setPageInfo] = useState({
@@ -25,18 +27,36 @@ const TuteeList = () => {
   //검색창 값 핸들링 상태
   const [searchValue, setSearchValue] = useState('');
 
-  const io = new IntersectionObserver(() => {});
+  const setIsNew = useScroll(() => {
+    if (pageInfo.page < pageInfo.totalPages) {
+      scrollFunc(pageInfo.page);
+    } else {
+      setIsNew(false);
+    }
+  }, footerRef);
+
+  const scrollFunc = async (page) => {
+    await axios
+      .get(
+        process.env.REACT_APP_BASE_URL +
+          `/users/tutees?subject=${subjectMenu.join()}&name=${search}&page=${page}`
+      )
+      .then(({ data }) => {
+        console.log(data.pageInfo);
+        setTuteeData([...tuteeData, ...data.data]);
+        setPageInfo(data.pageInfo);
+      })
+      .catch((err) => console.error(err.message));
+  };
 
   const getTuteeData = async () => {
     await axios
       .get(
         process.env.REACT_APP_BASE_URL +
-          `/users/tutees?subject=${subjectMenu.join()}&name=${search}&page=&${
-            pageInfo.page
-          }`
+          `/users/tutees?subject=${subjectMenu.join()}&name=${search}`
       )
       .then(({ data }) => {
-        setTuteeData([...tuteeData, data.data]);
+        setTuteeData(data.data);
         setPageInfo(data.pageInfo);
       })
       .catch((err) => console.error(err.message));
@@ -55,13 +75,6 @@ const TuteeList = () => {
     else if (target.value === '') setSearch(searchValue);
     else if (type === 'keyup' && key === 'Enter') setSearch(searchValue);
   };
-
-  useEffect(() => {
-    const { scrollTop, offsetHeight } = document.documentElement;
-    if (window.innerHeight + scrollTop >= offsetHeight) {
-      console.log('끝!');
-    }
-  }, []);
 
   useEffect(() => {
     getTuteeData();
@@ -114,6 +127,9 @@ const TuteeList = () => {
       <ButtonTop />
     </div>
   );
+};
+TuteeList.propTypes = {
+  footerRef: PropType.object,
 };
 
 export default TuteeList;

@@ -1,7 +1,8 @@
+import { forwardRef } from 'react';
 import styles from './Footer.module.css';
-const Footer = () => {
+const Footer = (props, ref) => {
   return (
-    <footer className={styles.footer}>
+    <footer className={styles.footer} ref={ref}>
       <div className={styles.logos}>
         <div className={styles.logo1}>
           <svg
@@ -127,4 +128,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default forwardRef(Footer);
