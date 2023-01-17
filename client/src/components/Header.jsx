@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { MdNotifications } from 'react-icons/md';
 import { ButtonRed } from './Button';
-import { useSetRecoilState, useRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../recoil/modal.js';
 import defaultUser from '../assets/defaultUser.png';
 import Profile from '../recoil/profile';
@@ -15,11 +15,28 @@ const Header = () => {
 
   const [profile, setProfile] = useRecoilState(Profile);
   const setModal = useSetRecoilState(ModalState);
+  const resetProfile = useResetRecoilState(Profile);
+  const resetModal = useResetRecoilState(ModalState);
 
   const adminProps = {
     isOpen: true,
     modalType: 'admin',
     props: {},
+  };
+
+  const logoutProps = {
+    isOpen: true,
+    modalType: 'cancelConfirm',
+    props: {
+      text: '로그아웃 하시겠습니까?',
+      modalHandler: () => {
+        localStorage.clear();
+        sessionStorage.clear();
+        resetProfile();
+        resetModal();
+        navigate('/');
+      },
+    },
   };
 
   const notAuthNavigate = (path) => {
@@ -108,7 +125,7 @@ const Header = () => {
                 <Link to="/userinfo">회원정보 수정</Link>
               </li>
               <li>
-                <Link to="">로그아웃</Link>
+                <button onClick={() => setModal(logoutProps)}>로그아웃</button>
               </li>
             </ul>
           )}
