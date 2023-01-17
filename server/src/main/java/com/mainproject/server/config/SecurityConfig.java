@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -78,21 +79,21 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/auth/logout")
                 .and().authorizeRequests(
                         auth -> auth
-//                                .antMatchers("/h2/**").permitAll()
-//                                .antMatchers("/h2").permitAll()
-//                                .mvcMatchers(HttpMethod.POST,"/login").permitAll()
-//                                .mvcMatchers("/login/**").permitAll()
-//                                .mvcMatchers(HttpMethod.POST,"/users").permitAll()
-//                                .mvcMatchers(HttpMethod.GET,"/users/tutors").permitAll()
-//                                .mvcMatchers(HttpMethod.GET,"/users/tutors/**").permitAll()
-//                                .mvcMatchers(HttpMethod.GET,"/users/tutees").permitAll()
-//                                .mvcMatchers(HttpMethod.GET,"/users/tutees/**").permitAll()
-//                                .mvcMatchers(HttpMethod.GET,"/profiles/details/**").permitAll()
-//                                .mvcMatchers(HttpMethod.GET,"/auth/reissue-token/**").permitAll()
-//                                .mvcMatchers("/docs/**").permitAll()
-//                                .mvcMatchers("/oauth2/**").permitAll()
-//                                .anyRequest().hasAnyRole("USER")
-                                .anyRequest().permitAll()
+                                .antMatchers("/h2/**").permitAll()
+                                .antMatchers("/h2").permitAll()
+                                .mvcMatchers(HttpMethod.POST,"/login").permitAll()
+                                .mvcMatchers("/login/**").permitAll()
+                                .mvcMatchers(HttpMethod.POST,"/users").permitAll()
+                                .mvcMatchers(HttpMethod.GET,"/users/tutors").permitAll()
+                                .mvcMatchers(HttpMethod.GET,"/users/tutors/**").permitAll()
+                                .mvcMatchers(HttpMethod.GET,"/users/tutees").permitAll()
+                                .mvcMatchers(HttpMethod.GET,"/users/tutees/**").permitAll()
+                                .mvcMatchers(HttpMethod.GET,"/profiles/details/**").permitAll()
+                                .mvcMatchers(HttpMethod.GET,"/auth/reissue-token/**").permitAll()
+                                .mvcMatchers("/docs/**").permitAll()
+                                .mvcMatchers("/oauth2/**").permitAll()
+                                .anyRequest().hasAnyRole("USER")
+//                                .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(oAuth2UserSuccessHandler)
