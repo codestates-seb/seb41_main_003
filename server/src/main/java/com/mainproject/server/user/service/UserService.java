@@ -40,6 +40,10 @@ public class UserService {
     }
 
     public User updateUser(User user) {
+        if (user.getPassword() != null) {
+            String encode = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encode);
+        }
         User findUser = verifiedUserById(user.getUserId());
         Optional.ofNullable(user.getNickName())
                 .ifPresent(findUser::setNickName);
