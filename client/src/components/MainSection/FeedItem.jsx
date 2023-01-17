@@ -10,7 +10,7 @@ const FeedItem = ({ data, userStatus }) => {
   return (
     <div className={styles.container}>
       {/* //! 프로필 이미지 주소 변경해야 함 */}
-      <img className={styles.img} alt="프로필 이미지" src={defaultUser} />
+      <img className={styles.img} alt="프로필 이미지" src={profileImage.url} />
       <div className={styles.nameAndStars}>
         <div className={styles.name}>
           {userStatus === 'TUTOR' ? `${name} 튜터` : `${name} 튜티`}

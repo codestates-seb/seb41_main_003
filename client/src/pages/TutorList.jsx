@@ -16,25 +16,30 @@ import axios from 'axios';
 //TODO: Enter 쳤을 때만 검색어 검색이 되도록 수정 필요 (Enter 핸들러 작성)
 
 const TutorList = () => {
-  const [TutorData, setTutorData] = useState([]);
+  // API에서 받아온 데이터
+  const [tutorData, setTutorData] = useState([]);
+  const [pageInfo, setPageInfo] = useState({});
   //정렬 메뉴 오픈 상태
   const [isOpen, setIsOpen] = useState(false);
   //과목 필터 메뉴에서 선택한 과목들
   const [subjectMenu, setSubjectMenu] = useState([]);
-  //검색창에서 입력한 검색어
+  //검색창에서 입력한 검색어 반영
   const [search, setSearch] = useState('');
+  //검색창 값 핸들링 상태
+  const [searchValue, setSearchValue] = useState('');
   //정렬 메뉴 '최신 순'인지 '별점 순'인지
-  const [filter, setFilter] = useState('');
+  const [sort, setSort] = useState('');
 
   const getTutorData = async () => {
     await axios
       .get(
         process.env.REACT_APP_BASE_URL +
-          `/users/tutors?subject=${subjectMenu.join()}&name=${search}&sort=${filter}`
+          `/users/tutors?subject=${subjectMenu.join()}&name=${search}&sort=${sort}`
       )
-      .then((res) => {
-        setTutorData(res.data.data);
-        console.log(res.data.data);
+      .then(({ data }) => {
+        setTutorData(data.data);
+        setPageInfo(data.pageInfo);
+        console.log(pageInfo);
       })
       .catch((err) => console.log(err.message));
   };
@@ -52,14 +57,15 @@ const TutorList = () => {
     }
   };
 
-  const searchHandler = (e) => {
-    setSearch(e.target.value);
+  const searchHandler = ({ type, key, target }) => {
+    if (type === 'change') setSearchValue(target.value);
+    else if (target.value === '') setSearch(searchValue);
+    else if (type === 'keyup' && key === 'Enter') setSearch(searchValue);
   };
 
   useEffect(() => {
     getTutorData();
-    console.log('useEffect');
-  }, [subjectMenu, search, filter]);
+  }, [subjectMenu, search, sort]);
 
   return (
     <div className={styles.wrapper}>
@@ -76,8 +82,9 @@ const TutorList = () => {
               <input
                 className={styles.input}
                 placeholder="서울대학교"
-                value={search}
+                value={searchValue}
                 onChange={searchHandler}
+                onKeyUp={searchHandler}
               ></input>
             </div>
           </div>
@@ -93,15 +100,15 @@ const TutorList = () => {
             aria-hidden="true"
           >
             <MdFilterList className={styles.mdFilterList} />
-            <span>{filter === 'rate' ? '평점 순' : '최신 순'}</span>
-            {isOpen ? <FilterDropdown setFilter={setFilter} /> : null}
+            <span>{sort === 'rate' ? '평점 순' : '최신 순'}</span>
+            {isOpen ? <FilterDropdown setFilter={setSort} /> : null}
           </div>
         </div>
         <div className={styles.feedContainer}>
-          {TutorData.map((tutor) => (
+          {tutorData.map((tutor) => (
             <Link
               // ! 프로필 ID 기준으로 링크 변경 필요
-              to="/tutorprofile"
+              to={`/tutorprofile/${tutor.profileId}`}
               key={tutor.profileId}
               className={styles.list}
             >
