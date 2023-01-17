@@ -92,36 +92,7 @@ public class SecurityConfig {
                                 .mvcMatchers(HttpMethod.GET,"/users/tutors/**").permitAll()
                                 .mvcMatchers(HttpMethod.GET,"/users/tutees").permitAll()
                                 .mvcMatchers(HttpMethod.GET,"/users/tutees/**").permitAll()
-                                .mvcMatchers("/auth/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.GET,"/users/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.POST,"/users/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.PATCH,"/users/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.DELETE,"/users/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.GET,"/profiles/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.POST,"/profiles/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.PATCH,"/profiles/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.DELETE,"/profiles/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.GET,"/upload/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.POST,"/upload/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.PATCH,"/upload/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.DELETE,"/upload/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.GET,"/tutoring/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.POST,"/tutoring/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.PATCH,"/tutoring/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.DELETE,"/tutoring/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.GET,"/review/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.POST,"/review/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.PATCH,"/review/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.DELETE,"/review/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.GET,"/messages").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.POST,"/messages").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.PATCH,"/messages").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.DELETE,"/messages").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.GET,"/messages/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.POST,"/messages/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.PATCH,"/messages/**").hasAnyRole("USER")
-                                .mvcMatchers(HttpMethod.DELETE,"/messages/**").hasAnyRole("USER")
-                                .anyRequest().permitAll()
+                                .anyRequest().hasAnyRole("USER")
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(oAuth2UserSuccessHandler)
@@ -140,6 +111,13 @@ public class SecurityConfig {
                         "http://localhost:8080","*"));
         corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE", "OPTIONS"));
         corsConfiguration.setMaxAge(493772L);
+        corsConfiguration.addAllowedOrigin("http://localhost:3000");
+        corsConfiguration.addAllowedOrigin("http://localhost:8080");
+        corsConfiguration.addAllowedMethod("GET");
+        corsConfiguration.addAllowedMethod("POST");
+        corsConfiguration.addAllowedMethod("PATCH");
+        corsConfiguration.addAllowedMethod("DELETE");
+        corsConfiguration.addAllowedMethod("OPTIONS");
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addExposedHeader("Authorization");
         corsConfiguration.addExposedHeader("userId");
