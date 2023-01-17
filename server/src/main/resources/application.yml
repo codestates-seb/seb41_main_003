@@ -16,7 +16,7 @@ spring:
   jpa:
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
@@ -29,9 +29,9 @@ spring:
       client:
         registration:
           google:
-            client-id: ${GOOGLE_AOUTH2_MAIN_ID}
+            client-id: ${GOOGLE_OAUTH2_MAIN_ID}
           kakao:
-            client-id: ${KAKAO_AOUTH2_MAIN_ID}
+            client-id: ${KAKAO_OAUTH2_MAIN_ID}
 logging.level:
   org.hibernate.SQL: debug
   com:
