@@ -3,6 +3,8 @@ import { CheckBox, TextInput } from '../Input';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import Profile from '../../recoil/profile';
 
 const initialLogindata = {
   username: '',
@@ -20,6 +22,8 @@ const LoginForm = () => {
   //자동 로그인 설정 체크
   const [isAutoLoginChecked, setIsAutoLoginChecked] = useState(false);
 
+  const [profile, setProfile] = useRecoilState(Profile);
+
   const inputHandler = (e) => {
     const { id, value } = e.target;
     setLoginData({ ...loginData, [id]: value });
@@ -28,19 +32,24 @@ const LoginForm = () => {
   const submitHandler = async () => {
     await axios
       .post(process.env.REACT_APP_BASE_URL + '/auth/login', loginData)
-      .then((res) => {
+      .then(({ data: res }) => {
         if (isIdChecked) localStorage.setItem('saveId', loginData.username);
         if (isAutoLoginChecked) {
-          localStorage.setItem('authorization', res.data.data.Authorization);
-          localStorage.setItem('userId', res.data.data.userId);
-          localStorage.setItem('userStatus', res.data.data.userStatus);
+          localStorage.setItem('authorization', res.data.Authorization);
+          localStorage.setItem('userId', res.data.userId);
+          localStorage.setItem('userStatus', res.data.userStatus);
         } else {
-          sessionStorage.setItem('authorization', res.data.data.Authorization);
-          sessionStorage.setItem('userId', res.data.data.userId);
-          sessionStorage.setItem('userStatus', res.data.data.userStatus);
+          sessionStorage.setItem('authorization', res.data.Authorization);
+          sessionStorage.setItem('userId', res.data.userId);
+          sessionStorage.setItem('userStatus', res.data.userStatus);
         }
+        setProfile((prev) => ({
+          ...prev,
+          isLogin: true,
+          userStatus: res.data.userStatus,
+        }));
       })
-      .catch((err) => console.log('오류'));
+      .catch(() => console.log('오류'));
     //로그인 요청 성공 시 홈 화면으로 리다이렉션
     // window.location.href = '/';
   };
