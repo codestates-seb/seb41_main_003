@@ -5,7 +5,7 @@ import { MdStar, MdStarHalf, MdStarOutline } from 'react-icons/md';
 import defaultUser from '../../assets/defaultUser.png';
 
 const FeedItem = ({ data, userStatus }) => {
-  const { name, school, bio, subjects, rate, profileImage } = data;
+  const { name, school, bio, subjects, rate, profileImage, profileId } = data;
   //profile img 경로는 profileImage.url로 받을 수 있음
   return (
     <div className={styles.container}>
@@ -45,8 +45,8 @@ const FeedItem = ({ data, userStatus }) => {
         )}
       </div>
       <div className={styles.subjectBox}>
-        {subjects.map((el) => (
-          <div key={el.subjectId} className={styles.subject}>
+        {subjects.map((el, i) => (
+          <div key={`${profileId}_subject${i}`} className={styles.subject}>
             <BlueSubject text={el.subjectTitle} />
           </div>
         ))}

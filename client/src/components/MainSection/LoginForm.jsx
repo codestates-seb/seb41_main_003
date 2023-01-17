@@ -2,15 +2,22 @@ import styles from './LoginForm.module.css';
 import { CheckBox, TextInput } from '../Input';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const initialLogindata = {
   username: '',
   password: '',
 };
 
+//TODO: 로그인 성공, 실패에 따라 (상태 번호 : 401 등)
+//로그인 버튼 위에 '아이디, 비밀번호가 올바르지 않습니다' 등의 문구 띄우도록 하고
+//아이디와 비밀번호 아래에 있는 문구는 형식에 대한 validation 문구가 될듯
+
 const LoginForm = () => {
   const [loginData, setLoginData] = useState(initialLogindata);
+  //아이디 저장 체크
   const [isIdChecked, setIsIdChecked] = useState(false);
+  //자동 로그인 설정 체크
   const [isAutoLoginChecked, setIsAutoLoginChecked] = useState(false);
 
   const inputHandler = (e) => {
@@ -18,9 +25,22 @@ const LoginForm = () => {
     setLoginData({ ...loginData, [id]: value });
   };
 
-  const submitHandler = () => {
-    //TODO : 로그인 요청 보내기
-    console.log(loginData);
+  const submitHandler = async () => {
+    await axios
+      .post(process.env.REACT_APP_BASE_URL + '/auth/login', loginData)
+      .then((res) => {
+        if (isIdChecked) localStorage.setItem('saveId', loginData.username);
+        if (isAutoLoginChecked) {
+          localStorage.setItem('authorization', res.data.data.Authorization);
+          localStorage.setItem('userId', res.data.data.userId);
+          localStorage.setItem('userStatus', res.data.data.userStatus);
+        } else {
+          sessionStorage.setItem('authorization', res.data.data.Authorization);
+          sessionStorage.setItem('userId', res.data.data.userId);
+          sessionStorage.setItem('userStatus', res.data.data.userStatus);
+        }
+      })
+      .catch((err) => console.log('오류'));
     //로그인 요청 성공 시 홈 화면으로 리다이렉션
     // window.location.href = '/';
   };
