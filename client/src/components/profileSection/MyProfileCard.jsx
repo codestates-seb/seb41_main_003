@@ -1,5 +1,5 @@
 import styles from './MyProfileCard.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { ButtonNightBlue } from '../Button.jsx';
 import { BlueSubject } from '../Subject.jsx';
@@ -14,6 +14,9 @@ const MyProfileCard = ({ user, setUser }) => {
   const resetModal = useResetRecoilState(ModalState);
 
   const Navigate = useNavigate();
+  //TODO: useParams 말고 저장되어 있는 myprofileId를 사용해야 할 듯
+  // const { profileId } = useRecoilValue(Profile);
+  const { profileId } = useParams();
 
   const confirm = {
     isOpen: true,
@@ -21,8 +24,8 @@ const MyProfileCard = ({ user, setUser }) => {
     props: {
       text: '프로필 수정 페이지로 이동 하시겠습니까?',
       modalHandler: () => {
-        //TODO: 해당 프로필Id,dateNoticeId의 프로필 수정 페이지로 이동 (useParam)
-        Navigate('/editProfile');
+        //TODO: 해당 프로필Id의 프로필 수정 페이지로 이동 (useParam)
+        Navigate(`/editProfile/${profileId}`);
         resetModal();
       },
     },
