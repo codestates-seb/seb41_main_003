@@ -14,6 +14,7 @@ public class UserPatchDto {
 
     private Long userId;
 
+    @NotBlank
     private String nickName;
 
     private String password;
