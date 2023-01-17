@@ -35,19 +35,7 @@ public class UserService {
 
     public User createUser(User user) {
         verifyUserByEmail(user.getEmail());
-        if (user.getLoginType() == null) {
-            String pw = passwordEncoder
-                    .encode(user.getPassword());
-            user.setPassword(pw);
-            user.setRoles(authorityUtils.createRoles(user.getEmail()));
-            user.setUserStatus(UserStatus.NONE);
-            user.setLoginType(LoginType.BASIC);
-        } else {
-            Random random = new Random();
-            String pw = passwordEncoder
-                    .encode(String.valueOf(random.nextInt()));
-            user.setPassword(pw);
-        }
+        checkLoginType(user);
         return userRepository.save(user);
     }
 
@@ -69,7 +57,6 @@ public class UserService {
         Optional.ofNullable(verifyPhoneNumber(user.getPhoneNumber()))
                 .ifPresent(findUser::setPhoneNumber);
         return userRepository.save(findUser);
-
     }
 
     public void deleteUser(Long userId) {
@@ -116,6 +103,23 @@ public class UserService {
     public Boolean verifyUserByEmailReturnBoolean(String email) {
         Optional<User> findUser = userRepository.findByEmail(email);
         return findUser.isPresent();
+    }
+
+    public User checkLoginType(User user) {
+        if (user.getLoginType() == null) {
+            String pw = passwordEncoder
+                    .encode(user.getPassword());
+            user.setPassword(pw);
+            user.setRoles(authorityUtils.createRoles(user.getEmail()));
+            user.setUserStatus(UserStatus.NONE);
+            user.setLoginType(LoginType.BASIC);
+        } else {
+            Random random = new Random();
+            String pw = passwordEncoder
+                    .encode(String.valueOf(random.nextInt()));
+            user.setPassword(pw);
+        }
+        return user;
     }
 
 }
