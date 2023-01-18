@@ -56,7 +56,8 @@ const AdminModal = () => {
       })
       .catch(({ response }) => {
         console.log(response.status);
-        if (response.status === 403)
+        console.log(response.data.message);
+        if (response.data.message === 'EXPIRED REFRESH TOKEN')
           reIssueToken(getUserProfile).catch(() => {
             console.log('reset');
             resetProfile();

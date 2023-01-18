@@ -84,7 +84,8 @@ const UserInfoForm = () => {
       })
       .catch(({ response }) => {
         console.log(response.status);
-        if (response.status === 403)
+        console.log(response.data.message);
+        if (response.data.message === 'EXPIRED REFRESH TOKEN')
           reIssueToken(getUserInfo).catch(() => {
             console.log('reset');
             resetProfile();
@@ -186,7 +187,8 @@ const UserInfoForm = () => {
       setModal(submitProp);
     } catch ({ response }) {
       console.log(response.status);
-      if (response.status === 403) {
+      console.log(response.data.message);
+      if (response.data.message === 'EXPIRED REFRESH TOKEN') {
         reIssueToken(patchUserInfo).catch(() => {
           console.log('reset');
           resetProfile();
