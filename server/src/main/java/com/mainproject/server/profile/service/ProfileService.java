@@ -12,6 +12,7 @@ import com.mainproject.server.profile.dto.WantedDto;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.repository.ProfileRepository;
 import com.mainproject.server.review.entity.Review;
+import com.mainproject.server.review.repository.ReviewRepository;
 import com.mainproject.server.subject.dto.SubjectDto;
 import com.mainproject.server.subject.entity.Subject;
 import com.mainproject.server.subject.entity.SubjectProfile;
@@ -42,6 +43,8 @@ public class ProfileService {
     private final SubjectRepository subjectRepository;
 
     private final SubjectProfileRepository subjectProfileRepository;
+
+    private final ReviewRepository reviewRepository;
 
     public List<Profile> getProfiles(
             Long userId
@@ -149,7 +152,7 @@ public class ProfileService {
                 .orElseThrow(() -> new ServiceLogicException(ErrorCode.PROFILE_NOT_FOUND));
     }
 
-    private static Pageable getCustomPageable(Pageable defaultPageable, String sort) {
+    private Pageable getCustomPageable(Pageable defaultPageable, String sort) {
         if (sort != null && sort.equals("rate")) {
             return PageRequest.of(
                     defaultPageable.getPageNumber(),
@@ -187,9 +190,8 @@ public class ProfileService {
         }
     }
 
-    private static ProfilePageDto getProfilePageDto(Profile profile, Pageable pageable) {
-        Set<Review> reviews = profile.getReviews();
-        Page<Review> reviewPage = new PageImpl<>(new ArrayList<>(reviews), pageable, reviews.size());
+    private ProfilePageDto getProfilePageDto(Profile profile, Pageable pageable) {
+        Page<Review> reviewPage = reviewRepository.findAllByTutor(profile, pageable);
         return ProfilePageDto.of(profile, reviewPage);
     }
 
