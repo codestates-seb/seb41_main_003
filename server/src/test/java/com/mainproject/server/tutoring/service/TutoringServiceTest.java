@@ -5,6 +5,7 @@ import com.mainproject.server.dateNotice.entity.DateNotice;
 import com.mainproject.server.dateNotice.entity.Homework;
 import com.mainproject.server.dateNotice.entity.Notice;
 import com.mainproject.server.dateNotice.entity.Schedule;
+import com.mainproject.server.dateNotice.repository.DateNoticeRepository;
 import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.image.entity.ProfileImage;
 import com.mainproject.server.message.service.MessageService;
@@ -45,6 +46,9 @@ class TutoringServiceTest {
 
     @Mock
     private MessageService messageService;
+
+    @Mock
+    private DateNoticeRepository dateNoticeRepository;
 
     @InjectMocks
     private TutoringService tutoringService;
@@ -124,7 +128,13 @@ class TutoringServiceTest {
         Pageable page = PageRequest.of(0, 5);
 
         Tutoring tutoring = createTutoring(tutoringId);
-
+        Page<DateNotice> pageList = new PageImpl<>(
+                new ArrayList<>(tutoring.getDateNotices()),
+                page,
+                10
+        );
+        given(dateNoticeRepository.findAllByTutoring(any(Tutoring.class), any(Pageable.class)))
+                .willReturn(pageList);
         given(tutoringRepository.findById(anyLong()))
                 .willReturn(Optional.of(tutoring));
         given(tutoringRepository.save(any(Tutoring.class)))
@@ -147,7 +157,13 @@ class TutoringServiceTest {
         Pageable page = PageRequest.of(0, 5);
 
         Tutoring tutoring = createTutoring(tutoringId);
-
+        Page<DateNotice> pageList = new PageImpl<>(
+                new ArrayList<>(tutoring.getDateNotices()),
+                page,
+                10
+        );
+        given(dateNoticeRepository.findAllByTutoring(any(Tutoring.class), any(Pageable.class)))
+                .willReturn(pageList);
         given(tutoringRepository.findById(anyLong())).
                 willReturn(Optional.of(tutoring));
         given(tutoringRepository.save(any(Tutoring.class)))
