@@ -8,7 +8,7 @@ const defaultOptions = {
 
 /**
  * 무한 스크롤 구현을 위한 커스텀 훅
- * @param {func} callbackFunc 특정 요소가 보일 때 작동할 콜백 함수
+ * @param {function} callbackFunc 특정 요소가 보일 때 작동할 콜백 함수
  * @param {ref} ref 콜백 함수를 동작시킬 요소 (ref)
  * @param {object} options InterSectionObserver 옵션
  */
@@ -38,7 +38,9 @@ const useScroll = (callbackFunc, ref, options = defaultOptions) => {
   //* 상태가 true일 때 콜백함수 실행
   useEffect(() => {
     if (!isShow) return;
-    callbackFunc();
+    setTimeout(() => {
+      callbackFunc();
+    }, 500);
   }, [isShow]);
 
   return setIsShow;
