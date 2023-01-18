@@ -117,8 +117,8 @@ public class TutoringService {
             Pageable pageable
     ) {
         Tutoring tutoring = verifiedTutoring(tutoringId);
-        if (tutoring.getTutor().getProfileId().equals(profileId) ||
-                tutoring.getTutee().getProfileId().equals(profileId) &&
+        if ((tutoring.getTutor().getProfileId().equals(profileId) ||
+                tutoring.getTutee().getProfileId().equals(profileId)) &&
                 !tutoring.getTutoringStatus().equals(TutoringStatus.FINISH)
         ) {
             tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
