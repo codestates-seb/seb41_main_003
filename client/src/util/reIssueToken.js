@@ -24,11 +24,11 @@ const reIssueToken = (func) => {
       )
       .then(({ data }) => {
         if (localStorage.getItem('userId')) {
-          localStorage.setItem('authorization', data.Authorization);
+          localStorage.setItem('authorization', data.authorization);
           localStorage.setItem('userId', data.userId);
           localStorage.setItem('userStatus', data.userStatus);
         } else if (sessionStorage.getItem('userId')) {
-          sessionStorage.setItem('authorization', data.Authorization);
+          sessionStorage.setItem('authorization', data.authorization);
           sessionStorage.setItem('userId', data.userId);
           sessionStorage.setItem('userStatus', data.userStatus);
         }
