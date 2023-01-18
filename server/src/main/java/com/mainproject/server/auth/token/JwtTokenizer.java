@@ -35,7 +35,7 @@ public class JwtTokenizer {
     private String secretKey;
 
     @Getter
-    private final int accessTokenExpirationMinutes = 3;
+    private final int accessTokenExpirationMinutes = 15;
 
     @Getter
     private final int refreshTokenExpirationMinutes = 10000000;

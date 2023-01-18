@@ -51,12 +51,19 @@ public class UserService {
                 .ifPresent(findUser::setPassword);
         Optional.ofNullable(user.getSecondPassword())
                 .ifPresent(findUser::setSecondPassword);
-        if (findUser.getUserStatus().equals(UserStatus.NONE)) {
-            findUser.setUserStatus(user.getUserStatus());
-        } else if (user.getUserStatus() == null) {
-
-        } else {
-            throw new ServiceLogicException(ErrorCode.NOT_CHANGE_USER_STATUS);
+        UserStatus findUserStatus = findUser.getUserStatus();
+        UserStatus userStatus = user.getUserStatus();
+        if (findUserStatus.equals(UserStatus.NONE)) {
+            if (userStatus == null || userStatus.equals(UserStatus.NONE)){
+                throw new ServiceLogicException(ErrorCode.USER_TYPE_NOT_NONE);
+            }
+            findUser.setUserStatus(userStatus);
+        } else if (findUserStatus.equals(UserStatus.TUTEE) ||
+                findUserStatus.equals(UserStatus.TUTOR)
+        ) {
+            if (!findUserStatus.equals(userStatus)) {
+                throw new ServiceLogicException(ErrorCode.NOT_CHANGE_USER_STATUS);
+            }
         }
         Optional.ofNullable(verifyPhoneNumber(user.getPhoneNumber()))
                 .ifPresent(findUser::setPhoneNumber);

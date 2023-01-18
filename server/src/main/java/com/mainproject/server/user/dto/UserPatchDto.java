@@ -14,6 +14,7 @@ public class UserPatchDto {
 
     private Long userId;
 
+    @NotBlank
     private String nickName;
 
     private String password;
@@ -22,10 +23,8 @@ public class UserPatchDto {
     @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}",message = "휴대폰 번호를 올바르게 입력해 주세요")
     private String phoneNumber;
 
-    @NotBlank
     private String secondPassword;
 
-    @NotBlank
     private String userStatus;
 
 }

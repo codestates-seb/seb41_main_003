@@ -10,7 +10,7 @@ public interface CustomProfileRepository {
     Page<ProfileQueryDto> findQueryProfile(
             String key,
             String[] subjects,
-            String name,
+            String search,
             WantedStatus wantedStatus,
             Pageable pageable
     );

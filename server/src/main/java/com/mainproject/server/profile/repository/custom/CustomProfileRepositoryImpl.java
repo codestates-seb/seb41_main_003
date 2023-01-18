@@ -28,7 +28,7 @@ public class CustomProfileRepositoryImpl
     public Page<ProfileQueryDto> findQueryProfile(
             String key,
             String[] subjects,
-            String name,
+            String search,
             WantedStatus wantedStatus,
             Pageable pageable
     ) {
@@ -68,8 +68,13 @@ public class CustomProfileRepositoryImpl
                 }
             }
         }
-        if (name != null && !name.isBlank()) {
-            query.where(profile.name.containsIgnoreCase(name));
+        if (search != null && !search.isBlank()) {
+            query.where(
+                    profile.name.containsIgnoreCase(search)
+                            .or(profile.bio.containsIgnoreCase(search))
+                            .or(profile.school.containsIgnoreCase(search))
+                            .or(profile.subjectString.containsIgnoreCase(search))
+            );
         }
         List<ProfileQueryDto> profileList = Optional.ofNullable(getQuerydsl())
                 .orElseThrow(() -> new ServiceLogicException(
