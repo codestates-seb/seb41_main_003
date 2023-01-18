@@ -167,6 +167,12 @@ const UserInfoForm = () => {
       ...(isNewUser ? { userStatus } : {}),
     };
 
+    axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+
+    axios.defaults.headers.common['Authorization'] =
+      sessionStorage.getItem('authorization') ||
+      localStorage.getItem('authorization');
+
     try {
       console.log('수정 요청');
       const { data } = await axios.patch(
