@@ -38,6 +38,8 @@ public class ProfilePageDto {
 
     private String way;
 
+    private String character;
+
     private List<SubjectProfileResponseDto> subjects;
 
     private String difference;
@@ -67,6 +69,7 @@ public class ProfilePageDto {
         this.wantedStatus = profile.getWantedStatus().name();
         this.profileStatus = profile.getProfileStatus().name();
         this.way = profile.getWay();
+        this.character = profile.getCharacter();
         if (!profile.getSubjectProfiles().isEmpty()) {
             this.subjects = profile.getSubjectProfiles()
                     .stream()
