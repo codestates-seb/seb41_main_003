@@ -32,8 +32,6 @@ public class DateNoticeService {
     private final HomeworkRepository homeworkRepository;
 
 
-
-
     public DateNotice createDateNotice(DateNotice dateNotice, Long tutoringId) {
         Tutoring findTutoring = tutoringService.verifiedTutoring(tutoringId);
         findTutoring.setTutoringStatus(TutoringStatus.UNCHECK);
