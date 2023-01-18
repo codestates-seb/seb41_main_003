@@ -9,13 +9,9 @@ import MenuButtons from '../components/MainSection/FilterButton';
 import axios from 'axios';
 import useScroll from '../util/useScroll';
 import PropType from 'prop-types';
-
-//TODO: 튜터 리스트를 불러오는 GET 요청 필요
-//정렬 필터 파라미터 : sort = rate (기본값이 createAt 이므로 별점 순으로 변경시에만 파라미터 붙여서 요청하면 됨)
-//과목 버튼 필터 파라미터 : subjectMenu 상태에서 꺼내와서 subject = 수학,영어,과학 같은 형식으로 요청
-//검색창에서 검색 시 name = 강호수 와 같이 요청함
-
-//TODO: Enter 쳤을 때만 검색어 검색이 되도록 수정 필요 (Enter 핸들러 작성)
+import { useSetRecoilState, useRecoilValue } from 'recoil';
+import Profile from '../recoil/profile';
+import ModalState from '../recoil/modal';
 
 const TutorList = ({ footerRef }) => {
   // API에서 받아온 데이터
@@ -33,6 +29,15 @@ const TutorList = ({ footerRef }) => {
   const [searchValue, setSearchValue] = useState('');
   //정렬 메뉴 '최신 순'인지 '별점 순'인지
   const [sort, setSort] = useState('');
+
+  const profile = useRecoilValue(Profile);
+
+  const setModal = useSetRecoilState(ModalState);
+
+  const adminProp = {
+    isOpen: true,
+    modalType: 'admin',
+  };
 
   const setIsNew = useScroll(() => {
     if (pageInfo.page < pageInfo.totalPages) {
@@ -89,6 +94,9 @@ const TutorList = ({ footerRef }) => {
   };
 
   useEffect(() => {
+    if (profile.isLogin === true && profile.profileId === 0) {
+      setModal(adminProp);
+    }
     getTutorData();
   }, [subjectMenu, search, sort]);
 
