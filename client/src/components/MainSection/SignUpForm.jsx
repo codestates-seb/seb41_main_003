@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import validation from '../../util/validation';
 import axios from 'axios';
 import ModalState from '../../recoil/modal.js';
-import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 const initialSignupdata = {
   nickName: '',
@@ -24,33 +24,40 @@ const SignUpForm = () => {
     setSignupData({ ...signupData, [id]: value });
   };
 
-  //비밀번호와 비밀번호 확인 체크하는 핸들러 함수
   const confirmHandler = () => {
     if (signupData.password === signupData.passwordConfirm) {
-      console.log('같은데!');
       setConfirmPassword(true);
     } else {
-      console.log('다른데!');
       setConfirmPassword(false);
     }
+  };
+
+  const signUpconfirmProps = {
+    isOpen: true,
+    modalType: 'handlerAlert',
+    props: {
+      text: '회원 가입이 완료되었습니다!',
+      modalHandler: () => {
+        window.location.href = '/login';
+      },
+    },
   };
 
   useEffect(() => {
     confirmHandler();
   }, [signupData.passwordConfirm, signupData.password]);
 
-  const requiredProps = {
-    isOpen: true,
-    modalType: 'alert',
-    props: { text: '필수 입력 사항을 확인해주세요.' },
+  const postSignUpData = async () => {
+    await axios.post(`${process.env.REACT_APP_BASE_URL}/users`, {
+      ...signupData,
+    });
   };
 
-  // TODO : submit API 연결 필요
   const submitHandler = (e) => {
     e.preventDefault();
+    postSignUpData();
     console.log('submit!');
-    //회원가입 성공 시 로그인 화면으로 리다이렉션
-    // window.location.href = '/';
+    setModal(signUpconfirmProps);
   };
 
   return (
