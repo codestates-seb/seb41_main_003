@@ -18,10 +18,8 @@ const AdminModal = () => {
   const resetModal = useResetRecoilState(ModalState);
   const navigate = useNavigate();
 
-  const switchHandler = (e) => {
-    let { name } = e.currentTarget;
-    console.log(name.slice(7));
-    setProfile((prev) => ({ ...prev, profileId: name.slice(7) }));
+  const switchHandler = (profileId, name, url) => {
+    setProfile((prev) => ({ ...prev, profileId, name, url }));
     navigate('/');
     resetModal();
   };
@@ -83,9 +81,11 @@ const AdminModal = () => {
       <h3>전환하실 프로필을 선택하세요.</h3>
       <ul className={styles.profilesList}>
         {profiles.map(({ profileId, name, url }) => (
-          // TODO : 프로필 이미지 경로 수정 필요
           <li className={styles.profile} key={profileId}>
-            <button name={`profile${profileId}`} onClick={switchHandler}>
+            <button
+              name={`profile${profileId}`}
+              onClick={() => switchHandler(profileId, name, url)}
+            >
               <img className={styles.userImage} src={url} alt="user" />
               <p>{name}</p>
             </button>

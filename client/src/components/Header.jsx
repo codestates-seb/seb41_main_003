@@ -77,6 +77,7 @@ const Header = () => {
         inputType: 'password',
         modalHandler: (_, value) => {
           verify2ndPassword(value, path);
+          resetModal();
         },
       },
     };
@@ -132,9 +133,10 @@ const Header = () => {
       </nav>
       {profile.isLogin ? (
         <div className={styles.memberMenu}>
-          <ul>
+          <ul className={styles.menuContainer}>
             <li>
               <button
+                className={styles.notiButton}
                 onClick={() => setIsNoti(!isNoti)}
                 onBlur={() => {
                   setTimeout(() => setIsNoti(false), 100);
@@ -145,17 +147,18 @@ const Header = () => {
             </li>
             <li>
               <button
+                className={styles.profileButton}
                 onClick={() => setIsMenu(!isMenu)}
                 onBlur={() => {
                   setTimeout(() => setIsMenu(false), 100);
                 }}
               >
-                {/* TODO: 프로필이 전환되면 이미지도 변경되어야 함 */}
                 <img
-                  src={defaultUser}
+                  src={profile.url || defaultUser}
                   className={styles.profileImage}
                   alt="프로필 이미지"
                 />
+                <span>{profile.name}</span>
               </button>
             </li>
           </ul>
@@ -194,11 +197,11 @@ const Header = () => {
         </div>
       ) : (
         <div className={styles.memberMenu}>
-          <ul>
+          <ul className={styles.menuContainer}>
             <li>
               <Link to="/login">로그인</Link>
             </li>
-            <li>|</li>
+            <li className={styles.center}> | </li>
             <li>
               <Link to="/signup">회원가입</Link>
             </li>

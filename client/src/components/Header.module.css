@@ -31,6 +31,9 @@
 
 .nav {
   width: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  left: 50%;
 
   ul {
     width: 100%;
@@ -47,7 +50,7 @@
 }
 
 .memberMenu {
-  ul {
+  .menuContainer {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -55,25 +58,43 @@
     font-weight: $font4W;
     position: relative;
 
-    > button {
-      width: 40px;
-      height: 40px;
-    }
-  }
+    > li {
+      &.center {
+        margin: 0 8px;
+      }
 
-  li {
-    margin: 0 8px;
+      > button {
+        padding: 4px 8px;
+        border-radius: 5px;
+
+        &:hover {
+          background-color: $snow;
+        }
+      }
+
+      .profileButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .profileImage {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background-size: cover;
+          margin-right: 8px;
+        }
+
+        span {
+          font-size: $font6;
+          font-weight: $font5W;
+        }
+      }
+    }
   }
 
   svg {
     font-size: 26px;
-  }
-
-  .profileImage {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-size: cover;
   }
 
   .noti {
@@ -83,8 +104,8 @@
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 66px;
-    right: 80px;
+    top: 64px;
+    right: 150px;
     background-color: $snow;
     padding: 24px;
     box-shadow: $defaultShadow;
@@ -95,11 +116,11 @@
   .dropdown {
     display: block;
     position: absolute;
-    top: 66px;
+    top: 64px;
     right: 5px;
-    background-color: $snow;
+    background-color: $white;
     padding: 24px;
-    border-radius: 5px;
+    border-radius: 0 0 5px 5px;
     box-shadow: $defaultShadow;
 
     li {
@@ -110,8 +131,9 @@
         margin: 0;
       }
 
+      /* stylelint-disable-next-line no-descending-specificity */
       > a,
-      button {
+      > button {
         font-size: $font5;
         font-weight: $font5W;
       }
