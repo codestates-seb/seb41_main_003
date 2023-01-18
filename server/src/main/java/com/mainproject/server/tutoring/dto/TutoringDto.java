@@ -60,8 +60,8 @@ public class TutoringDto {
                     .map(DateNoticeResponseDto::of)
                     .collect(Collectors.toList());
             this.dateNotices = new PageImpl<>(dtos,
-                    dateNotices.getPageable(),
-                    dateNotices.getTotalElements());
+                    dateNoticePage.getPageable(),
+                    dateNoticePage.getTotalElements());
         } else {
             this.dateNotices = new PageImpl<>(
                     List.of(),
