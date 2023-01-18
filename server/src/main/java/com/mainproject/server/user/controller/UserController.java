@@ -92,7 +92,7 @@ public class UserController {
     @GetMapping("/tutors")
     public ResponseEntity getTutors(
             @RequestParam Map<String, String> params,
-            @PageableDefault(page = 0, size = 20, sort = "createAt", direction = Sort.Direction.DESC)
+            @PageableDefault(page = 0, size = 20, sort = "updateAt", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
         params.put("key", "TUTOR");
@@ -103,7 +103,7 @@ public class UserController {
     @GetMapping("/tutees")
     public ResponseEntity getTutees(
             @RequestParam Map<String, String> params,
-            @PageableDefault(page = 0, size = 20, sort = "createAt", direction = Sort.Direction.DESC)
+            @PageableDefault(page = 0, size = 20, sort = "updateAt", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
         params.put("key", "TUTEE");
