@@ -13,8 +13,10 @@ const Chat = ({ message, authId }) => {
     >
       {senderId === authId ? undefined : <h5>{senderName}</h5>}
       <p>{messageContent}</p>
-      {/* TODO : createdAt 변환 작업  필요 */}
-      <span>AM 01:00</span>
+      <span className={styles.time}>
+        {Number(createAt.slice(11, 13)) >= 12 ? 'PM' : 'AM'}{' '}
+        {createAt.slice(11, 16)}
+      </span>
     </div>
   );
 };

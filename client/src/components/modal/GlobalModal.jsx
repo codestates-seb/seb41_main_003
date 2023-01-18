@@ -14,6 +14,8 @@ import BothHandlerModal from './BothHandlerModal';
 import ReviewModal from './ReviewModal';
 import ReviewDetailModal from './ReviewDetail';
 import EditReviewModal from './EditReviewModal';
+import HandlerAlertModal from './HandlerAlertModal';
+import GetTextModal from './GetTextModal';
 
 export const GlobalModal = () => {
   const reset = useResetRecoilState(ModalState);
@@ -32,6 +34,8 @@ export const GlobalModal = () => {
     editReview: <EditReviewModal {...props} />,
     redConfirm: <RedConfirmModal {...props} />,
     redAlert: <RedAlertModal {...props} />,
+    handlerAlert: <HandlerAlertModal {...props} />,
+    getText: <GetTextModal {...props} />,
   };
 
   return (

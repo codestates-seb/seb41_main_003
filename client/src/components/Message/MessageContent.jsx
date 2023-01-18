@@ -1,18 +1,85 @@
 import styles from './MessageContent.module.css';
-import { TextInput } from '../Input';
 import { MdMenu } from 'react-icons/md';
 import PropType from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Chat from './Chat';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
+import axios from 'axios';
 
-const MessageContent = ({ messages, currentRoomId }) => {
+const MessageContent = ({
+  messageRoom,
+  currentRoomId,
+  delMessageRoom,
+  headers,
+  profile,
+  setMessageRoom,
+}) => {
+  const { tutorId, tuteeId, messages } = messageRoom;
+  const [tutoringTitle, setTutoringTitle] = useState('');
   const [isMenu, setIsMenu] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
+
+  const [myProfileId, setIsMyProfileId] = useState(tuteeId);
+  const [yourProfileId, setYourProfileId] = useState(tutorId);
+
+  const amITutee = () => {
+    if (profile.profileId !== tuteeId) {
+      setIsMyProfileId(tutorId);
+      setYourProfileId(tuteeId);
+    }
+  };
+
+  useEffect(() => {
+    amITutee();
+  }, []);
+
+  // 메세지 post API
+  const sendMessage = async () => {
+    await axios
+      .post(
+        `${process.env.REACT_APP_BASE_URL}/messages`,
+        {
+          senderId: myProfileId,
+          receiverId: yourProfileId,
+          messageRoomId: currentRoomId,
+          messageContent: inputValue,
+        },
+        {
+          headers: headers,
+        }
+      )
+      .then(() => {
+        console.log('메세지 전송');
+        //메세지 페이지 새로고침  or MessageRoom 부분만 따로 재 랜더
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const data = JSON.stringify({
+    tutorId: tutorId,
+    tuteeId: tuteeId,
+    tutoringTitle: tutoringTitle,
+    messageRoomId: currentRoomId,
+  });
+
+  const createTutoring = async () => {
+    await axios
+      .post(
+        `${process.env.REACT_APP_BASE_URL}/tutoring/${messages[0].senderId}`,
+        data,
+        {
+          headers: headers,
+        }
+      )
+      .then(() => {
+        console.log('메세지 전송');
+      })
+      .catch((err) => console.log(err));
+  };
 
   const matchConfirmProps = {
     isOpen: true,
@@ -23,13 +90,31 @@ const MessageContent = ({ messages, currentRoomId }) => {
 
     매칭을 원하신다면 과외의 이름을 작성해주세요.
     `,
+
       modalHandler: (_, value) => {
-        // TODO : 매칭 신청 관련 API 필요
-        console.log(value);
+        console.log(value, 'value');
+        setTutoringTitle(value);
+        //TODO: 매칭 요청 후 매칭 요청을 보냈습니다 보이기
+
         resetModal();
         setModal(matchAlertProps);
       },
       placeHolder: '과외의 이름을 작성하세요',
+    },
+  };
+
+  const matchAlertProps = {
+    isOpen: true,
+    modalType: 'handlerAlert',
+    props: {
+      text: `매칭 요청이 완료되었습니다.
+    상대방의 요청 수락 이후에는 과외 관리 페이지에서
+    확인하실 수 있습니다.`,
+      modalHandler: () => {
+        createTutoring();
+        console.log(tutoringTitle, 'alertModal');
+        resetModal();
+      },
     },
   };
 
@@ -40,22 +125,12 @@ const MessageContent = ({ messages, currentRoomId }) => {
       text: `상담 취소 하시겠습니까?
       상담 취소 시 대화 내역이 모두 삭제됩니다.`,
       modalHandler: () => {
-        // TODO : 상담 취소 관련 API currentRoomId 사용
+        delMessageRoom();
         console.log('상담 취소');
         resetModal();
         setModal(cancelAlertProps);
-        // TODO :상담 취소 후에는 Message 페이지 새로고침 필요
+        location.reload();
       },
-    },
-  };
-
-  const matchAlertProps = {
-    isOpen: true,
-    modalType: 'alert',
-    props: {
-      text: `매칭 요청이 완료되었습니다.
-    상대방의 요청 수락 이후에는 과외 관리 페이지에서
-    확인하실 수 있습니다.`,
     },
   };
 
@@ -69,8 +144,11 @@ const MessageContent = ({ messages, currentRoomId }) => {
     <div className={styles.container}>
       <div className={styles.messageContainer}>
         {messages.map((message) => (
-          // TODO: authId -> profileId
-          <Chat message={message} authId={1} key={message.messageId} />
+          <Chat
+            message={message}
+            authId={profile.profileId}
+            key={message.messageId}
+          />
         ))}
       </div>
       <div className={styles.sendContainer}>
@@ -83,17 +161,23 @@ const MessageContent = ({ messages, currentRoomId }) => {
         >
           <MdMenu />
         </button>
-        {/* TODO : ENTER 키로 전송 가능 */}
-        <TextInput
+        <input
+          className={styles.textInput}
           id="sendMsg"
-          placeHolder="메세지를 입력하세요"
+          placeholder="메세지를 입력하세요"
           type="text"
           value={inputValue}
-          handler={(e) => setInputValue(e.target.value)}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyUp={(e) => {
+            if (e.key === 'Enter' && e.target.value) {
+              sendMessage();
+              setInputValue('');
+            }
+          }}
         />
-        {/* TODO: 메세지 전송 관련 API 사용 */}
-        <button className={styles.sendBtn}>전송</button>
-
+        <button onClick={sendMessage} className={styles.sendBtn}>
+          전송
+        </button>
         {/* dropDown */}
         {isMenu && (
           <div className={styles.dropdown}>
@@ -111,8 +195,12 @@ const MessageContent = ({ messages, currentRoomId }) => {
 };
 
 MessageContent.propTypes = {
-  messages: PropType.array,
-  currentRoomId: PropType.string,
+  messageRoom: PropType.object,
+  delMessageRoom: PropType.func,
+  setMessageRoom: PropType.func,
+  headers: PropType.object,
+  currentRoomId: PropType.number,
+  profile: PropType.object,
 };
 
 export default MessageContent;

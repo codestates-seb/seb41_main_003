@@ -5,10 +5,11 @@ import PropTypes from 'prop-types';
 const MessageList = ({ messageList, setCurrentRoomId }) => {
   const getCurrentRoomId = (e) => {
     setCurrentRoomId(e.currentTarget.id);
-    console.log(e.currentTarget.id, 'getRoomId 실행');
+    console.log(e.currentTarget.id, 'getCurrentRoomId 실행');
   };
+
   return (
-    <>
+    <div>
       <ul className={styles.messageList}>
         {messageList.map((obj) => {
           return (
@@ -31,7 +32,7 @@ const MessageList = ({ messageList, setCurrentRoomId }) => {
           );
         })}
       </ul>
-    </>
+    </div>
   );
 };
 
