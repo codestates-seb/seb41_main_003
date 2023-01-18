@@ -134,7 +134,7 @@ public class TutoringService {
                 .orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
     }
 
-    private TutoringStatus getTutoringStatus(Long profileId) {
+    public TutoringStatus getTutoringStatus(Long profileId) {
         Profile profile = profileService.verifiedProfileById(profileId);
         if (profile.getProfileStatus().equals(ProfileStatus.TUTEE)) {
             return TutoringStatus.TUTOR_WAITING;
