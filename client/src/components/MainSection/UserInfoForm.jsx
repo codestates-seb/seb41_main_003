@@ -85,7 +85,7 @@ const UserInfoForm = () => {
       .catch(({ response }) => {
         console.log(response.status);
         if (response.status === 403)
-          reIssueToken(submitHandler).catch(() => {
+          reIssueToken(getUserInfo).catch(() => {
             console.log('reset');
             resetProfile();
             window.location.href = '/login';
@@ -187,7 +187,7 @@ const UserInfoForm = () => {
     } catch ({ response }) {
       console.log(response.status);
       if (response.status === 403) {
-        reIssueToken(submitHandler).catch(() => {
+        reIssueToken(patchUserInfo).catch(() => {
           console.log('reset');
           resetProfile();
           window.location.href = '/login';
