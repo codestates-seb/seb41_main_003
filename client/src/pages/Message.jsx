@@ -10,21 +10,20 @@ const Message = () => {
   const headers = {
     Authorization: sessionStorage.getItem('authorization'),
   };
-  const profile = { profileId: 1 };
-  // const [profile] = useRecoilState(Profile);
+  // const profile = { profileId: 1 };
+  const [profile] = useRecoilState(Profile);
   const [messageList, setMessageList] = useState([]);
   const [messageRoom, setMessageRoom] = useState({});
 
-  //* 원상복구
-  // const [currentRoomId, setCurrentRoomId] = useState(
-  //   messageList[0].messageRoomId
-  // );
-  const [currentRoomId, setCurrentRoomId] = useState(3);
+  // const [currentRoomId, setCurrentRoomId] = useState(3);
+  const [currentRoomId, setCurrentRoomId] = useState(
+    messageList[0].messageRoomId
+  );
 
   const getMessageList = async () => {
     await axios
-      // `${process.env.REACT_APP_BASE_URL}/messages/${profile.profileId}`
-      .get(`${process.env.REACT_APP_BASE_URL}/messages/1`, {
+      // `${process.env.REACT_APP_BASE_URL}/messages/1`
+      .get(`${process.env.REACT_APP_BASE_URL}/messages/${profile.profileId}`, {
         headers: headers,
       })
       .then((res) => {
@@ -36,10 +35,13 @@ const Message = () => {
 
   const getMessageRoom = async () => {
     await axios
-      // `${process.env.REACT_APP_BASE_URL}/rooms/${profile.profileId}/${currentRoomId}`
-      .get(`${process.env.REACT_APP_BASE_URL}/messages/rooms/1/3`, {
-        headers: headers,
-      })
+      // `${process.env.REACT_APP_BASE_URL}/messages/rooms/1/3`
+      .get(
+        `${process.env.REACT_APP_BASE_URL}/rooms/${profile.profileId}/${currentRoomId}`,
+        {
+          headers: headers,
+        }
+      )
       .then((res) => {
         setMessageRoom(res.data.data);
         console.log(res.data.data, 'MessageRoom API');
@@ -75,14 +77,14 @@ const Message = () => {
         <button onClick={getMessageRoom}>getMessageRoom</button>
         <div className={styles.message}>
           <MessageList
+            currentRoomId={currentRoomId}
             messageList={messageList}
             setCurrentRoomId={setCurrentRoomId}
-            currentRoomId={currentRoomId}
           />
           <MessageContent
+            currentRoomId={currentRoomId}
             messageRoom={messageRoom}
             delMessageRoom={delMessageRoom}
-            currentRoomId={currentRoomId}
             headers={headers}
             profile={profile}
             setMessageRoom={setMessageRoom}
