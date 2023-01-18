@@ -94,7 +94,12 @@ ConfirmValiModal.propTypes = {
   validation: PropTypes.string,
 };
 
-export const ConfirmTextModal = ({ text, modalHandler, placeHolder }) => {
+export const ConfirmTextModal = ({
+  text,
+  modalHandler,
+  placeHolder,
+  inputType = 'text',
+}) => {
   const reset = useResetRecoilState(ModalState);
   const [value, setValue] = useState('');
 
@@ -113,6 +118,7 @@ export const ConfirmTextModal = ({ text, modalHandler, placeHolder }) => {
       <div className={styles.input}>
         <TextInput
           id="confirmInput"
+          type={inputType}
           placeHolder={placeHolder}
           value={value}
           handler={valueHandler}
@@ -134,6 +140,7 @@ ConfirmTextModal.propTypes = {
   text: PropTypes.string,
   modalHandler: PropTypes.func,
   placeHolder: PropTypes.string,
+  inputType: PropTypes.string,
 };
 
 export const CancelConfirmModal = ({ text, modalHandler }) => {
