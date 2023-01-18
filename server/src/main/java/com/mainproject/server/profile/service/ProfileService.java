@@ -130,11 +130,11 @@ public class ProfileService {
             if (subjectString != null) {
                 subjects = subjectString.split(",");
             }
-            String name = params.get("name");
+            String search = params.get("search");
             String key = params.get("key");
             Pageable pageable = getCustomPageable(defaultPageable, sort);
             Page<ProfileQueryDto> queryProfile = profileRepository.findQueryProfile(
-                    key, subjects, name, WantedStatus.REQUEST, pageable
+                    key, subjects, search, WantedStatus.REQUEST, pageable
             );
             List<ProfileListResponseDto> dtoList = queryProfile.getContent()
                     .stream()
