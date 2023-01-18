@@ -81,7 +81,7 @@ const LoginForm = () => {
             console.log('회원정보 입력 필요');
             setModal(statusNoneProps);
           } else {
-            window.location.href = '/';
+            navigate('/');
           }
         })
         .catch(({ response }) => {

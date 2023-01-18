@@ -5,6 +5,7 @@ import reIssueToken from '../../util/reIssueToken';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import Profile from '../../recoil/profile';
 import ModalState from '../../recoil/modal';
+import { useNavigate } from 'react-router-dom';
 
 const AdminModal = () => {
   // TODO : 프로필 전환 API 연결 필요
@@ -15,12 +16,13 @@ const AdminModal = () => {
   const setModal = useSetRecoilState(ModalState);
   const resetProfile = useResetRecoilState(Profile);
   const resetModal = useResetRecoilState(ModalState);
+  const navigate = useNavigate();
 
   const switchHandler = (e) => {
     let { name } = e.currentTarget;
     console.log(name.slice(7));
     setProfile((prev) => ({ ...prev, profileId: name.slice(7) }));
-    window.location.href = '/';
+    navigate('/');
   };
 
   const getUserProfile = async () => {
@@ -45,7 +47,7 @@ const AdminModal = () => {
               text: `프로필이 없습니다.
               서비스 이용을 위해 프로필 생성 페이지로 이동합니다.`,
               modalHandler: () => {
-                window.location.href = '/addprofile';
+                navigate('/addprofile');
                 resetModal();
               },
             },

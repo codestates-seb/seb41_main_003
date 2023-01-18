@@ -42,7 +42,7 @@ const Header = () => {
       )
       .then(() => {
         console.log('검증 완료');
-        location.href = path;
+        navigate(path);
       })
       .catch(({ response }) => {
         console.log(response);

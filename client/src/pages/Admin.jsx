@@ -1,6 +1,6 @@
 import styles from './Admin.module.css';
 import { MdEdit, MdDelete, MdAddCircle } from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
 import ModalState from '../recoil/modal.js';
 import { useEffect, useState } from 'react';
@@ -14,6 +14,7 @@ const Admin = () => {
   const resetModal = useResetRecoilState(ModalState);
   const profileState = useRecoilValue(Profile);
   const resetProfile = useResetRecoilState(Profile);
+  const navigate = useNavigate();
 
   const getUserProfile = async () => {
     axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
@@ -112,7 +113,7 @@ const Admin = () => {
                             text: `프로필 수정 페이지로 이동합니다.`,
                             modalHandler: () => {
                               resetModal();
-                              window.location.href = `/editprofile/${profile.profileId}`;
+                              navigate(`/editprofile/${profile.profileId}`);
                             },
                           },
                         });
