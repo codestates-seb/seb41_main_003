@@ -8,13 +8,16 @@ import ModalState from '../../recoil/modal.js';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import reIssueToken from '../../util/reIssueToken';
+
+//프로필 수정, 추가 요청이 실패하고, status 값이 403으로 날아왔을 때 reIssueToken사용
 
 const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
   const { name, bio, school, subjects, profileStatus } = user;
 
-  const userId = sessionStorage.getItem('userId');
+  const userId =
+    sessionStorage.getItem('userId') || localStorage.getItem('userId');
   const { profileId } = useParams();
-  const token = sessionStorage.getItem('authorization');
 
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
@@ -33,11 +36,23 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
           ...user,
         },
         {
-          headers: { Authorization: token },
+          headers: {
+            Authorization:
+              sessionStorage.getItem('authorization') ||
+              localStorage.getItem('authorization'),
+          },
         }
       )
-      .then((res) => console(res.data.data))
-      .catch((err) => console.log(err));
+      .then(() => (window.location.href = '/admin'))
+      .catch(({ response }) => {
+        //403 토큰 expired 에러 메시지로 받기
+        if (response.data.message === 'EXPIRED ACCESS TOKEN') {
+          reIssueToken(patchProfile).catch(() => {
+            console.log(response);
+            window.location.href = '/login';
+          });
+        }
+      });
   };
 
   const editHandler = () => {
@@ -51,23 +66,36 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
   const postProfile = async () => {
     await axios
       .post(
-        `${process.env.REACT_APP_BASE_URL}/profiles/${userId}`,
+        `${process.env.REACT_APP_BASE_URL}/profiles/${
+          sessionStorage.getItem('userId') || localStorage.getItem('userId')
+        }`,
         {
           ...user,
         },
         {
-          headers: { Authorization: token },
+          headers: {
+            Authorization:
+              sessionStorage.getItem('authorization') ||
+              localStorage.getItem('authorizaiton'),
+          },
         }
       )
-      .then((res) => console.log(res.data.data))
-      .catch((err) => console.log(err));
+      .then(() => (window.location.href = '/admin'))
+      .catch(({ response }) => {
+        //403 토큰 expired 에러 메시지로 받기
+        if (response.data.message === 'EXPIRED ACCESS TOKEN') {
+          reIssueToken(postProfile).catch(() => {
+            console.log(response);
+            window.location.href = '/login';
+          });
+        }
+      });
   };
 
   const addHandler = () => {
     console.log('POST 요청');
     postProfile();
     resetModal();
-    window.location.href = '/admin';
   };
 
   const editConfirmProps = {
