@@ -117,8 +117,8 @@ public class TutoringService {
             Pageable pageable
     ) {
         Tutoring tutoring = verifiedTutoring(tutoringId);
-        if (tutoring.getTutor().getProfileId().equals(profileId) ||
-                tutoring.getTutee().getProfileId().equals(profileId) &&
+        if ((tutoring.getTutor().getProfileId().equals(profileId) ||
+                tutoring.getTutee().getProfileId().equals(profileId)) &&
                 !tutoring.getTutoringStatus().equals(TutoringStatus.FINISH)
         ) {
             tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
@@ -134,7 +134,7 @@ public class TutoringService {
                 .orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
     }
 
-    private TutoringStatus getTutoringStatus(Long profileId) {
+    public TutoringStatus getTutoringStatus(Long profileId) {
         Profile profile = profileService.verifiedProfileById(profileId);
         if (profile.getProfileStatus().equals(ProfileStatus.TUTEE)) {
             return TutoringStatus.TUTOR_WAITING;
