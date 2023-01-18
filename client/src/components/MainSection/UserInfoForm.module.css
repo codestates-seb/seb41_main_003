@@ -63,18 +63,19 @@
     margin-top: 4px;
   }
 
-  > span {
+  > span.vali {
     margin-bottom: 14px;
+    height: 12px;
     font-size: $sub;
     font-weight: $subW;
     color: $red;
   }
 
-  > span:last-of-type {
-    margin-bottom: 14px;
+  > span {
     font-size: $sub;
     font-weight: $subW;
     color: $black;
+    margin-bottom: 4px;
   }
 
   > button:last-of-type {

@@ -2,31 +2,104 @@ import styles from './UserInfoForm.module.css';
 import { LabelTextInput, TextInput } from '../Input';
 import { useState, useEffect } from 'react';
 import { ButtonNightBlue } from '../Button';
+import axios from 'axios';
+import { useResetRecoilState, useSetRecoilState } from 'recoil';
+import validation from '../../util/validation';
+import reIssueToken from '../../util/reIssueToken';
+import Profile from '../../recoil/profile';
+import ModalState from '../../recoil/modal';
 
 const initialUserInfo = {
-  userId: 0,
   nickName: '',
-  email: 'test@gmail.com',
+  email: '',
   password: '',
   passwordConfirm: '',
-  phoneNumner: '',
-  loginType: '',
-  userStatus: 'TUTEE',
-  createAt: '',
-  updateAt: '',
+  phoneNumber: '',
+  userStatus: 'NONE',
   secondPassword: '',
   secondPasswordConfirm: '',
 };
 
 const UserInfoForm = () => {
-  const [userInfoData, setUserInfoData] = useState(initialUserInfo);
+  const [userData, setUserData] = useState(initialUserInfo);
   const [userStatus, setUserStatus] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState(false);
-  const [secondConfirmPassword, setSecondConfirmPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState({
+    pw: false,
+    secondPw: false,
+  });
+  const setModal = useSetRecoilState(ModalState);
+  const resetProfile = useResetRecoilState(Profile);
+
+  const isNewUser = userData.userStatus === 'NONE';
+
+  const conflictProp = {
+    isOpen: true,
+    modalType: 'alert',
+    props: {
+      text: `이미 등록된 휴대폰 번호입니다.`,
+    },
+  };
+
+  const confirmProp = {
+    isOpen: true,
+    modalType: 'confirm',
+    props: {
+      text: `회원 정보를 수정하시겠습니까?`,
+      modalHandler: () => {
+        patchUserInfo();
+      },
+    },
+  };
+
+  const submitProp = {
+    isOpen: true,
+    modalType: 'alert',
+    props: {
+      text: `수정이 완료되었습니다.`,
+    },
+  };
+
+  const getUserInfo = async () => {
+    axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+
+    axios.defaults.headers.common['Authorization'] =
+      sessionStorage.getItem('authorization') ||
+      localStorage.getItem('authorization');
+    axios
+      .get(
+        `/users/${
+          sessionStorage.getItem('userId') || localStorage.getItem('userId')
+        }`
+      )
+      .then(({ data }) => {
+        const { email, nickName, userStatus, phoneNumber } = data.data;
+        setUserData({
+          ...userData,
+          email,
+          nickName,
+          userStatus,
+          phoneNumber: phoneNumber === null ? '' : phoneNumber,
+        });
+        setUserStatus(userStatus);
+      })
+      .catch(({ response }) => {
+        console.log(response.status);
+        if (response.status === 403)
+          reIssueToken(submitHandler).catch(() => {
+            console.log('reset');
+            resetProfile();
+            window.location.href = '/login';
+          });
+      });
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   const inputHandler = (e) => {
     const { id, value } = e.target;
-    setUserInfoData({ ...userInfoData, [id]: value });
+    setUserData({ ...userData, [id]: value });
   };
 
   const radioHandler = (e) => {
@@ -35,36 +108,88 @@ const UserInfoForm = () => {
 
   //* 비밀번호와 비밀번호 확인 체크하는 핸들러 함수
   const confirmHandler = () => {
-    if (userInfoData.password === userInfoData.passwordConfirm) {
-      console.log('같은데!');
-      setConfirmPassword(true);
+    if (userData.password === userData.passwordConfirm) {
+      setConfirmPassword((prev) => ({ ...prev, pw: true }));
     } else {
-      console.log('다른데!');
-      setConfirmPassword(false);
+      setConfirmPassword((prev) => ({ ...prev, pw: false }));
     }
-
-    if (userInfoData.secondPasswordConfirm === userInfoData.secondPassword) {
-      console.log('2차도 같은데!');
-      setSecondConfirmPassword(true);
+    if (userData.secondPasswordConfirm === userData.secondPassword) {
+      setConfirmPassword((prev) => ({ ...prev, secondPw: true }));
     } else {
-      console.log('2차도 다른데!');
-      setSecondConfirmPassword(false);
+      setConfirmPassword((prev) => ({ ...prev, secondPw: false }));
     }
   };
 
   //* 비밀번호 확인용 핸들러
   useEffect(() => {
     confirmHandler();
-  }, [userInfoData.passwordConfirm, userInfoData.password]);
-
+  }, [userData.passwordConfirm, userData.password]);
   useEffect(() => {
     confirmHandler();
-  }, [userInfoData.secondPasswordConfirm, userInfoData.secondPassword]);
+  }, [userData.secondPasswordConfirm, userData.secondPassword]);
 
-  // TODO : submit API 연결 필요
-  const submitHandler = (e) => {
+  //* 확인 모달창을 띄우는 submit 핸들러
+  const submitHandler = async (e) => {
     e.preventDefault();
-    console.log('submit!');
+
+    if (isNewUser) {
+      if (
+        validation(userData.nickName, 'nickName') &&
+        validation(userData.password, 'password') &&
+        validation(userData.phoneNumber, 'phoneNumber') &&
+        validation(userData.secondPassword, 'secondPassword') &&
+        userStatus !== 'NONE' &&
+        confirmPassword.pw &&
+        confirmPassword.secondPw
+      ) {
+        setModal(confirmProp);
+      }
+    } else {
+      if (
+        validation(userData.nickName, 'nickName') &&
+        validation(userData.phoneNumber, 'phoneNumber') &&
+        confirmPassword.pw &&
+        confirmPassword.secondPw
+      ) {
+        setModal(confirmProp);
+      }
+    }
+  };
+
+  const patchUserInfo = async () => {
+    const { nickName, password, secondPassword, phoneNumber } = userData;
+
+    const patchData = {
+      nickName,
+      ...(userData.password !== '' ? { password } : {}),
+      ...(userData.secondPassword !== '' ? { secondPassword } : {}),
+      phoneNumber,
+      ...(isNewUser ? { userStatus } : {}),
+    };
+
+    try {
+      console.log('수정 요청');
+      const { data } = await axios.patch(
+        `/users/${
+          sessionStorage.getItem('userId') || localStorage.getItem('userId')
+        }`,
+        patchData
+      );
+      console.log('수정완료');
+      console.log(data.data);
+      setModal(submitProp);
+    } catch ({ response }) {
+      console.log(response.status);
+      if (response.status === 403) {
+        reIssueToken(submitHandler).catch(() => {
+          console.log('reset');
+          resetProfile();
+          window.location.href = '/login';
+        });
+      } else if (response.status === 409) {
+        setModal(conflictProp);
+      }
+    }
   };
 
   return (
@@ -83,42 +208,56 @@ const UserInfoForm = () => {
           name="닉네임"
           placeHolder="닉네임"
           type="text"
-          value={userInfoData.nickName}
+          value={userData.nickName}
           handler={inputHandler}
           required
         />
-        <span>닉네임은 최소 2글자 이상이어야 합니다.</span>
+        <span className={styles.vali}>
+          {!validation(userData.nickName, 'nickName') &&
+            '닉네임은 최소 2글자 이상 10글자 이하여야 합니다.'}
+        </span>
+
         <div className={styles.emailBox}>
           <span>이메일</span>
-          <span>{userInfoData.email}</span>
+          <span>{userData.email}</span>
         </div>
+
         <LabelTextInput
           id="password"
           name="비밀번호 수정"
           placeHolder="비밀번호 수정"
           type="password"
-          value={userInfoData.password}
+          value={userData.password}
           handler={inputHandler}
-          required
         />
         <TextInput
           id="passwordConfirm"
           type="password"
           placeHolder="비밀번호 확인"
-          value={userInfoData.passwordConfirm}
+          value={userData.passwordConfirm}
           handler={inputHandler}
         />
-        <span>비밀번호 입력이 잘못되었습니다.</span>
+        <span className={styles.vali}>
+          {!validation(userData.password, 'password') &&
+            '비밀번호는 영문/숫자 조합으로 8~16자리여야 합니다.'}
+          {!confirmPassword.pw && validation(userData.password, 'password')
+            ? '비밀번호 확인 입력이 잘못되었습니다.'
+            : ''}
+        </span>
+
         <LabelTextInput
-          id="phoneNumebr"
+          id="phoneNumber"
           name="휴대폰 번호"
           placeHolder="휴대폰 번호"
           type="tel"
-          value={userInfoData.phoneNumner}
+          value={userData.phoneNumber}
           handler={inputHandler}
           required
         />
-        <span>올바르지 않은 형식입니다.</span>
+        <span className={styles.vali}>
+          {!validation(userData.phoneNumber, 'phoneNumber') &&
+            '올바른 휴대폰번호를 입력해주세요.'}
+        </span>
 
         <div className={styles.userStatusBox}>
           <span className={styles.userType}>
@@ -128,54 +267,79 @@ const UserInfoForm = () => {
           <div className={styles.radioBox}>
             <label
               className={
-                userStatus === '튜터' ? styles.checkedLabel : styles.normalLabel
+                userStatus === 'TUTOR'
+                  ? styles.checkedLabel
+                  : styles.normalLabel
               }
             >
               <input
                 type="radio"
-                value="튜터"
-                checked={userStatus === '튜터'}
+                value="TUTOR"
+                checked={userStatus === 'TUTOR'}
                 onChange={radioHandler}
                 className={styles.radioButton}
+                {...(!isNewUser && {
+                  disabled: 'disabled',
+                })}
               />
               튜터
             </label>
             <label
               className={
-                userStatus === '튜티' ? styles.checkedLabel : styles.normalLabel
+                userStatus === 'TUTEE'
+                  ? styles.checkedLabel
+                  : styles.normalLabel
               }
             >
               <input
                 type="radio"
-                value="튜티"
-                checked={userStatus === '튜티'}
+                value="TUTEE"
+                checked={userStatus === 'TUTEE'}
                 onChange={radioHandler}
                 className={styles.radioButton}
-              ></input>
+                {...(!isNewUser && {
+                  disabled: 'disabled',
+                })}
+              />
               튜티
             </label>
           </div>
         </div>
-        <span>유저 타입은 최초 1회 결정 후 수정할 수 없습니다.</span>
+        <span className={styles.vali}>
+          유저 타입은 최초 1회 결정 후 수정할 수 없습니다.
+        </span>
 
         <LabelTextInput
           id="secondPassword"
           name="2차 비밀번호"
           placeHolder="2차 비밀번호"
           type="password"
-          value={userInfoData.secondPassword}
+          value={userData.secondPassword}
           handler={inputHandler}
-          required
+          {...(isNewUser && {
+            required: true,
+          })}
         />
         <TextInput
           id="secondPasswordConfirm"
           type="password"
           placeHolder="2차 비밀번호 확인"
-          value={userInfoData.secondPasswordConfirm}
+          value={userData.secondPasswordConfirm}
           handler={inputHandler}
-          required
+          {...(isNewUser && {
+            required: true,
+          })}
         />
         <span>2차 비밀번호는 프로필 관리에 사용됩니다.</span>
+        <span className={styles.vali}>
+          {!validation(userData.secondPassword, 'secondPassword') &&
+            '2차 비밀번호는 4~8자리 숫자여야 합니다.'}
+          {!confirmPassword.secondPw &&
+          validation(userData.secondPassword, 'secondPassword')
+            ? '비밀번호 확인 입력이 잘못되었습니다.'
+            : ''}
+        </span>
+
         <ButtonNightBlue text="수정 완료" form="editUserInfo" />
       </form>
     </article>
