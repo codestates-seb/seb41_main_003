@@ -2,15 +2,15 @@ package com.mainproject.server.profile.controller;
 
 import com.mainproject.server.dto.PageResponseDto;
 import com.mainproject.server.dto.ResponseDto;
-import com.mainproject.server.profile.dto.*;
+import com.mainproject.server.profile.dto.ProfileDto;
+import com.mainproject.server.profile.dto.ProfilePageDto;
+import com.mainproject.server.profile.dto.ProfileResponseDto;
+import com.mainproject.server.profile.dto.WantedDto;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.mapper.ProfileMapper;
 import com.mainproject.server.profile.service.ProfileService;
-import com.mainproject.server.utils.StubData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -27,8 +26,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/profiles")
 public class ProfileController {
-
-    private final StubData stubData;
 
     private final ProfileService profileService;
 
