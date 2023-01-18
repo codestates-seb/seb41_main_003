@@ -1,9 +1,9 @@
 import styles from './LoginForm.module.css';
 import { CheckBox, TextInput } from '../Input';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useRecoilState, useSetRecoilState, useResetRecoilState } from 'recoil';
+import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import Profile from '../../recoil/profile';
 import ModalState from '../../recoil/modal';
 import validation from '../../util/validation';
@@ -23,9 +23,9 @@ const LoginForm = () => {
   const [isIdChecked, setIsIdChecked] = useState(false);
   //자동 로그인 설정 체크
   const [isAutoLoginChecked, setIsAutoLoginChecked] = useState(false);
-  const [isFail, setIsFail] = useState(false);
+  const [isFail, setIsFail] = useState(0);
 
-  const [profile, setProfile] = useRecoilState(Profile);
+  const setProfile = useSetRecoilState(Profile);
 
   const navigate = useNavigate();
 
@@ -81,17 +81,17 @@ const LoginForm = () => {
             console.log('회원정보 입력 필요');
             setModal(statusNoneProps);
           } else {
-            navigate('/');
+            window.location.href = '/';
           }
         })
-        .catch((err) => {
-          // TODO : 로그인 에러 핸들링 필요 (서버/클라이언트 오류, 입력 오류 분기)
-          // ! 현재는 CORS 오류로 인해 핸들링 불가능
-          console.log(err);
-          console.log('로그인 에러');
-          setIsFail(true);
+        .catch(({ response }) => {
+          if (response.status === 401) {
+            console.log(response);
+            console.log('비밀번호 오류');
+            setIsFail(401);
+          }
         });
-    } else setIsFail(false);
+    } else setIsFail(400);
   };
 
   return (
@@ -140,7 +140,8 @@ const LoginForm = () => {
         </div>
         <div className={styles.buttonContainer}>
           <span className={styles.failAuth}>
-            {isFail && '아이디 또는 비밀번호가 틀렸습니다.'}
+            {isFail === 401 && '아이디 또는 비밀번호가 틀렸습니다.'}
+            {isFail === 400 && '오류가 발생했습니다.'}
           </span>
           <button type="submit" className={styles.loginButton}>
             로그인
