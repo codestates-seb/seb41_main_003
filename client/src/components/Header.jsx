@@ -7,6 +7,8 @@ import { useSetRecoilState, useRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../recoil/modal.js';
 import defaultUser from '../assets/defaultUser.png';
 import Profile from '../recoil/profile';
+import axios from 'axios';
+import reIssueToken from '../util/reIssueToken';
 
 const Header = () => {
   const [isMenu, setIsMenu] = useState(false);
@@ -22,6 +24,63 @@ const Header = () => {
     isOpen: true,
     modalType: 'admin',
     props: {},
+  };
+
+  const verify2ndPassword = async (value, path) => {
+    axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+
+    axios.defaults.headers.common['Authorization'] =
+      sessionStorage.getItem('authorization') ||
+      localStorage.getItem('authorization');
+
+    await axios
+      .post(
+        `/auth/verify-second-password/${
+          sessionStorage.getItem('userId') || localStorage.getItem('userId')
+        }`,
+        { secondPassword: value }
+      )
+      .then(() => {
+        console.log('검증 완료');
+        location.href = path;
+      })
+      .catch(({ response }) => {
+        console.log(response);
+        console.log(response.status);
+        console.log(response.data.message);
+        if (response.data.message === 'WRONG SECOND PASSWORD') {
+          setModal({
+            isOpen: true,
+            modalType: 'handlerAlert',
+            props: {
+              text: '2차 비밀번호가 틀렸습니다.',
+              modalHandler: () => {
+                setModal(verify2ndPwProps);
+              },
+            },
+          });
+        } else if (response.data.message === 'EXPIRED REFRESH TOKEN')
+          reIssueToken(verify2ndPassword).catch(() => {
+            console.log('reset');
+            resetProfile();
+            window.location.href = '/login';
+          });
+      });
+  };
+
+  const verify2ndPwProps = (path) => {
+    return {
+      isOpen: true,
+      modalType: 'confirmText',
+      props: {
+        text: '2차 비밀번호를 입력해주세요.',
+        placeHolder: '2차 비밀번호',
+        inputType: 'password',
+        modalHandler: (_, value) => {
+          verify2ndPassword(value, path);
+        },
+      },
+    };
   };
 
   const logoutProps = {
@@ -119,10 +178,14 @@ const Header = () => {
                 </button>
               </li>
               <li>
-                <Link to="/admin">전체 프로필 관리</Link>
+                <button onClick={() => setModal(verify2ndPwProps('/admin'))}>
+                  전체 프로필 관리
+                </button>
               </li>
               <li>
-                <Link to="/userinfo">회원정보 수정</Link>
+                <button onClick={() => setModal(verify2ndPwProps('/userinfo'))}>
+                  회원정보 수정
+                </button>
               </li>
               <li>
                 <button onClick={() => setModal(logoutProps)}>로그아웃</button>
