@@ -13,6 +13,7 @@ import BothHandlerModal from './BothHandlerModal';
 import ReviewModal from './ReviewModal';
 import ReviewDetailModal from './ReviewDetail';
 import EditReviewModal from './EditReviewModal';
+import { HandlerAlertModal } from './HandlerAlertModal';
 
 export const GlobalModal = () => {
   const reset = useResetRecoilState(ModalState);
@@ -30,10 +31,15 @@ export const GlobalModal = () => {
     reviewDetail: <ReviewDetailModal {...props} />,
     editReview: <EditReviewModal {...props} />,
     cancelConfirm: <CancelConfirmModal {...props} />,
+    handlerAlertModal: <HandlerAlertModal {...props} />,
   };
 
   return (
-    <div className={styles.backdrop} onClick={() => reset()} aria-hidden="true">
+    <div
+      className={styles.backdrop}
+      {...(modalType !== 'admin' && { onClick: () => reset() })}
+      aria-hidden="true"
+    >
       {modal[modalType]}
     </div>
   );

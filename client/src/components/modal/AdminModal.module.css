@@ -2,7 +2,7 @@
 
 .container {
   width: 100%;
-  max-width: 1048px;
+  max-width: 1000px;
   background-color: $white;
   padding: 48px;
   border-radius: 10px;
