@@ -7,6 +7,7 @@ import com.mainproject.server.constant.WantedStatus;
 import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.image.entity.ProfileImage;
 import com.mainproject.server.profile.dto.ProfilePageDto;
+import com.mainproject.server.profile.dto.WantedDto;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.repository.ProfileRepository;
 import com.mainproject.server.review.entity.Review;
@@ -27,6 +28,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -35,6 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
 class ProfileServiceTest {
@@ -115,12 +118,109 @@ class ProfileServiceTest {
     @DisplayName("프로필 생성 TEST - EXCEEDED MAXIMUM PROFILE COUNT")
     void givenUserProfileSize4WhenThrowExceededMaximumProfileCountThenEqualsServiceLogicException() {
         // Given
-
+        Long userId = 1L;
+        Profile profile = createProfile(1L);
+        List<SubjectDto> dtoList = List.of(createSubjectDto(1L),createSubjectDto(2L));
+        Pageable pageable = PageRequest.of(0, 10);
+        User findUser = User.builder()
+                .userStatus(UserStatus.TUTOR)
+                .profiles(Set.of(
+                        createProfile(1L),
+                        createProfile(2L),
+                        createProfile(3L),
+                        createProfile(4L)
+                ))
+                .build();
+        given(userRepository.findById(anyLong())).willReturn(Optional.of(findUser));
         // When
-
+        Throwable throwable = catchThrowable(
+                () -> profileService.createProfile(userId, profile, dtoList, pageable)
+        );
         // Then
+        assertThat(throwable)
+                .isInstanceOf(ServiceLogicException.class)
+                .hasMessageContaining(ErrorCode.EXCEEDED_MAXIMUM_PROFILE_COUNT.getMessage());
     }
 
+    @Test
+    @DisplayName("특정 프로필 수정 TEST")
+    void givenPatchProfileWhenUpdateProfileLogicThenReturnUpdateProfile() {
+        // Given
+        Long id = 1L;
+        Profile profile = createProfile(id);
+        profile.setName("patchName");
+        profile.setBio("patchBio");
+        List<SubjectDto> subjectDto = List.of(createSubjectDto(id), createSubjectDto(id));
+        Profile findProfile = createProfile(id);
+        Pageable pageable = PageRequest.of(0, 10);
+
+        given(subjectRepository.findById(anyLong()))
+                .willReturn(Optional.ofNullable(createSubject(id)));
+        given(profileRepository.findById(anyLong()))
+                .willReturn(Optional.ofNullable(findProfile));
+        doNothing().when(subjectProfileRepository).deleteByProfileProfileId(anyLong());
+        // When
+        ProfilePageDto updateProfile =
+                profileService.updateProfile(id, profile, subjectDto, pageable);
+        // Then
+        assertThat(updateProfile.getName()).isEqualTo(profile.getName());
+        assertThat(updateProfile.getBio()).isEqualTo(profile.getBio());
+    }
+
+    @Test
+    @DisplayName("특정 프로필 공고 상태 수정 TEST")
+    void givenWantedStatusRequestWhenFindProfileWantedStatusNoneThenReturnUpdateProfile() {
+        // Given
+        Long profileId = 1L;
+        WantedDto wantedDto = new WantedDto();
+        wantedDto.setWantedStatus("request");
+        Profile profile = createProfile(profileId);
+        profile.setWantedStatus(WantedStatus.NONE);
+        Pageable pageable = PageRequest.of(0, 10);
+        given(profileRepository.findById(anyLong())).willReturn(Optional.of(profile));
+        // When
+        ProfilePageDto updateProfile =
+                profileService.updateWantedStatus(
+                        profileId,
+                        wantedDto,
+                        pageable);
+        // Then
+        assertThat(updateProfile.getWantedStatus()).isEqualTo("REQUEST");
+    }
+
+    @Test
+    @DisplayName("유틸 메소드 createSubjectProfile TEST")
+    void givenProfileAndSubjectDtoListWhenSubjectDtoListNotNullThenReturnUpdateProfile() {
+        // Given
+        Long id = 1L;
+        Profile profile = createProfile(id);
+        List<SubjectDto> subjectDto = List.of(createSubjectDto(id), createSubjectDto(id));
+        given(subjectRepository.findById(anyLong()))
+                .willReturn(Optional.ofNullable(createSubject(id)));
+        // When
+        Profile updateProfile = profileService.createSubjectProfile(profile, subjectDto);
+        // Then
+        assertThat(updateProfile.getSubjectString()).contains("test,test");
+    }
+
+    @Test
+    @DisplayName("프로필 존재 유무 검증 TEST - PROFILE NOT FOUND")
+    void givenNullWhenThrowProfileNotFoundThenEqualsServiceLogicException() {
+        // Given
+        Long profileId = 1L;
+        given(profileRepository.findById(anyLong())).willReturn(Optional.empty());
+        // When
+        Throwable throwable = catchThrowable(
+                () -> profileService.verifiedProfileById(profileId)
+        );
+        // Then
+        assertThat(throwable)
+                .isInstanceOf(ServiceLogicException.class)
+                .hasMessageContaining(ErrorCode.PROFILE_NOT_FOUND.getMessage());
+    }
+
+
+    /* Todo 테스트 코드 작성 후 리팩토링시 클래스로 통합 */
     public SubjectDto createSubjectDto(Long id) {
         return new SubjectDto(id, "test", "test");
     }
@@ -145,6 +245,7 @@ class ProfileServiceTest {
         Subject get = Subject.builder()
                 .subjectId(id)
                 .subjectTitle("test")
+                .subjectProfiles(new LinkedHashSet<>())
                 .build();
         get.setCreateAt(LocalDateTime.now());
         get.setUpdateAt(LocalDateTime.now());
