@@ -2,8 +2,7 @@ import styles from './Header.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { MdNotifications } from 'react-icons/md';
-import { ButtonRed } from './Button';
-import { useSetRecoilState, useRecoilState, useResetRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import ModalState from '../recoil/modal.js';
 import defaultUser from '../assets/defaultUser.png';
 import Profile from '../recoil/profile';
@@ -15,7 +14,7 @@ const Header = () => {
   const [isNoti, setIsNoti] = useState(false);
   const navigate = useNavigate();
 
-  const [profile, setProfile] = useRecoilState(Profile);
+  const profile = useRecoilValue(Profile);
   const setModal = useSetRecoilState(ModalState);
   const resetProfile = useResetRecoilState(Profile);
   const resetModal = useResetRecoilState(ModalState);
@@ -206,12 +205,6 @@ const Header = () => {
           </ul>
         </div>
       )}
-      <ButtonRed
-        text="⚠로그인 상태 변경"
-        buttonHandler={() =>
-          setProfile((prev) => ({ ...prev, isLogin: !prev.isLogin }))
-        }
-      />
     </header>
   );
 };
