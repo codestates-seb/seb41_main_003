@@ -121,7 +121,7 @@ const LoginForm = () => {
           <span>
             {!(loginData.password.length === 0) &&
               !validation(loginData.password, 'password') &&
-              '비밀번호는 영문/숫자 조합으로 8~16자리어야 합니다.'}
+              '비밀번호는 영문/숫자 조합으로 8~16자리여야 합니다.'}
           </span>
         </div>
         <div className={styles.checkboxContainer}>
