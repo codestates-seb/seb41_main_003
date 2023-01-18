@@ -136,7 +136,8 @@ const UserInfoForm = () => {
     if (isNewUser) {
       if (
         validation(userData.nickName, 'nickName') &&
-        validation(userData.password, 'password') &&
+        (userData.password.length === 0 ||
+          validation(userData.password, 'password')) &&
         validation(userData.phoneNumber, 'phoneNumber') &&
         validation(userData.secondPassword, 'secondPassword') &&
         userStatus !== 'NONE' &&
@@ -144,11 +145,15 @@ const UserInfoForm = () => {
         confirmPassword.secondPw
       ) {
         setModal(confirmProp);
-      }
+      } else console.log('응 통과 안시켜줘');
     } else {
       if (
         validation(userData.nickName, 'nickName') &&
+        (userData.password.length === 0 ||
+          validation(userData.password, 'password')) &&
         validation(userData.phoneNumber, 'phoneNumber') &&
+        (userData.secondPassword.length === 0 ||
+          validation(userData.secondPassword, 'secondPassword')) &&
         confirmPassword.pw &&
         confirmPassword.secondPw
       ) {

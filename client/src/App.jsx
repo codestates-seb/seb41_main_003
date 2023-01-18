@@ -19,12 +19,48 @@ import Footer from './components/Footer';
 import TestPage from './pages/TestPage';
 import EditJournal from './pages/EditJournal';
 import Journal from './pages/Journal';
-import { GlobalModal } from './components/modal/GlobalModal';
 import AddJournal from './pages/AddJournal';
-import { useRef } from 'react';
+import { GlobalModal } from './components/modal/GlobalModal';
+import { useEffect, useRef } from 'react';
+import { useRecoilValue, useSetRecoilState, useResetRecoilState } from 'recoil';
+import Profile from './recoil/profile';
+import ModalState from './recoil/modal';
 
 const App = () => {
   const footerRef = useRef(null);
+
+  const profile = useRecoilValue(Profile);
+  const resetProfile = useResetRecoilState(Profile);
+
+  const setModal = useSetRecoilState(ModalState);
+  const resetModal = useResetRecoilState(ModalState);
+
+  const statusNoneProps = {
+    isOpen: true,
+    modalType: 'bothHandler',
+    props: {
+      text: `서비스 이용을 위해 회원 정보 입력이 필요합니다. 
+      회원 정보를 입력하시겠습니까?
+
+      (입력이 되지 않으면 정상적인 서비스가 불가하여,
+        취소 시 로그아웃 처리됩니다.)`,
+      modalHandler: (e) => {
+        const { name } = e.target;
+        if (name === 'yes') {
+          resetModal();
+          location.href = '/userinfo';
+        } else {
+          localStorage.clear();
+          sessionStorage.clear();
+          resetProfile();
+          resetModal();
+        }
+      },
+    },
+  };
+  useEffect(() => {
+    if (profile.userStatus === 'NONE') setModal(statusNoneProps);
+  });
   return (
     <div className="app">
       <Router basename="/">

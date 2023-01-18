@@ -3,9 +3,8 @@ import { CheckBox, TextInput } from '../Input';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import Profile from '../../recoil/profile';
-import ModalState from '../../recoil/modal';
 import validation from '../../util/validation';
 
 const initialLogindata = {
@@ -28,24 +27,6 @@ const LoginForm = () => {
   const setProfile = useSetRecoilState(Profile);
 
   const navigate = useNavigate();
-
-  const setModal = useSetRecoilState(ModalState);
-  const resetModal = useResetRecoilState(ModalState);
-
-  const statusNoneProps = {
-    isOpen: true,
-    modalType: 'confirm',
-    props: {
-      text: `서비스 이용을 위해 회원 정보 입력이 필요합니다. 
-      회원 정보를 입력하시겠습니까?
-
-      (입력이 되지 않으면 정상적인 서비스가 불가합니다.)`,
-      modalHandler: () => {
-        navigate('/userinfo');
-        resetModal();
-      },
-    },
-  };
 
   const inputHandler = (e) => {
     const { id, value } = e.target;
@@ -79,7 +60,6 @@ const LoginForm = () => {
           }));
           if (res.data.userStatus === 'NONE') {
             console.log('회원정보 입력 필요');
-            setModal(statusNoneProps);
           } else {
             navigate('/');
           }

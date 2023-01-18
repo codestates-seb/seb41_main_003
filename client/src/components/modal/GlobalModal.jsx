@@ -37,7 +37,10 @@ export const GlobalModal = () => {
   return (
     <div
       className={styles.backdrop}
-      {...(modalType !== 'admin' && { onClick: () => reset() })}
+      {...(modalType === 'admin' ||
+        modalType === 'bothHandler' || {
+          onClick: () => reset(),
+        })}
       aria-hidden="true"
     >
       {modal[modalType]}
