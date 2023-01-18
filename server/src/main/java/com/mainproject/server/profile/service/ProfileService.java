@@ -57,9 +57,7 @@ public class ProfileService {
 
     public ProfilePageDto getProfile(Long profileId, Pageable pageable) {
         Profile findProfile = verifiedProfileById(profileId);
-        Set<Review> reviews = findProfile.getReviews();
-        Page<Review> reviewPage = new PageImpl<>(new ArrayList<>(reviews), pageable, reviews.size());
-        return ProfilePageDto.of(findProfile, reviewPage);
+        return getProfilePageDto(findProfile, pageable);
     }
 
     public ProfilePageDto createProfile(
@@ -81,8 +79,7 @@ public class ProfileService {
         profile.setWantedStatus(WantedStatus.NONE);
         profile.setProfileStatus(ProfileStatus.valueOf(userStatus.name()));
         profile.addUser(findUser);
-        createSubjectProfile(profile, subjectDtos);
-        Profile save = profileRepository.save(profile);
+        Profile save = profileRepository.save(createSubjectProfile(profile, subjectDtos));
         return getProfilePageDto(save, pageable);
     }
 
@@ -95,9 +92,7 @@ public class ProfileService {
         Profile findProfile = verifiedProfileById(profileId);
         subjectProfileRepository.deleteByProfileProfileId(findProfile.getProfileId());
         Profile updateProfile = updateProfileFiled(profile, findProfile);
-        createSubjectProfile(updateProfile, subjectDtos);
-        Profile save = profileRepository.save(updateProfile);
-        return getProfilePageDto(save, pageable);
+        return getProfilePageDto(createSubjectProfile(updateProfile, subjectDtos), pageable);
     }
 
     public ProfilePageDto updateWantedStatus(Long profileId, WantedDto wantedDto, Pageable pageable) {
@@ -106,8 +101,7 @@ public class ProfileService {
         );
         Profile findProfile = verifiedProfileById(profileId);
         findProfile.setWantedStatus(wantedStatus);
-        Profile save = profileRepository.save(findProfile);
-        return getProfilePageDto(save, pageable);
+        return getProfilePageDto(findProfile, pageable);
     }
 
     public void deleteProfile(Long profileId) {
@@ -155,7 +149,6 @@ public class ProfileService {
                 .orElseThrow(() -> new ServiceLogicException(ErrorCode.PROFILE_NOT_FOUND));
     }
 
-    // Todo 쿼리파라미터로 sort 변수가 이미 지정되어 있어 필요 없을것 같다. 추후 리팩토링시 삭제 예정
     private static Pageable getCustomPageable(Pageable defaultPageable, String sort) {
         if (sort != null && sort.equals("rate")) {
             return PageRequest.of(
@@ -172,10 +165,10 @@ public class ProfileService {
         }
     }
 
-    private void createSubjectProfile(Profile profile, List<SubjectDto> subjectDtos) {
+    public Profile createSubjectProfile(Profile profile, List<SubjectDto> subjectDtos) {
         if (subjectDtos != null) {
             StringBuilder sb = new StringBuilder();
-            profile.getSubjectProfiles().clear();
+            profile.setSubjectProfiles(new LinkedHashSet<>());
             subjectDtos
                     .forEach(s -> {
                         Subject subject = subjectRepository.findById(s.getSubjectId())
@@ -188,6 +181,7 @@ public class ProfileService {
                     });
             String subjectString = sb.toString();
             profile.setSubjectString(subjectString.replaceFirst(".$", ""));
+            return profile;
         } else {
             throw new ServiceLogicException(ErrorCode.SUBJECT_NOT_NULL);
         }
