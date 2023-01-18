@@ -70,7 +70,7 @@ public class UserController {
     @PatchMapping("/{userId}")
     public ResponseEntity patchUser(
             @PathVariable Long userId,
-            @RequestBody UserPatchDto userPatchDto
+            @RequestBody @Validated UserPatchDto userPatchDto
     ) {
         userPatchDto.setUserId(userId);
         if (userPatchDto.getUserStatus() != null && !userPatchDto.getUserStatus().isBlank()) {
