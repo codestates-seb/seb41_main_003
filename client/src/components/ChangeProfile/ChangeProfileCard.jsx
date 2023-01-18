@@ -36,7 +36,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
           headers: { Authorization: token },
         }
       )
-      .then((res) => console.log(res.data.data))
+      .then((res) => console(res.data.data))
       .catch((err) => console.log(err));
   };
 
@@ -44,6 +44,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
     console.log('PATCH 요청');
     patchProfile();
     resetModal();
+    window.location.href = `/myprofile/${profileId}`;
   };
 
   //프로필 추가 4개 초과시에는 400 에러
@@ -66,6 +67,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
     console.log('POST 요청');
     postProfile();
     resetModal();
+    window.location.href = '/admin';
   };
 
   const editConfirmProps = {
