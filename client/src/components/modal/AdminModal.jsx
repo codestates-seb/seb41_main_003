@@ -23,6 +23,7 @@ const AdminModal = () => {
     console.log(name.slice(7));
     setProfile((prev) => ({ ...prev, profileId: name.slice(7) }));
     navigate('/');
+    resetModal();
   };
 
   const getUserProfile = async () => {
