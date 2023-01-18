@@ -243,15 +243,17 @@ class TutoringServiceTest {
     }
 
     public Tutoring createTutoring(Long id) {
-        Tutoring get = new Tutoring();
-        get.setTutoringTitle("test");
-        get.setLatestNoticeBody("test");
-        get.setTutoringStatus(TutoringStatus.UNCHECK);
-        get.setTutor(createProfile(id));
-        get.setTutee(createProfile(id));
-        get.setDateNotices(Set.of(createDateNotice(id), createDateNotice(id)));
-        get.setReview(createReview(id));
-
+        Tutoring get = new Tutoring(
+                id,
+                "test",
+                id,
+                "test",
+                TutoringStatus.UNCHECK,
+                createProfile(id),
+                createProfile(id),
+                Set.of(createDateNotice(id), createDateNotice(id)),
+                createReview(id)
+        );
         get.setCreateAt(LocalDateTime.now());
         get.setUpdateAt(LocalDateTime.now());
 
@@ -259,20 +261,38 @@ class TutoringServiceTest {
     }
 
     public DateNotice createDateNotice(Long id) {
-        return DateNotice.builder()
+        Tutoring tutoring = new Tutoring(
+                id,
+                "test",
+                id,
+                "test",
+                TutoringStatus.UNCHECK,
+                Profile.builder().profileId(id).build(),
+                Profile.builder().profileId(id).build(),
+                Set.of(DateNotice.builder().dateNoticeId(id).build(), DateNotice.builder().dateNoticeId(id).build()),
+                createReview(id)
+        );
+
+        DateNotice get = DateNotice.builder()
+                .dateNoticeId(id)
                 .dateNoticeTitle("test")
                 .startTime("20230118")
                 .endTime("20230119")
                 .noticeStatus(NoticeStatus.NOTICE)
                 .notice(createNotice(id))
                 .schedule(createSchedule(id))
-                .tutoring(createTutoring(id))
+                .tutoring(tutoring)
                 .homeworks(Set.of(createHomework(id), createHomework(id)))
                 .build();
+        get.setCreateAt(LocalDateTime.now());
+        get.setUpdateAt(LocalDateTime.now());
+
+        return get;
     }
 
     public Notice createNotice(Long id) {
         Notice get = Notice.builder()
+                .noticeId(id)
                 .noticeBody("test")
                 .build();
 
@@ -284,6 +304,7 @@ class TutoringServiceTest {
 
     public Schedule createSchedule(Long id) {
         Schedule get = Schedule.builder()
+                .scheduleId(id)
                 .scheduleBody("test")
                 .build();
 
@@ -295,6 +316,7 @@ class TutoringServiceTest {
 
     public Homework createHomework(Long id) {
         Homework get = Homework.builder()
+                .homeworkId(id)
                 .homeworkBody("test")
                 .homeworkStatus(HomeworkStatus.PROGRESS)
                 .build();
