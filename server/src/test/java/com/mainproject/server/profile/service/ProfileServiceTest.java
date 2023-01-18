@@ -11,6 +11,7 @@ import com.mainproject.server.profile.dto.WantedDto;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.repository.ProfileRepository;
 import com.mainproject.server.review.entity.Review;
+import com.mainproject.server.review.repository.ReviewRepository;
 import com.mainproject.server.subject.dto.SubjectDto;
 import com.mainproject.server.subject.entity.Subject;
 import com.mainproject.server.subject.entity.SubjectProfile;
@@ -24,17 +25,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -53,6 +54,9 @@ class ProfileServiceTest {
 
     @Mock
     private SubjectProfileRepository subjectProfileRepository;
+
+    @Mock
+    private ReviewRepository reviewRepository;
 
     @InjectMocks
     private ProfileService profileService;
@@ -80,6 +84,10 @@ class ProfileServiceTest {
         Long profileId = 1L;
         Profile profile = createProfile(profileId);
         Pageable pageable = PageRequest.of(0, 10);
+        Page<Review> pageList= new PageImpl<>(
+                new ArrayList<>(profile.getReviews()), pageable, 10);
+        given(reviewRepository.findAllByTutor(any(Profile.class), any(Pageable.class)))
+                .willReturn(pageList);
         given(profileRepository.findById(anyLong())).willReturn(Optional.of(profile));
         // When
         ProfilePageDto dto = profileService.getProfile(profileId, pageable);
@@ -153,7 +161,10 @@ class ProfileServiceTest {
         List<SubjectDto> subjectDto = List.of(createSubjectDto(id), createSubjectDto(id));
         Profile findProfile = createProfile(id);
         Pageable pageable = PageRequest.of(0, 10);
-
+        Page<Review> pageList= new PageImpl<>(
+                new ArrayList<>(profile.getReviews()), pageable, 10);
+        given(reviewRepository.findAllByTutor(any(Profile.class), any(Pageable.class)))
+                .willReturn(pageList);
         given(subjectRepository.findById(anyLong()))
                 .willReturn(Optional.ofNullable(createSubject(id)));
         given(profileRepository.findById(anyLong()))
@@ -177,6 +188,10 @@ class ProfileServiceTest {
         Profile profile = createProfile(profileId);
         profile.setWantedStatus(WantedStatus.NONE);
         Pageable pageable = PageRequest.of(0, 10);
+        Page<Review> pageList= new PageImpl<>(
+                new ArrayList<>(profile.getReviews()), pageable, 10);
+        given(reviewRepository.findAllByTutor(any(Profile.class), any(Pageable.class)))
+                .willReturn(pageList);
         given(profileRepository.findById(anyLong())).willReturn(Optional.of(profile));
         // When
         ProfilePageDto updateProfile =
