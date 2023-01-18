@@ -1,7 +1,12 @@
 import styles from './Admin.module.css';
 import { MdEdit, MdDelete, MdAddCircle } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
+import {
+  useSetRecoilState,
+  useResetRecoilState,
+  useRecoilValue,
+  useRecoilState,
+} from 'recoil';
 import ModalState from '../recoil/modal.js';
 import { useEffect, useState } from 'react';
 import reIssueToken from '../util/reIssueToken';
@@ -9,10 +14,10 @@ import axios from 'axios';
 import Profile from '../recoil/profile';
 
 const Admin = () => {
-  const [profiles, setProfiles] = useState([]);
+  const [profilesData, setProfilesData] = useState([]);
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
-  const profileState = useRecoilValue(Profile);
+  const [profile, setProfile] = useRecoilState(Profile);
   const resetProfile = useResetRecoilState(Profile);
   const navigate = useNavigate();
 
@@ -31,7 +36,7 @@ const Admin = () => {
       .then(({ data }) => {
         console.log(data);
 
-        setProfiles(data.data);
+        setProfilesData(data.data);
       })
       .catch(({ response }) => {
         console.log(response.status);
@@ -61,6 +66,7 @@ const Admin = () => {
           props: {
             text: '삭제가 완료되었습니다.',
             modalHandler: () => {
+              setProfile((prev) => ({ ...prev, profileId: 0 }));
               location.reload();
             },
           },
@@ -90,19 +96,19 @@ const Admin = () => {
         <div className={styles.profileContainer}>
           <span
             className={styles.profileCount}
-          >{`전체 프로필 : ${profiles.length}/4`}</span>
+          >{`전체 프로필 : ${profilesData.length}/4`}</span>
           <ul className={styles.profiles}>
-            {profiles.map((profile) => (
+            {profilesData.map((obj) => (
               <Link
-                key={profile.profileId}
+                key={obj.profileId}
                 to={`/${
-                  profileState.userStatus === 'TUTOR' ? 'tutor' : 'tutee'
-                }profile/${profile.profileId}`}
+                  profile.userStatus === 'TUTOR' ? 'tutor' : 'tutee'
+                }profile/${obj.profileId}`}
               >
                 <li className={styles.profileBox}>
                   <div className={styles.iconsBox}>
                     <MdEdit
-                      id={profile.profileId}
+                      id={obj.profileId}
                       className={styles.mdEdit}
                       onClick={(e) => {
                         e.preventDefault();
@@ -113,7 +119,7 @@ const Admin = () => {
                             text: `프로필 수정 페이지로 이동합니다.`,
                             modalHandler: () => {
                               resetModal();
-                              navigate(`/editprofile/${profile.profileId}`);
+                              navigate(`/editprofile/${obj.profileId}`);
                             },
                           },
                         });
@@ -130,7 +136,7 @@ const Admin = () => {
                             text: `프로필을 삭제 하시겠습니까?
                             해당 프로필과 관련된 내용이 모두 삭제됩니다.`,
                             modalHandler: () => {
-                              deleteHandler(profile.profileId);
+                              deleteHandler(obj.profileId);
                             },
                           },
                         });
@@ -140,18 +146,18 @@ const Admin = () => {
                   <div className={styles.img}>
                     <img
                       alt="프로필 사진"
-                      src={profile.url}
+                      src={obj.url}
                       className={styles.profileImg}
                     />
                   </div>
                   <div className={styles.profileTextBox}>
-                    <span className={styles.name}>{profile.name}</span>
-                    <span className={styles.school}>{profile.school}</span>
+                    <span className={styles.name}>{obj.name}</span>
+                    <span className={styles.school}>{obj.school}</span>
                   </div>
                 </li>
               </Link>
             ))}
-            {profiles.length < 4 && (
+            {profilesData.length < 4 && (
               <Link to="/addprofile">
                 <li className={styles.addBox}>
                   <MdAddCircle className={styles.addIcon} />
