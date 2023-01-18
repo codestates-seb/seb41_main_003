@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class StubData {
+public class ResponseStubData {
 
     public ReviewResponseDto createReviewResponse() {
         return ReviewResponseDto.builder()
