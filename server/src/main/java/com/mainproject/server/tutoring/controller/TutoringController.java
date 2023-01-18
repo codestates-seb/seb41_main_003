@@ -21,8 +21,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +32,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/tutoring")
+@Validated
 public class TutoringController {
     private final DateNoticeMapper dateNoticeMapper;
     private final DateNoticeService dateNoticeService;
@@ -39,7 +42,7 @@ public class TutoringController {
     @PostMapping("/{profileId}")
     public ResponseEntity postTutoring(
             @PathVariable("profileId") Long profileId,
-            @RequestBody TutoringPostDto tutoringPostDto
+            @RequestBody @Valid TutoringPostDto tutoringPostDto
             ) {
         Long messageRoomId = tutoringPostDto.getMessageRoomId();
 
@@ -110,7 +113,7 @@ public class TutoringController {
     @PatchMapping("/details/{tutoringId}")
     public ResponseEntity patchTutoring(
             @PathVariable("tutoringId") Long tutoringId,
-            @RequestBody TutoringPatchDto tutoringPatchDto,
+            @RequestBody @Valid TutoringPatchDto tutoringPatchDto,
             @PageableDefault(page = 0, size = 5, sort = "dateNoticeId", direction = Sort.Direction.DESC)
             Pageable pageable
             ) {
@@ -139,7 +142,7 @@ public class TutoringController {
     @PostMapping("/date-notice/{tutoringId}")
     public ResponseEntity postDateNotice(
             @PathVariable("tutoringId") Long tutoringId,
-            @RequestBody DateNoticePostDto dateNoticePostDto
+            @RequestBody @Valid DateNoticePostDto dateNoticePostDto
             ) {
         DateNotice postDateNotice =
                 dateNoticeMapper.dateNoticePostDtoToDateNotice(dateNoticePostDto);
@@ -164,7 +167,7 @@ public class TutoringController {
     @PatchMapping("/date-notice/{dateNoticeId}")
     public ResponseEntity patchDateNotice(
             @PathVariable("dateNoticeId") Long dateNoticeId,
-            @RequestBody DateNoticePatchDto dateNoticePatchDto
+            @RequestBody @Valid DateNoticePatchDto dateNoticePatchDto
             ) {
         dateNoticePatchDto.setDateNoticeId(dateNoticeId);
         DateNotice patchDateNotice = dateNoticeMapper.dateNoticePatchDtoToDateNotice(dateNoticePatchDto);

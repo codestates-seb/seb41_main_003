@@ -51,20 +51,7 @@ public class UserService {
                 .ifPresent(findUser::setPassword);
         Optional.ofNullable(user.getSecondPassword())
                 .ifPresent(findUser::setSecondPassword);
-        UserStatus findUserStatus = findUser.getUserStatus();
-        UserStatus userStatus = user.getUserStatus();
-        if (findUserStatus.equals(UserStatus.NONE)) {
-            if (userStatus == null || userStatus.equals(UserStatus.NONE)){
-                throw new ServiceLogicException(ErrorCode.USER_TYPE_NOT_NONE);
-            }
-            findUser.setUserStatus(userStatus);
-        } else if (findUserStatus.equals(UserStatus.TUTEE) ||
-                findUserStatus.equals(UserStatus.TUTOR)
-        ) {
-            if (!findUserStatus.equals(userStatus)) {
-                throw new ServiceLogicException(ErrorCode.NOT_CHANGE_USER_STATUS);
-            }
-        }
+        verifyUserStatus(user, findUser);
         Optional.ofNullable(verifyPhoneNumber(user.getPhoneNumber()))
                 .ifPresent(findUser::setPhoneNumber);
         return userRepository.save(findUser);
@@ -86,7 +73,7 @@ public class UserService {
 
     public String verifyPhoneNumber(String phoneNumber) {
         if (userRepository.findByPhoneNumber(phoneNumber).isPresent()) {
-            throw new ServiceLogicException(ErrorCode.PHONE_NUMBER_EMAIL_EXISTS);
+            throw new ServiceLogicException(ErrorCode.PHONE_NUMBER_EXISTS);
         }
         return phoneNumber;
     }
@@ -111,11 +98,6 @@ public class UserService {
         }
     }
 
-    public Boolean verifyUserByEmailReturnBoolean(String email) {
-        Optional<User> findUser = userRepository.findByEmail(email);
-        return findUser.isPresent();
-    }
-
     public User checkLoginType(User user) {
         if (user.getLoginType() == null) {
             String pw = passwordEncoder
@@ -131,6 +113,23 @@ public class UserService {
             user.setPassword(pw);
         }
         return user;
+    }
+
+    public void verifyUserStatus(User postUser, User findUser) {
+        UserStatus findUserStatus = findUser.getUserStatus();
+        UserStatus userStatus = postUser.getUserStatus();
+        if (findUserStatus.equals(UserStatus.NONE)) {
+            if (userStatus == null || userStatus.equals(UserStatus.NONE)){
+                throw new ServiceLogicException(ErrorCode.USER_TYPE_NOT_NONE);
+            }
+            findUser.setUserStatus(userStatus);
+        } else if (findUserStatus.equals(UserStatus.TUTEE) ||
+                findUserStatus.equals(UserStatus.TUTOR)
+        ) {
+            if (!findUserStatus.equals(userStatus)) {
+                throw new ServiceLogicException(ErrorCode.NOT_CHANGE_USER_STATUS);
+            }
+        }
     }
 
 }
