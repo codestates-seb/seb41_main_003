@@ -9,6 +9,9 @@ import defaultUser from '../../assets/defaultUser.png';
 import { MdStar } from 'react-icons/md';
 import axios from 'axios';
 import Profile from '../../recoil/profile';
+import reIssueToken from '../../util/reIssueToken';
+
+//문의하기 버튼을 눌렀을 때, 403 에러가 발생하면 reIssueToken 하도록
 
 const ProfileCard = ({ user }) => {
   const { name, rate, bio, school, subjects } = user;
@@ -30,13 +33,27 @@ const ProfileCard = ({ user }) => {
   const Navigate = useNavigate();
 
   const postNewMessageRoom = async () => {
-    await axios.post(
-      `${process.env.REACT_APP_BASE_URL}/messages/${myProfileId}`,
-      postData,
-      {
-        headers: { Authorization: sessionStorage.getItem('authorization') },
-      }
-    );
+    await axios
+      .post(
+        `${process.env.REACT_APP_BASE_URL}/messages/${myProfileId}`,
+        postData,
+        {
+          headers: {
+            Authorization:
+              sessionStorage.getItem('authorization') ||
+              localStorage.getItem('authorization'),
+          },
+        }
+      )
+      .then(() => (window.location.href = `/message/${myProfileId}`))
+      .catch(({ response }) => {
+        if (response.data.message === 'EXPIRED ACCESS TOKEN') {
+          reIssueToken(postNewMessageRoom).catch(() => {
+            console.log(response);
+            window.location.href = '/login';
+          });
+        }
+      });
   };
 
   const confirm = {
