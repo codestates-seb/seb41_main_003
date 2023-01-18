@@ -31,7 +31,7 @@ export const GlobalModal = () => {
     reviewDetail: <ReviewDetailModal {...props} />,
     editReview: <EditReviewModal {...props} />,
     cancelConfirm: <CancelConfirmModal {...props} />,
-    handlerAlertModal: <HandlerAlertModal {...props} />,
+    handlerAlert: <HandlerAlertModal {...props} />,
   };
 
   return (
