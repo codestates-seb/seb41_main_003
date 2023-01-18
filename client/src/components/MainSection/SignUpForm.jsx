@@ -1,6 +1,10 @@
 import styles from './SignUpForm.module.css';
 import { LabelTextInput, TextInput } from '../Input';
 import { useState, useEffect } from 'react';
+import validation from '../../util/validation';
+import axios from 'axios';
+import ModalState from '../../recoil/modal.js';
+import { useSetRecoilState, useResetRecoilState } from 'recoil';
 
 const initialSignupdata = {
   nickName: '',
@@ -12,6 +16,8 @@ const initialSignupdata = {
 const SignUpForm = () => {
   const [signupData, setSignupData] = useState(initialSignupdata);
   const [confirmPassword, setConfirmPassword] = useState(false);
+
+  const setModal = useSetRecoilState(ModalState);
 
   const inputHandler = (e) => {
     const { id, value } = e.target;
@@ -33,11 +39,17 @@ const SignUpForm = () => {
     confirmHandler();
   }, [signupData.passwordConfirm, signupData.password]);
 
+  const requiredProps = {
+    isOpen: true,
+    modalType: 'alert',
+    props: { text: '필수 입력 사항을 확인해주세요.' },
+  };
+
   // TODO : submit API 연결 필요
   const submitHandler = (e) => {
     e.preventDefault();
     console.log('submit!');
-    //회원가입 성공 시 홈 화면으로 리다이렉션
+    //회원가입 성공 시 로그인 화면으로 리다이렉션
     // window.location.href = '/';
   };
 
@@ -57,7 +69,13 @@ const SignUpForm = () => {
           handler={inputHandler}
           required
         />
-        <span>닉네임을 최소 2글자 이상이어야 합니다.</span>
+        <span
+          className={
+            validation(signupData.nickName, 'nickName') && styles.validationText
+          }
+        >
+          닉네임은 최소 2글자 이상이어야 합니다.
+        </span>
         <LabelTextInput
           id="email"
           name="이메일"
@@ -67,7 +85,13 @@ const SignUpForm = () => {
           handler={inputHandler}
           required
         />
-        <span>유효하지 않은 이메일 형식입니다.</span>
+        <span
+          className={
+            validation(signupData.email, 'email') && styles.validationText
+          }
+        >
+          유효하지 않은 이메일 형식입니다.
+        </span>
         <LabelTextInput
           id="password"
           name="비밀번호"
@@ -85,14 +109,23 @@ const SignUpForm = () => {
           handler={inputHandler}
           required
         />
-        <span>비밀번호 입력이 잘못되었습니다.</span>
+        {validation(signupData.password, 'password') ? (
+          <span className={confirmPassword && styles.validationText}>
+            비밀번호를 확인해주세요
+          </span>
+        ) : (
+          <span
+            className={
+              validation(signupData.password, 'password') &&
+              styles.validationText
+            }
+          >
+            비밀번호는 영문과 숫자를 포함한 8자이상이어야 합니다.
+          </span>
+        )}
       </form>
       <div className={styles.buttonContainer}>
-        <button
-          form="signUp"
-          className={styles.signupButton}
-          onClick={submitHandler}
-        >
+        <button form="signUp" className={styles.signupButton} type="submit">
           회원가입
         </button>
         <button className={styles.kakaoLoginButton}>
