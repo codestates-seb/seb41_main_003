@@ -59,9 +59,9 @@ const App = () => {
             <Route path="/addjournal" element={<AddJournal />} />
           </Routes>
         </div>
+        <GlobalModal />
       </Router>
       <Footer ref={footerRef} />
-      <GlobalModal />
     </div>
   );
 };
