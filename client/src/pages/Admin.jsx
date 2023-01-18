@@ -68,9 +68,9 @@ const Admin = () => {
       .catch(({ response }) => {
         console.log(response.status);
         if (response.status === 403)
-          reIssueToken(getUserProfile).catch(() => {
+          reIssueToken(deleteHandler).catch(() => {
             console.log('reset');
-            deleteHandler();
+            resetProfile();
             window.location.href = '/login';
           });
       });
