@@ -16,7 +16,6 @@ import Message from './pages/Message';
 import MyProfile from './pages/MyProfile';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import TestPage from './pages/TestPage';
 import EditJournal from './pages/EditJournal';
 import Journal from './pages/Journal';
 import { GlobalModal } from './components/modal/GlobalModal';
@@ -44,9 +43,7 @@ const App = () => {
             <Route path="/editprofile/:profileId" element={<EditProfile />} />
             <Route path="/message/:profileId" element={<Message />} />
             <Route path="/myprofile/:profileId" element={<MyProfile />} />
-            <Route path="/test" element={<TestPage />} />
             <Route path="/journal" element={<Journal />} />
-            <Route path="/test" element={<TestPage />} />
             <Route path="/editjournal" element={<EditJournal />} />
             <Route path="/addjournal" element={<AddJournal />} />
           </Routes>
