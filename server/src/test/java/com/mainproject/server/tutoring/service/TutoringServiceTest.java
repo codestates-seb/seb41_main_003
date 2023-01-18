@@ -115,7 +115,7 @@ class TutoringServiceTest {
     }
 
     @Test
-    @DisplayName("특정 과외 조회 TEST - tutoring")
+    @DisplayName("특정 과외 조회 TEST - UNCHECK 상태 Tutoring -> PROGRESS Tutoring")
     void getTutoring() {
 
         //given
@@ -127,12 +127,13 @@ class TutoringServiceTest {
 
         given(tutoringRepository.findById(anyLong()))
                 .willReturn(Optional.of(tutoring));
-
+        given(tutoringRepository.save(any(Tutoring.class)))
+                .willReturn(tutoring);
         //when
         TutoringDto dto = tutoringService.getTutoring(tutoringId, profileId, page);
 
         //then
-        assertThat(dto.getTutoringStatus()).isEqualTo(TutoringStatus.PROGRESS);
+        assertThat(dto.getTutoringStatus()).isEqualTo(TutoringStatus.PROGRESS.name());
 
     }
 
@@ -149,12 +150,13 @@ class TutoringServiceTest {
 
         given(tutoringRepository.findById(anyLong())).
                 willReturn(Optional.of(tutoring));
-
+        given(tutoringRepository.save(any(Tutoring.class)))
+                .willReturn(tutoring);
         //when
         TutoringDto dto = tutoringService.setTutoringStatusProgress(tutoringId, profileId, page);
 
         //then
-        assertThat(dto.getTutoringStatus()).isEqualTo(TutoringStatus.PROGRESS);
+        assertThat(dto.getTutoringStatus()).isEqualTo(TutoringStatus.PROGRESS.name());
     }
 
     @Test
@@ -187,7 +189,7 @@ class TutoringServiceTest {
 
     @Test
     @DisplayName("튜터링 조회 TEST - TUTORING NOT FOUND EXCEPTION")
-    void VerifiedTutoring(){
+    void verifiedTutoring(){
 
         //given
         Long tutoringId = 1L;
