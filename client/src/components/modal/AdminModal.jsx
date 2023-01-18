@@ -40,7 +40,7 @@ const AdminModal = () => {
         if (data.data.length === 0) {
           setModal({
             isOpen: true,
-            modalType: 'handlerAlertModal',
+            modalType: 'handlerAlert',
             props: {
               text: `프로필이 없습니다.
               서비스 이용을 위해 프로필 생성 페이지로 이동합니다.`,
