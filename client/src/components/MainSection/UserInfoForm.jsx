@@ -169,8 +169,8 @@ const UserInfoForm = () => {
       nickName,
       ...(userData.password !== '' ? { password } : {}),
       ...(userData.secondPassword !== '' ? { secondPassword } : {}),
-      phoneNumber,
-      ...(isNewUser ? { userStatus } : {}),
+      phoneNumber: phoneNumber.replaceAll('-', ''),
+      userStatus,
     };
 
     axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
