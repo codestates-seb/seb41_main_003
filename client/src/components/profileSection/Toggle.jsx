@@ -16,10 +16,6 @@ const Toggle = ({ user, setUser }) => {
     props: {
       text: '공고 상태를 변경하시겠습니까?',
       modalHandler: () => {
-        setUser({
-          ...user,
-          wantedStatus: user.wantedStatus === 'NONE' ? 'REQUEST' : 'NONE',
-        });
         patchWantedStatus();
         console.log(user.wantedStatus);
         resetModal();
@@ -30,9 +26,15 @@ const Toggle = ({ user, setUser }) => {
   const patchWantedStatus = async () => {
     await axios
       .patch(`${process.env.REACT_APP_BASE_URL}/profiles/status/${profileId}`, {
-        wantedStatus: user.wantedStatus,
+        wantedStatus: user.wantedStatus === 'NONE' ? 'REQUEST' : 'NONE',
       })
-      .then((res) => console.log(res.data.data))
+      .then(({ data }) => {
+        console.log(data.data.wantedStatus);
+        setUser({
+          ...user,
+          wantedStatus: data.data.wantedStatus,
+        });
+      })
       .catch((err) => console.log(err));
   };
 
