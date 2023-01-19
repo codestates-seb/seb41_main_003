@@ -22,7 +22,10 @@ import com.mainproject.server.user.entity.User;
 import com.mainproject.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +48,7 @@ public class ProfileService {
     private final SubjectProfileRepository subjectProfileRepository;
 
     private final ReviewRepository reviewRepository;
+
 
     public List<Profile> getProfiles(
             Long userId
@@ -78,7 +82,7 @@ public class ProfileService {
             throw new ServiceLogicException(ErrorCode.EXCEEDED_MAXIMUM_PROFILE_COUNT);
         }
         ProfileImage image = getBasicImage();
-        profile.addUserImage(image);
+        profile.addProfileImage(image);
         profile.setWantedStatus(WantedStatus.NONE);
         profile.setProfileStatus(ProfileStatus.valueOf(userStatus.name()));
         profile.addUser(findUser);
@@ -103,6 +107,9 @@ public class ProfileService {
                 wantedDto.getWantedStatus().toUpperCase()
         );
         Profile findProfile = verifiedProfileById(profileId);
+        if (findProfile.getWantedStatus().equals(WantedStatus.BASIC)) {
+            throw new ServiceLogicException(ErrorCode.NOT_CHANGE_WANTED_STATUS);
+        }
         findProfile.setWantedStatus(wantedStatus);
         return getProfilePageDto(findProfile, pageable);
     }
@@ -112,7 +119,7 @@ public class ProfileService {
         profileRepository.delete(findProfile);
     }
 
-    public void updateProfileForImage(Profile profile) {
+    public void delegateSaveProfile(Profile profile) {
         profileRepository.save(profile);
     }
 
@@ -206,10 +213,13 @@ public class ProfileService {
         Optional.ofNullable(updateProfile.getPay()).ifPresent(findProfile::setPay);
         Optional.ofNullable(updateProfile.getWantDate()).ifPresent(findProfile::setWantDate);
         Optional.ofNullable(updateProfile.getPreTutoring()).ifPresent(findProfile::setPreTutoring);
+        if (findProfile.getWantedStatus().equals(WantedStatus.BASIC)) {
+            findProfile.setWantedStatus(WantedStatus.NONE);
+        }
         return findProfile;
     }
 
-    private ProfileImage getBasicImage() {
+    public ProfileImage getBasicImage() {
         return ProfileImage.builder()
                 .fileName(ImageProperty.BASIC_IMAGE_FILE_NAME.name())
                 .url("https://image-test-suyoung.s3.ap-northeast-2.amazonaws.com/image/user.png")

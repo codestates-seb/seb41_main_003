@@ -160,7 +160,7 @@ class UserServiceTest {
                 .build();
         // When
         Throwable throwable = catchThrowable(
-                () -> userService.verifyUserStatus(postUser, findUser)
+                () -> userService.verifyUserStatusAndCreateBasicProfile(postUser, findUser)
         );
         // Then
         assertThat(throwable)
@@ -180,7 +180,7 @@ class UserServiceTest {
                 .build();
         // When
         Throwable throwable = catchThrowable(
-                () -> userService.verifyUserStatus(postUser, findUser)
+                () -> userService.verifyUserStatusAndCreateBasicProfile(postUser, findUser)
         );
         // Then
         assertThat(throwable)

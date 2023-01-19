@@ -92,6 +92,7 @@ public class SecurityConfig {
                                 .mvcMatchers(HttpMethod.GET,"/users/tutors/**").permitAll()
                                 .mvcMatchers(HttpMethod.GET,"/users/tutees").permitAll()
                                 .mvcMatchers(HttpMethod.GET,"/users/tutees/**").permitAll()
+                                .mvcMatchers(HttpMethod.GET,"/profiles/details/**").permitAll()
                                 .mvcMatchers("/auth/**").hasAnyRole("USER")
                                 .mvcMatchers(HttpMethod.GET,"/users/**").hasAnyRole("USER")
                                 .mvcMatchers(HttpMethod.POST,"/users/**").hasAnyRole("USER")
