@@ -14,6 +14,7 @@ import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +32,7 @@ import java.util.Map;
 public class JwtTokenizer {
 
     @Getter
+    @Setter
     @Value("${JWT_SECRET_KEY}")
     private String secretKey;
 
@@ -97,7 +99,6 @@ public class JwtTokenizer {
         String subject = getEmail(refreshToken);
         claims.put("username", subject);
         claims.put("roles", jwtAuthorityUtils.createRoles(subject));
-        // Todo 이메일을 받을 필요 없을것 같다. Refactoring
         Token token = generateToken(claims, subject, base64SecretKey);
         String newAccessToken = token.getAccessToken();
         String newRefreshToken = token.getRefreshToken();
@@ -110,8 +111,6 @@ public class JwtTokenizer {
             String email,
             HttpServletResponse response
     ) throws IOException {
-
-
         String base64SecretKey = encodeBase64SecretKey(getSecretKey());
         try {
             RefreshDto refreshToken = refreshService.getRefresh(email);
