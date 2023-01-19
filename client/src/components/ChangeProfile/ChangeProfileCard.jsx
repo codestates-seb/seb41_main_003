@@ -9,11 +9,10 @@ import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import reIssueToken from '../../util/reIssueToken';
-
-//프로필 수정, 추가 요청이 실패하고, status 값이 403으로 날아왔을 때 reIssueToken사용
+import defaultUser from '../../assets/defaultUser.png';
 
 const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
-  const { name, bio, school, subjects, profileStatus } = user;
+  const { name, bio, school, subjects, profileStatus, profileImage } = user;
 
   const userId =
     sessionStorage.getItem('userId') || localStorage.getItem('userId');
@@ -45,7 +44,6 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
       )
       .then(() => (window.location.href = '/admin'))
       .catch(({ response }) => {
-        //403 토큰 expired 에러 메시지로 받기
         if (response.data.message === 'EXPIRED ACCESS TOKEN') {
           reIssueToken(patchProfile).catch(() => {
             console.log(response);
@@ -82,7 +80,6 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
       )
       .then(() => (window.location.href = '/admin'))
       .catch(({ response }) => {
-        //403 토큰 expired 에러 메시지로 받기
         if (response.data.message === 'EXPIRED ACCESS TOKEN') {
           reIssueToken(postProfile).catch(() => {
             console.log(response);
@@ -135,12 +132,18 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
     }
   };
 
+  const imgModalProps = {
+    isOpen: true,
+    modalType: 'imgLoad',
+    props: { setUser: setUser, profileId: profileId },
+  };
+
   return (
     <div className={styles.container}>
       <form id="profile" onSubmit={(e) => submitHandler(e)}>
         <div className={styles.userImage}>
-          <div className={styles.image} />
-          <button>
+          <img src={profileImage.url || defaultUser} alt="profile-img" />
+          <button type="button" onClick={() => setModal(imgModalProps)}>
             <MdMode />
           </button>
         </div>

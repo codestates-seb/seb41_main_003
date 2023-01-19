@@ -6,6 +6,7 @@
   border-radius: 5px;
   padding: 40px;
   box-shadow: $bigShadow;
+  position: relative;
 }
 
 .required {
@@ -32,12 +33,11 @@
   width: 264px;
   height: 264px;
 
-  > .image {
+  > img {
     width: 264px;
     height: 264px;
     border-radius: 50%;
-    background-image: url('../../assets/defaultUser.png');
-    background-size: cover;
+    object-fit: cover;
   }
 
   > button {
@@ -57,6 +57,17 @@
       font-size: 24px;
       fill: $white;
     }
+  }
+
+  > input {
+    width: 200px;
+    height: 100px;
+    z-index: 1;
+    position: absolute;
+    bottom: 10px;
+    left: 200px;
+    background-color: $snow;
+    border-radius: 5px;
   }
 }
 
