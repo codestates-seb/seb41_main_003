@@ -19,8 +19,10 @@ const Profile = atom({
   key: 'Profile',
   default: {
     isLogin: false,
-    profileId: 0,
     userStatus: '',
+    profileId: 0,
+    name: '',
+    url: '',
   },
   effects: [localStorageEffect('current_user')],
 });

@@ -26,6 +26,7 @@
 
   > span {
     margin-bottom: 14px;
+    height: 12px;
     font-size: $sub;
     font-weight: $subW;
     color: $red;
@@ -42,7 +43,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 32px;
 
   > span {
     text-align: center;
@@ -50,6 +50,11 @@
     font-weight: $font6W;
     margin-top: 24px;
     margin-bottom: 16px;
+  }
+
+  > .failAuth {
+    color: $red;
+    height: 16px;
   }
 }
 

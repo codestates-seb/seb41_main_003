@@ -79,8 +79,8 @@
 }
 
 .list {
-  margin-right: 4px;
-  margin-bottom: 16px;
+  margin-right: 6px;
+  margin-bottom: 8px;
 }
 
 .menuContainer {
@@ -122,6 +122,7 @@
   border-radius: 12px;
   padding: 4px 10px;
   margin-right: 8px;
+  box-shadow: $buttonShadow;
 }
 
 .activeMenu {
@@ -134,4 +135,5 @@
   border-radius: 12px;
   padding: 4px 10px;
   margin-right: 8px;
+  box-shadow: $buttonShadow;
 }

@@ -5,10 +5,10 @@
   border-radius: 3px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   width: 256px;
-  height: 360px;
+  height: 400px;
+  box-shadow: $buttonShadow;
 }
 
 .img {
@@ -19,19 +19,14 @@
 }
 
 .nameAndStars {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
   margin-top: 10px;
   width: 217px;
-  height: 29px;
-}
 
-.name {
-  margin-right: 15px;
-  font-size: $font4;
-  font-weight: $font4W;
+  .name {
+    font-size: $font4;
+    font-weight: $font4W;
+    margin-bottom: 4px;
+  }
 }
 
 .yellowStar {
@@ -52,17 +47,19 @@
 .subjectBox {
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
   width: 217px;
   margin-top: 8px;
 }
 
 .subject {
   margin-right: 4px;
+  margin-bottom: 4px;
 }
 
 .school {
   width: 217px;
-  margin-top: 16px;
+  margin-top: 12px;
   font-size: $font6;
   font-weight: $font6W;
 }
@@ -72,4 +69,5 @@
   margin-top: 8px;
   font-size: $para;
   font-weight: $paraW;
+  margin-bottom: 16px;
 }

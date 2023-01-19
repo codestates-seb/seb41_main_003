@@ -99,7 +99,7 @@ export const ConfirmTextModal = ({
   text,
   modalHandler,
   placeHolder,
-  setTutoringTitle,
+  inputType = 'text',
 }) => {
   const reset = useResetRecoilState(ModalState);
   const [value, setValue] = useState('');
@@ -119,6 +119,7 @@ export const ConfirmTextModal = ({
       <div className={styles.input}>
         <TextInput
           id="confirmInput"
+          type={inputType}
           placeHolder={placeHolder}
           value={value}
           handler={valueHandler}
@@ -144,6 +145,7 @@ ConfirmTextModal.propTypes = {
   modalHandler: PropTypes.func,
   setTutoringTitle: PropTypes.func,
   placeHolder: PropTypes.string,
+  inputType: PropTypes.string,
 };
 
 export const RedConfirmModal = ({ text, modalHandler }) => {

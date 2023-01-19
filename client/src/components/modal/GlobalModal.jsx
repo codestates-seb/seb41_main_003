@@ -32,6 +32,8 @@ export const GlobalModal = () => {
     review: <ReviewModal {...props} />,
     reviewDetail: <ReviewDetailModal {...props} />,
     editReview: <EditReviewModal {...props} />,
+    cancelConfirm: <CancelConfirmModal {...props} />,
+    handlerAlert: <HandlerAlertModal {...props} />,
     redConfirm: <RedConfirmModal {...props} />,
     redAlert: <RedAlertModal {...props} />,
     handlerAlert: <HandlerAlertModal {...props} />,
@@ -39,7 +41,14 @@ export const GlobalModal = () => {
   };
 
   return (
-    <div className={styles.backdrop} onClick={() => reset()} aria-hidden="true">
+    <div
+      className={styles.backdrop}
+      {...(modalType === 'admin' ||
+        modalType === 'bothHandler' || {
+          onClick: () => reset(),
+        })}
+      aria-hidden="true"
+    >
       {modal[modalType]}
     </div>
   );

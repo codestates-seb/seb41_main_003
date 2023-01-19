@@ -22,3 +22,4 @@ HandlerAlertModal.propTypes = {
 };
 
 export default HandlerAlertModal;
+

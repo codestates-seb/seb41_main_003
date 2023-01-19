@@ -4,24 +4,29 @@ import { useState } from 'react';
 import DatePickerForm from './DatePickerForm';
 import { Textarea, TextInput, CheckBox } from '../Input';
 import { ButtonNightBlue, ButtonRed } from '../Button';
-import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import { useSetRecoilState, useResetRecoilState, useRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 import { MdDelete } from 'react-icons/md';
 import { useNavigate, useLocation } from 'react-router-dom';
+import ChangeJournal from '../../recoil/journal';
 
-const EditJournalForm = ({ user, setUser }) => {
+const EditJournalForm = () => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
+  const [userData, setUserData] = useRecoilState(ChangeJournal);
+  const [homeworkVal, setHomeworkVal] = useState('');
+  const [selDate, setSelDate] = useState({
+    date: new Date(userData.startTime),
+    sTime: new Date(userData.startTime),
+    eTime: new Date(userData.endTime),
+  });
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  //* 일지 생성인지 수정인지 확인하는 변수
   const isAdd = pathname === '/addjournal';
 
-  const Navigate = useNavigate();
-
-  const [homeworkVal, setHomeworkVal] = useState('');
-
-  const { dateNoticeId, dateNoticeTitle, scheduleBody, noticeBody, Homeworks } =
-    user;
+  const { dateNoticeTitle, scheduleBody, noticeBody, Homeworks } = userData;
 
   const confirm = {
     isOpen: true,
@@ -40,7 +45,7 @@ const EditJournalForm = ({ user, setUser }) => {
         //TODO: 해당 프로필Id ,dateNoticeId의 일지 페이지로 이동 (useParam)
         console.log('일지 수정 확인, patch요청');
         setModal(confirmProps);
-        Navigate(`/journal`);
+        navigate(`/journal`);
       },
     },
   };
@@ -63,7 +68,7 @@ const EditJournalForm = ({ user, setUser }) => {
         //TODO: 해당 프로필Id,dateNoticeId의 일지 수정 페이지로 이동 (useParam)
         console.log('일지 수정 취소');
         resetModal();
-        Navigate('/journal');
+        navigate('/journal');
         setModal(redAlertModal);
       },
     },
@@ -73,19 +78,19 @@ const EditJournalForm = ({ user, setUser }) => {
     isOpen: true,
     modalType: 'redAlert',
     props: {
-      text: '일지가 수정이 취소되었습니다.',
+      text: `일지 ${isAdd ? '작성' : '수정'}이 취소되었습니다.`,
     },
   };
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+    setUserData({ ...userData, [name]: value });
   };
 
   const deleteHomeworkHandler = (e) => {
     const { id } = e.currentTarget;
-    setUser({
-      ...user,
+    setUserData({
+      ...userData,
       Homeworks: Homeworks.filter((el) => {
         console.log(el);
         return el.homeworkId !== Number(id);
@@ -95,8 +100,8 @@ const EditJournalForm = ({ user, setUser }) => {
 
   const addHomeworkHandler = (e) => {
     if (e.key === 'Enter' && e.target.value) {
-      setUser({
-        ...user,
+      setUserData({
+        ...userData,
         Homeworks: [
           ...Homeworks,
           {
@@ -124,7 +129,7 @@ const EditJournalForm = ({ user, setUser }) => {
           />
         </div>
         <section className={styles.upperPart}>
-          <DatePickerForm setUser={setUser} user={user} />
+          <DatePickerForm selDate={selDate} setSelDate={setSelDate} />
           <div className={styles.upperGoal}>
             <div className={styles.titleContainer}>
               <label htmlFor="dateNoticeTitle">
@@ -169,9 +174,9 @@ const EditJournalForm = ({ user, setUser }) => {
                         <CheckBox
                           id={`homework${homeworkId}`}
                           handler={() =>
-                            setUser({
-                              ...user,
-                              Homeworks: user.Homeworks.map((homework) => {
+                            setUserData({
+                              ...userData,
+                              Homeworks: userData.Homeworks.map((homework) => {
                                 return homework.homeworkId === homeworkId
                                   ? {
                                       ...homework,
