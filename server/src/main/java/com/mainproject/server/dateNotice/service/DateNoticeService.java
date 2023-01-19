@@ -89,7 +89,7 @@ public class DateNoticeService {
 
     /* 검증 및 유틸 로직 */
 
-    private DateNotice updateCheckNotice(DateNotice dateNotice, Tutoring tutoring) {
+    public DateNotice updateCheckNotice(DateNotice dateNotice, Tutoring tutoring) {
         if (!dateNotice.getNotice().getNoticeBody().isBlank()) {
             tutoring.setLatestNoticeId(dateNotice.getNotice().getNoticeId());
             tutoring.setLatestNoticeBody(dateNotice.getNotice().getNoticeBody());
