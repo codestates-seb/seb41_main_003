@@ -32,6 +32,8 @@ public class ProfileResponseDto {
 
     private String way;
 
+    private String character;
+
     private List<SubjectProfileResponseDto> subjects;
 
     private String difference;
@@ -61,6 +63,7 @@ public class ProfileResponseDto {
         this.wantedStatus = dto.getWantedStatus();
         this.profileStatus = dto.getProfileStatus();
         this.way = dto.getWay();
+        this.character = dto.getCharacter();
         this.subjects = dto.getSubjects();
         this.difference = dto.getDifference();
         this.gender = dto.getGender();

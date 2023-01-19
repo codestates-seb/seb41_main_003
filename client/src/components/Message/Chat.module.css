@@ -1,0 +1,84 @@
+@import url('../../default.css');
+
+.chatContainer {
+  display: inline-block;
+  max-width: 50%;
+  position: relative;
+  margin-bottom: 25px;
+
+  /* 메세지 내용 위로 안넘어 가게 */
+
+  h5 {
+    font-size: $font6;
+    font-weight: $font6W;
+  }
+
+  .text {
+    background-color: $white;
+    border-radius: 5px;
+    padding: 8px;
+    overflow: hidden;
+    word-wrap: break-word;
+  }
+
+  .time {
+    margin-right: 5px;
+    width: 60px;
+    font-size: 11px;
+    text-align: right;
+  }
+
+  &.sendChat {
+    align-self: end;
+
+    .text {
+      background-color: $baby;
+    }
+  }
+
+  span {
+    font-size: 12px;
+    font-weight: 500;
+    position: absolute;
+    bottom: -16px;
+    right: 0;
+  }
+}
+
+.sendRequestBox {
+  background-color: $night;
+  padding: 8px;
+  border-radius: 5px;
+  width: 221px;
+  height: 79px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+
+  p {
+    color: $white;
+    font-size: $font6;
+    font-weight: $font6W;
+  }
+}
+
+.requestCancelBtn {
+  background-color: $red;
+  width: 205px;
+  height: 36px;
+  color: $white;
+  padding: 6px;
+  border-radius: 5px;
+  font-weight: $font5W;
+  font-size: $font5;
+}
+
+.checkRequestBtn {
+  background-color: $white;
+  width: 205px;
+  height: 36px;
+  padding: 6px;
+  border-radius: 5px;
+  font-weight: $font5W;
+  font-size: $font5;
+}

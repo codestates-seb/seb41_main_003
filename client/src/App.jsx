@@ -18,19 +18,28 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import EditJournal from './pages/EditJournal';
 import Journal from './pages/Journal';
-import { GlobalModal } from './components/modal/GlobalModal';
 import AddJournal from './pages/AddJournal';
+import { GlobalModal } from './components/modal/GlobalModal';
+import { useRef } from 'react';
 
 const App = () => {
+  const footerRef = useRef(null);
+
   return (
     <div className="app">
       <Router basename="/">
         <Header />
         <div className="content">
           <Routes>
-            <Route path="/" element={<TutorList />} />
-            <Route path="/tutorlist" element={<TutorList />} />
-            <Route path="/tuteelist" element={<TuteeList />} />
+            <Route path="/" element={<TutorList footerRef={footerRef} />} />
+            <Route
+              path="/tutorlist"
+              element={<TutorList footerRef={footerRef} />}
+            />
+            <Route
+              path="/tuteelist"
+              element={<TuteeList footerRef={footerRef} />}
+            />
             <Route path="/tutoringlist" element={<TutoringList />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/login" element={<Login />} />
@@ -48,9 +57,9 @@ const App = () => {
             <Route path="/addjournal" element={<AddJournal />} />
           </Routes>
         </div>
+        <GlobalModal />
       </Router>
-      <Footer />
-      <GlobalModal />
+      <Footer ref={footerRef} />
     </div>
   );
 };

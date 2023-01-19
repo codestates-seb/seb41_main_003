@@ -3,10 +3,11 @@ import { useResetRecoilState, useRecoilValue } from 'recoil';
 import ModalState from '../../recoil/modal.js';
 import {
   AlertModal,
-  CancelConfirmModal,
   ConfirmModal,
   ConfirmTextModal,
   ConfirmValiModal,
+  RedConfirmModal,
+  RedAlertModal,
 } from './DefaultModal.jsx';
 import AdminModal from './AdminModal';
 import BothHandlerModal from './BothHandlerModal';
@@ -14,7 +15,8 @@ import ReviewModal from './ReviewModal';
 import ReviewDetailModal from './ReviewDetail';
 import EditReviewModal from './EditReviewModal';
 import ImgLoadModal from './ImgLoadModal';
-import { HandlerAlertModal } from './HandlerAlertModal';
+import HandlerAlertModal from './HandlerAlertModal';
+import GetTextModal from './GetTextModal';
 
 export const GlobalModal = () => {
   const reset = useResetRecoilState(ModalState);
@@ -32,12 +34,22 @@ export const GlobalModal = () => {
     reviewDetail: <ReviewDetailModal {...props} />,
     editReview: <EditReviewModal {...props} />,
     cancelConfirm: <CancelConfirmModal {...props} />,
-    handlerAlert: <HandlerAlertModal {...props} />,
     imgLoad: <ImgLoadModal {...props} />,
+    redConfirm: <RedConfirmModal {...props} />,
+    redAlert: <RedAlertModal {...props} />,
+    handlerAlert: <HandlerAlertModal {...props} />,
+    getText: <GetTextModal {...props} />,
   };
 
   return (
-    <div className={styles.backdrop} onClick={() => reset()} aria-hidden="true">
+    <div
+      className={styles.backdrop}
+      {...(modalType === 'admin' ||
+        modalType === 'bothHandler' || {
+          onClick: () => reset(),
+        })}
+      aria-hidden="true"
+    >
       {modal[modalType]}
     </div>
   );

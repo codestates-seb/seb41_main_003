@@ -7,36 +7,59 @@ import { Link } from 'react-router-dom';
 import { ButtonTop } from '../components/Button';
 import MenuButtons from '../components/MainSection/FilterButton';
 import axios from 'axios';
+import useScroll from '../util/useScroll';
+import PropType from 'prop-types';
 
-//TODO: 튜터 리스트를 불러오는 GET 요청 필요
-//정렬 필터 파라미터 : sort = rate (기본값이 createAt 이므로 별점 순으로 변경시에만 파라미터 붙여서 요청하면 됨)
-//과목 버튼 필터 파라미터 : subjectMenu 상태에서 꺼내와서 subject = 수학,영어,과학 같은 형식으로 요청
-//검색창에서 검색 시 name = 강호수 와 같이 요청함
-
-//TODO: Enter 쳤을 때만 검색어 검색이 되도록 수정 필요 (Enter 핸들러 작성)
-
-const TutorList = () => {
-  const [TutorData, setTutorData] = useState([]);
+const TutorList = ({ footerRef }) => {
+  // API에서 받아온 데이터
+  const [tutorData, setTutorData] = useState([]);
+  const [pageInfo, setPageInfo] = useState({
+    page: 1,
+  });
   //정렬 메뉴 오픈 상태
   const [isOpen, setIsOpen] = useState(false);
   //과목 필터 메뉴에서 선택한 과목들
   const [subjectMenu, setSubjectMenu] = useState([]);
-  //검색창에서 입력한 검색어
+  //검색창에서 입력한 검색어 반영
   const [search, setSearch] = useState('');
+  //검색창 값 핸들링 상태
+  const [searchValue, setSearchValue] = useState('');
   //정렬 메뉴 '최신 순'인지 '별점 순'인지
-  const [filter, setFilter] = useState('');
+  const [sort, setSort] = useState('');
+
+  const setIsNew = useScroll(() => {
+    if (pageInfo.page < pageInfo.totalPages - 1) {
+      scrollFunc(pageInfo.page + 1);
+    } else {
+      setIsNew(false);
+    }
+  }, footerRef);
+
+  const scrollFunc = async (page) => {
+    await axios
+      .get(
+        process.env.REACT_APP_BASE_URL +
+          `/users/tutees?subject=${subjectMenu.join()}&name=${search}&sort=${sort}&page=${page}`
+      )
+      .then(({ data }) => {
+        console.log(data.pageInfo);
+        setTutorData([...tutorData, ...data.data]);
+        setPageInfo(data.pageInfo);
+      })
+      .catch((err) => console.error(err.message));
+  };
 
   const getTutorData = async () => {
     await axios
       .get(
         process.env.REACT_APP_BASE_URL +
-          `/users/tutors?subject=${subjectMenu.join()}&name=${search}&sort=${filter}`
+          `/users/tutors?subject=${subjectMenu.join()}&name=${search}&sort=${sort}`
       )
-      .then((res) => {
-        setTutorData(res.data.data);
-        console.log(res.data.data);
+      .then(({ data }) => {
+        setTutorData(data.data);
+        setPageInfo(data.pageInfo);
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => console.error(err.message));
   };
 
   //정렬 메뉴 오픈 핸들러
@@ -52,14 +75,15 @@ const TutorList = () => {
     }
   };
 
-  const searchHandler = (e) => {
-    setSearch(e.target.value);
+  const searchHandler = ({ type, key, target }) => {
+    if (type === 'change') setSearchValue(target.value);
+    else if (target.value === '') setSearch(searchValue);
+    else if (type === 'keyup' && key === 'Enter') setSearch(searchValue);
   };
 
   useEffect(() => {
     getTutorData();
-    console.log('useEffect');
-  }, [subjectMenu, search, filter]);
+  }, [subjectMenu, search, sort]);
 
   return (
     <div className={styles.wrapper}>
@@ -76,8 +100,9 @@ const TutorList = () => {
               <input
                 className={styles.input}
                 placeholder="서울대학교"
-                value={search}
+                value={searchValue}
                 onChange={searchHandler}
+                onKeyUp={searchHandler}
               ></input>
             </div>
           </div>
@@ -93,15 +118,14 @@ const TutorList = () => {
             aria-hidden="true"
           >
             <MdFilterList className={styles.mdFilterList} />
-            <span>{filter === 'rate' ? '평점 순' : '최신 순'}</span>
-            {isOpen ? <FilterDropdown setFilter={setFilter} /> : null}
+            <span>{sort === 'rate' ? '평점 순' : '최신 순'}</span>
+            {isOpen ? <FilterDropdown setFilter={setSort} /> : null}
           </div>
         </div>
         <div className={styles.feedContainer}>
-          {TutorData.map((tutor) => (
+          {tutorData.map((tutor) => (
             <Link
-              // ! 프로필 ID 기준으로 링크 변경 필요
-              to="/tutorprofile"
+              to={`/tutorprofile/${tutor.profileId}`}
               key={tutor.profileId}
               className={styles.list}
             >
@@ -113,6 +137,9 @@ const TutorList = () => {
       <ButtonTop />
     </div>
   );
+};
+TutorList.propTypes = {
+  footerRef: PropType.object,
 };
 
 export default TutorList;

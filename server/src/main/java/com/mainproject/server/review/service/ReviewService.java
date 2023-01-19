@@ -46,20 +46,10 @@ public class ReviewService {
                 .orElseThrow(
                         () -> new ServiceLogicException(ErrorCode.REVIEW_NOT_FOUND)
                 );
-
-        Optional.of(review.getProfessional())
-                .ifPresent(findReview::setProfessional);
-        Optional.of(review.getExplanation())
-                .ifPresent(findReview::setExplanation);
-        Optional.of(review.getPunctuality())
-                .ifPresent(findReview::setPunctuality);
-        Optional.of(review.getReadiness())
-                .ifPresent(findReview::setReadiness);
-        Optional.ofNullable(review.getReviewBody())
-                .ifPresent(findReview::setReviewBody);
-
-        return reviewRepository.save(findReview);
+        Review updateReview = updateReviewField(review, findReview);
+        return reviewRepository.save(updateReview);
     }
+
 
     public void setRate(Profile tutor) {
         Set<Review> reviewSet = tutor.getReviews();
@@ -85,5 +75,19 @@ public class ReviewService {
                 .orElseThrow(
                         () -> new ServiceLogicException(ErrorCode.REVIEW_NOT_FOUND)
                 );
+    }
+
+    public Review updateReviewField(Review updateReview, Review findReview) {
+        Optional.of(updateReview.getProfessional())
+                .ifPresent(findReview::setProfessional);
+        Optional.of(updateReview.getExplanation())
+                .ifPresent(findReview::setExplanation);
+        Optional.of(updateReview.getPunctuality())
+                .ifPresent(findReview::setPunctuality);
+        Optional.of(updateReview.getReadiness())
+                .ifPresent(findReview::setReadiness);
+        Optional.ofNullable(updateReview.getReviewBody())
+                .ifPresent(findReview::setReviewBody);
+        return findReview;
     }
 }

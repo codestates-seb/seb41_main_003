@@ -3,6 +3,8 @@ package com.mainproject.server.tutoring.service;
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.ProfileStatus;
 import com.mainproject.server.constant.TutoringStatus;
+import com.mainproject.server.dateNotice.entity.DateNotice;
+import com.mainproject.server.dateNotice.repository.DateNoticeRepository;
 import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.message.entity.MessageRoom;
 import com.mainproject.server.message.service.MessageService;
@@ -27,6 +29,8 @@ import java.util.Optional;
 @Slf4j
 public class TutoringService {
     private final TutoringRepository tutoringRepository;
+
+    private final DateNoticeRepository dateNoticeRepository;
     private final ProfileService profileService;
 
     private final MessageService messageService;
@@ -90,9 +94,9 @@ public class TutoringService {
         ) {
             tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
             Tutoring progressTutoring = tutoringRepository.save(tutoring);
-            return TutoringDto.of(progressTutoring, pageable);
+            return getTutoringDto(progressTutoring,pageable);
         } else {
-            return TutoringDto.of(tutoring, pageable);
+            return getTutoringDto(tutoring, pageable);
         }
     }
 
@@ -102,7 +106,7 @@ public class TutoringService {
                 .ifPresent(findTutoring::setTutoringTitle);
         Optional.ofNullable(tutoring.getTutoringStatus())
                 .ifPresent(findTutoring::setTutoringStatus);
-        return TutoringDto.of(tutoringRepository.save(findTutoring), pageable);
+        return getTutoringDto(tutoringRepository.save(findTutoring), pageable);
     }
 
     public void deleteTutoring(Long tutoringId) {
@@ -111,19 +115,25 @@ public class TutoringService {
 
     /* 검증 및 유틸 로직 */
 
+    private TutoringDto getTutoringDto(Tutoring tutoring, Pageable pageable) {
+        Page<DateNotice> dateNoticePage =
+                dateNoticeRepository.findAllByTutoring(tutoring, pageable);
+        return TutoringDto.of(tutoring, dateNoticePage);
+    }
+
     public TutoringDto setTutoringStatusProgress(
             Long tutoringId,
             Long profileId,
             Pageable pageable
     ) {
         Tutoring tutoring = verifiedTutoring(tutoringId);
-        if (tutoring.getTutor().getProfileId().equals(profileId) ||
-                tutoring.getTutee().getProfileId().equals(profileId) &&
+        if ((tutoring.getTutor().getProfileId().equals(profileId) ||
+                tutoring.getTutee().getProfileId().equals(profileId)) &&
                 !tutoring.getTutoringStatus().equals(TutoringStatus.FINISH)
         ) {
             tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
             Tutoring progressTutoring = tutoringRepository.save(tutoring);
-            return TutoringDto.of(progressTutoring, pageable);
+            return getTutoringDto(progressTutoring, pageable);
         } else {
             throw new ServiceLogicException(ErrorCode.ACCESS_DENIED);
         }
@@ -134,7 +144,7 @@ public class TutoringService {
                 .orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
     }
 
-    private TutoringStatus getTutoringStatus(Long profileId) {
+    public TutoringStatus getTutoringStatus(Long profileId) {
         Profile profile = profileService.verifiedProfileById(profileId);
         if (profile.getProfileStatus().equals(ProfileStatus.TUTEE)) {
             return TutoringStatus.TUTOR_WAITING;

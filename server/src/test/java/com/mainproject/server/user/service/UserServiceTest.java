@@ -40,7 +40,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("회원 조회 TEST - USER NOT FOUND EXCEPTION")
-    void getUser() {
+    void  givenNullWhenThrowExceptionThenEqualServiceLogicException() {
         // Given
         Long userId = 1L;
         given(userRepository.findById(anyLong())).willReturn(Optional.empty());
@@ -55,8 +55,8 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("이메일 중복 검증 TEST - USER EMIL EXISTS EXCEPTION")
-    void verifyUserByEmail() {
+    @DisplayName("이메일 중복 검증 TEST - USER EMIL EXISTS")
+    void givenUserWhenThrowUserEmailExistsThenEqualsServiceLogicException() {
         // Given
         String email = "test@test.com";
         given(userRepository.findByEmail(anyString())).willReturn(Optional.of(new User()));
@@ -71,8 +71,58 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("이메일로 회원 조회 TEST - USER NOT FOUND")
+    void givenNullWhenThrowUserNotFoundThenEqualsServiceLogicException() {
+        // Given
+        String email = "test@test.com";
+        given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
+        // When
+        Throwable throwable = catchThrowable(
+                () -> userService.verifiedUserByEmail(email)
+        );
+        // Then
+        assertThat(throwable)
+                .isInstanceOf(ServiceLogicException.class)
+                .hasMessageContaining(ErrorCode.USER_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    @DisplayName("휴대폰 번호 중복 검증 TEST - PHONE NUMBER EXISTS")
+    void givenUserWhenThrowPhoneNumberExistsThenEqualsServiceLogicException() {
+        // Given
+        String phoneNumber = "010-0000-0000";
+        given(userRepository.findByPhoneNumber(anyString())).willReturn(Optional.of(new User()));
+        // When
+        Throwable throwable = catchThrowable(
+                () -> userService.verifyPhoneNumber(phoneNumber)
+        );
+        // Then
+        assertThat(throwable)
+                .isInstanceOf(ServiceLogicException.class)
+                .hasMessageContaining(ErrorCode.PHONE_NUMBER_EXISTS.getMessage());
+    }
+
+    @Test
+    @DisplayName("2차 비밀번호 검증 TEST - WRONG SECOND PASSWORD")
+    void givenSecondPasswordWhenThrowWrongSecondPasswordThenEqualsServiceLogicException() {
+        // Given
+        String secondPassword = "1111!";
+        Long userId = 1L;
+        User user = User.builder().secondPassword("2222!").build();
+        given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
+        // When
+        Throwable throwable = catchThrowable(
+                () -> userService.verifySecondPassword(userId, secondPassword)
+        );
+        // Then
+        assertThat(throwable)
+                .isInstanceOf(ServiceLogicException.class)
+                .hasMessageContaining(ErrorCode.WRONG_SECOND_PASSWORD.getMessage());
+    }
+
+    @Test
     @DisplayName("로그인 타입에 따른 회원 설정 TEST")
-    void checkLoginType() {
+    void givenNullUserAndSocialUserWhenCheckLoginTypeThenLoginTypeBasicAndSocial() {
         // Given
         User nullUser = User.builder()
                 .email("test@test.com")
@@ -97,5 +147,46 @@ class UserServiceTest {
         assertThat(socialUserTest.getPassword()).isEqualTo("test");
         assertThat(socialUserTest.getUserStatus()).isNull();
     }
+
+    @Test
+    @DisplayName("회원 상태에 따른 예외 처리 검증 TEST - USER TYPE NOT NONE")
+    void givenUserStatusNoneWhenThrowUserTypeNotNoneThenEqualsServiceLogicException() {
+        // Given
+        User postUser = User.builder()
+                .userStatus(UserStatus.NONE)
+                .build();
+        User findUser = User.builder()
+                .userStatus(UserStatus.NONE)
+                .build();
+        // When
+        Throwable throwable = catchThrowable(
+                () -> userService.verifyUserStatusAndCreateBasicProfile(postUser, findUser)
+        );
+        // Then
+        assertThat(throwable)
+                .isInstanceOf(ServiceLogicException.class)
+                .hasMessageContaining(ErrorCode.USER_TYPE_NOT_NONE.getMessage());
+    }
+
+    @Test
+    @DisplayName("회원 상태에 따른 예외 처리 검증 TEST - NOT CHANGE USER STATUS")
+    void givenUserStatusTutorAndTuteeWhenThrowUserTypeNotNoneThenEqualsServiceLogicException() {
+        // Given
+        User postUser = User.builder()
+                .userStatus(UserStatus.TUTOR)
+                .build();
+        User findUser = User.builder()
+                .userStatus(UserStatus.TUTEE)
+                .build();
+        // When
+        Throwable throwable = catchThrowable(
+                () -> userService.verifyUserStatusAndCreateBasicProfile(postUser, findUser)
+        );
+        // Then
+        assertThat(throwable)
+                .isInstanceOf(ServiceLogicException.class)
+                .hasMessageContaining(ErrorCode.NOT_CHANGE_USER_STATUS.getMessage());
+    }
+
 
 }

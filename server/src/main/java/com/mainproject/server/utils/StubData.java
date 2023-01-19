@@ -1,267 +1,198 @@
 package com.mainproject.server.utils;
 
-
 import com.mainproject.server.constant.*;
-import com.mainproject.server.dateNotice.dto.DateNoticeResponseDto;
-import com.mainproject.server.dateNotice.dto.HomeworkResponseDto;
-import com.mainproject.server.dateNotice.dto.NoticeResponseDto;
-import com.mainproject.server.dateNotice.dto.ScheduleResponseDto;
-import com.mainproject.server.image.dto.ImageResponseDto;
-import com.mainproject.server.message.dto.MessageResponseDto;
-import com.mainproject.server.message.dto.MessageRoomResponseDto;
-import com.mainproject.server.message.dto.MessageRoomSimpleResponseDto;
-import com.mainproject.server.profile.dto.ProfilePageDto;
-import com.mainproject.server.profile.dto.ProfileListResponseDto;
-import com.mainproject.server.profile.dto.ProfileSimpleResponseDto;
-import com.mainproject.server.review.dto.ReviewResponseDto;
-import com.mainproject.server.subject.dto.SubjectProfileResponseDto;
-import com.mainproject.server.subject.dto.SubjectResponseDto;
-import com.mainproject.server.tutoring.dto.TutoringDto;
-import com.mainproject.server.tutoring.dto.TutoringSimpleResponseDto;
-import com.mainproject.server.user.dto.UserResponseDto;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Component;
+import com.mainproject.server.dateNotice.entity.DateNotice;
+import com.mainproject.server.dateNotice.entity.Homework;
+import com.mainproject.server.dateNotice.entity.Notice;
+import com.mainproject.server.dateNotice.entity.Schedule;
+import com.mainproject.server.image.entity.ProfileImage;
+import com.mainproject.server.profile.entity.Profile;
+import com.mainproject.server.review.entity.Review;
+import com.mainproject.server.subject.dto.SubjectDto;
+import com.mainproject.server.subject.entity.Subject;
+import com.mainproject.server.subject.entity.SubjectProfile;
+import com.mainproject.server.tutoring.entity.Tutoring;
+import com.mainproject.server.user.entity.User;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-@Component
 public class StubData {
 
-    public ReviewResponseDto createReviewResponse() {
-        return ReviewResponseDto.builder()
-                .reviewId(1L)
-                .professional(4)
-                .readiness(4)
-                .explanation(5)
-                .punctuality(5)
-                .reviewBody("TestBody")
-                .tuteeName("testTutee")
-                .createAt(LocalDateTime.now())
-                .updateAt(LocalDateTime.now())
-                .build();
-    }
-
-
-    public UserResponseDto createUserResponse() {
-        return UserResponseDto.builder()
+    public static User createUser() {
+        return User.builder()
                 .userId(1L)
-                .email("hosoo3513@gmail.com")
-                .phoneNumber("010-1234-5678")
-                .loginType(LoginType.SOCIAL.name())
-                .userStatus(UserStatus.TUTOR.name())
-                .createAt(LocalDateTime.now())
-                .updateAt(LocalDateTime.now())
+                .email("test@test.com")
+                .nickName("test")
+                .password("1111!")
+                .secondPassword("1234")
+                .phoneNumber("010-0000-0000")
+                .userStatus(UserStatus.TUTOR)
                 .build();
     }
-
-    public SubjectResponseDto createSubjectResponse() {
-        return SubjectResponseDto.builder()
-                .subjectId(1L)
-                .subjectTitle("수학")
-                .build();
-    }
-
-    public SubjectProfileResponseDto createSubjectProfileResponse() {
-        return SubjectProfileResponseDto.builder()
-                .subjectId(1L)
-                .subjectTitle("수학")
-                .content("수학공부를 합시다")
-                .createAt(LocalDateTime.now())
-                .updateAt(LocalDateTime.now())
-                .build();
-    }
-
-    public ImageResponseDto createImageResponse() {
-        return ImageResponseDto.builder()
-                .profileImageId(1L)
-                .url("https://www.google.com/url?sa=i&url=http%3A%2F%2Fm.blog.naver.com%2Fcjswodnajs%2F222138892587&psig=AOvVaw0Ef_d9Jqh-dQm9Q7RRDiIg&ust=1673341195393000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCMjWyO2PuvwCFQAAAAAdAAAAABAE")
-                .createAt(LocalDateTime.now())
-                .updateAt(LocalDateTime.now())
-                .build();
-    }
-    
-    public DateNoticeResponseDto createDateNoticeResponse() {
-        ScheduleResponseDto scDto = new ScheduleResponseDto();
-        scDto.setScheduleId(1L);
-        scDto.setScheduleBody("TestBody");
-        NoticeResponseDto ntDto = new NoticeResponseDto();
-        ntDto.setNoticeId(1L);
-        ntDto.setNoticeBody("TestBody");
-        return DateNoticeResponseDto.builder()
-                .dateNoticeId(1L)
-                .dateNoticeTitle("TestTitle")
-                .startTime(LocalDateTime.now().toString())
-                .endTime(LocalDateTime.now().toString())
-                .schedule(scDto)
-                .notice(ntDto)
-                .homeworks(List.of(
-                        createHomeworkResponse(),
-                        createHomeworkResponse(),
-                        createHomeworkResponse()))
-                .build();
-    }
-
-    public HomeworkResponseDto createHomeworkResponse() {
-        HomeworkResponseDto hwDto = new HomeworkResponseDto();
-        hwDto.setHomeworkId(1L);
-        hwDto.setHomeworkBody("TestBody");
-        hwDto.setHomeworkStatus(HomeworkStatus.PROGRESS.name());
-        return hwDto;
-    }
-
-    public TutoringDto createTutoringDto() {
-        List<DateNoticeResponseDto> list = List.of(
-                createDateNoticeResponse(),
-                createDateNoticeResponse(),
-                createDateNoticeResponse()
-
+    public static Tutoring createTutoring(Long id) {
+        Tutoring get = new Tutoring(
+                id,
+                "test",
+                id,
+                "test",
+                TutoringStatus.UNCHECK,
+                createProfile(id),
+                createProfile(id),
+                Set.of(createDateNotice(id), createDateNotice(id)),
+                createReview(id)
         );
-        Page page = new PageImpl(list, PageRequest.of(0, 10), list.size());
-        return TutoringDto.builder()
-                .tutoringId(1L)
-                .tutoringTitle("열심히 가르칩니다! 강호수입니다!")
-                .tutoringStatus(TutoringStatus.TUTOR_WAITING.name())
-                .createAt(LocalDateTime.now())
-                .updateAt(LocalDateTime.now())
-                .tutorId(createProfileListResponse().getProfileId())
-                .tuteeId(createProfileListResponse().getProfileId())
-                .tutorName(createProfileListResponse().getName())
-                .tuteeName(createProfileListResponse().getName())
-                .dateNotices(page).build();
+        get.setCreateAt(LocalDateTime.now());
+        get.setUpdateAt(LocalDateTime.now());
+
+        return get;
     }
 
-    public TutoringSimpleResponseDto createTutoringSimpleResponse() {
-        return TutoringSimpleResponseDto.builder()
-                .tutoringId(1L)
-                .tutorName("강호수")
-                .tuteeName("김다은")
-                .tutoringTitle("수학 뿌셔 과학 뿌셔")
-                .tutoringStatus(TutoringStatus.TUTEE_WAITING.name())
-                .createAt(LocalDateTime.now())
-                .build();
-    }
-
-    public ProfilePageDto createProfileResponse() {
-        List<ReviewResponseDto> list = List.of(
-                createReviewResponse(),
-                createReviewResponse()
+    public static DateNotice createDateNotice(Long id) {
+        Tutoring tutoring = new Tutoring(
+                id,
+                "test",
+                id,
+                "test",
+                TutoringStatus.UNCHECK,
+                createProfile(id),
+                createProfile(id),
+                Set.of(DateNotice.builder().dateNoticeId(id).build(), DateNotice.builder().dateNoticeId(id).build()),
+                createReview(id)
         );
-        Page page = new PageImpl(list, PageRequest.of(0, 10), list.size());
-        return ProfilePageDto.builder()
-                .profileId(1L)
-                .name("강호수")
-                .rate(4.9)
-                .bio("진짜 잘 가르칩니다.")
-                .school("낙성대")
-                .wantedStatus(WantedStatus.REQUEST.name())
-                .way("같이 술한잔?")
-                .subjects(List.of(
-                        createSubjectProfileResponse(),
-                        createSubjectProfileResponse()
-                ))
-                .difference("제 차별성은요...")
-                .gender("남자")
-                .pay("4딸라")
-                .wantDate("주말이 좋아요")
-                .preTutoring("불가능합니다")
-                .reviews(page)
-                .profileImage(createImageResponse())
-                .createAt(LocalDateTime.now())
-                .updateAt(LocalDateTime.now())
+
+        DateNotice get = DateNotice.builder()
+                .dateNoticeId(id)
+                .dateNoticeTitle("test")
+                .startTime("20230118")
+                .endTime("20230119")
+                .noticeStatus(NoticeStatus.NOTICE)
+                .notice(createNotice(id))
+                .schedule(createSchedule(id))
+                .tutoring(tutoring)
+                .homeworks(Set.of(createHomework(id), createHomework(id)))
                 .build();
+        get.setCreateAt(LocalDateTime.now());
+        get.setUpdateAt(LocalDateTime.now());
+
+        return get;
     }
 
-    public ProfilePageDto createEmptyProfileResponse() {
-        Page page = new PageImpl(new ArrayList<>(), PageRequest.of(0, 10), 10L);
-        return ProfilePageDto.builder()
-                .profileId(1L)
-                .name("강호수")
-                .rate(4.9)
-                .bio("진짜 잘 가르칩니다.")
-                .school("낙성대")
-                .wantedStatus(WantedStatus.REQUEST.name())
-                .way("같이 술한잔?")
-                .subjects(new ArrayList<>())
-                .difference("제 차별성은요...")
-                .gender("남자")
-                .pay("4딸라")
-                .wantDate("주말이 좋아요")
-                .preTutoring("불가능합니다")
-                .reviews(page)
-                .profileImage(createImageResponse())
-                .createAt(LocalDateTime.now())
-                .updateAt(LocalDateTime.now())
+    public static Notice createNotice(Long id) {
+        Notice get = Notice.builder()
+                .noticeId(id)
+                .noticeBody("test")
                 .build();
+
+        get.setCreateAt(LocalDateTime.now());
+        get.setUpdateAt(LocalDateTime.now());
+
+        return get;
     }
 
-    public ProfileListResponseDto createProfileListResponse() {
-        return ProfileListResponseDto.builder()
-                .profileId(1L)
-                .name("어때요")
-                .rate(4.8)
-                .subjects(List.of(
-                        createSubjectResponse(),
-                        createSubjectResponse(),
-                        createSubjectResponse()))
-                .school("MIT")
-                .bio("대치동 원탑 수학 머신")
-                .profileImage(createImageResponse())
-                .createAt(LocalDateTime.now())
-                .updateAt(LocalDateTime.now())
+    public static Schedule createSchedule(Long id) {
+        Schedule get = Schedule.builder()
+                .scheduleId(id)
+                .scheduleBody("test")
                 .build();
+
+        get.setCreateAt(LocalDateTime.now());
+        get.setUpdateAt(LocalDateTime.now());
+
+        return get;
     }
 
-    public ProfileSimpleResponseDto createProfileSimpleResponse() {
-        return ProfileSimpleResponseDto.builder()
-                .profileId(1L)
-                .name("어때요")
-                .url("https://www.google.com/url?sa=i&url=http%3A%2F%2Fm.blog.naver.com%2Fcjswodnajs%2F222138892587&psig=AOvVaw0Ef_d9Jqh-dQm9Q7RRDiIg&ust=1673341195393000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCMjWyO2PuvwCFQAAAAAdAAAAABAE")
-                .school("서운대 철학과 17학번")
+    public static Homework createHomework(Long id) {
+        Homework get = Homework.builder()
+                .homeworkId(id)
+                .homeworkBody("test")
+                .homeworkStatus(HomeworkStatus.PROGRESS)
                 .build();
-    }
 
-    public MessageRoomSimpleResponseDto createMessageRoomSimpleResponse() {
-        return MessageRoomSimpleResponseDto.builder()
-                .messageRoomId(1L)
-                .messageStatus(MessageStatus.UNCHECK.name())
-                .lastMessage("자니?")
-                .targetName("튯허")
-                .createAt(LocalDateTime.now())
-                .build();
-    }
-    public MessageResponseDto createMessageResponse() {
-        return MessageResponseDto.builder()
-                .messageId(1L)
-                .senderId(1L)
-                .senderName("홍길동")
-                .receiverId(1L)
-                .receiverName("김코딩")
-                .messageContent("아버지를 아버지라 부르지 못하고")
-                .createAt(LocalDateTime.now())
-                .build();
-    }
+        get.setCreateAt(LocalDateTime.now());
+        get.setUpdateAt(LocalDateTime.now());
 
-    public MessageRoomResponseDto createMessageRoomResponse() {
-        return MessageRoomResponseDto.builder()
-                .messageRoomId(1L)
-                .messages(List.of(
-                        createMessageResponse(),
-                        createMessageResponse(),
-                        createMessageResponse()
-                ))
-                .createAt(LocalDateTime.now())
-                .tutorId(1L)
-                .tutorName("너에게")
-                .tuteeId(1L)
-                .tuteeName("나에게")
-                .build();
+        return get;
     }
 
 
 
+    public static Review createReview(Long id) {
+        Review get = Review.builder()
+                .reviewId(id)
+                .professional(4)
+                .readiness(5)
+                .explanation(5)
+                .punctuality(4)
+                .reviewBody("test")
+                .tutor(Profile.builder().name("test").build())
+                .tutee(Profile.builder().name("test").build())
+                .build();
+        get.setCreateAt(LocalDateTime.now());
+        get.setUpdateAt(LocalDateTime.now());
+        return get;
+    }
 
+    public static Subject createSubject(Long id) {
+        Subject get = Subject.builder()
+                .subjectId(id)
+                .subjectTitle("test")
+                .subjectProfiles(new LinkedHashSet<>())
+                .build();
+        get.setCreateAt(LocalDateTime.now());
+        get.setUpdateAt(LocalDateTime.now());
+        return get;
+    }
+
+    public static SubjectDto createSubjectDto(Long id) {
+        return new SubjectDto(id, "test", "test");
+    }
+
+    public static Profile createProfile(Long id) {
+        Profile get = Profile.builder()
+                .profileId(id)
+                .name("test")
+                .rate(3.5)
+                .bio("test")
+                .wantDate("test")
+                .pay("test")
+                .way("test")
+                .profileStatus(ProfileStatus.TUTOR)
+                .wantedStatus(WantedStatus.REQUEST)
+                .gender("test")
+                .school("test")
+                .character("test")
+                .preTutoring("test")
+                .difference("test")
+                .subjectString("test")
+                .subjectProfiles(Set.of(createSubjectProfile(id), createSubjectProfile(id)))
+                .reviews(Set.of(createReview(id), createReview(id)))
+                .profileImage(createImage(id))
+                .user(new User())
+                .build();
+        get.setCreateAt(LocalDateTime.now());
+        get.setUpdateAt(LocalDateTime.now());
+        return get;
+    }
+
+    public static ProfileImage createImage(Long id) {
+        ProfileImage get = ProfileImage.builder()
+                .profileImageId(id)
+                .fileName("test")
+                .url("test")
+                .build();
+        get.setCreateAt(LocalDateTime.now());
+        get.setUpdateAt(LocalDateTime.now());
+        return get;
+    }
+
+    public static SubjectProfile createSubjectProfile(Long id) {
+        return SubjectProfile.builder()
+                .profile(Profile.builder().profileId(id).build())
+                .subject(createSubject(id))
+                .content("test")
+                .subjectProfileId(id)
+                .build();
+    }
 }

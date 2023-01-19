@@ -7,45 +7,37 @@ import { VscTriangleDown } from 'react-icons/vsc';
 import { ko } from 'date-fns/esm/locale';
 import 'react-datepicker/dist/react-datepicker.css';
 import './DatePicker.css';
+import { useRecoilState } from 'recoil';
+import ChangeJournal from '../../recoil/journal';
+import dayjs from 'dayjs';
 
-const DatePickerForm = ({ user, setUser }) => {
+const DatePickerForm = () => {
+  const [userData, setUserData] = useRecoilState(ChangeJournal);
   const [isTimePopup, setIsTimePopup] = useState(false);
-  const [date, setDate] = useState(new Date(user.startTime));
-  const [sTime, setStartTime] = useState(new Date(user.startTime));
-  const [eTime, setEndTime] = useState(new Date(user.endTime));
 
   useEffect(() => {
-    const start = new Date(sTime).getTime();
-    const end = new Date(eTime).getTime();
+    const start = dayjs(userData.startTime);
+    const end = dayjs(userData.endTime);
 
-    if (start > end) setEndTime(new Date(start + 900000));
-
-    const selectDate = [date.getFullYear(), date.getMonth(), date.getDate()];
-
-    const startTime = new Date(
-      ...selectDate,
-      new Date(sTime).getHours(),
-      new Date(sTime).getMinutes()
-    ).toISOString();
-
-    const endTime = new Date(
-      ...selectDate,
-      new Date(eTime).getHours(),
-      new Date(eTime).getMinutes()
-    ).toISOString();
-
-    setUser({ ...user, startTime, endTime });
-  }, [date, sTime, eTime]);
+    if (start > end)
+      setUserData({
+        ...userData,
+        endTime: dayjs(userData.endTime)
+          .add(30, 'minute')
+          .format('YYYY-MM-DD HH:mm'),
+      });
+  }, [userData]);
 
   const DateButton = forwardRef(({ onClick }, ref) => (
     <button ref={ref} className={styles.iconButton} onClick={onClick}>
       <div className={styles.day}>
-        <p className={styles.font1}>{date.getDate().toLocaleString()}</p>
+        <p className={styles.font1}>{dayjs(userData.startTime).date()}</p>
         <VscTriangleDown size="24px" />
       </div>
       <div className={styles.monthYear}>
         <p className={styles.font4}>
-          {date.getFullYear().toString()}년 {(date.getMonth() + 1).toString()}월
+          {dayjs(userData.startTime).year()}년{' '}
+          {dayjs(userData.startTime).month() + 1}월
         </p>
       </div>
     </button>
@@ -55,18 +47,17 @@ const DatePickerForm = ({ user, setUser }) => {
     <button ref={ref} className={styles.iconButtonT} onClick={onClick}>
       <div className={styles.time}>
         <div className={styles.font6}>
-          {new Date(time).toTimeString().slice(0, 5)}{' '}
-          <VscTriangleDown size="8px" />
+          {dayjs(time).format('HH:mm')} <VscTriangleDown size="8px" />
         </div>
       </div>
     </button>
   ));
   TimeButton.propTypes = {
-    time: PropTypes.object,
+    time: PropTypes.string,
   };
 
   const filterPassedTime = (time) => {
-    const current = new Date(sTime);
+    const current = new Date(userData.startTime);
     const selected = new Date(time);
 
     return current.getTime() < selected.getTime();
@@ -79,13 +70,20 @@ const DatePickerForm = ({ user, setUser }) => {
           <span>시작 시간</span>
           <DatePicker
             showPopperArrow={false}
-            onChange={(date) => setStartTime(date)}
-            selected={sTime}
+            onChange={(date) => {
+              setUserData({
+                ...userData,
+                startTime: `${dayjs(userData.startTime).format(
+                  'YYYY-MM-DD'
+                )} ${dayjs(date).format('HH:mm')}`,
+              });
+            }}
+            selected={new Date(userData.startTime)}
             showTimeSelect
             showTimeSelectOnly
             timeIntervals={15}
             dateFormat="h:mm"
-            customInput={<TimeButton time={sTime} />}
+            customInput={<TimeButton time={userData.startTime} />}
             timeCaption="시작 시간"
             locale={ko}
           />
@@ -94,13 +92,20 @@ const DatePickerForm = ({ user, setUser }) => {
           <span>종료 시간</span>
           <DatePicker
             showPopperArrow={false}
-            onChange={(date) => setEndTime(date)}
-            selected={eTime}
+            onChange={(date) => {
+              setUserData({
+                ...userData,
+                endTime: `${dayjs(userData.startTime).format(
+                  'YYYY-MM-DD'
+                )} ${dayjs(date).format('HH:mm')}`,
+              });
+            }}
+            selected={new Date(userData.endTime)}
             showTimeSelect
             showTimeSelectOnly
             timeIntervals={15}
             dateFormat="h:mm"
-            customInput={<TimeButton time={eTime} />}
+            customInput={<TimeButton time={userData.endTime} />}
             timeCaption="종료 시간"
             locale={ko}
             filterTime={filterPassedTime}
@@ -116,8 +121,18 @@ const DatePickerForm = ({ user, setUser }) => {
         id="date"
         showPopperArrow={false}
         className={styles.calendar}
-        onChange={(date) => setDate(date)}
-        selected={date}
+        onChange={(date) => {
+          setUserData({
+            ...userData,
+            startTime: `${dayjs(date).format('YYYY-MM-DD')} ${dayjs(
+              userData.startTime
+            ).format('HH:mm')}`,
+            endTime: `${dayjs(date).format('YYYY-MM-DD')} ${dayjs(
+              userData.endTime
+            ).format('HH:mm')}`,
+          });
+        }}
+        selected={new Date(userData.startTime)}
         dateFormat="h:mm aa"
         customInput={<DateButton />}
         locale={ko}
@@ -128,8 +143,8 @@ const DatePickerForm = ({ user, setUser }) => {
       >
         <div className={styles.time}>
           <div className={styles.font6}>
-            {new Date(sTime).toTimeString().slice(0, 5)}~
-            {new Date(eTime).toTimeString().slice(0, 5)}
+            {dayjs(userData.startTime).format('HH:mm')}~
+            {dayjs(userData.endTime).format('HH:mm')}
           </div>
           <VscTriangleDown size="12px" />
         </div>
@@ -140,7 +155,7 @@ const DatePickerForm = ({ user, setUser }) => {
 };
 DatePickerForm.propTypes = {
   onClick: PropTypes.func,
-  user: PropTypes.object,
-  setUser: PropTypes.func,
+  selDate: PropTypes.object,
+  setSelDate: PropTypes.func,
 };
 export default DatePickerForm;

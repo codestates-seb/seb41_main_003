@@ -1,25 +1,142 @@
 import styles from './Header.module.css';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { MdNotifications } from 'react-icons/md';
-import { ButtonRed } from './Button';
-import { useSetRecoilState, useRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import ModalState from '../recoil/modal.js';
 import defaultUser from '../assets/defaultUser.png';
 import Profile from '../recoil/profile';
+import axios from 'axios';
+import reIssueToken from '../util/reIssueToken';
 
 const Header = () => {
-  // const [isLogin, setIsLogin] = useState(false);
   const [isMenu, setIsMenu] = useState(false);
   const [isNoti, setIsNoti] = useState(false);
+  const navigate = useNavigate();
 
-  const [profile, setProfile] = useRecoilState(Profile);
+  const profile = useRecoilValue(Profile);
   const setModal = useSetRecoilState(ModalState);
+  const resetProfile = useResetRecoilState(Profile);
+  const resetModal = useResetRecoilState(ModalState);
 
   const adminProps = {
     isOpen: true,
     modalType: 'admin',
     props: {},
+  };
+
+  const statusNoneProps = {
+    isOpen: true,
+    modalType: 'bothHandler',
+    props: {
+      text: `서비스 이용을 위해 회원 정보 입력이 필요합니다. 
+      회원 정보를 입력하시겠습니까?
+
+      (입력이 되지 않으면 정상적인 서비스가 불가하여,
+        취소 시 로그아웃 처리됩니다.)`,
+      modalHandler: (e) => {
+        const { name } = e.target;
+        if (name === 'yes') {
+          resetModal();
+          navigate('/userinfo');
+        } else {
+          localStorage.clear();
+          sessionStorage.clear();
+          resetProfile();
+          resetModal();
+        }
+      },
+    },
+  };
+
+  useEffect(() => {
+    console.log(location.pathname);
+    if (profile.userStatus === 'NONE' && location.pathname !== '/userinfo')
+      setModal(statusNoneProps);
+    else if (
+      profile.isLogin === true &&
+      profile.profileId === 0 &&
+      location.pathname !== '/userinfo'
+    )
+      setModal(adminProps);
+  });
+
+  const verify2ndPassword = async (value, path) => {
+    axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+
+    axios.defaults.headers.common['Authorization'] =
+      sessionStorage.getItem('authorization') ||
+      localStorage.getItem('authorization');
+
+    await axios
+      .post(
+        `/auth/verify-second-password/${
+          sessionStorage.getItem('userId') || localStorage.getItem('userId')
+        }`,
+        { secondPassword: value }
+      )
+      .then(() => {
+        console.log('검증 완료');
+        navigate(path);
+      })
+      .catch(({ response }) => {
+        console.log(response);
+        console.log(response.status);
+        console.log(response.data.message);
+        if (response.data.message === 'WRONG SECOND PASSWORD') {
+          setModal({
+            isOpen: true,
+            modalType: 'handlerAlert',
+            props: {
+              text: '2차 비밀번호가 틀렸습니다.',
+              modalHandler: () => {
+                setModal(verify2ndPwProps);
+              },
+            },
+          });
+        } else if (response.data.message === 'EXPIRED ACCESS TOKEN')
+          reIssueToken(verify2ndPassword).catch(() => {
+            console.log('reset');
+            resetProfile();
+            window.location.href = '/login';
+          });
+      });
+  };
+
+  const verify2ndPwProps = (path) => {
+    return {
+      isOpen: true,
+      modalType: 'confirmText',
+      props: {
+        text: '2차 비밀번호를 입력해주세요.',
+        placeHolder: '2차 비밀번호',
+        inputType: 'password',
+        modalHandler: (_, value) => {
+          verify2ndPassword(value, path);
+          resetModal();
+        },
+      },
+    };
+  };
+
+  const logoutProps = {
+    isOpen: true,
+    modalType: 'cancelConfirm',
+    props: {
+      text: '로그아웃 하시겠습니까?',
+      modalHandler: () => {
+        localStorage.clear();
+        sessionStorage.clear();
+        resetProfile();
+        resetModal();
+        navigate('/');
+      },
+    },
+  };
+
+  const notAuthNavigate = (path) => {
+    if (!profile.isLogin) navigate('/login');
+    else navigate(path);
   };
 
   return (
@@ -44,15 +161,18 @@ const Header = () => {
             <Link to="/tuteelist">학생 찾기</Link>
           </li>
           <li>
-            <Link to="/tutoringlist">과외 관리</Link>
+            <button onClick={() => notAuthNavigate('/tutoringlist')}>
+              과외 관리
+            </button>
           </li>
         </ul>
       </nav>
       {profile.isLogin ? (
         <div className={styles.memberMenu}>
-          <ul>
+          <ul className={styles.menuContainer}>
             <li>
               <button
+                className={styles.notiButton}
                 onClick={() => setIsNoti(!isNoti)}
                 onBlur={() => {
                   setTimeout(() => setIsNoti(false), 100);
@@ -63,17 +183,18 @@ const Header = () => {
             </li>
             <li>
               <button
+                className={styles.profileButton}
                 onClick={() => setIsMenu(!isMenu)}
                 onBlur={() => {
                   setTimeout(() => setIsMenu(false), 100);
                 }}
               >
-                {/* TODO: 프로필이 전환되면 이미지도 변경되어야 함 */}
                 <img
-                  src={defaultUser}
+                  src={profile.url || defaultUser}
                   className={styles.profileImage}
                   alt="프로필 이미지"
                 />
+                <span>{profile.name}</span>
               </button>
             </li>
           </ul>
@@ -95,36 +216,34 @@ const Header = () => {
                 </button>
               </li>
               <li>
-                <Link to="/admin">전체 프로필 관리</Link>
+                <button onClick={() => setModal(verify2ndPwProps('/admin'))}>
+                  전체 프로필 관리
+                </button>
               </li>
               <li>
-                <Link to="/userinfo">회원정보 수정</Link>
+                <button onClick={() => setModal(verify2ndPwProps('/userinfo'))}>
+                  회원정보 수정
+                </button>
               </li>
               <li>
-                <Link to="">로그아웃</Link>
+                <button onClick={() => setModal(logoutProps)}>로그아웃</button>
               </li>
             </ul>
           )}
         </div>
       ) : (
         <div className={styles.memberMenu}>
-          <ul>
+          <ul className={styles.menuContainer}>
             <li>
               <Link to="/login">로그인</Link>
             </li>
-            <li>|</li>
+            <li className={styles.center}> | </li>
             <li>
               <Link to="/signup">회원가입</Link>
             </li>
           </ul>
         </div>
       )}
-      <ButtonRed
-        text="⚠로그인 상태 변경"
-        buttonHandler={() =>
-          setProfile((prev) => ({ ...prev, isLogin: !prev.isLogin }))
-        }
-      />
     </header>
   );
 };

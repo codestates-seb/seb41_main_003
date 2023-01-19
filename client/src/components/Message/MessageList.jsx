@@ -1,37 +1,34 @@
 import styles from './MessageList.module.css';
 import defaultUser from '../../assets/defaultUser.png';
+import PropTypes from 'prop-types';
+import { useSetRecoilState } from 'recoil';
+import CurrentRoomIdState from '../../recoil/currentRoomId.js';
 
-const MessageListData = [
-  {
-    messageRoomId: 2,
-    messageStatus: 'UNCHECK',
-    lastMessage: '안녕하세요 튜티에요~',
-    targetName: '김과학',
-    createAt: '2023-01-16T10:11:52.102063',
-  },
-  {
-    messageRoomId: 1,
-    messageStatus: 'UNCHECK',
-    lastMessage: 'REQ_UEST',
-    targetName: '33번회원이다',
-    createAt: '2023-01-16T10:05:39.041577',
-  },
-];
+const MessageList = ({ messageList }) => {
+  const setCurrentRoomId = useSetRecoilState(CurrentRoomIdState);
 
-const MessageList = () => {
+  const getCurrentRoomId = (e) => {
+    setCurrentRoomId(e.currentTarget.id);
+    console.log(getCurrentRoomId, 'getCurrentRoomId');
+  };
+
   return (
-    <>
+    <div>
       <ul className={styles.messageList}>
-        {MessageListData.map((el) => {
+        {messageList.map((obj) => {
           return (
-            <li key={el.messageRoomId} className={styles.message}>
-              <button className={styles.person}>
+            <li key={obj.messageRoomId} className={styles.message}>
+              <button
+                id={obj.messageRoomId}
+                onClick={getCurrentRoomId}
+                className={styles.person}
+              >
                 <img src={defaultUser} alt="user" className={styles.userImg} />
                 <div>
-                  <h4>{el.targetName}</h4>
-                  <p>{el.lastMessage}</p>
+                  <h4>{obj.targetName}</h4>
+                  <p>{obj.lastMessage}</p>
                 </div>
-                {el.messageStatus === 'UNCHECK' && (
+                {obj.messageStatus === 'UNCHECK' && (
                   <span className={styles.badge} />
                 )}
               </button>
@@ -39,8 +36,14 @@ const MessageList = () => {
           );
         })}
       </ul>
-    </>
+    </div>
   );
+};
+
+MessageList.propTypes = {
+  messageList: PropTypes.array,
+  getMessageRoom: PropTypes.func,
+  setCurrentRoomId: PropTypes.func,
 };
 
 export default MessageList;

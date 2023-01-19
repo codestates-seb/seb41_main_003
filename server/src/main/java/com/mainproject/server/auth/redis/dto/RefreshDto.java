@@ -1,13 +1,17 @@
 package com.mainproject.server.auth.redis.dto;
 
 import com.mainproject.server.auth.redis.entity.RefreshEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class RefreshDto {
 
     private String email;

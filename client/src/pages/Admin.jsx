@@ -1,61 +1,88 @@
 import styles from './Admin.module.css';
-import defaultUser from '../assets/defaultUser.png';
 import { MdEdit, MdDelete, MdAddCircle } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import { useSetRecoilState, useResetRecoilState, useRecoilState } from 'recoil';
 import ModalState from '../recoil/modal.js';
-
-const profileLists = [
-  {
-    profileId: 1,
-    name: '유영민',
-    url: defaultUser,
-    school: '서울대학교',
-  },
-  {
-    profileId: 2,
-    name: '신승구',
-    url: defaultUser,
-    school: '서울대학교',
-  },
-  {
-    profileId: 3,
-    name: '김민경',
-    url: defaultUser,
-    school: '서울대학교',
-  },
-];
+import { useEffect, useState } from 'react';
+import reIssueToken from '../util/reIssueToken';
+import axios from 'axios';
+import Profile from '../recoil/profile';
 
 const Admin = () => {
+  const [profilesData, setProfilesData] = useState([]);
   const setModal = useSetRecoilState(ModalState);
-  const reset = useResetRecoilState(ModalState);
+  const resetModal = useResetRecoilState(ModalState);
+  const [profile, setProfile] = useRecoilState(Profile);
+  const resetProfile = useResetRecoilState(Profile);
   const navigate = useNavigate();
 
-  const confirmProps = {
-    isOpen: true,
-    modalType: 'confirm',
-    props: {
-      text: `프로필을 삭제 하시겠습니까?
-      해당 프로필과 관련된 내용이 모두 삭제됩니다.`,
-      modalHandler: () => {
-        console.log('프로필 삭제 요청이 갑니다~');
-        reset();
-        //TODO : 프로필 삭제 요청
-      },
-    },
+  const getUserProfile = async () => {
+    axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+
+    axios.defaults.headers.common['Authorization'] =
+      sessionStorage.getItem('authorization') ||
+      localStorage.getItem('authorization');
+    await axios
+      .get(
+        `/profiles/${
+          sessionStorage.getItem('userId') || localStorage.getItem('userId')
+        }`
+      )
+      .then(({ data }) => {
+        console.log(data);
+
+        setProfilesData(data.data);
+      })
+      .catch(({ response }) => {
+        console.log(response.status);
+        console.log(response.data.message);
+        if (response.data.message === 'EXPIRED ACCESS TOKEN')
+          reIssueToken(getUserProfile).catch(() => {
+            console.log('reset');
+            resetProfile();
+            window.location.href = '/login';
+          });
+      });
   };
 
-  const confirmEditProps = {
-    isOpen: true,
-    modalType: 'confirm',
-    props: {
-      text: `프로필 수정 페이지로 이동합니다.`,
-      modalHandler: () => {
-        reset();
-        navigate('/editprofile');
-      },
-    },
+  const deleteHandler = async (id) => {
+    axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+
+    axios.defaults.headers.common['Authorization'] =
+      sessionStorage.getItem('authorization') ||
+      localStorage.getItem('authorization');
+
+    await axios
+      .delete(`/profiles/details/${id}`)
+      .then(() => {
+        setModal({
+          isOpen: true,
+          modalType: 'handlerAlert',
+          props: {
+            text: '삭제가 완료되었습니다.',
+            modalHandler: () => {
+              setProfile((prev) => ({ ...prev, profileId: 0 }));
+              location.reload();
+            },
+          },
+        });
+        console.log('삭제 완료!');
+      })
+      .catch(({ response }) => {
+        console.log(response.status);
+        console.log(response.data.message);
+        if (response.data.message === 'EXPIRED ACCESS TOKEN')
+          reIssueToken(deleteHandler).catch(() => {
+            console.log('reset');
+            resetProfile();
+            window.location.href = '/login';
+          });
+      });
   };
+
+  useEffect(() => {
+    getUserProfile();
+  }, []);
 
   return (
     <div className={styles.wrapper}>
@@ -64,44 +91,68 @@ const Admin = () => {
         <div className={styles.profileContainer}>
           <span
             className={styles.profileCount}
-          >{`전체 프로필 : ${profileLists.length}/4`}</span>
+          >{`전체 프로필 : ${profilesData.length}/4`}</span>
           <ul className={styles.profiles}>
-            {profileLists.map((el) => (
-              <Link key={el.profileId} to="/tuteeprofile">
+            {profilesData.map((obj) => (
+              <Link
+                key={obj.profileId}
+                to={`/${
+                  profile.userStatus === 'TUTOR' ? 'tutor' : 'tutee'
+                }profile/${obj.profileId}`}
+              >
                 <li className={styles.profileBox}>
                   <div className={styles.iconsBox}>
                     <MdEdit
-                      id={el.profileId}
+                      id={obj.profileId}
                       className={styles.mdEdit}
                       onClick={(e) => {
                         e.preventDefault();
-                        setModal(confirmEditProps);
+                        setModal({
+                          isOpen: true,
+                          modalType: 'confirm',
+                          props: {
+                            text: `프로필 수정 페이지로 이동합니다.`,
+                            modalHandler: () => {
+                              resetModal();
+                              navigate(`/editprofile/${obj.profileId}`);
+                            },
+                          },
+                        });
                       }}
                     />
                     <MdDelete
                       className={styles.mdDelete}
                       onClick={(e) => {
                         e.preventDefault();
-                        setModal(confirmProps);
+                        setModal({
+                          isOpen: true,
+                          modalType: 'confirm',
+                          props: {
+                            text: `프로필을 삭제 하시겠습니까?
+                            해당 프로필과 관련된 내용이 모두 삭제됩니다.`,
+                            modalHandler: () => {
+                              deleteHandler(obj.profileId);
+                            },
+                          },
+                        });
                       }}
                     />
                   </div>
                   <div className={styles.img}>
                     <img
                       alt="프로필 사진"
-                      src={el.url}
+                      src={obj.url}
                       className={styles.profileImg}
                     />
                   </div>
                   <div className={styles.profileTextBox}>
-                    {/* TODO: 튜터/튜티 여부 포함하는 데이터에 따라 Link 경로의 분기 필요 */}
-                    <span className={styles.name}>{el.name}</span>
-                    <span className={styles.school}>{el.school}</span>
+                    <span className={styles.name}>{obj.name}</span>
+                    <span className={styles.school}>{obj.school}</span>
                   </div>
                 </li>
               </Link>
             ))}
-            {profileLists.length < 4 && (
+            {profilesData.length < 4 && (
               <Link to="/addprofile">
                 <li className={styles.addBox}>
                   <MdAddCircle className={styles.addIcon} />
