@@ -59,7 +59,7 @@ public class UserService {
                 .ifPresent(findUser::setPassword);
         Optional.ofNullable(user.getSecondPassword())
                 .ifPresent(findUser::setSecondPassword);
-        Optional.ofNullable(verifyPhoneNumber(user.getPhoneNumber()))
+        Optional.ofNullable(verifyPhoneNumber(user.getPhoneNumber(), user.getUserId()))
                 .ifPresent(findUser::setPhoneNumber);
         return userRepository.save(findUser);
     }
@@ -78,11 +78,17 @@ public class UserService {
             throw new ServiceLogicException(ErrorCode.WRONG_SECOND_PASSWORD);
     }
 
-    public String verifyPhoneNumber(String phoneNumber) {
-        if (userRepository.findByPhoneNumber(phoneNumber).isPresent()) {
-            throw new ServiceLogicException(ErrorCode.PHONE_NUMBER_EXISTS);
+    public String verifyPhoneNumber(String phoneNumber, Long userId) {
+        Optional<User> findUser = userRepository.findByPhoneNumber(phoneNumber);
+        if (findUser.isEmpty()) {
+            return phoneNumber;
+        } else {
+            if (findUser.get().getUserId().equals(userId)) {
+                return phoneNumber;
+            } else {
+                throw new ServiceLogicException(ErrorCode.PHONE_NUMBER_EXISTS);
+            }
         }
-        return phoneNumber;
     }
 
     public User verifiedUserById(Long userId) {
