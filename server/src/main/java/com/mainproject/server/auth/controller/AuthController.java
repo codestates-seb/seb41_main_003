@@ -75,6 +75,7 @@ public class AuthController {
             @PathVariable Long userId
     ) {
         userService.verifySecondPassword(userId, dto.getSecondPassword());
+        log.info("# Verify Second Password");
         return ResponseEntity.ok().build();
     }
 

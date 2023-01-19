@@ -1,0 +1,146 @@
+= Main Project
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Table of Contents
+:source-highlighter: prettify
+
+쓰앵님 - 온라인 과외 매칭 플랫폼
+
+v1.0.0, 2023.01.19
+
+- 배포 주소
+
+<>
+
+== 쓰앵님 팀원
+
+- 프론트 - 신승구, 김민경, 유영민
+- 백엔드 - 김다은, 이수영, 강호수
+
+== Auth
+=== 로그인 상태 조회 - OK
+
+- 로그인 상태 조회 - OK
+
+
+.http-request
+include::{snippets}/verifyUserOk/http-request.adoc[]
+
+.request-headers
+include::{snippets}/verifyUserOk/request-headers.adoc[]
+
+.http-response
+include::{snippets}/verifyUserOk/http-response.adoc[]
+
+
+=== 로그인 상태 조회 - AccessToken 만료
+
+.http-request
+include::{snippets}/verifyUserException/http-request.adoc[]
+
+.request-headers
+include::{snippets}/verifyUserException/request-headers.adoc[]
+
+.http-response
+include::{snippets}/verifyUserException/http-response.adoc[]
+
+.response-body
+include::{snippets}/verifyUserException/response-body.adoc[]
+
+.response-fields
+include::{snippets}/verifyUserException/response-fields.adoc[]
+
+
+=== 토큰 재발급 - OK
+
+
+.http-request
+include::{snippets}/refreshOk/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/refreshOk/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/refreshOk/http-response.adoc[]
+
+.response-body
+include::{snippets}/refreshOk/response-body.adoc[]
+
+.response-fields
+include::{snippets}/refreshOk/response-fields.adoc[]
+
+
+=== 토큰 재발급 - RefreshToken 만료
+
+
+.http-request
+include::{snippets}/refreshExpired/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/refreshExpired/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/refreshExpired/http-response.adoc[]
+
+.response-body
+include::{snippets}/refreshExpired/response-body.adoc[]
+
+.response-fields
+include::{snippets}/refreshExpired/response-fields.adoc[]
+
+
+=== 로그아웃 - OK
+
+.http-request
+include::{snippets}/logoutOk/http-request.adoc[]
+
+.request-headers
+include::{snippets}/logoutOk/request-headers.adoc[]
+
+.http-response
+include::{snippets}/logoutOk/http-response.adoc[]
+
+
+=== 2차 비밀번호 검증 - OK
+
+
+.http-request
+include::{snippets}/SecondPasswordOk/http-request.adoc[]
+
+.request-headers
+include::{snippets}/SecondPasswordOk/request-headers.adoc[]
+
+.request-body
+include::{snippets}/SecondPasswordOk/request-body.adoc[]
+
+.path-parameters
+include::{snippets}/SecondPasswordOk/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/SecondPasswordOk/http-response.adoc[]
+
+
+=== 2차 비밀번호 검증 - OK
+
+
+.http-request
+include::{snippets}/SecondPasswordFail/http-request.adoc[]
+
+.request-headers
+include::{snippets}/SecondPasswordFail/request-headers.adoc[]
+
+.request-body
+include::{snippets}/SecondPasswordFail/request-body.adoc[]
+
+.path-parameters
+include::{snippets}/SecondPasswordFail/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/SecondPasswordFail/http-response.adoc[]
+
+.response-body
+include::{snippets}/SecondPasswordFail/response-body.adoc[]
+
+.response-fields
+include::{snippets}/SecondPasswordFail/response-fields.adoc[]
