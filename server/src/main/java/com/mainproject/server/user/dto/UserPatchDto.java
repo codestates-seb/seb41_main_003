@@ -20,7 +20,7 @@ public class UserPatchDto {
     private String password;
 
     @NotBlank
-    @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}",message = "휴대폰 번호를 올바르게 입력해 주세요")
+    @Pattern(regexp = "\\d{11}",message = "휴대폰 번호는 - 를 제외한 11자리 숫자를 입력해 주세요")
     private String phoneNumber;
 
     private String secondPassword;
