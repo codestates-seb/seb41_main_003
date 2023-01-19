@@ -36,7 +36,7 @@ const Admin = () => {
       .catch(({ response }) => {
         console.log(response.status);
         console.log(response.data.message);
-        if (response.data.message === 'EXPIRED REFRESH TOKEN')
+        if (response.data.message === 'EXPIRED ACCESS TOKEN')
           reIssueToken(getUserProfile).catch(() => {
             console.log('reset');
             resetProfile();
@@ -71,7 +71,7 @@ const Admin = () => {
       .catch(({ response }) => {
         console.log(response.status);
         console.log(response.data.message);
-        if (response.data.message === 'EXPIRED REFRESH TOKEN')
+        if (response.data.message === 'EXPIRED ACCESS TOKEN')
           reIssueToken(deleteHandler).catch(() => {
             console.log('reset');
             resetProfile();

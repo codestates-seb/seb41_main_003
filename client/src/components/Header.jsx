@@ -58,7 +58,7 @@ const Header = () => {
               },
             },
           });
-        } else if (response.data.message === 'EXPIRED REFRESH TOKEN')
+        } else if (response.data.message === 'EXPIRED ACCESS TOKEN')
           reIssueToken(verify2ndPassword).catch(() => {
             console.log('reset');
             resetProfile();

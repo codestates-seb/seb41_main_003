@@ -85,7 +85,7 @@ const UserInfoForm = () => {
       .catch(({ response }) => {
         console.log(response.status);
         console.log(response.data.message);
-        if (response.data.message === 'EXPIRED REFRESH TOKEN')
+        if (response.data.message === 'EXPIRED ACCESS TOKEN')
           reIssueToken(getUserInfo).catch(() => {
             console.log('reset');
             resetProfile();
@@ -193,7 +193,7 @@ const UserInfoForm = () => {
     } catch ({ response }) {
       console.log(response.status);
       console.log(response.data.message);
-      if (response.data.message === 'EXPIRED REFRESH TOKEN') {
+      if (response.data.message === 'EXPIRED ACCESS TOKEN') {
         reIssueToken(patchUserInfo).catch(() => {
           console.log('reset');
           resetProfile();
