@@ -10,6 +10,7 @@ import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 
 const MyProfileCard = ({ user, setUser }) => {
+  console.log(user);
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
 
@@ -32,7 +33,7 @@ const MyProfileCard = ({ user, setUser }) => {
   };
   return (
     <div className={styles.cardContainer}>
-      <img alt="user img" src={user.profileImage.url} />
+      <img alt="user img" src={user.profileImage && user.profileImage.url} />
       <section className={styles.textContainer}>
         <div className={styles.starLine}>
           <p className={styles.font1}>{user.name}</p>
@@ -72,21 +73,32 @@ const MyProfileCard = ({ user, setUser }) => {
         />
       </div>
       <section>
-        <div className={styles.toggleContainer}>
-          <div className={styles.toggleTextBox}>
-            <p className={styles.announceText1}>공고 상태</p>
-            <div className={styles.announceText2}>
-              지금은{' '}
-              {user.wantedStatus === 'REQUEST' ? (
-                <span className={styles.announceOnText}>공고 중</span>
-              ) : (
-                <span>공고 안함</span>
-              )}{' '}
-              상태입니다
+        {user.wantedStatus === 'BASIC' ? (
+          <div className={styles.toggleContainer}>
+            <div className={styles.toggleTextBox}>
+              <p className={styles.announceText1}>공고 상태</p>
+              <div className={styles.announceText2}>
+                공고 상태 수정은 프로필 필수 항목 작성이 완료되면 가능합니다.
+              </div>
             </div>
           </div>
-          <Toggle user={user} setUser={setUser} />
-        </div>
+        ) : (
+          <div className={styles.toggleContainer}>
+            <div className={styles.toggleTextBox}>
+              <p className={styles.announceText1}>공고 상태</p>
+              <div className={styles.announceText2}>
+                지금은{' '}
+                {user.wantedStatus === 'REQUEST' ? (
+                  <span className={styles.announceOnText}>공고 중</span>
+                ) : (
+                  <span>공고 안함</span>
+                )}{' '}
+                상태입니다
+              </div>
+            </div>
+            <Toggle user={user} setUser={setUser} />
+          </div>
+        )}
       </section>
     </div>
   );
