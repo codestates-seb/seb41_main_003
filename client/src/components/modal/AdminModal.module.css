@@ -51,3 +51,18 @@
     text-align: center;
   }
 }
+
+.alert {
+  > svg {
+    font-size: 64px;
+    fill: $yellow;
+  }
+
+  > p {
+    font-size: $font4;
+    font-weight: $font4W;
+    margin-bottom: 16px;
+  }
+
+  text-align: center;
+}

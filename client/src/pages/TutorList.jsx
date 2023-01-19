@@ -9,9 +9,6 @@ import MenuButtons from '../components/MainSection/FilterButton';
 import axios from 'axios';
 import useScroll from '../util/useScroll';
 import PropType from 'prop-types';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
-import Profile from '../recoil/profile';
-import ModalState from '../recoil/modal';
 
 const TutorList = ({ footerRef }) => {
   // API에서 받아온 데이터
@@ -29,10 +26,6 @@ const TutorList = ({ footerRef }) => {
   const [searchValue, setSearchValue] = useState('');
   //정렬 메뉴 '최신 순'인지 '별점 순'인지
   const [sort, setSort] = useState('');
-
-  const profile = useRecoilValue(Profile);
-
-  const setModal = useSetRecoilState(ModalState);
 
   const setIsNew = useScroll(() => {
     if (pageInfo.page < pageInfo.totalPages - 1) {

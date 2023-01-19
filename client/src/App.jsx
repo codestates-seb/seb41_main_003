@@ -62,6 +62,11 @@ const App = () => {
     console.log(location.pathname);
     if (profile.userStatus === 'NONE' && location.pathname !== '/userinfo')
       setModal(statusNoneProps);
+    if (profile.isLogin === true && profile.profileId === 0)
+      setModal({
+        isOpen: true,
+        modalType: 'admin',
+      });
   });
   return (
     <div className="app">
