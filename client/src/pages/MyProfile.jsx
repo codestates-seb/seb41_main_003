@@ -3,12 +3,10 @@ import { useEffect, useState } from 'react';
 import { ProfileContents, MyProfileCard } from '../components/profileSection';
 import { ButtonTop } from '../components/Button';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-
+import { useRecoilValue } from 'recoil';
+import Profile from '../recoil/profile';
 const MyProfile = () => {
-  //TODO: useParams 말고 저장되어 있는 myprofileId를 사용해야 할 듯
-  // const { profileId } = useRecoilValue(Profile);
-  const { profileId } = useParams();
+  const { profileId } = useRecoilValue(Profile);
   const [user, setUser] = useState({
     profileId: 0,
     userId: 0,

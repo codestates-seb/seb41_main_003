@@ -6,8 +6,9 @@ import { BlueSubject } from '../Subject.jsx';
 import defaultUser from '../../assets/defaultUser.png';
 import { MdStar } from 'react-icons/md';
 import Toggle from './Toggle';
-import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
 import ModalState from '../../recoil/modal';
+import Profile from '../../recoil/profile';
 
 const MyProfileCard = ({ user, setUser }) => {
   console.log(user);
@@ -15,9 +16,7 @@ const MyProfileCard = ({ user, setUser }) => {
   const resetModal = useResetRecoilState(ModalState);
 
   const Navigate = useNavigate();
-  //TODO: useParams 말고 저장되어 있는 myprofileId를 사용해야 할 듯
-  // const { profileId } = useRecoilValue(Profile);
-  const { profileId } = useParams();
+  const { profileId } = useRecoilValue(Profile);
 
   const confirm = {
     isOpen: true,
@@ -25,7 +24,6 @@ const MyProfileCard = ({ user, setUser }) => {
     props: {
       text: '프로필 수정 페이지로 이동 하시겠습니까?',
       modalHandler: () => {
-        //TODO: 해당 프로필Id의 프로필 수정 페이지로 이동 (useParam)
         Navigate(`/editProfile/${profileId}`);
         resetModal();
       },
