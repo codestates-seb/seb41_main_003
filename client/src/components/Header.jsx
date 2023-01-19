@@ -1,6 +1,6 @@
 import styles from './Header.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MdNotifications } from 'react-icons/md';
 import { useSetRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import ModalState from '../recoil/modal.js';
@@ -24,6 +24,42 @@ const Header = () => {
     modalType: 'admin',
     props: {},
   };
+
+  const statusNoneProps = {
+    isOpen: true,
+    modalType: 'bothHandler',
+    props: {
+      text: `서비스 이용을 위해 회원 정보 입력이 필요합니다. 
+      회원 정보를 입력하시겠습니까?
+
+      (입력이 되지 않으면 정상적인 서비스가 불가하여,
+        취소 시 로그아웃 처리됩니다.)`,
+      modalHandler: (e) => {
+        const { name } = e.target;
+        if (name === 'yes') {
+          resetModal();
+          navigate('/userinfo');
+        } else {
+          localStorage.clear();
+          sessionStorage.clear();
+          resetProfile();
+          resetModal();
+        }
+      },
+    },
+  };
+
+  useEffect(() => {
+    console.log(location.pathname);
+    if (profile.userStatus === 'NONE' && location.pathname !== '/userinfo')
+      setModal(statusNoneProps);
+    else if (
+      profile.isLogin === true &&
+      profile.profileId === 0 &&
+      location.pathname !== '/userinfo'
+    )
+      setModal(adminProps);
+  });
 
   const verify2ndPassword = async (value, path) => {
     axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
