@@ -13,6 +13,7 @@ import BothHandlerModal from './BothHandlerModal';
 import ReviewModal from './ReviewModal';
 import ReviewDetailModal from './ReviewDetail';
 import EditReviewModal from './EditReviewModal';
+import ImgLoadModal from './ImgLoadModal';
 import { HandlerAlertModal } from './HandlerAlertModal';
 
 export const GlobalModal = () => {
@@ -32,6 +33,7 @@ export const GlobalModal = () => {
     editReview: <EditReviewModal {...props} />,
     cancelConfirm: <CancelConfirmModal {...props} />,
     handlerAlert: <HandlerAlertModal {...props} />,
+    imgLoad: <ImgLoadModal {...props} />,
   };
 
   return (
