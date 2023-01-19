@@ -1,10 +1,9 @@
 import PropType from 'prop-types';
-import styles from './MessageContent.module.css';
+import styles from './Chat.module.css';
 
-// * 채팅 메세지 컴포넌트
 const Chat = ({ message, authId }) => {
-  const { senderId, messageContent, senderName } = message;
-  // TODO : 요청 확인, 요청 취소 관련 메세지 작성 필요
+  const { senderId, messageContent, senderName, createAt } = message;
+
   return (
     <div
       className={`${styles.chatContainer} ${
@@ -12,8 +11,27 @@ const Chat = ({ message, authId }) => {
       }`}
     >
       {senderId === authId ? undefined : <h5>{senderName}</h5>}
-      <p>{messageContent}</p>
-      <span>AM 01:00</span>
+
+      {messageContent === 'REQ_UEST' ? (
+        senderId === authId ? (
+          <div className={styles.sendRequestBox}>
+            <p>매칭 요청을 보냈습니다.</p>
+            <button className={styles.requestCancelBtn}>요청 취소하기</button>
+          </div>
+        ) : (
+          <div className={styles.receiveRequestBox}>
+            <p>매칭 요청이 도착했습니다.</p>
+            <button className={styles.checkRequestBtn}>요청 확인하기</button>
+          </div>
+        )
+      ) : (
+        <p className={styles.text}>{messageContent}</p>
+      )}
+
+      <span className={styles.time}>
+        {Number(createAt.slice(11, 13)) >= 12 ? 'PM' : 'AM'}{' '}
+        {createAt.slice(11, 16)}
+      </span>
     </div>
   );
 };

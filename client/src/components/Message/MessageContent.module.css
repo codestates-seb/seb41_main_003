@@ -16,39 +16,23 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-start;
-}
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: auto;
+  scrollbar-color: #666 #f00;
 
-.chatContainer {
-  display: inline-block;
-  max-width: 50%;
-  position: relative;
-  margin-bottom: 8px;
-
-  h5 {
-    font-size: $font6;
-    font-weight: $font6W;
+  &::-webkit-scrollbar {
+    width: 10px;
   }
 
-  p {
-    background-color: $white;
-    border-radius: 5px;
-    padding: 8px;
+  &::-webkit-scrollbar-track {
+    background: none;
   }
 
-  &.sendChat {
-    align-self: end;
-
-    p {
-      background-color: $baby;
-    }
-  }
-
-  span {
-    font-size: 12px;
-    font-weight: 500;
-    position: absolute;
-    bottom: -16px;
-    right: 0;
+  &::-webkit-scrollbar-thumb {
+    background-color: $nickel;
+    border-radius: 10px;
+    border: none;
   }
 }
 
@@ -72,6 +56,27 @@
 
     svg {
       font-size: 24px;
+    }
+  }
+
+  .textInput {
+    background-color: $snow;
+    width: 100%;
+    height: 36px;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 10px 8px;
+    font-size: $para;
+    font-weight: $paraW;
+
+    &:focus {
+      outline: 1px solid $silver;
+    }
+
+    &:placeholder {
+      font-size: $font6;
+      font-weight: $font6W;
+      color: $moon;
     }
   }
 
