@@ -145,7 +145,7 @@ const UserInfoForm = () => {
         confirmPassword.secondPw
       ) {
         setModal(confirmProp);
-      } else console.log('응 통과 안시켜줘');
+      }
     } else {
       if (
         validation(userData.nickName, 'nickName') &&
@@ -179,30 +179,31 @@ const UserInfoForm = () => {
       sessionStorage.getItem('authorization') ||
       localStorage.getItem('authorization');
 
-    try {
-      console.log('수정 요청');
-      const { data } = await axios.patch(
+    console.log('수정 요청');
+    await axios
+      .patch(
         `/users/${
           sessionStorage.getItem('userId') || localStorage.getItem('userId')
         }`,
         patchData
-      );
-      console.log('수정완료');
-      console.log(data.data);
-      setModal(submitProp);
-    } catch ({ response }) {
-      console.log(response.status);
-      console.log(response.data.message);
-      if (response.data.message === 'EXPIRED ACCESS TOKEN') {
-        reIssueToken(patchUserInfo).catch(() => {
-          console.log('reset');
-          resetProfile();
-          window.location.href = '/login';
-        });
-      } else if (response.status === 409) {
-        setModal(conflictProp);
-      }
-    }
+      )
+      .then(() => {
+        console.log('수정완료');
+        setModal(submitProp);
+      })
+      .catch(({ response }) => {
+        console.log(response.status);
+        console.log(response.data.message);
+        if (response.data.message === 'EXPIRED ACCESS TOKEN') {
+          reIssueToken(patchUserInfo).catch(() => {
+            console.log('reset');
+            resetProfile();
+            window.location.href = '/login';
+          });
+        } else if (response.status === 409) {
+          setModal(conflictProp);
+        }
+      });
   };
 
   return (
