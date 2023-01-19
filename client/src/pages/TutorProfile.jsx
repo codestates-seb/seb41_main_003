@@ -26,29 +26,47 @@ const TutorProfile = () => {
     subjects: [],
     reviews: [],
   });
-  const token = sessionStorage.getItem('authorization');
+  const [pageInfo, setPageInfo] = useState({
+    page: 0,
+    size: 5,
+    totalElements: 0,
+    totalPages: 0,
+  });
+
+  const [page, setPage] = useState(0);
 
   const getProfileData = async () => {
     await axios
-      .get(`${process.env.REACT_APP_BASE_URL}/profiles/details/${profileId}`, {
-        headers: { Authorization: token },
-      })
+      .get(
+        `${process.env.REACT_APP_BASE_URL}/profiles/details/${profileId}?page=${page}`,
+        {
+          headers: {
+            Authorization:
+              sessionStorage.getItem('authorization') ||
+              localStorage.getItem('authorization'),
+          },
+        }
+      )
       .then((res) => {
         setProfileDetail(res.data.data);
-        console.log(res.data.data);
+        setPageInfo(res.data.pageInfo);
       })
       .catch((err) => console.log(err));
   };
 
   useEffect(() => {
     getProfileData();
-  }, []);
+  }, [page]);
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <ProfileCard user={profileDetail} />
-        <ProfileContents user={profileDetail} />
+        <ProfileContents
+          user={profileDetail}
+          setPage={setPage}
+          pageInfo={pageInfo}
+        />
       </div>
       <ButtonTop />
     </div>
