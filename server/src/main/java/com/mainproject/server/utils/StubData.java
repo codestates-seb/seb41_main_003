@@ -141,7 +141,7 @@ public class StubData {
         Profile get = Profile.builder()
                 .profileId(id)
                 .name("test")
-                .rate(4.5)
+                .rate(3.5)
                 .bio("test")
                 .wantDate("test")
                 .pay("test")
