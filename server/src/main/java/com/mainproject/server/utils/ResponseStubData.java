@@ -47,8 +47,9 @@ public class ResponseStubData {
     public static UserResponseDto createUserResponse() {
         return UserResponseDto.builder()
                 .userId(1L)
-                .email("hosoo3513@gmail.com")
-                .phoneNumber("010-1234-5678")
+                .email("test@test.com")
+                .phoneNumber("01012345678")
+                .nickName("수포자")
                 .loginType(LoginType.SOCIAL.name())
                 .userStatus(UserStatus.TUTOR.name())
                 .createAt(LocalDateTime.now())

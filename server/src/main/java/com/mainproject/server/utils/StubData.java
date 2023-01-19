@@ -21,15 +21,19 @@ import java.util.Set;
 public class StubData {
 
     public static User createUser() {
-        return User.builder()
+        User get = User.builder()
                 .userId(1L)
                 .email("test@test.com")
-                .nickName("test")
+                .nickName("수포자")
                 .password("1111!")
                 .secondPassword("1234")
-                .phoneNumber("010-0000-0000")
+                .phoneNumber("01000000000")
                 .userStatus(UserStatus.TUTOR)
+                .loginType(LoginType.BASIC)
                 .build();
+        get.setCreateAt(LocalDateTime.now());
+        get.setUpdateAt(LocalDateTime.now());
+        return get;
     }
     public static Tutoring createTutoring(Long id) {
         Tutoring get = new Tutoring(
