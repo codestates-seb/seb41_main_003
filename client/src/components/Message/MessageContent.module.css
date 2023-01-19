@@ -36,53 +36,6 @@
   }
 }
 
-.chatContainer {
-  display: inline-block;
-  max-width: 50%;
-  position: relative;
-  margin-bottom: 25px;
-
-  /* 텍스트 가로로 안넘어가게 */
-
-  /* 메세지 내용 위로 안넘어 가게 */
-
-  h5 {
-    font-size: $font6;
-    font-weight: $font6W;
-  }
-
-  p {
-    background-color: $white;
-    border-radius: 5px;
-    padding: 8px;
-    overflow: hidden;
-    word-wrap: break-word;
-  }
-
-  .time {
-    margin-right: 5px;
-    width: 60px;
-    font-size: 11px;
-    text-align: right;
-  }
-
-  &.sendChat {
-    align-self: end;
-
-    p {
-      background-color: $baby;
-    }
-  }
-
-  span {
-    font-size: 12px;
-    font-weight: 500;
-    position: absolute;
-    bottom: -16px;
-    right: 0;
-  }
-}
-
 .sendContainer {
   width: 100%;
   height: 48px;

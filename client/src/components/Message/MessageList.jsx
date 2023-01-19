@@ -1,11 +1,15 @@
 import styles from './MessageList.module.css';
 import defaultUser from '../../assets/defaultUser.png';
 import PropTypes from 'prop-types';
+import { useSetRecoilState } from 'recoil';
+import CurrentRoomIdState from '../../recoil/currentRoomId.js';
 
-const MessageList = ({ messageList, setCurrentRoomId }) => {
+const MessageList = ({ messageList }) => {
+  const setCurrentRoomId = useSetRecoilState(CurrentRoomIdState);
+
   const getCurrentRoomId = (e) => {
     setCurrentRoomId(e.currentTarget.id);
-    console.log(e.currentTarget.id, 'getCurrentRoomId 실행');
+    console.log(getCurrentRoomId, 'getCurrentRoomId');
   };
 
   return (
@@ -38,6 +42,7 @@ const MessageList = ({ messageList, setCurrentRoomId }) => {
 
 MessageList.propTypes = {
   messageList: PropTypes.array,
+  getMessageRoom: PropTypes.func,
   setCurrentRoomId: PropTypes.func,
 };
 

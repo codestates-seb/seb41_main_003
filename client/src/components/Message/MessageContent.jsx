@@ -3,28 +3,31 @@ import { MdMenu } from 'react-icons/md';
 import PropType from 'prop-types';
 import { useState, useEffect } from 'react';
 import Chat from './Chat';
-import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
 import axios from 'axios';
+import CurrentRoomIdState from '../../recoil/currentRoomId';
+import TutoringTitleState from '../../recoil/tutoringTitle';
+import Profile from '../../recoil/profile';
 
 const MessageContent = ({
   messageRoom,
-  currentRoomId,
   delMessageRoom,
   headers,
-  profile,
-  setMessageRoom,
+
+  getMessageRoom,
 }) => {
   const { tutorId, tuteeId, messages } = messageRoom;
-  const [tutoringTitle, setTutoringTitle] = useState('');
   const [isMenu, setIsMenu] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const [myProfileId, setIsMyProfileId] = useState(tuteeId);
+  const [yourProfileId, setYourProfileId] = useState(tutorId);
+  const profile = useRecoilValue(Profile);
+  const tutoringTitle = useRecoilValue(TutoringTitleState);
+  const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
 
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
-
-  const [myProfileId, setIsMyProfileId] = useState(tuteeId);
-  const [yourProfileId, setYourProfileId] = useState(tutorId);
 
   const amITutee = () => {
     if (profile.profileId !== tuteeId) {
@@ -45,7 +48,7 @@ const MessageContent = ({
         {
           senderId: myProfileId,
           receiverId: yourProfileId,
-          messageRoomId: currentRoomId,
+          messageRoomId: CurrentRoomId,
           messageContent: inputValue,
         },
         {
@@ -54,23 +57,42 @@ const MessageContent = ({
       )
       .then(() => {
         console.log('메세지 전송');
-        //메세지 페이지 새로고침  or MessageRoom 부분만 따로 재 랜더
+        getMessageRoom();
       })
       .catch((err) => console.log(err));
   };
 
-  const data = JSON.stringify({
-    tutorId: tutorId,
-    tuteeId: tuteeId,
-    tutoringTitle: tutoringTitle,
-    messageRoomId: currentRoomId,
-  });
+  const sendReq_est = async () => {
+    await axios
+      .post(
+        `${process.env.REACT_APP_BASE_URL}/messages`,
+        {
+          senderId: myProfileId,
+          receiverId: yourProfileId,
+          messageRoomId: CurrentRoomId,
+          messageContent: 'REQ_UEST',
+        },
+        {
+          headers: headers,
+        }
+      )
+      .then(() => {
+        console.log('REQ_UEST');
+        getMessageRoom();
+      })
+      .catch((err) => console.log(err));
+  };
 
   const createTutoring = async () => {
     await axios
       .post(
-        `${process.env.REACT_APP_BASE_URL}/tutoring/${messages[0].senderId}`,
-        data,
+        `${process.env.REACT_APP_BASE_URL}/tutoring/${myProfileId}`,
+        {
+          tutorId: tutorId,
+          tuteeId: tuteeId,
+          tutoringTitle: tutoringTitle,
+          messageRoomId: CurrentRoomId,
+        },
         {
           headers: headers,
         }
@@ -83,7 +105,7 @@ const MessageContent = ({
 
   const matchConfirmProps = {
     isOpen: true,
-    modalType: 'confirmText',
+    modalType: 'getText',
     props: {
       text: `상대방의 요청 수락 시 매칭이 완료됩니다.
     매칭 요청 하시겠습니까?
@@ -91,11 +113,8 @@ const MessageContent = ({
     매칭을 원하신다면 과외의 이름을 작성해주세요.
     `,
 
-      modalHandler: (_, value) => {
-        console.log(value, 'value');
-        setTutoringTitle(value);
-        //TODO: 매칭 요청 후 매칭 요청을 보냈습니다 보이기
-
+      modalHandler: () => {
+        sendReq_est();
         resetModal();
         setModal(matchAlertProps);
       },
@@ -146,7 +165,7 @@ const MessageContent = ({
         {messages.map((message) => (
           <Chat
             message={message}
-            authId={profile.profileId}
+            authId={myProfileId}
             key={message.messageId}
           />
         ))}
@@ -172,10 +191,17 @@ const MessageContent = ({
             if (e.key === 'Enter' && e.target.value) {
               sendMessage();
               setInputValue('');
+              console.log('11');
             }
           }}
         />
-        <button onClick={sendMessage} className={styles.sendBtn}>
+        <button
+          onClick={() => {
+            sendMessage();
+            setInputValue('');
+          }}
+          className={styles.sendBtn}
+        >
           전송
         </button>
         {/* dropDown */}
@@ -197,9 +223,8 @@ const MessageContent = ({
 MessageContent.propTypes = {
   messageRoom: PropType.object,
   delMessageRoom: PropType.func,
-  setMessageRoom: PropType.func,
+  getMessageRoom: PropType.func,
   headers: PropType.object,
-  currentRoomId: PropType.number,
   profile: PropType.object,
 };
 
