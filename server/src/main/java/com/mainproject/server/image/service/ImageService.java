@@ -72,7 +72,7 @@ public class ImageService {
         deleteS3(profileImage.getFileName());
         imageRepository.delete(profileImage);
         findProfile.setProfileImage(getBasicImage());
-        profileService.updateProfileForImage(findProfile);
+        profileService.delegateSaveProfile(findProfile);
     }
 
 
@@ -122,9 +122,9 @@ public class ImageService {
                     ImageProperty.BASIC_IMAGE_DIR_NAME.getName());
             ProfileImage save = imageRepository.save(fileEntity);
             list.add(fileEntity);
-            findProfile.addUserImage(save);
+            findProfile.addProfileImage(save);
         }
-        profileService.updateProfileForImage(findProfile);
+        profileService.delegateSaveProfile(findProfile);
         return list;
     }
 
@@ -146,7 +146,7 @@ public class ImageService {
         return Optional.empty();
     }
 
-    private ProfileImage getBasicImage() {
+    public ProfileImage getBasicImage() {
         return ProfileImage.builder()
                 .fileName(ImageProperty.BASIC_IMAGE_FILE_NAME.name())
                 .url("https://image-test-suyoung.s3.ap-northeast-2.amazonaws.com/image/user.png")
