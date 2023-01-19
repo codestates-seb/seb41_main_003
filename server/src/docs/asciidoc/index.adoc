@@ -121,7 +121,7 @@ include::{snippets}/SecondPasswordOk/path-parameters.adoc[]
 include::{snippets}/SecondPasswordOk/http-response.adoc[]
 
 
-=== 2차 비밀번호 검증 - OK
+=== 2차 비밀번호 검증 - 잘못된 2차 비밀번호
 
 
 .http-request
