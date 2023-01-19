@@ -29,29 +29,44 @@ const MyProfile = () => {
     reviews: [],
   });
 
-  const token = sessionStorage.getItem('authorization');
+  const [pageInfo, setPageInfo] = useState({
+    page: 0,
+    size: 5,
+    totalElements: 0,
+    totalPages: 0,
+  });
+
+  const [page, setPage] = useState(0);
 
   const getProfileData = async () => {
     await axios
-      .get(`${process.env.REACT_APP_BASE_URL}/profiles/details/${profileId}`, {
-        headers: { Authorization: token },
-      })
+      .get(
+        `${process.env.REACT_APP_BASE_URL}/profiles/details/${profileId}?page=${page}`,
+        {
+          headers: {
+            Authorization:
+              sessionStorage.getItem('authorization') ||
+              localStorage.getItem('authorization'),
+          },
+        }
+      )
       .then((res) => {
         setUser(res.data.data);
-        console.log(res.data.data);
+        console.log(res.data.pageInfo);
+        setPageInfo(res.data.pageInfo);
       })
       .catch((err) => console.log(err.status));
   };
 
   useEffect(() => {
     getProfileData();
-  }, []);
+  }, [page]);
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <MyProfileCard user={user} setUser={setUser} />
-        <ProfileContents user={user} />
+        <ProfileContents user={user} pageInfo={pageInfo} setPage={setPage} />
       </div>
       <ButtonTop />
     </div>
