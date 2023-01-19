@@ -59,7 +59,9 @@ const App = () => {
     },
   };
   useEffect(() => {
-    if (profile.userStatus === 'NONE') setModal(statusNoneProps);
+    console.log(location.pathname);
+    if (profile.userStatus === 'NONE' && location.pathname !== '/userinfo')
+      setModal(statusNoneProps);
   });
   return (
     <div className="app">
