@@ -32,7 +32,7 @@ const MyProfileCard = ({ user, setUser }) => {
   };
   return (
     <div className={styles.cardContainer}>
-      <img alt="user img" src={defaultUser} />
+      <img alt="user img" src={user.profileImage.url} />
       <section className={styles.textContainer}>
         <div className={styles.starLine}>
           <p className={styles.font1}>{user.name}</p>
