@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 public class PageResponseDto {
@@ -25,7 +23,7 @@ public class PageResponseDto {
 
     public static PageResponseDto of(Object list, Page page) {
         PageInfo pageInfoResponse = new PageInfo(
-                page.getNumber()+1,
+                page.getNumber(),
                 page.getSize(),
                 page.getTotalElements(),
                 page.getTotalPages()

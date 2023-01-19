@@ -111,7 +111,7 @@ public class Profile extends Auditable {
 
     /* 연관 관계 편의 메소드 */
 
-    public void addUserImage(ProfileImage profileImage) {
+    public void addProfileImage(ProfileImage profileImage) {
         setProfileImage(profileImage);
     }
 

@@ -2,10 +2,12 @@ package com.mainproject.server.user.service;
 
 
 import com.mainproject.server.auth.token.JwtAuthorityUtils;
-import com.mainproject.server.constant.ErrorCode;
-import com.mainproject.server.constant.LoginType;
-import com.mainproject.server.constant.UserStatus;
+import com.mainproject.server.constant.*;
 import com.mainproject.server.exception.ServiceLogicException;
+import com.mainproject.server.image.entity.ProfileImage;
+import com.mainproject.server.image.service.ImageService;
+import com.mainproject.server.profile.entity.Profile;
+import com.mainproject.server.profile.service.ProfileService;
 import com.mainproject.server.user.entity.User;
 import com.mainproject.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Random;
 
@@ -29,6 +32,10 @@ public class UserService {
 
     private final JwtAuthorityUtils authorityUtils;
 
+    private final ImageService imageService;
+
+    private final ProfileService profileService;
+
     public User getUser(Long userId) {
         return verifiedUserById(userId);
     }
@@ -40,20 +47,18 @@ public class UserService {
     }
 
     public User updateUser(User user) {
+        if (user.getPassword() != null) {
+            String encode = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encode);
+        }
         User findUser = verifiedUserById(user.getUserId());
+        verifyUserStatusAndCreateBasicProfile(user, findUser);
         Optional.ofNullable(user.getNickName())
                 .ifPresent(findUser::setNickName);
         Optional.ofNullable(user.getPassword())
                 .ifPresent(findUser::setPassword);
         Optional.ofNullable(user.getSecondPassword())
                 .ifPresent(findUser::setSecondPassword);
-        if (findUser.getUserStatus().equals(UserStatus.NONE)) {
-            findUser.setUserStatus(user.getUserStatus());
-        } else if (user.getUserStatus() == null) {
-
-        } else {
-            throw new ServiceLogicException(ErrorCode.NOT_CHANGE_USER_STATUS);
-        }
         Optional.ofNullable(verifyPhoneNumber(user.getPhoneNumber()))
                 .ifPresent(findUser::setPhoneNumber);
         return userRepository.save(findUser);
@@ -64,7 +69,7 @@ public class UserService {
     }
 
 
-    /* 검증 로직 */
+    /* 검증 로직 및 유틸 로직*/
 
     public void verifySecondPassword(Long userId, String secondPassword) {
         User findUser = verifiedUserById(userId);
@@ -75,7 +80,7 @@ public class UserService {
 
     public String verifyPhoneNumber(String phoneNumber) {
         if (userRepository.findByPhoneNumber(phoneNumber).isPresent()) {
-            throw new ServiceLogicException(ErrorCode.PHONE_NUMBER_EMAIL_EXISTS);
+            throw new ServiceLogicException(ErrorCode.PHONE_NUMBER_EXISTS);
         }
         return phoneNumber;
     }
@@ -100,11 +105,6 @@ public class UserService {
         }
     }
 
-    public Boolean verifyUserByEmailReturnBoolean(String email) {
-        Optional<User> findUser = userRepository.findByEmail(email);
-        return findUser.isPresent();
-    }
-
     public User checkLoginType(User user) {
         if (user.getLoginType() == null) {
             String pw = passwordEncoder
@@ -120,6 +120,40 @@ public class UserService {
             user.setPassword(pw);
         }
         return user;
+    }
+
+    public void verifyUserStatusAndCreateBasicProfile(User postUser, User findUser) {
+        UserStatus findUserStatus = findUser.getUserStatus();
+        UserStatus userStatus = postUser.getUserStatus();
+        if (findUserStatus.equals(UserStatus.NONE)) {
+            if (userStatus == null || userStatus.equals(UserStatus.NONE)){
+                throw new ServiceLogicException(ErrorCode.USER_TYPE_NOT_NONE);
+            }
+            findUser.setUserStatus(userStatus);
+            Profile basicProfile = createBasicProfile(findUser);
+            profileService.delegateSaveProfile(basicProfile);
+        } else if (findUserStatus.equals(UserStatus.TUTEE) ||
+                findUserStatus.equals(UserStatus.TUTOR)
+        ) {
+            if (!findUserStatus.equals(userStatus)) {
+                throw new ServiceLogicException(ErrorCode.NOT_CHANGE_USER_STATUS);
+            }
+        }
+    }
+
+    public Profile createBasicProfile(User user) {
+        ProfileImage basicImage = imageService.getBasicImage();
+        Profile get = Profile.builder()
+                .name("기본 프로필을 수정 해 주세요").rate(0.0)
+                .bio("한줄 소개를 수정 해 주세요").wantDate("").pay("").way("")
+                .profileStatus(ProfileStatus.valueOf(user.getUserStatus().name()))
+                .wantedStatus(WantedStatus.BASIC)
+                .gender("").school("").character("").preTutoring("")
+                .difference("").subjectString("").reviews(new LinkedHashSet<>())
+                .subjectProfiles(new LinkedHashSet<>()).build();
+        get.addUser(user);
+        get.addProfileImage(basicImage);
+        return get;
     }
 
 }

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { ButtonNightBlue, ButtonSilver, ButtonRed } from '../Button';
 import { TextInput } from '../Input';
 import { useState } from 'react';
-import { useResetRecoilState } from 'recoil';
+import { useResetRecoilState, useRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
+import TutoringTitleState from '../../recoil/tutoringTitle';
 
 export const AlertModal = ({ text }) => {
   const reset = useResetRecoilState(ModalState);
@@ -127,7 +128,10 @@ export const ConfirmTextModal = ({
       <div className={styles.buttonBox}>
         <ButtonNightBlue
           name="yes"
-          buttonHandler={(e) => modalHandler(e, value)}
+          buttonHandler={(e) => {
+            setTutoringTitle(value);
+            modalHandler(e, value);
+          }}
           text="확인"
         />
         <ButtonSilver name="no" buttonHandler={() => reset()} text="취소" />
@@ -139,11 +143,12 @@ export const ConfirmTextModal = ({
 ConfirmTextModal.propTypes = {
   text: PropTypes.string,
   modalHandler: PropTypes.func,
+  setTutoringTitle: PropTypes.func,
   placeHolder: PropTypes.string,
   inputType: PropTypes.string,
 };
 
-export const CancelConfirmModal = ({ text, modalHandler }) => {
+export const RedConfirmModal = ({ text, modalHandler }) => {
   const reset = useResetRecoilState(ModalState);
   return (
     <div
@@ -161,7 +166,74 @@ export const CancelConfirmModal = ({ text, modalHandler }) => {
   );
 };
 
-CancelConfirmModal.propTypes = {
+RedConfirmModal.propTypes = {
   text: PropTypes.string,
   modalHandler: PropTypes.func,
+};
+
+export const RedAlertModal = ({ text }) => {
+  const reset = useResetRecoilState(ModalState);
+  return (
+    <div
+      className={styles.view}
+      onClick={(e) => e.stopPropagation()}
+      role="dialog"
+      aria-hidden
+    >
+      <div className={styles.text}>{text}</div>
+      <ButtonRed buttonHandler={() => reset()} text="확인" />
+    </div>
+  );
+};
+
+RedAlertModal.propTypes = {
+  text: PropTypes.string,
+  modalHandler: PropTypes.func,
+};
+
+export const GetTextModal = ({ text, modalHandler, placeHolder }) => {
+  const reset = useResetRecoilState(ModalState);
+  const [TutoringTitle, setTutoringTitle] = useRecoilState(TutoringTitleState);
+  // const [value, setValue] = useState('');
+
+  const valueHandler = (e) => {
+    setTutoringTitle(e.target.value);
+
+    console.log(e.target.value, 'in');
+    console.log(TutoringTitle, 'in');
+  };
+
+  console.log(TutoringTitle, 'out');
+  return (
+    <div
+      className={styles.view}
+      onClick={(e) => e.stopPropagation()}
+      role="dialog"
+      aria-hidden
+    >
+      <div className={styles.text}>{text}</div>
+      <div className={styles.input}>
+        <TextInput
+          id="confirmInput"
+          placeHolder={placeHolder}
+          value={TutoringTitle}
+          handler={valueHandler}
+        />
+      </div>
+      <div className={styles.buttonBox}>
+        <ButtonNightBlue
+          name="yes"
+          buttonHandler={(e) => modalHandler(e, TutoringTitle)}
+          text="확인"
+        />
+        <ButtonSilver name="no" buttonHandler={() => reset()} text="취소" />
+      </div>
+    </div>
+  );
+};
+
+GetTextModal.propTypes = {
+  text: PropTypes.string,
+  modalHandler: PropTypes.func,
+  placeHolder: PropTypes.string,
 };

@@ -2,7 +2,7 @@ import styles from './DefaultModal.module.css';
 import PropTypes from 'prop-types';
 import { ButtonNightBlue } from '../Button';
 
-export const HandlerAlertModal = ({ text, modalHandler }) => {
+const HandlerAlertModal = ({ text, modalHandler }) => {
   return (
     <div
       className={styles.view}
@@ -20,3 +20,6 @@ HandlerAlertModal.propTypes = {
   text: PropTypes.string,
   modalHandler: PropTypes.func,
 };
+
+export default HandlerAlertModal;
+

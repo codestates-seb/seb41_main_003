@@ -12,6 +12,7 @@ import com.mainproject.server.profile.dto.WantedDto;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.repository.ProfileRepository;
 import com.mainproject.server.review.entity.Review;
+import com.mainproject.server.review.repository.ReviewRepository;
 import com.mainproject.server.subject.dto.SubjectDto;
 import com.mainproject.server.subject.entity.Subject;
 import com.mainproject.server.subject.entity.SubjectProfile;
@@ -21,7 +22,10 @@ import com.mainproject.server.user.entity.User;
 import com.mainproject.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +47,9 @@ public class ProfileService {
 
     private final SubjectProfileRepository subjectProfileRepository;
 
+    private final ReviewRepository reviewRepository;
+
+
     public List<Profile> getProfiles(
             Long userId
     ) {
@@ -57,9 +64,7 @@ public class ProfileService {
 
     public ProfilePageDto getProfile(Long profileId, Pageable pageable) {
         Profile findProfile = verifiedProfileById(profileId);
-        Set<Review> reviews = findProfile.getReviews();
-        Page<Review> reviewPage = new PageImpl<>(new ArrayList<>(reviews), pageable, reviews.size());
-        return ProfilePageDto.of(findProfile, reviewPage);
+        return getProfilePageDto(findProfile, pageable);
     }
 
     public ProfilePageDto createProfile(
@@ -77,12 +82,11 @@ public class ProfileService {
             throw new ServiceLogicException(ErrorCode.EXCEEDED_MAXIMUM_PROFILE_COUNT);
         }
         ProfileImage image = getBasicImage();
-        profile.addUserImage(image);
+        profile.addProfileImage(image);
         profile.setWantedStatus(WantedStatus.NONE);
         profile.setProfileStatus(ProfileStatus.valueOf(userStatus.name()));
         profile.addUser(findUser);
-        createSubjectProfile(profile, subjectDtos);
-        Profile save = profileRepository.save(profile);
+        Profile save = profileRepository.save(createSubjectProfile(profile, subjectDtos));
         return getProfilePageDto(save, pageable);
     }
 
@@ -95,17 +99,19 @@ public class ProfileService {
         Profile findProfile = verifiedProfileById(profileId);
         subjectProfileRepository.deleteByProfileProfileId(findProfile.getProfileId());
         Profile updateProfile = updateProfileFiled(profile, findProfile);
-        createSubjectProfile(updateProfile, subjectDtos);
-        Profile save = profileRepository.save(updateProfile);
-        return getProfilePageDto(save, pageable);
+        return getProfilePageDto(createSubjectProfile(updateProfile, subjectDtos), pageable);
     }
 
     public ProfilePageDto updateWantedStatus(Long profileId, WantedDto wantedDto, Pageable pageable) {
-        WantedStatus wantedStatus = WantedStatus.valueOf(wantedDto.getWantedStatus());
+        WantedStatus wantedStatus = WantedStatus.valueOf(
+                wantedDto.getWantedStatus().toUpperCase()
+        );
         Profile findProfile = verifiedProfileById(profileId);
+        if (findProfile.getWantedStatus().equals(WantedStatus.BASIC)) {
+            throw new ServiceLogicException(ErrorCode.NOT_CHANGE_WANTED_STATUS);
+        }
         findProfile.setWantedStatus(wantedStatus);
-        Profile save = profileRepository.save(findProfile);
-        return getProfilePageDto(save, pageable);
+        return getProfilePageDto(findProfile, pageable);
     }
 
     public void deleteProfile(Long profileId) {
@@ -113,7 +119,7 @@ public class ProfileService {
         profileRepository.delete(findProfile);
     }
 
-    public void updateProfileForImage(Profile profile) {
+    public void delegateSaveProfile(Profile profile) {
         profileRepository.save(profile);
     }
 
@@ -128,11 +134,11 @@ public class ProfileService {
             if (subjectString != null) {
                 subjects = subjectString.split(",");
             }
-            String name = params.get("name");
+            String search = params.get("search");
             String key = params.get("key");
             Pageable pageable = getCustomPageable(defaultPageable, sort);
             Page<ProfileQueryDto> queryProfile = profileRepository.findQueryProfile(
-                    key, subjects, name, WantedStatus.REQUEST, pageable
+                    key, subjects, search, WantedStatus.REQUEST, pageable
             );
             List<ProfileListResponseDto> dtoList = queryProfile.getContent()
                     .stream()
@@ -153,8 +159,7 @@ public class ProfileService {
                 .orElseThrow(() -> new ServiceLogicException(ErrorCode.PROFILE_NOT_FOUND));
     }
 
-    // Todo 쿼리파라미터로 sort 변수가 이미 지정되어 있어 필요 없을것 같다. 추후 리팩토링시 삭제 예정
-    private static Pageable getCustomPageable(Pageable defaultPageable, String sort) {
+    private Pageable getCustomPageable(Pageable defaultPageable, String sort) {
         if (sort != null && sort.equals("rate")) {
             return PageRequest.of(
                     defaultPageable.getPageNumber(),
@@ -170,10 +175,10 @@ public class ProfileService {
         }
     }
 
-    private void createSubjectProfile(Profile profile, List<SubjectDto> subjectDtos) {
+    public Profile createSubjectProfile(Profile profile, List<SubjectDto> subjectDtos) {
         if (subjectDtos != null) {
             StringBuilder sb = new StringBuilder();
-            profile.getSubjectProfiles().clear();
+            profile.setSubjectProfiles(new LinkedHashSet<>());
             subjectDtos
                     .forEach(s -> {
                         Subject subject = subjectRepository.findById(s.getSubjectId())
@@ -186,14 +191,14 @@ public class ProfileService {
                     });
             String subjectString = sb.toString();
             profile.setSubjectString(subjectString.replaceFirst(".$", ""));
+            return profile;
         } else {
             throw new ServiceLogicException(ErrorCode.SUBJECT_NOT_NULL);
         }
     }
 
-    private static ProfilePageDto getProfilePageDto(Profile profile, Pageable pageable) {
-        Set<Review> reviews = profile.getReviews();
-        Page<Review> reviewPage = new PageImpl<>(new ArrayList<>(reviews), pageable, reviews.size());
+    private ProfilePageDto getProfilePageDto(Profile profile, Pageable pageable) {
+        Page<Review> reviewPage = reviewRepository.findAllByTutor(profile, pageable);
         return ProfilePageDto.of(profile, reviewPage);
     }
 
@@ -208,10 +213,13 @@ public class ProfileService {
         Optional.ofNullable(updateProfile.getPay()).ifPresent(findProfile::setPay);
         Optional.ofNullable(updateProfile.getWantDate()).ifPresent(findProfile::setWantDate);
         Optional.ofNullable(updateProfile.getPreTutoring()).ifPresent(findProfile::setPreTutoring);
+        if (findProfile.getWantedStatus().equals(WantedStatus.BASIC)) {
+            findProfile.setWantedStatus(WantedStatus.NONE);
+        }
         return findProfile;
     }
 
-    private ProfileImage getBasicImage() {
+    public ProfileImage getBasicImage() {
         return ProfileImage.builder()
                 .fileName(ImageProperty.BASIC_IMAGE_FILE_NAME.name())
                 .url("https://image-test-suyoung.s3.ap-northeast-2.amazonaws.com/image/user.png")

@@ -9,6 +9,11 @@
   max-width: 1048px;
   margin: 0 auto;
 
+  > button {
+    padding: 10px;
+    border: 1px solid red;
+  }
+
   h2 {
     font-size: $font1;
     font-weight: $font1W;

@@ -2,18 +2,14 @@ package com.mainproject.server.user.controller;
 
 import com.mainproject.server.dto.PageResponseDto;
 import com.mainproject.server.dto.ResponseDto;
-import com.mainproject.server.profile.dto.ProfileListResponseDto;
 import com.mainproject.server.profile.service.ProfileService;
 import com.mainproject.server.user.dto.UserPatchDto;
 import com.mainproject.server.user.dto.UserPostDto;
 import com.mainproject.server.user.entity.User;
 import com.mainproject.server.user.mapper.UserMapper;
 import com.mainproject.server.user.service.UserService;
-import com.mainproject.server.utils.StubData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -22,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -32,7 +27,6 @@ import java.util.Map;
 @Validated
 public class UserController {
 
-    private final StubData stubData;
 
     private final UserMapper userMapper;
 
@@ -70,7 +64,7 @@ public class UserController {
     @PatchMapping("/{userId}")
     public ResponseEntity patchUser(
             @PathVariable Long userId,
-            @RequestBody UserPatchDto userPatchDto
+            @RequestBody @Validated UserPatchDto userPatchDto
     ) {
         userPatchDto.setUserId(userId);
         if (userPatchDto.getUserStatus() != null && !userPatchDto.getUserStatus().isBlank()) {
@@ -98,7 +92,7 @@ public class UserController {
     @GetMapping("/tutors")
     public ResponseEntity getTutors(
             @RequestParam Map<String, String> params,
-            @PageableDefault(page = 0, size = 20, sort = "createAt", direction = Sort.Direction.DESC)
+            @PageableDefault(page = 0, size = 20, sort = "updateAt", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
         params.put("key", "TUTOR");
@@ -109,23 +103,11 @@ public class UserController {
     @GetMapping("/tutees")
     public ResponseEntity getTutees(
             @RequestParam Map<String, String> params,
-            @PageableDefault(page = 0, size = 20, sort = "createAt", direction = Sort.Direction.DESC)
+            @PageableDefault(page = 0, size = 20, sort = "updateAt", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
         params.put("key", "TUTEE");
         PageResponseDto response = profileService.getTutorOrTuteeList(params, pageable);
         return new ResponseEntity(response, HttpStatus.OK);
     }
-
-
-    private ResponseEntity getResponseEntity(
-            Pageable pageable
-    ) {
-        ProfileListResponseDto userResponse = stubData.createProfileListResponse();
-        List<ProfileListResponseDto> userList = List.of(userResponse, userResponse, userResponse);
-        Page<ProfileListResponseDto> page = new PageImpl<>(userList, pageable, userList.size());
-        PageResponseDto response = PageResponseDto.of(userList, page);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
 }

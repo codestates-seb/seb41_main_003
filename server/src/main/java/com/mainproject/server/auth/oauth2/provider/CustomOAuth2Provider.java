@@ -40,7 +40,8 @@ public enum CustomOAuth2Provider {
         }
     };
 
-    private static final String DEFAULT_LOGIN_REDIRECT_URL = "{baseUrl}/login/oauth2/code/{registrationId}";
+    private static final String BASE_URL = "http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com";
+    private static final String DEFAULT_LOGIN_REDIRECT_URL = BASE_URL + "/login/oauth2/code/{registrationId}";
 
     protected final ClientRegistration.Builder getBuilder(
             String registrationId, ClientAuthenticationMethod method, String redirectUri) {

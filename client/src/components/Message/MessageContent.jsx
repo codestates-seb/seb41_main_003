@@ -1,32 +1,120 @@
 import styles from './MessageContent.module.css';
-import { TextInput } from '../Input';
 import { MdMenu } from 'react-icons/md';
 import PropType from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Chat from './Chat';
-import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
+import axios from 'axios';
+import CurrentRoomIdState from '../../recoil/currentRoomId';
+import TutoringTitleState from '../../recoil/tutoringTitle';
+import Profile from '../../recoil/profile';
 
-const MessageContent = ({ messages }) => {
+const MessageContent = ({
+  messageRoom,
+  delMessageRoom,
+  headers,
+
+  getMessageRoom,
+}) => {
+  const { tutorId, tuteeId, messages } = messageRoom;
   const [isMenu, setIsMenu] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const [myProfileId, setIsMyProfileId] = useState(tuteeId);
+  const [yourProfileId, setYourProfileId] = useState(tutorId);
+  const profile = useRecoilValue(Profile);
+  const tutoringTitle = useRecoilValue(TutoringTitleState);
+  const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
 
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
 
-  // * Modal 창 관련 props
+  const amITutee = () => {
+    if (profile.profileId !== tuteeId) {
+      setIsMyProfileId(tutorId);
+      setYourProfileId(tuteeId);
+    }
+  };
+
+  useEffect(() => {
+    amITutee();
+  }, []);
+
+  // 메세지 post API
+  const sendMessage = async () => {
+    await axios
+      .post(
+        `${process.env.REACT_APP_BASE_URL}/messages`,
+        {
+          senderId: myProfileId,
+          receiverId: yourProfileId,
+          messageRoomId: CurrentRoomId,
+          messageContent: inputValue,
+        },
+        {
+          headers: headers,
+        }
+      )
+      .then(() => {
+        console.log('메세지 전송');
+        getMessageRoom();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const sendReq_est = async () => {
+    await axios
+      .post(
+        `${process.env.REACT_APP_BASE_URL}/messages`,
+        {
+          senderId: myProfileId,
+          receiverId: yourProfileId,
+          messageRoomId: CurrentRoomId,
+          messageContent: 'REQ_UEST',
+        },
+        {
+          headers: headers,
+        }
+      )
+      .then(() => {
+        console.log('REQ_UEST');
+        getMessageRoom();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const createTutoring = async () => {
+    await axios
+      .post(
+        `${process.env.REACT_APP_BASE_URL}/tutoring/${myProfileId}`,
+        {
+          tutorId: tutorId,
+          tuteeId: tuteeId,
+          tutoringTitle: tutoringTitle,
+          messageRoomId: CurrentRoomId,
+        },
+        {
+          headers: headers,
+        }
+      )
+      .then(() => {
+        console.log('메세지 전송');
+      })
+      .catch((err) => console.log(err));
+  };
+
   const matchConfirmProps = {
     isOpen: true,
-    modalType: 'confirmText',
+    modalType: 'getText',
     props: {
       text: `상대방의 요청 수락 시 매칭이 완료됩니다.
     매칭 요청 하시겠습니까?
 
     매칭을 원하신다면 과외의 이름을 작성해주세요.
     `,
-      modalHandler: (_, value) => {
-        // TODO : 매칭 신청 관련 API 필요
-        console.log(value);
+
+      modalHandler: () => {
+        sendReq_est();
         resetModal();
         setModal(matchAlertProps);
       },
@@ -34,35 +122,40 @@ const MessageContent = ({ messages }) => {
     },
   };
 
-  const cancelConfirmProps = {
-    isOpen: true,
-    modalType: 'confirm',
-    props: {
-      text: `상담 취소 하시겠습니까?
-      상담 취소 시 대화 내역이 모두 삭제됩니다.`,
-      modalHandler: () => {
-        // TODO : 상담 취소 관련 API 필요
-        console.log('상담 취소');
-        resetModal();
-        setModal(cancelAlertProps);
-        //상담 취소 후에는 Message 페이지 새로고침 필요
-      },
-    },
-  };
-
   const matchAlertProps = {
     isOpen: true,
-    modalType: 'alert',
+    modalType: 'handlerAlert',
     props: {
       text: `매칭 요청이 완료되었습니다.
     상대방의 요청 수락 이후에는 과외 관리 페이지에서
     확인하실 수 있습니다.`,
+      modalHandler: () => {
+        createTutoring();
+        console.log(tutoringTitle, 'alertModal');
+        resetModal();
+      },
+    },
+  };
+
+  const cancelConfirmProps = {
+    isOpen: true,
+    modalType: 'redConfirm',
+    props: {
+      text: `상담 취소 하시겠습니까?
+      상담 취소 시 대화 내역이 모두 삭제됩니다.`,
+      modalHandler: () => {
+        delMessageRoom();
+        console.log('상담 취소');
+        resetModal();
+        setModal(cancelAlertProps);
+        location.reload();
+      },
     },
   };
 
   const cancelAlertProps = {
     isOpen: true,
-    modalType: 'alert',
+    modalType: 'redAlert',
     props: { text: `상담이 취소되었습니다.` },
   };
 
@@ -70,28 +163,47 @@ const MessageContent = ({ messages }) => {
     <div className={styles.container}>
       <div className={styles.messageContainer}>
         {messages.map((message) => (
-          <Chat message={message} authId={1} key={message.messageId} />
+          <Chat
+            message={message}
+            authId={myProfileId}
+            key={message.messageId}
+          />
         ))}
       </div>
       <div className={styles.sendContainer}>
         <button
           className={styles.menu}
-          onClick={() => setIsMenu(true)}
+          onClick={() => setIsMenu((prev) => !prev)}
           onBlur={() => {
             setTimeout(() => setIsMenu(false), 100);
           }}
         >
           <MdMenu />
         </button>
-        <TextInput
+        <input
+          className={styles.textInput}
           id="sendMsg"
-          placeHolder="메세지를 입력하세요"
+          placeholder="메세지를 입력하세요"
           type="text"
           value={inputValue}
-          handler={(e) => setInputValue(e.target.value)}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyUp={(e) => {
+            if (e.key === 'Enter' && e.target.value) {
+              sendMessage();
+              setInputValue('');
+              console.log('11');
+            }
+          }}
         />
-        <button className={styles.sendBtn}>전송</button>
-
+        <button
+          onClick={() => {
+            sendMessage();
+            setInputValue('');
+          }}
+          className={styles.sendBtn}
+        >
+          전송
+        </button>
         {/* dropDown */}
         {isMenu && (
           <div className={styles.dropdown}>
@@ -109,7 +221,11 @@ const MessageContent = ({ messages }) => {
 };
 
 MessageContent.propTypes = {
-  messages: PropType.array,
+  messageRoom: PropType.object,
+  delMessageRoom: PropType.func,
+  getMessageRoom: PropType.func,
+  headers: PropType.object,
+  profile: PropType.object,
 };
 
 export default MessageContent;
