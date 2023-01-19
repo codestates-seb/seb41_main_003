@@ -26,6 +26,7 @@ const EditProfile = () => {
     character: '',
     subjects: [],
     reviews: [],
+    profileImage: { url: '' },
   });
   const token = sessionStorage.getItem('authorization');
 
