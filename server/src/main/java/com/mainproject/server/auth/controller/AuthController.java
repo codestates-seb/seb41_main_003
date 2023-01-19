@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.io.IOException;
 
 @RestController
@@ -45,7 +47,7 @@ public class AuthController {
     @GetMapping("/reissue-token/{userId}")
     public ResponseEntity reIssueToken(
             HttpServletResponse response,
-            @PathVariable Long userId
+            @PathVariable @Positive Long userId
     ) throws IOException {
         User user = userService.verifiedUserById(userId);
         jwtTokenizer.verifyRefreshToken(user.getEmail(), response);
@@ -71,7 +73,7 @@ public class AuthController {
 
     @PostMapping("/verify-second-password/{userId}")
     public ResponseEntity verifySecondPassword(
-            @RequestBody PasswordDto dto,
+            @RequestBody @Valid PasswordDto dto,
             @PathVariable Long userId
     ) {
         userService.verifySecondPassword(userId, dto.getSecondPassword());
