@@ -25,6 +25,7 @@ const MyProfile = () => {
     character: '',
     subjects: [],
     reviews: [],
+    profileImage: {},
   });
 
   const [pageInfo, setPageInfo] = useState({

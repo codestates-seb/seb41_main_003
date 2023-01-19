@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { ButtonNightBlue } from '../Button.jsx';
 import { BlueSubject } from '../Subject.jsx';
-import defaultUser from '../../assets/defaultUser.png';
 import { MdStar } from 'react-icons/md';
 import Toggle from './Toggle';
 import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
@@ -31,7 +30,7 @@ const MyProfileCard = ({ user, setUser }) => {
   };
   return (
     <div className={styles.cardContainer}>
-      <img alt="user img" src={user.profileImage && user.profileImage.url} />
+      <img alt="user img" src={user.profileImage.url} />
       <section className={styles.textContainer}>
         <div className={styles.starLine}>
           <p className={styles.font1}>{user.name}</p>
