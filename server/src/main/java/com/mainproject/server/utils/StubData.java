@@ -19,6 +19,18 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class StubData {
+
+    public static User createUser() {
+        return User.builder()
+                .userId(1L)
+                .email("test@test.com")
+                .nickName("test")
+                .password("1111!")
+                .secondPassword("1234")
+                .phoneNumber("010-0000-0000")
+                .userStatus(UserStatus.TUTOR)
+                .build();
+    }
     public static Tutoring createTutoring(Long id) {
         Tutoring get = new Tutoring(
                 id,
