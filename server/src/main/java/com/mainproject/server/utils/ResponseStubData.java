@@ -10,8 +10,8 @@ import com.mainproject.server.image.dto.ImageResponseDto;
 import com.mainproject.server.message.dto.MessageResponseDto;
 import com.mainproject.server.message.dto.MessageRoomResponseDto;
 import com.mainproject.server.message.dto.MessageRoomSimpleResponseDto;
-import com.mainproject.server.profile.dto.ProfilePageDto;
 import com.mainproject.server.profile.dto.ProfileListResponseDto;
+import com.mainproject.server.profile.dto.ProfilePageDto;
 import com.mainproject.server.profile.dto.ProfileSimpleResponseDto;
 import com.mainproject.server.review.dto.ReviewResponseDto;
 import com.mainproject.server.subject.dto.SubjectProfileResponseDto;
@@ -22,16 +22,14 @@ import com.mainproject.server.user.dto.UserResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class ResponseStubData {
 
-    public ReviewResponseDto createReviewResponse() {
+    public static ReviewResponseDto createReviewResponse() {
         return ReviewResponseDto.builder()
                 .reviewId(1L)
                 .professional(4)
@@ -46,7 +44,7 @@ public class ResponseStubData {
     }
 
 
-    public UserResponseDto createUserResponse() {
+    public static UserResponseDto createUserResponse() {
         return UserResponseDto.builder()
                 .userId(1L)
                 .email("hosoo3513@gmail.com")
@@ -58,14 +56,14 @@ public class ResponseStubData {
                 .build();
     }
 
-    public SubjectResponseDto createSubjectResponse() {
+    public static SubjectResponseDto createSubjectResponse() {
         return SubjectResponseDto.builder()
                 .subjectId(1L)
                 .subjectTitle("수학")
                 .build();
     }
 
-    public SubjectProfileResponseDto createSubjectProfileResponse() {
+    public static SubjectProfileResponseDto createSubjectProfileResponse() {
         return SubjectProfileResponseDto.builder()
                 .subjectId(1L)
                 .subjectTitle("수학")
@@ -75,7 +73,7 @@ public class ResponseStubData {
                 .build();
     }
 
-    public ImageResponseDto createImageResponse() {
+    public static ImageResponseDto createImageResponse() {
         return ImageResponseDto.builder()
                 .profileImageId(1L)
                 .url("https://www.google.com/url?sa=i&url=http%3A%2F%2Fm.blog.naver.com%2Fcjswodnajs%2F222138892587&psig=AOvVaw0Ef_d9Jqh-dQm9Q7RRDiIg&ust=1673341195393000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCMjWyO2PuvwCFQAAAAAdAAAAABAE")
@@ -84,7 +82,7 @@ public class ResponseStubData {
                 .build();
     }
     
-    public DateNoticeResponseDto createDateNoticeResponse() {
+    public static DateNoticeResponseDto createDateNoticeResponse() {
         ScheduleResponseDto scDto = new ScheduleResponseDto();
         scDto.setScheduleId(1L);
         scDto.setScheduleBody("TestBody");
@@ -105,7 +103,7 @@ public class ResponseStubData {
                 .build();
     }
 
-    public HomeworkResponseDto createHomeworkResponse() {
+    public static HomeworkResponseDto createHomeworkResponse() {
         HomeworkResponseDto hwDto = new HomeworkResponseDto();
         hwDto.setHomeworkId(1L);
         hwDto.setHomeworkBody("TestBody");
@@ -113,7 +111,7 @@ public class ResponseStubData {
         return hwDto;
     }
 
-    public TutoringDto createTutoringDto() {
+    public static TutoringDto createTutoringDto() {
         List<DateNoticeResponseDto> list = List.of(
                 createDateNoticeResponse(),
                 createDateNoticeResponse(),
@@ -134,7 +132,7 @@ public class ResponseStubData {
                 .dateNotices(page).build();
     }
 
-    public TutoringSimpleResponseDto createTutoringSimpleResponse() {
+    public static TutoringSimpleResponseDto createTutoringSimpleResponse() {
         return TutoringSimpleResponseDto.builder()
                 .tutoringId(1L)
                 .tutorName("강호수")
@@ -145,7 +143,7 @@ public class ResponseStubData {
                 .build();
     }
 
-    public ProfilePageDto createProfileResponse() {
+    public static ProfilePageDto createProfileResponse() {
         List<ReviewResponseDto> list = List.of(
                 createReviewResponse(),
                 createReviewResponse()
@@ -175,7 +173,7 @@ public class ResponseStubData {
                 .build();
     }
 
-    public ProfilePageDto createEmptyProfileResponse() {
+    public static ProfilePageDto createEmptyProfileResponse() {
         Page page = new PageImpl(new ArrayList<>(), PageRequest.of(0, 10), 10L);
         return ProfilePageDto.builder()
                 .profileId(1L)
@@ -198,7 +196,7 @@ public class ResponseStubData {
                 .build();
     }
 
-    public ProfileListResponseDto createProfileListResponse() {
+    public static ProfileListResponseDto createProfileListResponse() {
         return ProfileListResponseDto.builder()
                 .profileId(1L)
                 .name("어때요")
@@ -215,7 +213,7 @@ public class ResponseStubData {
                 .build();
     }
 
-    public ProfileSimpleResponseDto createProfileSimpleResponse() {
+    public static ProfileSimpleResponseDto createProfileSimpleResponse() {
         return ProfileSimpleResponseDto.builder()
                 .profileId(1L)
                 .name("어때요")
@@ -224,7 +222,7 @@ public class ResponseStubData {
                 .build();
     }
 
-    public MessageRoomSimpleResponseDto createMessageRoomSimpleResponse() {
+    public static MessageRoomSimpleResponseDto createMessageRoomSimpleResponse() {
         return MessageRoomSimpleResponseDto.builder()
                 .messageRoomId(1L)
                 .messageStatus(MessageStatus.UNCHECK.name())
@@ -233,7 +231,7 @@ public class ResponseStubData {
                 .createAt(LocalDateTime.now())
                 .build();
     }
-    public MessageResponseDto createMessageResponse() {
+    public static MessageResponseDto createMessageResponse() {
         return MessageResponseDto.builder()
                 .messageId(1L)
                 .senderId(1L)
@@ -245,7 +243,7 @@ public class ResponseStubData {
                 .build();
     }
 
-    public MessageRoomResponseDto createMessageRoomResponse() {
+    public static MessageRoomResponseDto createMessageRoomResponse() {
         return MessageRoomResponseDto.builder()
                 .messageRoomId(1L)
                 .messages(List.of(

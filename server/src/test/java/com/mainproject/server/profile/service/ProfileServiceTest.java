@@ -5,7 +5,6 @@ import com.mainproject.server.constant.ProfileStatus;
 import com.mainproject.server.constant.UserStatus;
 import com.mainproject.server.constant.WantedStatus;
 import com.mainproject.server.exception.ServiceLogicException;
-import com.mainproject.server.image.entity.ProfileImage;
 import com.mainproject.server.profile.dto.ProfilePageDto;
 import com.mainproject.server.profile.dto.WantedDto;
 import com.mainproject.server.profile.entity.Profile;
@@ -13,12 +12,11 @@ import com.mainproject.server.profile.repository.ProfileRepository;
 import com.mainproject.server.review.entity.Review;
 import com.mainproject.server.review.repository.ReviewRepository;
 import com.mainproject.server.subject.dto.SubjectDto;
-import com.mainproject.server.subject.entity.Subject;
-import com.mainproject.server.subject.entity.SubjectProfile;
 import com.mainproject.server.subject.repository.SubjectProfileRepository;
 import com.mainproject.server.subject.repository.SubjectRepository;
 import com.mainproject.server.user.entity.User;
 import com.mainproject.server.user.repository.UserRepository;
+import com.mainproject.server.utils.StubData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,8 +28,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -82,7 +82,7 @@ class ProfileServiceTest {
     void givenProfileWhenReviewListSize2AndProfileFieldThenReturnDtoEqualsReviewList2SizeAndProfileField() {
         // Given
         Long profileId = 1L;
-        Profile profile = createProfile(profileId);
+        Profile profile = StubData.createProfile(profileId);
         Pageable pageable = PageRequest.of(0, 10);
         Page<Review> pageList= new PageImpl<>(
                 new ArrayList<>(profile.getReviews()), pageable, profile.getReviews().size());
@@ -105,8 +105,10 @@ class ProfileServiceTest {
     void givenUserStatusNoneWhenThrowUserTypeNotNoneThenEqualsServiceLogicException() {
         // Given
         Long userId = 1L;
-        Profile profile = createProfile(1L);
-        List<SubjectDto> dtoList = List.of(createSubjectDto(1L),createSubjectDto(2L));
+        Profile profile = StubData.createProfile(1L);
+        List<SubjectDto> dtoList = List.of(
+                StubData.createSubjectDto(1L),
+                StubData.createSubjectDto(2L));
         Pageable pageable = PageRequest.of(0, 10);
         User findUser = User.builder()
                 .userStatus(UserStatus.NONE)
@@ -127,16 +129,18 @@ class ProfileServiceTest {
     void givenUserProfileSize4WhenThrowExceededMaximumProfileCountThenEqualsServiceLogicException() {
         // Given
         Long userId = 1L;
-        Profile profile = createProfile(1L);
-        List<SubjectDto> dtoList = List.of(createSubjectDto(1L),createSubjectDto(2L));
+        Profile profile = StubData.createProfile(1L);
+        List<SubjectDto> dtoList = List.of(
+                StubData.createSubjectDto(1L),
+                StubData.createSubjectDto(2L));
         Pageable pageable = PageRequest.of(0, 10);
         User findUser = User.builder()
                 .userStatus(UserStatus.TUTOR)
                 .profiles(Set.of(
-                        createProfile(1L),
-                        createProfile(2L),
-                        createProfile(3L),
-                        createProfile(4L)
+                        StubData.createProfile(1L),
+                        StubData.createProfile(2L),
+                        StubData.createProfile(3L),
+                        StubData.createProfile(4L)
                 ))
                 .build();
         given(userRepository.findById(anyLong())).willReturn(Optional.of(findUser));
@@ -155,20 +159,22 @@ class ProfileServiceTest {
     void givenPatchProfileWhenUpdateProfileLogicThenReturnUpdateProfile() {
         // Given
         Long id = 1L;
-        Profile profile = createProfile(id);
+        Profile profile = StubData.createProfile(id);
         profile.setName("patchName");
         profile.setBio("patchBio");
-        List<SubjectDto> subjectDto = List.of(createSubjectDto(id), createSubjectDto(id));
-        Profile findProfile = createProfile(id);
+        List<SubjectDto> subjectDto = List.of(
+                StubData.createSubjectDto(id),
+                StubData.createSubjectDto(id));
+        Profile findProfile = StubData.createProfile(id);
         Pageable pageable = PageRequest.of(0, 10);
         Page<Review> pageList= new PageImpl<>(
                 new ArrayList<>(profile.getReviews()), pageable, 10);
         given(reviewRepository.findAllByTutor(any(Profile.class), any(Pageable.class)))
                 .willReturn(pageList);
         given(subjectRepository.findById(anyLong()))
-                .willReturn(Optional.ofNullable(createSubject(id)));
+                .willReturn(Optional.of(StubData.createSubject(id)));
         given(profileRepository.findById(anyLong()))
-                .willReturn(Optional.ofNullable(findProfile));
+                .willReturn(Optional.of(findProfile));
         doNothing().when(subjectProfileRepository).deleteByProfileProfileId(anyLong());
         // When
         ProfilePageDto updateProfile =
@@ -185,7 +191,7 @@ class ProfileServiceTest {
         Long profileId = 1L;
         WantedDto wantedDto = new WantedDto();
         wantedDto.setWantedStatus("request");
-        Profile profile = createProfile(profileId);
+        Profile profile = StubData.createProfile(profileId);
         profile.setWantedStatus(WantedStatus.NONE);
         Pageable pageable = PageRequest.of(0, 10);
         Page<Review> pageList= new PageImpl<>(
@@ -208,10 +214,12 @@ class ProfileServiceTest {
     void givenProfileAndSubjectDtoListWhenSubjectDtoListNotNullThenReturnUpdateProfile() {
         // Given
         Long id = 1L;
-        Profile profile = createProfile(id);
-        List<SubjectDto> subjectDto = List.of(createSubjectDto(id), createSubjectDto(id));
+        Profile profile = StubData.createProfile(id);
+        List<SubjectDto> subjectDto = List.of(
+                StubData.createSubjectDto(id),
+                StubData.createSubjectDto(id));
         given(subjectRepository.findById(anyLong()))
-                .willReturn(Optional.ofNullable(createSubject(id)));
+                .willReturn(Optional.of(StubData.createSubject(id)));
         // When
         Profile updateProfile = profileService.createSubjectProfile(profile, subjectDto);
         // Then
@@ -232,86 +240,6 @@ class ProfileServiceTest {
         assertThat(throwable)
                 .isInstanceOf(ServiceLogicException.class)
                 .hasMessageContaining(ErrorCode.PROFILE_NOT_FOUND.getMessage());
-    }
-
-
-    /* Todo 테스트 코드 작성 후 리팩토링시 클래스로 통합 */
-    public SubjectDto createSubjectDto(Long id) {
-        return new SubjectDto(id, "test", "test");
-    }
-
-    public Review createReview(Long id) {
-        Review get = Review.builder()
-                .reviewId(id)
-                .professional(4)
-                .readiness(5)
-                .explanation(5)
-                .punctuality(4)
-                .reviewBody("test")
-                .tutor(Profile.builder().name("test").build())
-                .tutee(Profile.builder().name("test").build())
-                .build();
-        get.setCreateAt(LocalDateTime.now());
-        get.setUpdateAt(LocalDateTime.now());
-        return get;
-    }
-
-    public Subject createSubject(Long id) {
-        Subject get = Subject.builder()
-                .subjectId(id)
-                .subjectTitle("test")
-                .subjectProfiles(new LinkedHashSet<>())
-                .build();
-        get.setCreateAt(LocalDateTime.now());
-        get.setUpdateAt(LocalDateTime.now());
-        return get;
-    }
-
-    public Profile createProfile(Long id) {
-        Profile get = Profile.builder()
-                .profileId(id)
-                .name("test")
-                .rate(4.5)
-                .bio("test")
-                .wantDate("test")
-                .pay("test")
-                .way("test")
-                .profileStatus(ProfileStatus.TUTOR)
-                .wantedStatus(WantedStatus.REQUEST)
-                .gender("test")
-                .school("test")
-                .character("test")
-                .preTutoring("test")
-                .difference("test")
-                .subjectString("test")
-                .subjectProfiles(Set.of(createSubjectProfile(id), createSubjectProfile(id)))
-                .reviews(Set.of(createReview(id), createReview(id)))
-                .profileImage(createImage(id))
-                .user(new User())
-                .build();
-        get.setCreateAt(LocalDateTime.now());
-        get.setUpdateAt(LocalDateTime.now());
-        return get;
-    }
-
-    public ProfileImage createImage(Long id) {
-        ProfileImage get = ProfileImage.builder()
-                .profileImageId(id)
-                .fileName("test")
-                .url("test")
-                .build();
-        get.setCreateAt(LocalDateTime.now());
-        get.setUpdateAt(LocalDateTime.now());
-        return get;
-    }
-
-    public SubjectProfile createSubjectProfile(Long id) {
-        return SubjectProfile.builder()
-                .profile(Profile.builder().profileId(id).build())
-                .subject(createSubject(id))
-                .content("test")
-                .subjectProfileId(id)
-                .build();
     }
 
 }
