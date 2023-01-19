@@ -2,16 +2,13 @@ import styles from './Toggle.module.css';
 import PropTypes from 'prop-types';
 import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
 import ModalState from '../../recoil/modal';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
-// import Profile from '../../recoil/profile';
+import Profile from '../../recoil/profile';
 
 const Toggle = ({ user, setUser }) => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
-  //TODO: useParams 말고 저장되어 있는 myprofileId를 사용해야 할 듯
-  // const { profileId } = useRecoilValue(Profile);
-  const { profileId } = useParams();
+  const { profileId } = useRecoilValue(Profile);
 
   const confirm = {
     isOpen: true,
@@ -32,15 +29,9 @@ const Toggle = ({ user, setUser }) => {
 
   const patchWantedStatus = async () => {
     await axios
-      .patch(
-        `${process.env.REACT_APP_BASE_URL}/profiles/status/${profileId}`,
-        {
-          wantedStatus: user.wantedStatus,
-        },
-        {
-          headers: { Authorization: sessionStorage.getItem('authorization') },
-        }
-      )
+      .patch(`${process.env.REACT_APP_BASE_URL}/profiles/status/${profileId}`, {
+        wantedStatus: user.wantedStatus,
+      })
       .then((res) => console.log(res.data.data))
       .catch((err) => console.log(err));
   };

@@ -9,22 +9,13 @@ import axios from 'axios';
 import useScroll from '../util/useScroll';
 import PropType from 'prop-types';
 
-//TODO: 튜티 리스트를 불러오는 GET 요청 필요
-//정렬 필터 파라미터 : 튜티는 정렬 필터 없음
-//과목 버튼 필터 파라미터 : subjectMenu 상태에서 꺼내와서 subject = 수학,영어,과학 같은 형식으로 요청
-//검색창에서 검색 시 name = 강호수 와 같이 요청함
-
 const TuteeList = ({ footerRef }) => {
-  // API에서 받아온 데이터
   const [tuteeData, setTuteeData] = useState([]);
   const [pageInfo, setPageInfo] = useState({
     page: 1,
   });
-  //과목 필터 메뉴에서 선택한 과목들
   const [subjectMenu, setSubjectMenu] = useState([]);
-  //검색창에서 입력한 검색어 반영
   const [search, setSearch] = useState('');
-  //검색창 값 핸들링 상태
   const [searchValue, setSearchValue] = useState('');
 
   const setIsNew = useScroll(() => {
@@ -38,8 +29,7 @@ const TuteeList = ({ footerRef }) => {
   const scrollFunc = async (page) => {
     await axios
       .get(
-        process.env.REACT_APP_BASE_URL +
-          `/users/tutees?subject=${subjectMenu.join()}&name=${search}&page=${page}`
+        `/users/tutees?subject=${subjectMenu.join()}&name=${search}&page=${page}`
       )
       .then(({ data }) => {
         console.log(data.pageInfo);
@@ -51,10 +41,7 @@ const TuteeList = ({ footerRef }) => {
 
   const getTuteeData = async () => {
     await axios
-      .get(
-        process.env.REACT_APP_BASE_URL +
-          `/users/tutees?subject=${subjectMenu.join()}&name=${search}`
-      )
+      .get(`/users/tutees?subject=${subjectMenu.join()}&name=${search}`)
       .then(({ data }) => {
         setTuteeData(data.data);
         setPageInfo(data.pageInfo);

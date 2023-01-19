@@ -21,9 +21,16 @@ import Journal from './pages/Journal';
 import AddJournal from './pages/AddJournal';
 import { GlobalModal } from './components/modal/GlobalModal';
 import { useRef } from 'react';
+import axios from 'axios';
 
 const App = () => {
   const footerRef = useRef(null);
+
+  axios.defaults.headers.common['Authorization'] =
+    sessionStorage.getItem('authorization') ||
+    localStorage.getItem('authorization');
+
+  axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
   return (
     <div className="app">

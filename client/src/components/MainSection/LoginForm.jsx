@@ -12,15 +12,9 @@ const initialLogindata = {
   password: '',
 };
 
-//TODO: 로그인 성공, 실패에 따라 (상태 번호 : 401 등)
-//로그인 버튼 위에 '아이디, 비밀번호가 올바르지 않습니다' 등의 문구 띄우도록 하고
-//아이디와 비밀번호 아래에 있는 문구는 형식에 대한 validation 문구가 될듯
-
 const LoginForm = () => {
   const [loginData, setLoginData] = useState(initialLogindata);
-  //아이디 저장 체크
   const [isIdChecked, setIsIdChecked] = useState(false);
-  //자동 로그인 설정 체크
   const [isAutoLoginChecked, setIsAutoLoginChecked] = useState(false);
   const [isFail, setIsFail] = useState(0);
 

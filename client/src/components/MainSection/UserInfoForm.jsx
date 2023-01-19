@@ -60,11 +60,6 @@ const UserInfoForm = () => {
   };
 
   const getUserInfo = async () => {
-    axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
-
-    axios.defaults.headers.common['Authorization'] =
-      sessionStorage.getItem('authorization') ||
-      localStorage.getItem('authorization');
     axios
       .get(
         `/users/${
@@ -83,8 +78,6 @@ const UserInfoForm = () => {
         setUserStatus(userStatus);
       })
       .catch(({ response }) => {
-        console.log(response.status);
-        console.log(response.data.message);
         if (response.data.message === 'EXPIRED ACCESS TOKEN')
           reIssueToken(getUserInfo).catch(() => {
             console.log('reset');
@@ -173,13 +166,8 @@ const UserInfoForm = () => {
       userStatus,
     };
 
-    axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
-
-    axios.defaults.headers.common['Authorization'] =
-      sessionStorage.getItem('authorization') ||
-      localStorage.getItem('authorization');
-
     console.log('수정 요청');
+
     await axios
       .patch(
         `/users/${

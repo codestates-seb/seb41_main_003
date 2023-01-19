@@ -38,8 +38,7 @@ const TutorList = ({ footerRef }) => {
   const scrollFunc = async (page) => {
     await axios
       .get(
-        process.env.REACT_APP_BASE_URL +
-          `/users/tutees?subject=${subjectMenu.join()}&name=${search}&sort=${sort}&page=${page}`
+        `/users/tutees?subject=${subjectMenu.join()}&name=${search}&sort=${sort}&page=${page}`
       )
       .then(({ data }) => {
         console.log(data.pageInfo);
@@ -52,8 +51,7 @@ const TutorList = ({ footerRef }) => {
   const getTutorData = async () => {
     await axios
       .get(
-        process.env.REACT_APP_BASE_URL +
-          `/users/tutors?subject=${subjectMenu.join()}&name=${search}&sort=${sort}`
+        `/users/tutors?subject=${subjectMenu.join()}&name=${search}&sort=${sort}`
       )
       .then(({ data }) => {
         setTutorData(data.data);

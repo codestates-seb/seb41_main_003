@@ -10,13 +10,7 @@ import CurrentRoomIdState from '../../recoil/currentRoomId';
 import TutoringTitleState from '../../recoil/tutoringTitle';
 import Profile from '../../recoil/profile';
 
-const MessageContent = ({
-  messageRoom,
-  delMessageRoom,
-  headers,
-
-  getMessageRoom,
-}) => {
+const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
   const { tutorId, tuteeId, messages } = messageRoom;
   const [isMenu, setIsMenu] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -43,18 +37,12 @@ const MessageContent = ({
   // 메세지 post API
   const sendMessage = async () => {
     await axios
-      .post(
-        `${process.env.REACT_APP_BASE_URL}/messages`,
-        {
-          senderId: myProfileId,
-          receiverId: yourProfileId,
-          messageRoomId: CurrentRoomId,
-          messageContent: inputValue,
-        },
-        {
-          headers: headers,
-        }
-      )
+      .post(`${process.env.REACT_APP_BASE_URL}/messages`, {
+        senderId: myProfileId,
+        receiverId: yourProfileId,
+        messageRoomId: CurrentRoomId,
+        messageContent: inputValue,
+      })
       .then(() => {
         console.log('메세지 전송');
         getMessageRoom();
@@ -64,18 +52,12 @@ const MessageContent = ({
 
   const sendReq_est = async () => {
     await axios
-      .post(
-        `${process.env.REACT_APP_BASE_URL}/messages`,
-        {
-          senderId: myProfileId,
-          receiverId: yourProfileId,
-          messageRoomId: CurrentRoomId,
-          messageContent: 'REQ_UEST',
-        },
-        {
-          headers: headers,
-        }
-      )
+      .post(`${process.env.REACT_APP_BASE_URL}/messages`, {
+        senderId: myProfileId,
+        receiverId: yourProfileId,
+        messageRoomId: CurrentRoomId,
+        messageContent: 'REQ_UEST',
+      })
       .then(() => {
         console.log('REQ_UEST');
         getMessageRoom();
@@ -85,18 +67,12 @@ const MessageContent = ({
 
   const createTutoring = async () => {
     await axios
-      .post(
-        `${process.env.REACT_APP_BASE_URL}/tutoring/${myProfileId}`,
-        {
-          tutorId: tutorId,
-          tuteeId: tuteeId,
-          tutoringTitle: tutoringTitle,
-          messageRoomId: CurrentRoomId,
-        },
-        {
-          headers: headers,
-        }
-      )
+      .post(`${process.env.REACT_APP_BASE_URL}/tutoring/${myProfileId}`, {
+        tutorId: tutorId,
+        tuteeId: tuteeId,
+        tutoringTitle: tutoringTitle,
+        messageRoomId: CurrentRoomId,
+      })
       .then(() => {
         console.log('메세지 전송');
       })
@@ -224,7 +200,6 @@ MessageContent.propTypes = {
   messageRoom: PropType.object,
   delMessageRoom: PropType.func,
   getMessageRoom: PropType.func,
-  headers: PropType.object,
   profile: PropType.object,
 };
 

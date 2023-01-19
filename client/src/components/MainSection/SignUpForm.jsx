@@ -48,7 +48,7 @@ const SignUpForm = () => {
   }, [signupData.passwordConfirm, signupData.password]);
 
   const postSignUpData = async () => {
-    await axios.post(`${process.env.REACT_APP_BASE_URL}/users`, {
+    await axios.post(`/users`, {
       ...signupData,
     });
   };

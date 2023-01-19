@@ -129,7 +129,6 @@ export const ConfirmTextModal = ({
         <ButtonNightBlue
           name="yes"
           buttonHandler={(e) => {
-            setTutoringTitle(value);
             modalHandler(e, value);
           }}
           text="확인"

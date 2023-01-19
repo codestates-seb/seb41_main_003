@@ -37,16 +37,7 @@ const TutorProfile = () => {
 
   const getProfileData = async () => {
     await axios
-      .get(
-        `${process.env.REACT_APP_BASE_URL}/profiles/details/${profileId}?page=${page}`,
-        {
-          headers: {
-            Authorization:
-              sessionStorage.getItem('authorization') ||
-              localStorage.getItem('authorization'),
-          },
-        }
-      )
+      .get(`/profiles/details/${profileId}?page=${page}`)
       .then((res) => {
         setProfileDetail(res.data.data);
         setPageInfo(res.data.pageInfo);

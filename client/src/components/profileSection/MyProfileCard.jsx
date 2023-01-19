@@ -1,5 +1,5 @@
 import styles from './MyProfileCard.module.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { ButtonNightBlue } from '../Button.jsx';
 import { BlueSubject } from '../Subject.jsx';

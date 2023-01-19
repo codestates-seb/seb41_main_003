@@ -17,11 +17,6 @@ const Admin = () => {
   const navigate = useNavigate();
 
   const getUserProfile = async () => {
-    axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
-
-    axios.defaults.headers.common['Authorization'] =
-      sessionStorage.getItem('authorization') ||
-      localStorage.getItem('authorization');
     await axios
       .get(
         `/profiles/${
@@ -46,12 +41,6 @@ const Admin = () => {
   };
 
   const deleteHandler = async (id) => {
-    axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
-
-    axios.defaults.headers.common['Authorization'] =
-      sessionStorage.getItem('authorization') ||
-      localStorage.getItem('authorization');
-
     await axios
       .delete(`/profiles/details/${id}`)
       .then(() => {

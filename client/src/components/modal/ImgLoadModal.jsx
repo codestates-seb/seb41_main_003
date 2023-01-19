@@ -38,18 +38,11 @@ const ImgLoadModal = ({ setUser, profileId }) => {
 
   const patchImg = async (formData) => {
     await axios
-      .patch(
-        `${process.env.REACT_APP_BASE_URL}/upload/profile-image/${profileId}`,
-        formData,
-        {
-          headers: {
-            Authorization:
-              sessionStorage.getItem('authorization') ||
-              localStorage.getItem('authorization'),
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      )
+      .patch(`/upload/profile-image/${profileId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
       .then(({ data }) => {
         console.log(data.data[0]);
         console.log('성공!');
@@ -70,16 +63,7 @@ const ImgLoadModal = ({ setUser, profileId }) => {
 
   const deleteImg = async () => {
     await axios
-      .delete(
-        `${process.env.REACT_APP_BASE_URL}/upload/profile-image/${profileId}`,
-        {
-          headers: {
-            Authorization:
-              sessionStorage.getItem('authorization') ||
-              localStorage.getItem('authorization'),
-          },
-        }
-      )
+      .delete(`/upload/profile-image/${profileId}`)
       .then(() => {
         console.log('프로필 이미지 삭제 성공!');
         setUser((prev) => ({

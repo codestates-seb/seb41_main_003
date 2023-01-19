@@ -28,13 +28,10 @@ const EditProfile = () => {
     reviews: [],
     profileImage: { url: '' },
   });
-  const token = sessionStorage.getItem('authorization');
 
   const getProfileData = async () => {
     await axios
-      .get(`${process.env.REACT_APP_BASE_URL}/profiles/details/${profileId}`, {
-        headers: { Authorization: token },
-      })
+      .get(`/profiles/details/${profileId}`)
       .then((res) => {
         setProfileData(res.data.data);
         console.log(res.data.data);

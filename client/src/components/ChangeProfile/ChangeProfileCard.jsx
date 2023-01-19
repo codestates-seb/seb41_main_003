@@ -30,7 +30,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
   const patchProfile = async () => {
     await axios
       .patch(
-        `${process.env.REACT_APP_BASE_URL}/profiles/details/${profileId}`,
+        `/profiles/details/${profileId}`,
         {
           ...user,
         },
@@ -64,7 +64,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
   const postProfile = async () => {
     await axios
       .post(
-        `${process.env.REACT_APP_BASE_URL}/profiles/${
+        `/profiles/${
           sessionStorage.getItem('userId') || localStorage.getItem('userId')
         }`,
         {
@@ -142,7 +142,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
     <div className={styles.container}>
       <form id="profile" onSubmit={(e) => submitHandler(e)}>
         <div className={styles.userImage}>
-          <img src={profileImage.url || defaultUser} alt="profile-img" />
+          <img src={profileImage && profileImage.url} alt="profile-img" />
           <button type="button" onClick={() => setModal(imgModalProps)}>
             <MdMode />
           </button>

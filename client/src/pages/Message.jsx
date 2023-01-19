@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import CurrentRoomIdState from '../recoil/currentRoomId.js';
+import Profile from '../recoil/profile';
 
 // TODO: error 403일때 accessToken 재발급
 
@@ -30,30 +31,20 @@ const initialState = {
 };
 
 const Message = () => {
-  const headers = {
-    Authorization: sessionStorage.getItem('authorization'),
-  };
-
   useEffect(() => {
     getMessageList();
   }, []);
 
-  // const [profile] = useRecoilValue(Profile);
-  const profile = { profileId: 1 };
+  const profile = useRecoilValue(Profile);
   const [CurrentRoomId, setCurrentRoomId] = useRecoilState(CurrentRoomIdState);
   const [messageList, setMessageList] = useState([]);
   const [messageRoom, setMessageRoom] = useState(initialState);
 
   const getMessageList = async () => {
     await axios
-      //`${process.env.REACT_APP_BASE_URL}/messages/${profile.profileId}`
-      // `${process.env.REACT_APP_BASE_URL}/messages/1`
-      .get(`${process.env.REACT_APP_BASE_URL}/messages/1`, {
-        headers: headers,
-      })
+      .get(`/messages/${profile.profileId}`)
       .then((res) => {
         setMessageList(res.data.data);
-        // setCurrentRoomId(res.data.data[0].messageRoomId);
         console.log(res.data.data, 'getMessageList API');
       })
       .catch((err) => console.log(err));
@@ -65,14 +56,7 @@ const Message = () => {
 
   const getMessageRoom = async () => {
     await axios
-      //`${process.env.REACT_APP_BASE_URL}/messages/rooms/${profile.profileId}/${currentRoomId}`
-      // `${process.env.REACT_APP_BASE_URL}/messages/rooms/1/3`
-      .get(
-        `${process.env.REACT_APP_BASE_URL}/messages/rooms/${profile.profileId}/${CurrentRoomId}`,
-        {
-          headers: headers,
-        }
-      )
+      .get(`/messages/rooms/${profile.profileId}/${CurrentRoomId}`)
       .then((res) => {
         setMessageRoom(res.data.data);
         console.log(res.data.data, 'MessageRoom API');
@@ -82,12 +66,7 @@ const Message = () => {
 
   const delMessageRoom = async () => {
     await axios
-      .delete(
-        `${process.env.REACT_APP_BASE_URL}/messages/rooms/${CurrentRoomId}`,
-        {
-          headers: headers,
-        }
-      )
+      .delete(`/messages/rooms/${CurrentRoomId}`)
       .then(() => {
         setCurrentRoomId();
         console.log('현재 대화방 삭제');
@@ -104,7 +83,6 @@ const Message = () => {
         <div className={styles.message}>
           <MessageList messageList={messageList} />
           <MessageContent
-            headers={headers}
             profile={profile}
             messageRoom={messageRoom}
             delMessageRoom={delMessageRoom}

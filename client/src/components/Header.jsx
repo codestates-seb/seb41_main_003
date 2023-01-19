@@ -62,12 +62,6 @@ const Header = () => {
   });
 
   const verify2ndPassword = async (value, path) => {
-    axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
-
-    axios.defaults.headers.common['Authorization'] =
-      sessionStorage.getItem('authorization') ||
-      localStorage.getItem('authorization');
-
     await axios
       .post(
         `/auth/verify-second-password/${
@@ -121,7 +115,7 @@ const Header = () => {
 
   const logoutProps = {
     isOpen: true,
-    modalType: 'cancelConfirm',
+    modalType: 'redConfirm',
     props: {
       text: '로그아웃 하시겠습니까?',
       modalHandler: () => {
@@ -208,7 +202,7 @@ const Header = () => {
                 <Link to={`/myprofile/${profile.profileId}`}>프로필</Link>
               </li>
               <li>
-                <Link to="/message">메세지함</Link>
+                <Link to={`/message/${profile.profileId}`}>메세지함</Link>
               </li>
               <li>
                 <button onClick={() => setModal(adminProps)}>

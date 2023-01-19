@@ -36,14 +36,7 @@ const ProfileCard = ({ user }) => {
     await axios
       .post(
         `${process.env.REACT_APP_BASE_URL}/messages/${myProfileId}`,
-        postData,
-        {
-          headers: {
-            Authorization:
-              sessionStorage.getItem('authorization') ||
-              localStorage.getItem('authorization'),
-          },
-        }
+        postData
       )
       .then(() => (window.location.href = `/message/${myProfileId}`))
       .catch(({ response }) => {
