@@ -85,7 +85,7 @@ class ProfileServiceTest {
         Profile profile = createProfile(profileId);
         Pageable pageable = PageRequest.of(0, 10);
         Page<Review> pageList= new PageImpl<>(
-                new ArrayList<>(profile.getReviews()), pageable, 10);
+                new ArrayList<>(profile.getReviews()), pageable, profile.getReviews().size());
         given(reviewRepository.findAllByTutor(any(Profile.class), any(Pageable.class)))
                 .willReturn(pageList);
         given(profileRepository.findById(anyLong())).willReturn(Optional.of(profile));
