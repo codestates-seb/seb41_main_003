@@ -34,14 +34,9 @@ const TutorList = ({ footerRef }) => {
 
   const setModal = useSetRecoilState(ModalState);
 
-  const adminProp = {
-    isOpen: true,
-    modalType: 'admin',
-  };
-
   const setIsNew = useScroll(() => {
-    if (pageInfo.page < pageInfo.totalPages) {
-      scrollFunc(pageInfo.page);
+    if (pageInfo.page < pageInfo.totalPages - 1) {
+      scrollFunc(pageInfo.page + 1);
     } else {
       setIsNew(false);
     }
@@ -94,9 +89,6 @@ const TutorList = ({ footerRef }) => {
   };
 
   useEffect(() => {
-    if (profile.isLogin === true && profile.profileId === 0) {
-      setModal(adminProp);
-    }
     getTutorData();
   }, [subjectMenu, search, sort]);
 

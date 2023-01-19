@@ -28,8 +28,8 @@ const TuteeList = ({ footerRef }) => {
   const [searchValue, setSearchValue] = useState('');
 
   const setIsNew = useScroll(() => {
-    if (pageInfo.page < pageInfo.totalPages) {
-      scrollFunc(pageInfo.page);
+    if (pageInfo.page < pageInfo.totalPages - 1) {
+      scrollFunc(pageInfo.page + 1);
     } else {
       setIsNew(false);
     }
