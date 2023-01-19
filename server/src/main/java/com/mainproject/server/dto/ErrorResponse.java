@@ -46,6 +46,7 @@ public class ErrorResponse {
         return new ErrorResponse(httpStatus.value(), message);
     }
 
+    @Getter
     private static class FieldError {
         private String field;
         private Object rejectedValue;
@@ -70,6 +71,7 @@ public class ErrorResponse {
         }
     }
 
+    @Getter
     private static class ConstraintViolationError {
         private String propertyPath;
         private Object rejectedValue;
