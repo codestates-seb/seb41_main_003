@@ -1,0 +1,30 @@
+@import url('../default.css');
+
+.pagenation {
+  margin: 24px 0;
+
+  button {
+    width: 24px;
+    height: 24px;
+    border-radius: 3px;
+    font-size: $font6;
+    font-weight: $font6W;
+    color: $black;
+    background-color: $white;
+    box-shadow: $buttonShadow;
+    margin-right: 8px;
+
+    &:hover {
+      background-color: $snow;
+    }
+  }
+
+  .active {
+    color: $snow;
+    background-color: $night;
+
+    &:hover {
+      background-color: $dirty;
+    }
+  }
+}

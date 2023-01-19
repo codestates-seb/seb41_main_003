@@ -2,6 +2,7 @@ import styles from './DefaultModal.module.css';
 import PropTypes from 'prop-types';
 import { ButtonNightBlue } from '../Button';
 
+
 const HandlerAlertModal = ({ text, modalHandler }) => {
   return (
     <div
@@ -22,4 +23,5 @@ HandlerAlertModal.propTypes = {
 };
 
 export default HandlerAlertModal;
+
 

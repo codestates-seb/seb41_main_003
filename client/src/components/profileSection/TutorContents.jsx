@@ -3,8 +3,9 @@ import { MdStar, MdTextsms, MdStarOutline } from 'react-icons/md';
 import styles from './ProfileContents.module.css';
 import PropType from 'prop-types';
 import { useRef } from 'react';
+import Pagination from '../../util/Pagination.jsx';
 
-const TutorContents = ({ user }) => {
+const TutorContents = ({ user, pageInfo, setPage }) => {
   const {
     difference,
     way,
@@ -18,7 +19,6 @@ const TutorContents = ({ user }) => {
   } = user;
 
   const reviewRef = useRef(null);
-
   const starMaker = (key) => {
     return new Array(5)
       .fill(0)
@@ -125,6 +125,13 @@ const TutorContents = ({ user }) => {
             );
           })}
         </div>
+        <Pagination
+          pageInfo={pageInfo}
+          buttonHandler={(e) => {
+            const { name } = e.target;
+            setPage(name);
+          }}
+        />
       </div>
       <button
         className={styles.reviewBtn}
@@ -142,6 +149,8 @@ const TutorContents = ({ user }) => {
 };
 TutorContents.propTypes = {
   user: PropType.object,
+  pageInfo: PropType.object,
+  setPage: PropType.func,
 };
 
 export default TutorContents;

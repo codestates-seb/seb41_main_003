@@ -105,12 +105,14 @@ const TutoringList = () => {
     else setIsFinished(true);
   };
 
-  const Pagenation = ({ pageInfo }) => {
+  //TODO: util 폴더에 있는 Pagination 컴포넌트로 바꿔서 사용하기
+  //TutoringList 속 pagination className도 제거하면 됨
+  const Pagination = ({ pageInfo }) => {
     const { page, totalPages } = pageInfo;
     const pageArray = new Array(totalPages).fill(0).map((_, idx) => idx + 1);
-    // TODO : 버튼 핸들러로 페이지네이션 API 호출 필요
+
     return (
-      <div className={styles.pagenation}>
+      <div className={styles.pagination}>
         {pageArray.map((el) => (
           <button className={el === page && styles.active} key={el}>
             {el}
@@ -127,7 +129,7 @@ const TutoringList = () => {
     //tutoring/{profileId}?get=FINISH 와 같은 엔드 포인트로 요청을 보내면 됨
   }, [isFinished]);
 
-  Pagenation.propTypes = {
+  Pagination.propTypes = {
     pageInfo: PropType.object,
   };
 
@@ -158,7 +160,7 @@ const TutoringList = () => {
               <Tutoring tutoring={tutoring} key={tutoring.tutoringId} />
             ))}
         </ul>
-        <Pagenation pageInfo={tutorings.pageInfo} />
+        <Pagination pageInfo={tutorings.pageInfo} />
       </div>
     </div>
   );

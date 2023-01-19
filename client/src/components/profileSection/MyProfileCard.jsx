@@ -1,5 +1,5 @@
 import styles from './MyProfileCard.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { ButtonNightBlue } from '../Button.jsx';
 import { BlueSubject } from '../Subject.jsx';
@@ -10,10 +10,14 @@ import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 
 const MyProfileCard = ({ user, setUser }) => {
+  console.log(user);
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
 
   const Navigate = useNavigate();
+  //TODO: useParams 말고 저장되어 있는 myprofileId를 사용해야 할 듯
+  // const { profileId } = useRecoilValue(Profile);
+  const { profileId } = useParams();
 
   const confirm = {
     isOpen: true,
@@ -21,15 +25,15 @@ const MyProfileCard = ({ user, setUser }) => {
     props: {
       text: '프로필 수정 페이지로 이동 하시겠습니까?',
       modalHandler: () => {
-        //TODO: 해당 프로필Id,dateNoticeId의 프로필 수정 페이지로 이동 (useParam)
-        Navigate('/editProfile');
+        //TODO: 해당 프로필Id의 프로필 수정 페이지로 이동 (useParam)
+        Navigate(`/editProfile/${profileId}`);
         resetModal();
       },
     },
   };
   return (
     <div className={styles.cardContainer}>
-      <img alt="user img" src={defaultUser} />
+      <img alt="user img" src={user.profileImage && user.profileImage.url} />
       <section className={styles.textContainer}>
         <div className={styles.starLine}>
           <p className={styles.font1}>{user.name}</p>
@@ -69,21 +73,32 @@ const MyProfileCard = ({ user, setUser }) => {
         />
       </div>
       <section>
-        <div className={styles.toggleContainer}>
-          <div className={styles.toggleTextBox}>
-            <p className={styles.announceText1}>공고 상태</p>
-            <div className={styles.announceText2}>
-              지금은{' '}
-              {user.wantedStatus === 'REQUEST' ? (
-                <span className={styles.announceOnText}>공고 중</span>
-              ) : (
-                <span>공고 안함</span>
-              )}{' '}
-              상태입니다
+        {user.wantedStatus === 'BASIC' ? (
+          <div className={styles.toggleContainer}>
+            <div className={styles.toggleTextBox}>
+              <p className={styles.announceText1}>공고 상태</p>
+              <div className={styles.announceText2}>
+                공고 상태 수정은 프로필 필수 항목 작성이 완료되면 가능합니다.
+              </div>
             </div>
           </div>
-          <Toggle user={user} setUser={setUser} />
-        </div>
+        ) : (
+          <div className={styles.toggleContainer}>
+            <div className={styles.toggleTextBox}>
+              <p className={styles.announceText1}>공고 상태</p>
+              <div className={styles.announceText2}>
+                지금은{' '}
+                {user.wantedStatus === 'REQUEST' ? (
+                  <span className={styles.announceOnText}>공고 중</span>
+                ) : (
+                  <span>공고 안함</span>
+                )}{' '}
+                상태입니다
+              </div>
+            </div>
+            <Toggle user={user} setUser={setUser} />
+          </div>
+        )}
       </section>
     </div>
   );

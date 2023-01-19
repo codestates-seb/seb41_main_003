@@ -61,6 +61,10 @@
   margin-top: 36px;
 }
 
+.validationText {
+  visibility: hidden;
+}
+
 .buttonContainer {
   display: flex;
   flex-direction: column;
