@@ -1,34 +1,39 @@
 import styles from './MessageList.module.css';
 import defaultUser from '../../assets/defaultUser.png';
 import PropTypes from 'prop-types';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import CurrentRoomIdState from '../../recoil/currentRoomId.js';
+import { useEffect } from 'react';
 
-const MessageList = ({ messageList }) => {
-  const setCurrentRoomId = useSetRecoilState(CurrentRoomIdState);
+const MessageList = ({ messageList, getMessageRoom }) => {
+  const [CurrentRoomId, setCurrentRoomId] = useRecoilState(CurrentRoomIdState);
 
   const getCurrentRoomId = (e) => {
     setCurrentRoomId(e.currentTarget.id);
-    console.log(getCurrentRoomId, 'getCurrentRoomId');
+    console.log(CurrentRoomId, 'getCurrentRoomId');
   };
+
+  useEffect(() => {
+    // getMessageRoom();
+  }, [CurrentRoomId]);
 
   return (
     <div>
       <ul className={styles.messageList}>
-        {messageList.map((obj) => {
+        {messageList.map((list) => {
           return (
-            <li key={obj.messageRoomId} className={styles.message}>
+            <li key={list.messageRoomId} className={styles.message}>
               <button
-                id={obj.messageRoomId}
+                id={list.messageRoomId}
                 onClick={getCurrentRoomId}
                 className={styles.person}
               >
                 <img src={defaultUser} alt="user" className={styles.userImg} />
                 <div>
-                  <h4>{obj.targetName}</h4>
-                  <p>{obj.lastMessage}</p>
+                  <h4>{list.targetName}</h4>
+                  <p>{list.lastMessage}</p>
                 </div>
-                {obj.messageStatus === 'UNCHECK' && (
+                {list.messageStatus === 'UNCHECK' && (
                   <span className={styles.badge} />
                 )}
               </button>
@@ -43,7 +48,6 @@ const MessageList = ({ messageList }) => {
 MessageList.propTypes = {
   messageList: PropTypes.array,
   getMessageRoom: PropTypes.func,
-  setCurrentRoomId: PropTypes.func,
 };
 
 export default MessageList;
