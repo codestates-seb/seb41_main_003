@@ -81,7 +81,7 @@
           width: 40px;
           height: 40px;
           border-radius: 50%;
-          background-size: cover;
+          object-fit: cover;
           margin-right: 8px;
         }
 

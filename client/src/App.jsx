@@ -21,14 +21,69 @@ import Journal from './pages/Journal';
 import AddJournal from './pages/AddJournal';
 import { GlobalModal } from './components/modal/GlobalModal';
 import { useRef } from 'react';
+import { useResetRecoilState } from 'recoil';
 import axios from 'axios';
+import Profile from './recoil/profile';
 
 const App = () => {
   const footerRef = useRef(null);
+  const resetProfile = useResetRecoilState(Profile);
 
-  axios.defaults.headers.common['Authorization'] =
-    sessionStorage.getItem('authorization') ||
-    localStorage.getItem('authorization');
+  axios.interceptors.request.use(
+    (config) => {
+      config.headers.Authorization =
+        sessionStorage.getItem('authorization') ||
+        localStorage.getItem('authorization');
+      return config;
+    },
+    (err) => {
+      console.log(err);
+      return Promise.reject(err);
+    }
+  );
+
+  axios.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      console.log(error);
+
+      const {
+        config,
+        response: { status },
+      } = error;
+
+      if (config.sent) return Promise.reject(error);
+
+      if (
+        status === 403 &&
+        error.response.data.message === 'EXPIRED ACCESS TOKEN'
+      ) {
+        const originReq = config;
+        originReq.sent = true;
+
+        const userId = await (sessionStorage.getItem('userId') ||
+          localStorage.getItem('userId'));
+        try {
+          const {
+            data: { authorization },
+          } = await axios.get(`/auth/reissue-token/${userId}`);
+
+          localStorage.setItem('authorization', authorization);
+          sessionStorage.setItem('authorization', authorization);
+
+          originReq.headers.Authorization = authorization;
+          return axios(originReq);
+        } catch (err) {
+          console.log(err);
+          localStorage.clear();
+          sessionStorage.clear();
+          resetProfile();
+          location.href = '/login';
+        }
+      }
+      return Promise.reject(error);
+    }
+  );
 
   axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 

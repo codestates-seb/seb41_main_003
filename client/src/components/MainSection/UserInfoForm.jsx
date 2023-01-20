@@ -3,11 +3,10 @@ import { LabelTextInput, TextInput } from '../Input';
 import { useState, useEffect } from 'react';
 import { ButtonNightBlue } from '../Button';
 import axios from 'axios';
-import { useResetRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import validation from '../../util/validation';
-import reIssueToken from '../../util/reIssueToken';
-import Profile from '../../recoil/profile';
 import ModalState from '../../recoil/modal';
+import Profile from '../../recoil/profile';
 
 const initialUserInfo = {
   nickName: '',
@@ -28,7 +27,7 @@ const UserInfoForm = () => {
     secondPw: false,
   });
   const setModal = useSetRecoilState(ModalState);
-  const resetProfile = useResetRecoilState(Profile);
+  const setProfile = useSetRecoilState(Profile);
 
   const isNewUser = userData.userStatus === 'NONE';
 
@@ -78,12 +77,9 @@ const UserInfoForm = () => {
         setUserStatus(userStatus);
       })
       .catch(({ response }) => {
-        if (response.data.message === 'EXPIRED ACCESS TOKEN')
-          reIssueToken(getUserInfo).catch(() => {
-            console.log('reset');
-            resetProfile();
-            window.location.href = '/login';
-          });
+        console.log(response);
+        console.log(response.status);
+        console.log(response.data.message);
       });
   };
 
@@ -175,20 +171,16 @@ const UserInfoForm = () => {
         }`,
         patchData
       )
-      .then(() => {
+      .then(({ data: { data } }) => {
         console.log('수정완료');
         setModal(submitProp);
+        setProfile((prev) => ({ ...prev, userStatus: data.userState }));
       })
       .catch(({ response }) => {
+        console.log(response);
         console.log(response.status);
         console.log(response.data.message);
-        if (response.data.message === 'EXPIRED ACCESS TOKEN') {
-          reIssueToken(patchUserInfo).catch(() => {
-            console.log('reset');
-            resetProfile();
-            window.location.href = '/login';
-          });
-        } else if (response.status === 409) {
+        if (response.status === 409) {
           setModal(conflictProp);
         }
       });

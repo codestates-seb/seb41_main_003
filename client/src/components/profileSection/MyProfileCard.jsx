@@ -3,19 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { ButtonNightBlue } from '../Button.jsx';
 import { BlueSubject } from '../Subject.jsx';
-import { MdStar } from 'react-icons/md';
+import { MdStar, MdDelete } from 'react-icons/md';
 import Toggle from './Toggle';
-import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState, useResetRecoilState, useRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 import Profile from '../../recoil/profile';
+import axios from 'axios';
 
 const MyProfileCard = ({ user, setUser }) => {
-  console.log(user);
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
 
   const Navigate = useNavigate();
-  const { profileId } = useRecoilValue(Profile);
+  const [{ profileId }, setProfile] = useRecoilState(Profile);
 
   const confirm = {
     isOpen: true,
@@ -28,9 +28,56 @@ const MyProfileCard = ({ user, setUser }) => {
       },
     },
   };
+
+  const getProfileData = async () => {
+    await axios
+      .get(`/profiles/details/${profileId}`)
+      .then(({ data }) => {
+        setUser(data.data);
+        setProfile((prev) => ({ ...prev, url: data.data.profileImage.url }));
+      })
+      .catch((err) => console.log(err.status));
+  };
+
+  const deleteHandler = async () => {
+    axios
+      .delete(`/upload/profile-image/${profileId}`)
+      .then(() => {
+        getProfileData();
+      })
+      .catch(({ response }) => {
+        console.log(response);
+        console.log(response.status);
+        console.log(response.data.message);
+      });
+  };
+
+  const deleteProps = {
+    isOpen: true,
+    modalType: 'confirm',
+    props: {
+      text: '프로필 이미지를 삭제하시겠습니까?',
+      modalHandler: () => {
+        deleteHandler();
+        resetModal();
+      },
+    },
+  };
+
   return (
     <div className={styles.cardContainer}>
-      <img alt="user img" src={user.profileImage.url} />
+      <div className={styles.userImage}>
+        <img alt="user img" src={user.profileImage.url} />
+        <button
+          type="button"
+          onClick={() => {
+            setModal(deleteProps);
+          }}
+        >
+          <MdDelete />
+        </button>
+      </div>
+
       <section className={styles.textContainer}>
         <div className={styles.starLine}>
           <p className={styles.font1}>{user.name}</p>

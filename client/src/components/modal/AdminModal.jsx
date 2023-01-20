@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './AdminModal.module.css';
 import axios from 'axios';
-import reIssueToken from '../../util/reIssueToken';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import Profile from '../../recoil/profile';
 import ModalState from '../../recoil/modal';
@@ -10,10 +9,9 @@ import { ButtonNightBlue } from '../Button';
 import { MdOutlineWarning } from 'react-icons/md';
 
 const AdminModal = () => {
-  const [profiles, setProfiles] = useState([]);
+  const [profiles, setProfiles] = useState([0]);
 
   const setProfile = useSetRecoilState(Profile);
-  const resetProfile = useResetRecoilState(Profile);
   const resetModal = useResetRecoilState(ModalState);
   const navigate = useNavigate();
 
@@ -37,14 +35,9 @@ const AdminModal = () => {
         setProfiles(data.data);
       })
       .catch(({ response }) => {
+        console.log(response);
         console.log(response.status);
         console.log(response.data.message);
-        if (response.data.message === 'EXPIRED ACCESS TOKEN')
-          reIssueToken(getUserProfile).catch(() => {
-            console.log('reset');
-            resetProfile();
-            window.location.href = '/login';
-          });
       });
   };
 
