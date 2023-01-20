@@ -13,9 +13,6 @@ const Chat = ({ message, tutoringId, getMessageRoom }) => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
 
-  // 요청 확인하기 누르고 매칭 확인 버튼 누르면 PATCH 요청 승인 API 보내야 함
-  // 요청 취소하기 버튼을 누르면 과외 삭제 API 요청 보내야 함
-
   // 매칭 요청 승인 API
   const confirmMatching = async () => {
     await axios
@@ -98,7 +95,7 @@ const Chat = ({ message, tutoringId, getMessageRoom }) => {
       {senderId === profileId ? undefined : <h5>{senderName}</h5>}
       {messageContent === 'REQ_UEST' ? (
         senderId === profileId ? (
-          <div className={styles.sendRequestBox}>
+          <div className={styles.matchingBox}>
             <p>매칭 요청을 보냈습니다.</p>
             <button
               className={styles.requestCancelBtn}
@@ -108,7 +105,7 @@ const Chat = ({ message, tutoringId, getMessageRoom }) => {
             </button>
           </div>
         ) : (
-          <div className={styles.receiveRequestBox}>
+          <div className={styles.matchingBox}>
             <p>매칭 요청이 도착했습니다.</p>
             <button
               className={styles.checkRequestBtn}

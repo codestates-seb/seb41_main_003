@@ -3,19 +3,14 @@ import defaultUser from '../../assets/defaultUser.png';
 import PropTypes from 'prop-types';
 import { useRecoilState } from 'recoil';
 import CurrentRoomIdState from '../../recoil/currentRoomId.js';
-import { useEffect } from 'react';
 
-const MessageList = ({ messageList, getMessageRoom }) => {
+const MessageList = ({ messageList }) => {
   const [CurrentRoomId, setCurrentRoomId] = useRecoilState(CurrentRoomIdState);
 
   const getCurrentRoomId = (e) => {
     setCurrentRoomId(e.currentTarget.id);
-    console.log(CurrentRoomId, 'getCurrentRoomId');
   };
-
-  useEffect(() => {
-    // getMessageRoom();
-  }, [CurrentRoomId]);
+  console.log(CurrentRoomId, 'getCurrentRoomId');
 
   return (
     <div>
@@ -47,7 +42,6 @@ const MessageList = ({ messageList, getMessageRoom }) => {
 
 MessageList.propTypes = {
   messageList: PropTypes.array,
-  getMessageRoom: PropTypes.func,
 };
 
 export default MessageList;

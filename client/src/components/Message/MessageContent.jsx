@@ -8,28 +8,26 @@ import ModalState from '../../recoil/modal.js';
 import axios from 'axios';
 import CurrentRoomIdState from '../../recoil/currentRoomId';
 import Profile from '../../recoil/profile';
-import reIssueToken from '../../util/reIssueToken';
 
 const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
   const { tutorId, tuteeId, messages } = messageRoom;
-
   const { profileId } = useRecoilValue(Profile);
   const [isMenu, setIsMenu] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const [tutoringTitle, setTutoringTitle] = useState('');
   const [receiveMessageId, setReceiveMessageId] = useState(0);
+  const [tutoringId, setTutoringId] = useState(0);
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
 
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
 
-  const [tutoringId, setTutoringId] = useState(0);
-
+  // messageList가 변경될때마다 message의 receiver를 변경해줌
   useEffect(() => {
     if (profileId === tuteeId) {
       setReceiveMessageId(tutorId);
     } else setReceiveMessageId(tuteeId);
   }, [CurrentRoomId]);
+  console.log(tutoringId, 'tutoringId');
 
   // 메세지 post API
   const sendMessage = async () => {
@@ -44,35 +42,25 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
         console.log('메세지 전송');
         getMessageRoom();
       })
-      .catch((err) => {
-        if (err.data.message === 'ERR_BAD_REQUEST') {
-          return <div>메세지를 입력하세요</div>;
-        }
-      });
+      .catch((err) => console.log(err));
   };
 
   // 과외 생성 API
-  const createTutoringAPI = async () => {
+  const createTutoringAPI = async (value) => {
     await axios
       .post(`/tutoring/${profileId}`, {
         tutorId: tutorId,
         tuteeId: tuteeId,
-        tutoringTitle: tutoringTitle,
+        tutoringTitle: value,
         messageRoomId: CurrentRoomId,
       })
       .then((res) => {
-        console.log('과외 생성');
-        console.log(res.data.data.tutoringI);
+        console.log(res.data.data.tutoringId, '과외 생성 tutoringId');
         setTutoringId(res.data.data.tutoringId);
       })
       .catch((err) => console.log(err));
   };
-  console.log(tutoringId);
-  async function donggi(val) {
-    await setTutoringTitle(val);
-  }
 
-  // 매칭 요청 버튼 모달
   const matchConfirmProps = {
     isOpen: true,
     modalType: 'confirmText',
@@ -83,11 +71,9 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
     매칭을 원하신다면 과외의 이름을 작성해주세요.
     `,
       modalHandler: (_, value) => {
-        // donggi(value).then();
-        setTutoringTitle(value);
+        createTutoringAPI(value);
         resetModal();
         setModal(matchAlertProps);
-        console.log(tutoringTitle, 'confirmText');
       },
       placeHolder: '과외의 이름을 작성하세요',
     },
@@ -100,11 +86,9 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
     상대방의 요청 수락 이후에는 과외 관리 페이지에서
     확인하실 수 있습니다.`,
       modalHandler: () => {
-        createTutoringAPI();
-        console.log(tutoringTitle, '과외제목 alertModal');
         resetModal();
         getMessageRoom();
-        // window.location.href = `/message/${profileId}`;
+        window.location.href = `/message/${profileId}`;
       },
     },
   };

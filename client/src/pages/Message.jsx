@@ -3,7 +3,7 @@ import MessageList from '../components/Message/MessageList';
 import MessageContent from '../components/Message/MessageContent';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import CurrentRoomIdState from '../recoil/currentRoomId.js';
 import Profile from '../recoil/profile';
 import reIssueToken from '../util/reIssueToken';
@@ -13,7 +13,6 @@ const initialState = {
   messages: [
     {
       messageContent: '대화를 선택해주세요',
-      // createAt: '2023-00-00T10:53:13',
     },
   ],
 };
@@ -22,7 +21,7 @@ const Message = () => {
   const { profileId } = useRecoilValue(Profile);
   const [messageList, setMessageList] = useState([]);
   const [messageRoom, setMessageRoom] = useState(initialState);
-  const [CurrentRoomId, setCurrentRoomId] = useRecoilState(CurrentRoomIdState);
+  const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
 
   useEffect(() => {
     getMessageList();
@@ -32,6 +31,7 @@ const Message = () => {
     getMessageRoom();
   }, [CurrentRoomId]);
   console.log(CurrentRoomId, 'CurrentRoomId');
+
   const getMessageList = async () => {
     await axios
       .get(`/messages/${profileId}`)
@@ -56,7 +56,7 @@ const Message = () => {
     await axios
       .delete(`/messages/rooms/${CurrentRoomId}`)
       .then(() => {
-        setCurrentRoomId();
+        window.location.ref('/message');
         console.log('현재 대화방 삭제');
       })
       .catch((err) => console.log(err));
