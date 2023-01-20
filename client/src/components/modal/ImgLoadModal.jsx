@@ -4,11 +4,10 @@ import { ButtonNightBlue, ButtonSilver, ButtonRed } from '../Button';
 import { useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
 import { useState } from 'react';
-import axios from 'axios';
 
-const ImgLoadModal = ({ setUser, profileId }) => {
+const ImgLoadModal = ({ setImgFile, setImgSrc }) => {
   const [imgName, setImgName] = useState('');
-  const [imgFile, setImgFile] = useState({});
+  const [imgBlob, setImgBlob] = useState({});
   const reset = useResetRecoilState(ModalState);
 
   const changeHandler = (e) => {
@@ -19,59 +18,26 @@ const ImgLoadModal = ({ setUser, profileId }) => {
     }
     if (e.target.files) {
       setImgFile(e.target.files[0]);
+      setImgBlob(e.target.files[0]);
       setImgName(e.target.value);
     }
   };
 
-  const submitHandler = (file) => {
-    const formData = new FormData();
-    formData.append('image', file);
-    for (const key of formData.keys()) {
-      console.log(key);
-    }
-    for (const value of formData.values()) {
-      console.log(value);
-    }
-    patchImg(formData);
-    reset();
-  };
-
-  const patchImg = async (formData) => {
-    await axios
-      .patch(`/upload/profile-image/${profileId}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then(({ data }) => {
-        console.log(data.data[0]);
-        console.log('성공!');
-
-        setUser((prev) => ({
-          ...prev,
-          profileImage: data.data[0],
-        }));
-      })
-      .catch((err) => console.log(err));
+  const saveHandler = (file) => {
+    console.log(file);
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setImgSrc(reader.result);
+    };
   };
 
   const deleteHandler = () => {
     setImgName('');
-    deleteImg();
+    setImgFile({});
+    setImgBlob({});
+    setImgSrc();
     reset();
-  };
-
-  const deleteImg = async () => {
-    await axios
-      .delete(`/upload/profile-image/${profileId}`)
-      .then(() => {
-        console.log('프로필 이미지 삭제 성공!');
-        setUser((prev) => ({
-          ...prev,
-          profileImage: {},
-        }));
-      })
-      .catch((err) => console.log(err));
   };
 
   return (
@@ -98,7 +64,8 @@ const ImgLoadModal = ({ setUser, profileId }) => {
       <div className={styles.buttonBox}>
         <ButtonNightBlue
           buttonHandler={() => {
-            submitHandler(imgFile);
+            saveHandler(imgBlob);
+            reset();
           }}
           text="저장"
         />
@@ -110,8 +77,8 @@ const ImgLoadModal = ({ setUser, profileId }) => {
 };
 
 ImgLoadModal.propTypes = {
-  setUser: PropTypes.func,
-  profileId: PropTypes.string,
+  setImgFile: PropTypes.func,
+  setImgSrc: PropTypes.func,
 };
 
 export default ImgLoadModal;

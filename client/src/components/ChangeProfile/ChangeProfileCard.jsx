@@ -7,19 +7,22 @@ import SubjectsButtons from './SubjectsButtons';
 import ModalState from '../../recoil/modal.js';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import reIssueToken from '../../util/reIssueToken';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import defaultUser from '../../assets/defaultUser.png';
+import Profile from '../../recoil/profile';
 
 const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
   const { name, bio, school, subjects, profileStatus, profileImage } = user;
+  const [imgFile, setImgFile] = useState({});
+  const [imgSrc, setImgSrc] = useState();
+  const navigate = useNavigate();
 
-  const userId =
-    sessionStorage.getItem('userId') || localStorage.getItem('userId');
   const { profileId } = useParams();
 
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
+  const setProfile = useSetRecoilState(Profile);
 
   const requiredProps = {
     isOpen: true,
@@ -27,29 +30,58 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
     props: { text: '필수 입력 사항을 모두 작성해주세요.' },
   };
 
+  const patchImg = async (id, isAdd = false) => {
+    const formData = new FormData();
+    formData.append('image', imgFile);
+    for (const key of formData.keys()) {
+      console.log(key);
+    }
+    for (const value of formData.values()) {
+      console.log(value);
+    }
+    await axios
+      .patch(`/upload/profile-image/${id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then(({ data }) => {
+        const profileImage = data.data[0];
+        console.log(profileImage);
+        console.log('성공!');
+
+        if (isAdd) navigate(`/admin`);
+        else {
+          setProfile((prev) => ({
+            ...prev,
+            url: profileImage.url,
+          }));
+          navigate(`/myprofile/${profileId}`);
+        }
+      })
+      .catch(({ response }) => {
+        console.log(response);
+        console.log(response.status);
+        console.log(response.data.message);
+      });
+  };
+
   const patchProfile = async () => {
     await axios
-      .patch(
-        `/profiles/details/${profileId}`,
-        {
-          ...user,
-        },
-        {
-          headers: {
-            Authorization:
-              sessionStorage.getItem('authorization') ||
-              localStorage.getItem('authorization'),
-          },
-        }
-      )
-      .then(() => (window.location.href = '/admin'))
+      .patch(`/profiles/details/${profileId}`, {
+        ...user,
+      })
+      .then(({ data }) => {
+        setProfile((prev) => ({
+          ...prev,
+          name: data.data.name,
+        }));
+        if (imgSrc) patchImg(data.data.profileId);
+      })
       .catch(({ response }) => {
-        if (response.data.message === 'EXPIRED ACCESS TOKEN') {
-          reIssueToken(patchProfile).catch(() => {
-            console.log(response);
-            window.location.href = '/login';
-          });
-        }
+        console.log(response);
+        console.log(response.status);
+        console.log(response.data.message);
       });
   };
 
@@ -57,10 +89,9 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
     console.log('PATCH 요청');
     patchProfile();
     resetModal();
-    window.location.href = `/myprofile/${profileId}`;
+    navigate(`/myprofile/${profileId}`);
   };
 
-  //프로필 추가 4개 초과시에는 400 에러
   const postProfile = async () => {
     await axios
       .post(
@@ -69,23 +100,16 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
         }`,
         {
           ...user,
-        },
-        {
-          headers: {
-            Authorization:
-              sessionStorage.getItem('authorization') ||
-              localStorage.getItem('authorizaiton'),
-          },
         }
       )
-      .then(() => (window.location.href = '/admin'))
+      .then(({ data }) => {
+        patchImg(data.data.profileId, true);
+        localStorage.removeItem('addProfile');
+      })
       .catch(({ response }) => {
-        if (response.data.message === 'EXPIRED ACCESS TOKEN') {
-          reIssueToken(postProfile).catch(() => {
-            console.log(response);
-            window.location.href = '/login';
-          });
-        }
+        console.log(response);
+        console.log(response.status);
+        console.log(response.data.message);
       });
   };
 
@@ -93,6 +117,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
     console.log('POST 요청');
     postProfile();
     resetModal();
+    navigate(`/admin`);
   };
 
   const editConfirmProps = {
@@ -135,14 +160,17 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
   const imgModalProps = {
     isOpen: true,
     modalType: 'imgLoad',
-    props: { setUser: setUser, profileId: profileId },
+    props: { setImgFile, setImgSrc },
   };
 
   return (
     <div className={styles.container}>
       <form id="profile" onSubmit={(e) => submitHandler(e)}>
         <div className={styles.userImage}>
-          <img src={profileImage && profileImage.url} alt="profile-img" />
+          <img
+            src={imgSrc || profileImage?.url || defaultUser}
+            alt="profile-img"
+          />
           <button type="button" onClick={() => setModal(imgModalProps)}>
             <MdMode />
           </button>
