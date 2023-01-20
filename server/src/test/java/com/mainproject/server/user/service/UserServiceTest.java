@@ -90,11 +90,13 @@ class UserServiceTest {
     @DisplayName("휴대폰 번호 중복 검증 TEST - PHONE NUMBER EXISTS")
     void givenUserWhenThrowPhoneNumberExistsThenEqualsServiceLogicException() {
         // Given
+        Long userId = 1L;
         String phoneNumber = "010-0000-0000";
-        given(userRepository.findByPhoneNumber(anyString())).willReturn(Optional.of(new User()));
+        given(userRepository.findByPhoneNumber(anyString()))
+                .willReturn(Optional.of(User.builder().userId(2L).build()));
         // When
         Throwable throwable = catchThrowable(
-                () -> userService.verifyPhoneNumber(phoneNumber)
+                () -> userService.verifyPhoneNumber(phoneNumber, userId)
         );
         // Then
         assertThat(throwable)

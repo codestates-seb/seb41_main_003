@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.Map;
 
 @Slf4j
@@ -36,7 +38,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity getUser(
-            @PathVariable Long userId
+            @PathVariable @Positive Long userId
     ) {
         return new ResponseEntity<>(
                 ResponseDto.of(
@@ -48,7 +50,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity postUser(
-            @RequestBody @Validated UserPostDto userPostDto
+            @RequestBody @Valid UserPostDto userPostDto
     ) {
         User saveUser = userService.createUser(
                 userMapper.userPostDtoToEntity(userPostDto));
@@ -63,8 +65,8 @@ public class UserController {
 
     @PatchMapping("/{userId}")
     public ResponseEntity patchUser(
-            @PathVariable Long userId,
-            @RequestBody @Validated UserPatchDto userPatchDto
+            @PathVariable @Positive Long userId,
+            @RequestBody @Valid UserPatchDto userPatchDto
     ) {
         userPatchDto.setUserId(userId);
         if (userPatchDto.getUserStatus() != null && !userPatchDto.getUserStatus().isBlank()) {
@@ -83,7 +85,7 @@ public class UserController {
 
     @DeleteMapping("/{userId}")
     public ResponseEntity deleteUser(
-            @PathVariable Long userId
+            @PathVariable @Positive Long userId
     ) {
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
