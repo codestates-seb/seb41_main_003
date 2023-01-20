@@ -1,7 +1,7 @@
 import styles from './UserInfoForm.module.css';
 import { LabelTextInput, TextInput } from '../Input';
 import { useState, useEffect } from 'react';
-import { ButtonNightBlue } from '../Button';
+import { ButtonNightBlue, ButtonRed } from '../Button';
 import axios from 'axios';
 import { useSetRecoilState } from 'recoil';
 import validation from '../../util/validation';

@@ -7,39 +7,34 @@ import { useRecoilValue, useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
 import axios from 'axios';
 import CurrentRoomIdState from '../../recoil/currentRoomId';
-import TutoringTitleState from '../../recoil/tutoringTitle';
 import Profile from '../../recoil/profile';
 
 const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
   const { tutorId, tuteeId, messages } = messageRoom;
+  const { profileId } = useRecoilValue(Profile);
   const [isMenu, setIsMenu] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const [myProfileId, setIsMyProfileId] = useState(tuteeId);
-  const [yourProfileId, setYourProfileId] = useState(tutorId);
-  const profile = useRecoilValue(Profile);
-  const tutoringTitle = useRecoilValue(TutoringTitleState);
+  const [receiveMessageId, setReceiveMessageId] = useState(0);
+  const [tutoringId, setTutoringId] = useState(0);
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
 
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
 
-  const amITutee = () => {
-    if (profile.profileId !== tuteeId) {
-      setIsMyProfileId(tutorId);
-      setYourProfileId(tuteeId);
-    }
-  };
-
+  // messageList가 변경될때마다 message의 receiver를 변경해줌
   useEffect(() => {
-    amITutee();
-  }, []);
+    if (profileId === tuteeId) {
+      setReceiveMessageId(tutorId);
+    } else setReceiveMessageId(tuteeId);
+  }, [CurrentRoomId]);
+  console.log(tutoringId, 'tutoringId');
 
   // 메세지 post API
   const sendMessage = async () => {
     await axios
-      .post(`${process.env.REACT_APP_BASE_URL}/messages`, {
-        senderId: myProfileId,
-        receiverId: yourProfileId,
+      .post(`/messages`, {
+        senderId: profileId,
+        receiverId: receiveMessageId,
         messageRoomId: CurrentRoomId,
         messageContent: inputValue,
       })
@@ -50,54 +45,39 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
       .catch((err) => console.log(err));
   };
 
-  const sendReq_est = async () => {
+  // 과외 생성 API
+  const createTutoringAPI = async (value) => {
     await axios
-      .post(`${process.env.REACT_APP_BASE_URL}/messages`, {
-        senderId: myProfileId,
-        receiverId: yourProfileId,
-        messageRoomId: CurrentRoomId,
-        messageContent: 'REQ_UEST',
-      })
-      .then(() => {
-        console.log('REQ_UEST');
-        getMessageRoom();
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const createTutoring = async () => {
-    await axios
-      .post(`${process.env.REACT_APP_BASE_URL}/tutoring/${myProfileId}`, {
+      .post(`/tutoring/${profileId}`, {
         tutorId: tutorId,
         tuteeId: tuteeId,
-        tutoringTitle: tutoringTitle,
+        tutoringTitle: value,
         messageRoomId: CurrentRoomId,
       })
-      .then(() => {
-        console.log('메세지 전송');
+      .then((res) => {
+        console.log(res.data.data.tutoringId, '과외 생성 tutoringId');
+        setTutoringId(res.data.data.tutoringId);
       })
       .catch((err) => console.log(err));
   };
 
   const matchConfirmProps = {
     isOpen: true,
-    modalType: 'getText',
+    modalType: 'confirmText',
     props: {
       text: `상대방의 요청 수락 시 매칭이 완료됩니다.
     매칭 요청 하시겠습니까?
 
     매칭을 원하신다면 과외의 이름을 작성해주세요.
     `,
-
-      modalHandler: () => {
-        sendReq_est();
+      modalHandler: (_, value) => {
+        createTutoringAPI(value);
         resetModal();
         setModal(matchAlertProps);
       },
       placeHolder: '과외의 이름을 작성하세요',
     },
   };
-
   const matchAlertProps = {
     isOpen: true,
     modalType: 'handlerAlert',
@@ -106,13 +86,14 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
     상대방의 요청 수락 이후에는 과외 관리 페이지에서
     확인하실 수 있습니다.`,
       modalHandler: () => {
-        createTutoring();
-        console.log(tutoringTitle, 'alertModal');
         resetModal();
+        getMessageRoom();
+        window.location.href = `/message/${profileId}`;
       },
     },
   };
 
+  // 상담 취소 버튼 모달
   const cancelConfirmProps = {
     isOpen: true,
     modalType: 'redConfirm',
@@ -124,11 +105,10 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
         console.log('상담 취소');
         resetModal();
         setModal(cancelAlertProps);
-        location.reload();
+        window.location.href = `/message/${profileId}`;
       },
     },
   };
-
   const cancelAlertProps = {
     isOpen: true,
     modalType: 'redAlert',
@@ -141,8 +121,9 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
         {messages.map((message) => (
           <Chat
             message={message}
-            authId={myProfileId}
             key={message.messageId}
+            tutoringId={tutoringId}
+            getMessageRoom={getMessageRoom}
           />
         ))}
       </div>
@@ -167,14 +148,15 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
             if (e.key === 'Enter' && e.target.value) {
               sendMessage();
               setInputValue('');
-              console.log('11');
             }
           }}
         />
         <button
           onClick={() => {
-            sendMessage();
-            setInputValue('');
+            if (inputValue !== '') {
+              sendMessage();
+              setInputValue('');
+            }
           }}
           className={styles.sendBtn}
         >

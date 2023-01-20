@@ -45,7 +45,7 @@
   }
 }
 
-.sendRequestBox {
+.matchingBox {
   background-color: $night;
   padding: 8px;
   border-radius: 5px;
