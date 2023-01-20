@@ -7,7 +7,6 @@ import ModalState from '../recoil/modal.js';
 import defaultUser from '../assets/defaultUser.png';
 import Profile from '../recoil/profile';
 import axios from 'axios';
-import reIssueToken from '../util/reIssueToken';
 
 const Header = () => {
   const [isMenu, setIsMenu] = useState(false);
@@ -75,8 +74,8 @@ const Header = () => {
       })
       .catch(({ response }) => {
         console.log(response);
-        console.log(response.status);
-        console.log(response.data.message);
+        console.log(response?.status);
+        console.log(response?.data?.message);
         if (response.data.message === 'WRONG SECOND PASSWORD') {
           setModal({
             isOpen: true,
@@ -88,12 +87,7 @@ const Header = () => {
               },
             },
           });
-        } else if (response.data.message === 'EXPIRED ACCESS TOKEN')
-          reIssueToken(verify2ndPassword).catch(() => {
-            console.log('reset');
-            resetProfile();
-            window.location.href = '/login';
-          });
+        } else return;
       });
   };
 

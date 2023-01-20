@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSetRecoilState, useResetRecoilState, useRecoilState } from 'recoil';
 import ModalState from '../recoil/modal.js';
 import { useEffect, useState } from 'react';
-import reIssueToken from '../util/reIssueToken';
 import axios from 'axios';
 import Profile from '../recoil/profile';
 
@@ -13,7 +12,6 @@ const Admin = () => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
   const [profile, setProfile] = useRecoilState(Profile);
-  const resetProfile = useResetRecoilState(Profile);
   const navigate = useNavigate();
 
   const getUserProfile = async () => {
@@ -28,15 +26,9 @@ const Admin = () => {
 
         setProfilesData(data.data);
       })
-      .catch(({ response }) => {
-        console.log(response.status);
-        console.log(response.data.message);
-        if (response.data.message === 'EXPIRED ACCESS TOKEN')
-          reIssueToken(getUserProfile).catch(() => {
-            console.log('reset');
-            resetProfile();
-            window.location.href = '/login';
-          });
+      .catch((err) => {
+        console.log(err.response.status);
+        console.log(err.response.data.message);
       });
   };
 
@@ -58,14 +50,9 @@ const Admin = () => {
         console.log('삭제 완료!');
       })
       .catch(({ response }) => {
+        console.log(response);
         console.log(response.status);
         console.log(response.data.message);
-        if (response.data.message === 'EXPIRED ACCESS TOKEN')
-          reIssueToken(deleteHandler).catch(() => {
-            console.log('reset');
-            resetProfile();
-            window.location.href = '/login';
-          });
       });
   };
 

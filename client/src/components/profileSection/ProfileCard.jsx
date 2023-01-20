@@ -5,16 +5,14 @@ import { BlueSubject } from '../Subject.jsx';
 import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
 import { useNavigate, useParams } from 'react-router-dom';
 import ModalState from '../../recoil/modal';
-import defaultUser from '../../assets/defaultUser.png';
 import { MdStar } from 'react-icons/md';
 import axios from 'axios';
 import Profile from '../../recoil/profile';
-import reIssueToken from '../../util/reIssueToken';
 
 //문의하기 버튼을 눌렀을 때, 403 에러가 발생하면 reIssueToken 하도록
 
 const ProfileCard = ({ user }) => {
-  const { name, rate, bio, school, subjects } = user;
+  const { name, rate, bio, school, subjects, profileImage } = user;
 
   const setModal = useSetRecoilState(ModalState);
   const reset = useResetRecoilState(ModalState);
@@ -40,12 +38,9 @@ const ProfileCard = ({ user }) => {
       )
       .then(() => (window.location.href = `/message/${myProfileId}`))
       .catch(({ response }) => {
-        if (response.data.message === 'EXPIRED ACCESS TOKEN') {
-          reIssueToken(postNewMessageRoom).catch(() => {
-            console.log(response);
-            window.location.href = '/login';
-          });
-        }
+        console.log(response);
+        console.log(response.status);
+        console.log(response.data.message);
       });
   };
 
@@ -64,8 +59,7 @@ const ProfileCard = ({ user }) => {
 
   return (
     <div className={styles.cardContainer}>
-      {/* //! API 연결 시 유저 이미지 수정 필요 */}
-      <img alt="user img" src={defaultUser} />
+      <img alt="user img" src={profileImage?.url} />
       <section className={styles.textContainer}>
         <div className={styles.starLine}>
           <h3 className={styles.font1}>{name}</h3>
