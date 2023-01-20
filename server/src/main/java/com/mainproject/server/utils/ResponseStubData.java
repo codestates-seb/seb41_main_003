@@ -201,7 +201,7 @@ public class ResponseStubData {
         return ProfileListResponseDto.builder()
                 .profileId(1L)
                 .name("어때요")
-                .rate(4.8)
+                .rate(4.5)
                 .subjects(List.of(
                         createSubjectResponse(),
                         createSubjectResponse(),
@@ -259,8 +259,6 @@ public class ResponseStubData {
                 .tuteeName("나에게")
                 .build();
     }
-
-
 
 
 }
