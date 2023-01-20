@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 import Profile from '../../recoil/profile';
 import ModalState from '../../recoil/modal.js';
-import reIssueToken from '../../util/reIssueToken';
 
 const Chat = ({ message, tutoringId, getMessageRoom }) => {
   const { senderId, messageContent, senderName, createAt } = message;

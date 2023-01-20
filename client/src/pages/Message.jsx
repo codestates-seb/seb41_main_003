@@ -6,7 +6,6 @@ import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 import CurrentRoomIdState from '../recoil/currentRoomId.js';
 import Profile from '../recoil/profile';
-import reIssueToken from '../util/reIssueToken';
 
 const initialState = {
   messageRoomId: 0,
