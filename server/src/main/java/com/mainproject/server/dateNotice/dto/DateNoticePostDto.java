@@ -2,6 +2,7 @@ package com.mainproject.server.dateNotice.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@ToString
 public class DateNoticePostDto {
 
     @NotBlank
