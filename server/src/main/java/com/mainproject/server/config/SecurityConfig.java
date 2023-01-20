@@ -122,7 +122,7 @@ public class SecurityConfig {
                                 .mvcMatchers(HttpMethod.POST,"/messages/**").hasAnyRole("USER")
                                 .mvcMatchers(HttpMethod.PATCH,"/messages/**").hasAnyRole("USER")
                                 .mvcMatchers(HttpMethod.DELETE,"/messages/**").hasAnyRole("USER")
-                                .anyRequest().permitAll()
+                                .anyRequest().hasAnyRole("USER")
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(oAuth2UserSuccessHandler)
@@ -137,8 +137,10 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(
-                Arrays.asList("http://localhost:3000",
-                        "http://localhost:8080","*"));
+                Arrays.asList(
+                        "http://localhost:3000",
+                        "http://localhost:8080",
+                        "http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com"));
         corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE", "OPTIONS"));
         corsConfiguration.setMaxAge(493772L);
         corsConfiguration.addAllowedOrigin("http://localhost:3000");

@@ -24,125 +24,126 @@ v1.0.0, 2023.01.19
 - 로그인 상태 조회 - OK
 
 
-- http-request
+.http-request
+
 include::{snippets}/verifyUserOk/http-request.adoc[]
 
-- request-headers
+.request-headers
 include::{snippets}/verifyUserOk/request-headers.adoc[]
 
-- http-response
+.http-response
 include::{snippets}/verifyUserOk/http-response.adoc[]
 
 
 === 로그인 상태 조회 - AccessToken 만료
 
-- http-request
+.http-request
 include::{snippets}/verifyUserException/http-request.adoc[]
 
-- request-headers
+.request-headers
 include::{snippets}/verifyUserException/request-headers.adoc[]
 
-- http-response
+.http-response
 include::{snippets}/verifyUserException/http-response.adoc[]
 
-- response-body
+.response-body
 include::{snippets}/verifyUserException/response-body.adoc[]
 
-- response-fields
+.response-fields
 include::{snippets}/verifyUserException/response-fields.adoc[]
 
 
 === 토큰 재발급 - OK
 
 
-- http-request
+.http-request
 include::{snippets}/refreshOk/http-request.adoc[]
 
-- path-parameters
+.path-parameters
 include::{snippets}/refreshOk/path-parameters.adoc[]
 
-- http-response
+.http-response
 include::{snippets}/refreshOk/http-response.adoc[]
 
-- response-body
+.response-body
 include::{snippets}/refreshOk/response-body.adoc[]
 
-- response-fields
+.response-fields
 include::{snippets}/refreshOk/response-fields.adoc[]
 
 
 === 토큰 재발급 - RefreshToken 만료
 
 
-- http-request
+.http-request
 include::{snippets}/refreshExpired/http-request.adoc[]
 
-- path-parameters
+.path-parameters
 include::{snippets}/refreshExpired/path-parameters.adoc[]
 
-- http-response
+.http-response
 include::{snippets}/refreshExpired/http-response.adoc[]
 
-- response-body
+.response-body
 include::{snippets}/refreshExpired/response-body.adoc[]
 
-- response-fields
+.response-fields
 include::{snippets}/refreshExpired/response-fields.adoc[]
 
 
 === 로그아웃 - OK
 
-- http-request
+.http-request
 include::{snippets}/logoutOk/http-request.adoc[]
 
-- request-headers
+.request-headers
 include::{snippets}/logoutOk/request-headers.adoc[]
 
-- http-response
+.http-response
 include::{snippets}/logoutOk/http-response.adoc[]
 
 
 === 2차 비밀번호 검증 - OK
 
 
-- http-request
+.http-request
 include::{snippets}/SecondPasswordOk/http-request.adoc[]
 
-- request-headers
+.request-headers
 include::{snippets}/SecondPasswordOk/request-headers.adoc[]
 
-- request-body
+.request-body
 include::{snippets}/SecondPasswordOk/request-body.adoc[]
 
-- path-parameters
+.path-parameters
 include::{snippets}/SecondPasswordOk/path-parameters.adoc[]
 
-- http-response
+.http-response
 include::{snippets}/SecondPasswordOk/http-response.adoc[]
 
 
 === 2차 비밀번호 검증 - 잘못된 2차 비밀번호
 
 
-- http-request
+.http-request
 include::{snippets}/SecondPasswordFail/http-request.adoc[]
 
-- request-headers
+.request-headers
 include::{snippets}/SecondPasswordFail/request-headers.adoc[]
 
-- request-body
+.request-body
 include::{snippets}/SecondPasswordFail/request-body.adoc[]
 
-- path-parameters
+.path-parameters
 include::{snippets}/SecondPasswordFail/path-parameters.adoc[]
 
-- http-response
+.http-response
 include::{snippets}/SecondPasswordFail/http-response.adoc[]
 
-- response-body
+.response-body
 include::{snippets}/SecondPasswordFail/response-body.adoc[]
 
-- response-fields
+.response-fields
 include::{snippets}/SecondPasswordFail/response-fields.adoc[]
 
 
@@ -150,105 +151,105 @@ include::{snippets}/SecondPasswordFail/response-fields.adoc[]
 === 회원 정보 조회
 
 
-- http-request
+.http-request
 include::{snippets}/getUser/http-request.adoc[]
 
-- request-headers
+.request-headers
 include::{snippets}/getUser/request-headers.adoc[]
 
-- path-parameters
+.path-parameters
 include::{snippets}/getUser/path-parameters.adoc[]
 
-- http-response
+.http-response
 include::{snippets}/getUser/http-response.adoc[]
 
-- response-body
+.response-body
 include::{snippets}/getUser/response-body.adoc[]
 
-- response-fields
+.response-fields
 include::{snippets}/getUser/response-fields.adoc[]
 
 
 === 회원 생성
 
-- http-request
+.http-request
 include::{snippets}/postUser/http-request.adoc[]
 
-- request-body
+.request-body
 include::{snippets}/postUser/request-body.adoc[]
 
-- request-fields
+.request-fields
 include::{snippets}/postUser/request-fields.adoc[]
 
-- http-response
+.http-response
 include::{snippets}/postUser/http-response.adoc[]
 
-- response-body
+.response-body
 include::{snippets}/postUser/response-body.adoc[]
 
-- response-fields
+.response-fields
 include::{snippets}/postUser/response-fields.adoc[]
 
 === 회원 정보 수정
 
-- http-request
+.http-request
 include::{snippets}/patchUser/http-request.adoc[]
 
-- path-parameters
+.path-parameters
 include::{snippets}/patchUser/path-parameters.adoc[]
 
-- request-headers
+.request-headers
 include::{snippets}/patchUser/request-headers.adoc[]
 
-- request-body
+.request-body
 include::{snippets}/patchUser/request-body.adoc[]
 
-- request-fields
+.request-fields
 include::{snippets}/patchUser/request-fields.adoc[]
 
-- http-response
+.http-response
 include::{snippets}/patchUser/http-response.adoc[]
 
-- response-body
+.response-body
 include::{snippets}/patchUser/response-body.adoc[]
 
-- response-fields
+.response-fields
 include::{snippets}/patchUser/response-fields.adoc[]
 
 
 === 튜터 프로필 전체 조회 및 검색
 
-- http-request
+.http-request
 include::{snippets}/getSearchTutor/http-request.adoc[]
 
-- request-parameters
+.request-parameters
 include::{snippets}/getSearchTutor/request-parameters.adoc[]
 
 
-- http-response
+.http-response
 include::{snippets}/getSearchTutor/http-response.adoc[]
 
-- response-body
+.response-body
 include::{snippets}/getSearchTutor/response-body.adoc[]
 
-- response-fields
+.response-fields
 include::{snippets}/getSearchTutor/response-fields.adoc[]
 
 
 === 튜티 프로필 전체 조회 및 검색
 
-- http-request
+.http-request
 include::{snippets}/getSearchTutee/http-request.adoc[]
 
-- request-parameters
+.request-parameters
 include::{snippets}/getSearchTutee/request-parameters.adoc[]
 
 
-- http-response
+.http-response
 include::{snippets}/getSearchTutee/http-response.adoc[]
 
-- response-body
+.response-body
 include::{snippets}/getSearchTutee/response-body.adoc[]
 
-- response-fields
+.response-fields
 include::{snippets}/getSearchTutee/response-fields.adoc[]
