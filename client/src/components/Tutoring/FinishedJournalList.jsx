@@ -1,19 +1,32 @@
 import styles from './FinishedJournalList.module.css';
-import dummyTutoringData from './dummyTutoringData';
 import { HiSpeakerphone } from 'react-icons/hi';
 import { MdEdit } from 'react-icons/md';
 import { ButtonNightBlue, ButtonRed } from '../Button';
-import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
 import ModalState from '../../recoil/modal.js';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import Profile from '../../recoil/profile';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import PropType from 'prop-types';
 
-const FinishedJournalList = () => {
-  //TODO:현재 이 컴포넌트는 튜티 기준으로 만들어짐 이후 튜터, 튜티 분기해 수정 필요
-  //name부분과 과외 일지 작성 버튼 부분이 튜터와 튜티가 달라야 함
-  // 작성된 리뷰 확인 버튼은 튜티인 경우에만 존재함
-
+const FinishedJournalList = ({ tutoring, pageInfo, setTutoring }) => {
+  //TODO:무한 스크롤 구현
+  const [reviewDetail, setReviewDetail] = useState({
+    reviewId: 0,
+    professional: 0,
+    readiness: 0,
+    explanation: 0,
+    punctuality: 0,
+    reviewBody: '',
+    tuteeName: '',
+    createAt: '',
+    updateAt: '',
+  });
   const setModal = useSetRecoilState(ModalState);
   const reset = useResetRecoilState(ModalState);
+  const { userStatus } = useRecoilValue(Profile);
+  const { tutoringId } = useParams();
 
   const confirmTextProps = {
     isOpen: true,
@@ -23,10 +36,18 @@ const FinishedJournalList = () => {
       modalHandler: (e, value) => {
         console.log(value);
         reset();
-        //TODO : 과외 제목 수정 관련 API 요청
+        patchTitle(value);
       },
       placeHolder: '새로운 과외 제목 입력',
     },
+  };
+
+  const patchTitle = async (value) => {
+    await axios
+      .patch(`tutoring/details/${tutoringId}`, { tutoringTitle: value })
+      .then(({ data }) => {
+        setTutoring(data.data);
+      });
   };
 
   const confirmProps = {
@@ -38,9 +59,16 @@ const FinishedJournalList = () => {
       modalHandler: () => {
         console.log('과외 삭제 요청이 갑니다~');
         reset();
-        //TODO : 과외 삭제 요청
+        deleteTutoring();
       },
     },
+  };
+
+  const deleteTutoring = async () => {
+    await axios
+      .delete(`tutoring/details/${tutoringId}`)
+      .then(() => console.log('과외가 삭제되어부림'))
+      .catch((err) => console.log(err));
   };
 
   const reviewDetailProps = {
@@ -53,7 +81,15 @@ const FinishedJournalList = () => {
           setModal(editReviewProps);
         }
       },
+      reviewDetail: reviewDetail,
     },
+  };
+
+  const getReviewDetail = async () => {
+    await axios
+      .get(`/reviews/${tutoringId}`)
+      .then(({ data }) => setReviewDetail(data.data))
+      .catch((err) => console.log(err));
   };
 
   const editReviewProps = {
@@ -61,11 +97,21 @@ const FinishedJournalList = () => {
     modalType: 'editReview',
     props: {
       modalHandler: (e, value, reviewData) => {
-        //TODO: 후기 수정 요청 보내기
+        patchReview(reviewData, value);
         console.log('후기 수정 요청 할 겁니다!');
         setModal(alertProps);
       },
+      initialReview: reviewDetail,
     },
+  };
+
+  const patchReview = async (review, comment) => {
+    await axios
+      .patch(`/reviews/${tutoringId}`, {
+        ...review,
+        reviewBody: comment,
+      })
+      .then(({ data }) => setReviewDetail({ ...data.data }));
   };
 
   const alertProps = {
@@ -76,33 +122,24 @@ const FinishedJournalList = () => {
     },
   };
 
-  const {
-    tutoringTitle,
-    tuteeName,
-    tutorName,
-    dateNotices,
-    updateAt,
-    createAt,
-    latestNotice,
-    latestNoticeId,
-  } = dummyTutoringData;
+  useEffect(() => {
+    getReviewDetail();
+  }, []);
 
   return (
     <div className={styles.container}>
       <div className={styles.leftCard}>
-        {/* TODO: Link 컴포넌트를 통해 들어간 일지 페이지에서는 /tutoring/date-notice/{latestNoticeId} 와 같은 파라미터 추가해서 특정 날짜 일지 API 요청 */}
-        <Link to="/journal">
+        <Link to={`/journal/${tutoring.latestNoticeId}`}>
           <div className={styles.noti}>
             <HiSpeakerphone className={styles.icon} />
-            {latestNotice > 20
-              ? `최근 공지사항 | ${latestNotice.slice(0, 20)}...`
-              : `최근 공지사항 | ${latestNotice}`}
+            {tutoring.latestNoticeBody > 20
+              ? `최근 공지사항 | ${tutoring.latestNoticeBody.slice(0, 20)}...`
+              : `최근 공지사항 | ${tutoring.latestNoticeBody}`}
           </div>
         </Link>
         <ul className={styles.list}>
-          {dateNotices.map((el) => (
-            // TODO: 해당 일지 id에 따른 조회 필요
-            <Link to="/journal" key={el.dateNoticeId}>
+          {tutoring.dateNotices.map((el) => (
+            <Link to={`/journal/${el.dateNoticeId}`} key={el.dateNoticeId}>
               <li key={el.dateNoticeId} className={styles.li}>
                 <div className={styles.dateBox}>
                   <span className={styles.day}>
@@ -122,7 +159,6 @@ const FinishedJournalList = () => {
                     className={styles.homework}
                   >{`과제 제출 완료 (${el.finishHomeworkCount}/${el.homeworkCount})`}</span>
                 </div>
-                {/* TODO: 최근 공지를 눌렀을 때 해당 공지가 있는 일지 상세 페이지로 이동해야 함  */}
                 <div className={styles.notiIcon}>
                   <HiSpeakerphone className={styles.hiSpeaker} />
                   공지
@@ -135,8 +171,9 @@ const FinishedJournalList = () => {
       <div className={styles.rightCard}>
         <div className={styles.rightTextBox}>
           <div className={styles.nameBox}>
-            {/* TODO: user status에 따라 tutorName이 뜨거나 tuteeName이 떠야 함  */}
-            <span>{tutorName}</span>
+            <span>
+              {userStatus === 'TUTOR' ? tutoring.tuteeName : tutoring.tutorName}
+            </span>
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -147,10 +184,10 @@ const FinishedJournalList = () => {
               <span>제목 수정하기</span>
             </button>
           </div>
-          <span className={styles.tutoringTitle}>{tutoringTitle}</span>
+          <span className={styles.tutoringTitle}>{tutoring.tutoringTitle}</span>
           <span className={styles.tutoringDate}>
-            {`${new Date(createAt).toLocaleDateString()} ~ ${new Date(
-              updateAt
+            {`${new Date(tutoring.createAt).toLocaleDateString()} ~ ${new Date(
+              tutoring.updateAt
             ).toLocaleDateString()}`}
           </span>
         </div>
@@ -173,6 +210,12 @@ const FinishedJournalList = () => {
       </div>
     </div>
   );
+};
+
+FinishedJournalList.propTypes = {
+  tutoring: PropType.object,
+  pageInfo: PropType.object,
+  setTutoring: PropType.func,
 };
 
 export default FinishedJournalList;
