@@ -48,7 +48,7 @@
     height: 40px;
     background-color: $night;
     border-radius: 50%;
-    box-shadow: $defaultShadow;
+    box-shadow: $buttonShadow;
     display: flex;
     justify-content: center;
     align-items: center;

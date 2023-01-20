@@ -14,89 +14,115 @@
   position: sticky;
   top: 80px;
 
-  > img {
+  .userImage {
+    position: relative;
     width: 264px;
     height: 264px;
-    border-radius: 50%;
-  }
-}
 
-.textContainer {
-  height: 100%;
-  margin-top: 16px;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-}
+    > img {
+      width: 264px;
+      height: 264px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
 
-.starBox {
-  display: flex;
+    > button {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      width: 40px;
+      height: 40px;
+      background-color: $night;
+      border-radius: 50%;
+      box-shadow: $buttonShadow;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-  p {
-    margin-left: 5px;
-    margin-top: 2.5px;
-  }
-}
-
-.starLine {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-}
-
-.subjects {
-  ul {
-    height: 56px;
-    display: flex;
-    flex-wrap: wrap;
-
-    > div {
-      margin-right: 10px;
+      svg {
+        font-size: 24px;
+        fill: $white;
+      }
     }
   }
-}
 
-.toggleContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 32px;
-}
+  .textContainer {
+    height: 100%;
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+  }
 
-.announceText1 {
-  font-size: $font4;
-  font-weight: $font4W;
-  margin-bottom: 8px;
-}
+  .starBox {
+    display: flex;
 
-.announceText2 {
-  font-size: $font6;
-  font-weight: $font4W;
-}
+    p {
+      margin-left: 5px;
+      margin-top: 2.5px;
+    }
+  }
 
-.announceOnText {
-  color: #e74c3c;
-}
+  .starLine {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
 
-.font1 {
-  font-size: $font1;
-  font-weight: $font1W;
-}
+  .subjects {
+    ul {
+      height: 56px;
+      display: flex;
+      flex-wrap: wrap;
 
-.font4 {
-  font-size: $font4;
-  font-weight: $font4W;
-  margin-bottom: 8px;
-  margin-top: 16px;
-}
+      > div {
+        margin-right: 10px;
+      }
+    }
+  }
 
-.paragragh {
-  font-size: $para;
-  font-weight: $paraW;
-}
+  .toggleContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+  }
 
-.paragraghMoon {
-  font-size: $para;
-  font-weight: $paraW;
-  color: $moon;
+  .announceText1 {
+    font-size: $font4;
+    font-weight: $font4W;
+    margin-bottom: 8px;
+  }
+
+  .announceText2 {
+    font-size: $font6;
+    font-weight: $font4W;
+  }
+
+  .announceOnText {
+    color: #e74c3c;
+  }
+
+  .font1 {
+    font-size: $font1;
+    font-weight: $font1W;
+  }
+
+  .font4 {
+    font-size: $font4;
+    font-weight: $font4W;
+    margin-bottom: 8px;
+    margin-top: 16px;
+  }
+
+  .paragragh {
+    font-size: $para;
+    font-weight: $paraW;
+  }
+
+  .paragraghMoon {
+    font-size: $para;
+    font-weight: $paraW;
+    color: $moon;
+  }
 }

@@ -97,6 +97,7 @@
   width: 144px;
   height: 144px;
   border-radius: 100%;
+  object-fit: cover;
 }
 
 .profileTextBox {
