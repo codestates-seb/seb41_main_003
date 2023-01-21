@@ -4,14 +4,14 @@ import { ButtonNightBlue, ButtonRed } from '../Button';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 import { MdMenu, MdClose } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const DropDown = () => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
   const navigate = useNavigate();
-
-  const Navigate = useNavigate();
+  const { dateNoticeId } = useParams();
 
   const [isClicked, setIsClicked] = useState(false);
 
@@ -21,37 +21,44 @@ const DropDown = () => {
     props: {
       text: '일지 수정 페이지로 이동 하시겠습니까?',
       modalHandler: () => {
-        //TODO: 해당 dateNoticeId의 일지 수정 페이지로 이동 (useParam)
         console.log('일지 수정페이지로 이동');
-        Navigate('/editjournal');
         resetModal();
-        navigate('/editjournal');
+        navigate(`/editjournal/${dateNoticeId}`);
       },
     },
   };
 
-  const cancel = {
+  const deleteHandler = async () => {
+    axios
+      .delete(`/tutoring/date-notice/${dateNoticeId}`)
+      .then(() => console.log('삭제완료'))
+      .catch((err) => console.log(err));
+  };
+
+  const deleteModal = {
     isOpen: true,
     modalType: 'redConfirm',
     props: {
       text: `삭제 하시겠습니까?
       삭제한 일지는 되돌릴 수 없습니다.`,
       modalHandler: () => {
-        //TODO: 서버에 일지 삭제 요청
-        //TODO: 해당 프로필Id의 과외 리스트 페이지로 이동 (useParam)
+        deleteHandler();
         console.log('일지 삭제');
-        resetModal();
-        setModal(redAlertModal);
-        Navigate(`/tutoring`);
+        setModal(alertModal);
       },
     },
   };
 
-  const redAlertModal = {
+  const alertModal = {
     isOpen: true,
-    modalType: 'redAlert',
+    modalType: 'handlerAlert',
     props: {
       text: '일지가 삭제 되었습니다.',
+      modalHandler: () => {
+        // TODO : 튜터링 페이지로 이동 필요
+        navigate(`/tutoring`);
+        resetModal();
+      },
     },
   };
 
@@ -73,7 +80,7 @@ const DropDown = () => {
           <li>
             <ButtonRed
               text="일지 삭제"
-              buttonHandler={() => setModal(cancel)}
+              buttonHandler={() => setModal(deleteModal)}
             />
           </li>
         </ul>
