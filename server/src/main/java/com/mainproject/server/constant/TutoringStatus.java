@@ -5,5 +5,6 @@ public enum TutoringStatus {
     TUTOR_WAITING,
     PROGRESS,
     UNCHECK,
+    WAIT_FINISH,
     FINISH
 }

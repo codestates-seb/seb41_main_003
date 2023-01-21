@@ -30,6 +30,8 @@ public class ReviewService {
 
     public Review createReview(Review review, Long tutoringId) {
         Tutoring tutoring = tutoringService.verifiedTutoring(tutoringId);
+        if (!tutoring.getTutoringStatus().equals(TutoringStatus.WAIT_FINISH))
+            throw new ServiceLogicException(ErrorCode.TUTORING_STATUS_NOT_WAIT_FINISH);
         tutoring.setTutoringStatus(TutoringStatus.FINISH);
         Profile tutee = tutoring.getTutee();
         Profile tutor = tutoring.getTutor();

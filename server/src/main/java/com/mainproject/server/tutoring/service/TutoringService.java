@@ -60,26 +60,33 @@ public class TutoringService {
                     .verifiedProfileById(profileId)
                     .getProfileStatus();
             if (TutoringStatus.valueOf(get).equals(TutoringStatus.FINISH)) {
-                params.put("check",TutoringStatus.FINISH.name());
+                params.put("check", TutoringStatus.FINISH.name());
+                params.put("checkTwo", TutoringStatus.FINISH.name());
             } else if (TutoringStatus.valueOf(get).equals(TutoringStatus.PROGRESS)) {
-                params.put("check",TutoringStatus.UNCHECK.name());
+                params.put("check", TutoringStatus.UNCHECK.name());
+                params.put("checkTwo", TutoringStatus.WAIT_FINISH.name());
             }
+            // Todo 쿼리 메소드가 불필요하게 길다. QueryDsl 이용하여 쿼리 구현 리팩토링
             if (profileStatus.equals(ProfileStatus.TUTEE)) {
                 return tutoringRepository
-                        .findAllByTuteeProfileIdAndTutoringStatusOrTuteeProfileIdAndTutoringStatus(
-                        profileId,
-                        TutoringStatus.valueOf(get),
-                        profileId,
-                        TutoringStatus.valueOf(params.get("check")),
-                        pageable);
+                        .findAllByTuteeProfileIdAndTutoringStatusOrTuteeProfileIdAndTutoringStatusOrTuteeProfileIdAndTutoringStatus(
+                                profileId,
+                                TutoringStatus.valueOf(get),
+                                profileId,
+                                TutoringStatus.valueOf(params.get("check")),
+                                profileId,
+                                TutoringStatus.valueOf(params.get("checkTwo")),
+                                pageable);
             } else {
                 return tutoringRepository
-                        .findAllByTutorProfileIdAndTutoringStatusOrTutorProfileIdAndTutoringStatus(
-                        profileId,
-                        TutoringStatus.valueOf(get),
-                        profileId,
-                        TutoringStatus.valueOf(params.get("check")),
-                        pageable);
+                        .findAllByTutorProfileIdAndTutoringStatusOrTutorProfileIdAndTutoringStatusOrTutorProfileIdAndTutoringStatus(
+                                profileId,
+                                TutoringStatus.valueOf(get),
+                                profileId,
+                                TutoringStatus.valueOf(params.get("check")),
+                                profileId,
+                                TutoringStatus.valueOf(params.get("checkTwo")),
+                                pageable);
             }
         } catch (IllegalArgumentException e) {
             throw new ServiceLogicException(ErrorCode.NOT_NULL_WRONG_PROFILE_STATUS_PROPERTY);
@@ -90,11 +97,11 @@ public class TutoringService {
     public TutoringDto getTutoring(Long tutoringId, Long profileId, Pageable pageable) {
         Tutoring tutoring = verifiedTutoring(tutoringId);
         if (tutoring.getTutee().getProfileId().equals(profileId) &&
-                !tutoring.getTutoringStatus().equals(TutoringStatus.FINISH)
+                tutoring.getTutoringStatus().equals(TutoringStatus.UNCHECK)
         ) {
             tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
             Tutoring progressTutoring = tutoringRepository.save(tutoring);
-            return getTutoringDto(progressTutoring,pageable);
+            return getTutoringDto(progressTutoring, pageable);
         } else {
             return getTutoringDto(tutoring, pageable);
         }
@@ -104,8 +111,16 @@ public class TutoringService {
         Tutoring findTutoring = verifiedTutoring(tutoringId);
         Optional.ofNullable(tutoring.getTutoringTitle())
                 .ifPresent(findTutoring::setTutoringTitle);
-        Optional.ofNullable(tutoring.getTutoringStatus())
-                .ifPresent(findTutoring::setTutoringStatus);
+        TutoringStatus tutoringStatus = tutoring.getTutoringStatus();
+        if (tutoringStatus != null &&
+                (tutoringStatus.equals(TutoringStatus.WAIT_FINISH) ||
+                        tutoringStatus.equals(TutoringStatus.PROGRESS))
+        ) {
+            Optional.of(tutoringStatus)
+                    .ifPresent(findTutoring::setTutoringStatus);
+        } else {
+            throw new ServiceLogicException(ErrorCode.WRONG_STATUS_PROPERTY);
+        }
         return getTutoringDto(tutoringRepository.save(findTutoring), pageable);
     }
 
