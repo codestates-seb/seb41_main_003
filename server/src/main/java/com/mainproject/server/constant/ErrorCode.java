@@ -35,6 +35,7 @@ public enum ErrorCode {
     TOKEN_NOT_NULL(404, "TOKEN_NOT_NULL"),
     EXPIRED_REFRESH_TOKEN(401,"EXPIRED REFRESH TOKEN"),
     OAUTH2_ACCESS_ERROR(400, "OAUTH2 ACCESS ERROR"),
+    ARGUMENT_MISMATCH_BAD_REQUEST(400, "Failed to convert value of type Input Resource"),
     BAD_REQUEST(400, "BAD REQUEST");
 
     @Getter
