@@ -25,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ public class TutoringController {
 
     @PostMapping("/{profileId}")
     public ResponseEntity postTutoring(
-            @PathVariable("profileId") Long profileId,
+            @PathVariable("profileId") @Positive Long profileId,
             @RequestBody @Valid TutoringPostDto tutoringPostDto
             ) {
         Long messageRoomId = tutoringPostDto.getMessageRoomId();
@@ -57,7 +58,7 @@ public class TutoringController {
     @GetMapping("/{profileId}")
     public ResponseEntity getAllTutoring(
             @RequestParam Map<String, String> params,
-            @PathVariable("profileId") Long profileId,
+            @PathVariable("profileId") @Positive Long profileId,
             @PageableDefault(page = 0, size = 10, sort = "tutoringId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
@@ -77,8 +78,8 @@ public class TutoringController {
 
     @PatchMapping("/details/{profileId}/{tutoringId}")
     public ResponseEntity patchTutoringMatch(
-            @PathVariable("profileId") Long profileId,
-            @PathVariable("tutoringId") Long tutoringId,
+            @PathVariable("profileId") @Positive Long profileId,
+            @PathVariable("tutoringId") @Positive Long tutoringId,
             @PageableDefault(page = 0, size = 5, sort = "dateNoticeId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
@@ -95,8 +96,8 @@ public class TutoringController {
 
     @GetMapping("/details/{profileId}/{tutoringId}")
     public ResponseEntity getTutoring(
-            @PathVariable("profileId") Long profileId,
-            @PathVariable("tutoringId") Long tutoringId,
+            @PathVariable("profileId") @Positive Long profileId,
+            @PathVariable("tutoringId") @Positive Long tutoringId,
             @PageableDefault(page = 0, size = 5, sort = "dateNoticeId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
@@ -112,7 +113,7 @@ public class TutoringController {
 
     @PatchMapping("/details/{tutoringId}")
     public ResponseEntity patchTutoring(
-            @PathVariable("tutoringId") Long tutoringId,
+            @PathVariable("tutoringId") @Positive Long tutoringId,
             @RequestBody @Valid TutoringPatchDto tutoringPatchDto,
             @PageableDefault(page = 0, size = 5, sort = "dateNoticeId", direction = Sort.Direction.DESC)
             Pageable pageable
@@ -132,7 +133,7 @@ public class TutoringController {
 
     @DeleteMapping("/details/{tutoringId}")
     public ResponseEntity deleteTutoring(
-            @PathVariable("tutoringId") Long tutoringId
+            @PathVariable("tutoringId") @Positive Long tutoringId
     ) {
         tutoringService.deleteTutoring(tutoringId);
 
@@ -141,7 +142,7 @@ public class TutoringController {
 
     @PostMapping("/date-notice/{tutoringId}")
     public ResponseEntity postDateNotice(
-            @PathVariable("tutoringId") Long tutoringId,
+            @PathVariable("tutoringId") @Positive Long tutoringId,
             @RequestBody @Valid DateNoticePostDto dateNoticePostDto
             ) {
         DateNotice postDateNotice =
@@ -155,7 +156,7 @@ public class TutoringController {
 
     @GetMapping("/date-notice/{dateNoticeId}")
     public ResponseEntity getDateNotice(
-            @PathVariable("dateNoticeId") Long dateNoticeId
+            @PathVariable("dateNoticeId") @Positive Long dateNoticeId
     ) {
         DateNotice dateNotice = dateNoticeService.getDateNotice(dateNoticeId);
 
@@ -166,7 +167,7 @@ public class TutoringController {
 
     @PatchMapping("/date-notice/{dateNoticeId}")
     public ResponseEntity patchDateNotice(
-            @PathVariable("dateNoticeId") Long dateNoticeId,
+            @PathVariable("dateNoticeId") @Positive Long dateNoticeId,
             @RequestBody @Valid DateNoticePatchDto dateNoticePatchDto
             ) {
         dateNoticePatchDto.setDateNoticeId(dateNoticeId);
@@ -180,7 +181,7 @@ public class TutoringController {
 
     @DeleteMapping("/date-notice/{dateNoticeId}")
     public ResponseEntity deleteDateNotice(
-            @PathVariable("dateNoticeId") Long dateNoticeId
+            @PathVariable("dateNoticeId") @Positive Long dateNoticeId
     ) {
         dateNoticeService.deleteDateNotice(dateNoticeId);
 

@@ -11,4 +11,7 @@ public class TutoringPatchDto {
 
     @NotBlank
     private String tutoringTitle;
+
+    @NotBlank
+    private String tutoringStatus;
 }
