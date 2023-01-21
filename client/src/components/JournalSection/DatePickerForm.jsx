@@ -36,8 +36,7 @@ const DatePickerForm = () => {
       </div>
       <div className={styles.monthYear}>
         <p className={styles.font4}>
-          {dayjs(userData.startTime).year()}년{' '}
-          {dayjs(userData.startTime).month() + 1}월
+          {dayjs(userData.startTime).format('YYYY년 M월')}
         </p>
       </div>
     </button>
