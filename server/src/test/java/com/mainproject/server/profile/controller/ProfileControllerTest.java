@@ -10,7 +10,7 @@ import com.mainproject.server.auth.token.JwtTokenizer;
 import com.mainproject.server.config.SecurityConfig;
 import com.mainproject.server.profile.dto.ProfileDto;
 import com.mainproject.server.profile.dto.ProfilePageDto;
-import com.mainproject.server.profile.dto.ProfileResponseDto;
+import com.mainproject.server.profile.dto.WantedDto;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.mapper.ProfileMapper;
 import com.mainproject.server.profile.service.ProfileService;
@@ -49,6 +49,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -315,6 +316,243 @@ class ProfileControllerTest {
                                         )
                                 )
                         ));
+    }
+
+    @Test
+    @DisplayName("프로필 수정 TEST")
+    @WithMockUser
+    void patchProfile() throws Exception {
+        // Given
+        Long profileId = 1L;
+        Profile profile = StubData.createProfile(profileId);
+        Page<Review> reviews = new PageImpl<>(new ArrayList<>(
+                profile.getReviews()),
+                PageRequest.of(1, 5),
+                2);
+        ProfileDto profileDto = StubData.createProfileDto();
+        given(profileService.updateProfile(anyLong(), any(Profile.class), anyList(), any(Pageable.class)))
+                .willReturn(ProfilePageDto.of(profile, reviews));
+        given(profileMapper.dtoToEntity(any(ProfileDto.class)))
+                .willReturn(profile);
+        // When
+        Gson gson = new Gson();
+        String content = gson.toJson(profileDto);
+        RequestBuilder result = RestDocumentationRequestBuilders
+                .patch("/profiles/details/{profileId}", profileId)
+                .header("Authorization", "Access Token Value")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8.displayName());
+        // Then
+        mockMvc.perform(result)
+                .andExpect(status().isOk())
+                .andDo(
+                        MockMvcRestDocumentation.document("patchProfile",
+                                ApiDocumentUtils.getRequestPreProcessor(),
+                                ApiDocumentUtils.getResponsePreProcessor(),
+                                RequestDocumentation.pathParameters(
+                                        parameterWithName("profileId").description("프로필 식별자")
+                                ),
+                                HeaderDocumentation.requestHeaders(
+                                        headerWithName("Authorization").description("AccessToken")
+                                ),
+                                PayloadDocumentation.requestFields(
+                                        List.of(
+                                                fieldWithPath("name").type(JsonFieldType.STRING).description("프로필 이름"),
+                                                fieldWithPath("bio").type(JsonFieldType.STRING).description("한줄 소개"),
+                                                fieldWithPath("school").type(JsonFieldType.STRING).description("학교 정보"),
+                                                fieldWithPath("way").type(JsonFieldType.STRING).description("원하는 수업방식 또는 수업 방식"),
+                                                fieldWithPath("subjects").type(JsonFieldType.ARRAY).description("과목 리스트"),
+                                                fieldWithPath("subjects[].subjectId").type(JsonFieldType.NUMBER).description("과목 식별자"),
+                                                fieldWithPath("subjects[].subjectTitle").type(JsonFieldType.STRING).description("과목 타이틀"),
+                                                fieldWithPath("subjects[].content").type(JsonFieldType.STRING).description("과목 수업 내용"),
+                                                fieldWithPath("difference").type(JsonFieldType.STRING).description("차별성 - 튜터"),
+                                                fieldWithPath("gender").type(JsonFieldType.STRING).description("성별"),
+                                                fieldWithPath("character").type(JsonFieldType.STRING).description("성격"),
+                                                fieldWithPath("pay").type(JsonFieldType.STRING).description("수업료 또는 원하는 수업료"),
+                                                fieldWithPath("wantDate").type(JsonFieldType.STRING).description("원하는 시간"),
+                                                fieldWithPath("preTutoring").type(JsonFieldType.STRING).description("사전 과외 여부")
+                                        )
+
+                                ),
+                                PayloadDocumentation.responseFields(
+                                        List.of(
+                                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+                                                fieldWithPath("data.profileId").type(JsonFieldType.NUMBER).description("프로필 식별자"),
+                                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("프로필 이름"),
+                                                fieldWithPath("data.rate").type(JsonFieldType.NUMBER).description("별점 평균"),
+                                                fieldWithPath("data.bio").type(JsonFieldType.STRING).description("한줄 소개"),
+                                                fieldWithPath("data.school").type(JsonFieldType.STRING).description("학교 정보"),
+                                                fieldWithPath("data.wantedStatus").type(JsonFieldType.STRING).description("공고 상태 NONE/BASIC/REQUEST"),
+                                                fieldWithPath("data.profileStatus").type(JsonFieldType.STRING).description("프로필 상태 TUTOR/TUTEE"),
+                                                fieldWithPath("data.way").type(JsonFieldType.STRING).description("수업 방식 또는 원하는 방식"),
+                                                fieldWithPath("data.character").type(JsonFieldType.STRING).description("성격"),
+                                                fieldWithPath("data.subjects").type(JsonFieldType.ARRAY).description("과목"),
+                                                fieldWithPath("data.subjects[].subjectId").type(JsonFieldType.NUMBER).description("과목 식별자"),
+                                                fieldWithPath("data.subjects[].subjectTitle").type(JsonFieldType.STRING).description("과목 타이틀"),
+                                                fieldWithPath("data.subjects[].content").type(JsonFieldType.STRING).description("과목 수업 내용"),
+                                                fieldWithPath("data.subjects[].createAt").type(JsonFieldType.STRING).description("과목 생성 시각"),
+                                                fieldWithPath("data.subjects[].updateAt").type(JsonFieldType.STRING).description("과목 최종 수정 시각"),
+                                                fieldWithPath("data.difference").type(JsonFieldType.STRING).description("차별점"),
+                                                fieldWithPath("data.gender").type(JsonFieldType.STRING).description("성별"),
+                                                fieldWithPath("data.pay").type(JsonFieldType.STRING).description("수업료 또는 원하는 수업료"),
+                                                fieldWithPath("data.wantDate").type(JsonFieldType.STRING).description("원하는 날짜"),
+                                                fieldWithPath("data.preTutoring").type(JsonFieldType.STRING).description("사전 과외 가능 여부"),
+                                                fieldWithPath("data.profileImage").type(JsonFieldType.OBJECT).description("프로필 이미지 정보"),
+                                                fieldWithPath("data.profileImage.profileImageId").type(JsonFieldType.NUMBER).description("프로필 이미지 식별자"),
+                                                fieldWithPath("data.profileImage.url").type(JsonFieldType.STRING).description("프로필 이미지 URL"),
+                                                fieldWithPath("data.profileImage.createAt").type(JsonFieldType.STRING).description("프로필 이미지 생성 시각"),
+                                                fieldWithPath("data.profileImage.updateAt").type(JsonFieldType.STRING).description("프로필 이미지 최종 수정 시각"),
+                                                fieldWithPath("data.createAt").type(JsonFieldType.STRING).description("프로필 생성 시각"),
+                                                fieldWithPath("data.updateAt").type(JsonFieldType.STRING).description("프로필 최종 생성 시각"),
+                                                fieldWithPath("data.reviews").type(JsonFieldType.ARRAY).description("프로필 리뷰 리스트(튜터일때)"),
+                                                fieldWithPath("data.reviews[].reviewId").type(JsonFieldType.NUMBER).description("후기 식별자"),
+                                                fieldWithPath("data.reviews[].professional").type(JsonFieldType.NUMBER).description("전문성 별점"),
+                                                fieldWithPath("data.reviews[].readiness").type(JsonFieldType.NUMBER).description("준비성 별점"),
+                                                fieldWithPath("data.reviews[].explanation").type(JsonFieldType.NUMBER).description("수업 설명 별점"),
+                                                fieldWithPath("data.reviews[].punctuality").type(JsonFieldType.NUMBER).description("시간 준수 별점"),
+                                                fieldWithPath("data.reviews[].reviewBody").type(JsonFieldType.STRING).description("후기 내용"),
+                                                fieldWithPath("data.reviews[].tuteeName").type(JsonFieldType.STRING).description("후기 작성자(튜티)"),
+                                                fieldWithPath("data.reviews[].createAt").type(JsonFieldType.STRING).description("후기 생성 시각"),
+                                                fieldWithPath("data.reviews[].updateAt").type(JsonFieldType.STRING).description("후기 최종 수정 시각"),
+                                                fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("요청 페이지 정보"),
+                                                fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("요청 페이지 - 0 = 1 페이지"),
+                                                fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("페이지당 요청 회원"),
+                                                fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("총 멤버"),
+                                                fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("생성된 총 페이지")
+
+
+                                        )
+                                )
+                        ));
+    }
+
+    @Test
+    @DisplayName("프로필 상태 수정 TEST - 공고 상태 수정 API")
+    @WithMockUser
+    void patchProfileStatus() throws Exception {
+        // Given
+        Long profileId = 1L;
+        Profile profile = StubData.createProfile(profileId);
+        Page<Review> reviews = new PageImpl<>(new ArrayList<>(
+                profile.getReviews()),
+                PageRequest.of(1, 5),
+                2);
+        WantedDto wantedDto = new WantedDto();
+        wantedDto.setWantedStatus("REQUEST");
+        given(profileService.updateWantedStatus(anyLong(), any(WantedDto.class), any(Pageable.class)))
+                .willReturn(ProfilePageDto.of(profile, reviews));
+        given(profileMapper.dtoToEntity(any(ProfileDto.class)))
+                .willReturn(profile);
+        // When
+        Gson gson = new Gson();
+        String content = gson.toJson(wantedDto);
+        RequestBuilder result = RestDocumentationRequestBuilders
+                .patch("/profiles/status/{profileId}", profileId)
+                .header("Authorization", "Access Token Value")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8.displayName());
+        // Then
+        mockMvc.perform(result)
+                .andExpect(status().isOk())
+                .andDo(
+                        MockMvcRestDocumentation.document("patchProfileStatus",
+                                ApiDocumentUtils.getRequestPreProcessor(),
+                                ApiDocumentUtils.getResponsePreProcessor(),
+                                RequestDocumentation.pathParameters(
+                                        parameterWithName("profileId").description("프로필 식별자")
+                                ),
+                                HeaderDocumentation.requestHeaders(
+                                        headerWithName("Authorization").description("AccessToken")
+                                ),
+                                PayloadDocumentation.requestFields(
+                                        List.of(
+                                                fieldWithPath("wantedStatus").type(JsonFieldType.STRING).description("공고 상태 REQUEST/NONE")
+                                        )
+
+                                ),
+                                PayloadDocumentation.responseFields(
+                                        List.of(
+                                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+                                                fieldWithPath("data.profileId").type(JsonFieldType.NUMBER).description("프로필 식별자"),
+                                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("프로필 이름"),
+                                                fieldWithPath("data.rate").type(JsonFieldType.NUMBER).description("별점 평균"),
+                                                fieldWithPath("data.bio").type(JsonFieldType.STRING).description("한줄 소개"),
+                                                fieldWithPath("data.school").type(JsonFieldType.STRING).description("학교 정보"),
+                                                fieldWithPath("data.wantedStatus").type(JsonFieldType.STRING).description("공고 상태 NONE/BASIC/REQUEST"),
+                                                fieldWithPath("data.profileStatus").type(JsonFieldType.STRING).description("프로필 상태 TUTOR/TUTEE"),
+                                                fieldWithPath("data.way").type(JsonFieldType.STRING).description("수업 방식 또는 원하는 방식"),
+                                                fieldWithPath("data.character").type(JsonFieldType.STRING).description("성격"),
+                                                fieldWithPath("data.subjects").type(JsonFieldType.ARRAY).description("과목"),
+                                                fieldWithPath("data.subjects[].subjectId").type(JsonFieldType.NUMBER).description("과목 식별자"),
+                                                fieldWithPath("data.subjects[].subjectTitle").type(JsonFieldType.STRING).description("과목 타이틀"),
+                                                fieldWithPath("data.subjects[].content").type(JsonFieldType.STRING).description("과목 수업 내용"),
+                                                fieldWithPath("data.subjects[].createAt").type(JsonFieldType.STRING).description("과목 생성 시각"),
+                                                fieldWithPath("data.subjects[].updateAt").type(JsonFieldType.STRING).description("과목 최종 수정 시각"),
+                                                fieldWithPath("data.difference").type(JsonFieldType.STRING).description("차별점"),
+                                                fieldWithPath("data.gender").type(JsonFieldType.STRING).description("성별"),
+                                                fieldWithPath("data.pay").type(JsonFieldType.STRING).description("수업료 또는 원하는 수업료"),
+                                                fieldWithPath("data.wantDate").type(JsonFieldType.STRING).description("원하는 날짜"),
+                                                fieldWithPath("data.preTutoring").type(JsonFieldType.STRING).description("사전 과외 가능 여부"),
+                                                fieldWithPath("data.profileImage").type(JsonFieldType.OBJECT).description("프로필 이미지 정보"),
+                                                fieldWithPath("data.profileImage.profileImageId").type(JsonFieldType.NUMBER).description("프로필 이미지 식별자"),
+                                                fieldWithPath("data.profileImage.url").type(JsonFieldType.STRING).description("프로필 이미지 URL"),
+                                                fieldWithPath("data.profileImage.createAt").type(JsonFieldType.STRING).description("프로필 이미지 생성 시각"),
+                                                fieldWithPath("data.profileImage.updateAt").type(JsonFieldType.STRING).description("프로필 이미지 최종 수정 시각"),
+                                                fieldWithPath("data.createAt").type(JsonFieldType.STRING).description("프로필 생성 시각"),
+                                                fieldWithPath("data.updateAt").type(JsonFieldType.STRING).description("프로필 최종 생성 시각"),
+                                                fieldWithPath("data.reviews").type(JsonFieldType.ARRAY).description("프로필 리뷰 리스트(튜터일때)"),
+                                                fieldWithPath("data.reviews[].reviewId").type(JsonFieldType.NUMBER).description("후기 식별자"),
+                                                fieldWithPath("data.reviews[].professional").type(JsonFieldType.NUMBER).description("전문성 별점"),
+                                                fieldWithPath("data.reviews[].readiness").type(JsonFieldType.NUMBER).description("준비성 별점"),
+                                                fieldWithPath("data.reviews[].explanation").type(JsonFieldType.NUMBER).description("수업 설명 별점"),
+                                                fieldWithPath("data.reviews[].punctuality").type(JsonFieldType.NUMBER).description("시간 준수 별점"),
+                                                fieldWithPath("data.reviews[].reviewBody").type(JsonFieldType.STRING).description("후기 내용"),
+                                                fieldWithPath("data.reviews[].tuteeName").type(JsonFieldType.STRING).description("후기 작성자(튜티)"),
+                                                fieldWithPath("data.reviews[].createAt").type(JsonFieldType.STRING).description("후기 생성 시각"),
+                                                fieldWithPath("data.reviews[].updateAt").type(JsonFieldType.STRING).description("후기 최종 수정 시각"),
+                                                fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("요청 페이지 정보"),
+                                                fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("요청 페이지 - 0 = 1 페이지"),
+                                                fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("페이지당 요청 회원"),
+                                                fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("총 멤버"),
+                                                fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("생성된 총 페이지")
+
+
+                                        )
+                                )
+                        ));
+    }
+
+    @Test
+    @DisplayName("프로필 삭제 TEST")
+    @WithMockUser
+    void deleteProfile() throws Exception {
+        // Given
+        Long profileId = 1L;
+        doNothing().when(profileService).deleteProfile(anyLong());
+        // When
+        RequestBuilder result = RestDocumentationRequestBuilders
+                .delete("/profiles/details/{profileId}", profileId)
+                .header("Authorization", "Access Token Value")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8.displayName());
+        // Then
+        mockMvc.perform(result)
+                .andExpect(status().isNoContent())
+                .andDo(
+                        MockMvcRestDocumentation.document("deleteProfile",
+                                ApiDocumentUtils.getRequestPreProcessor(),
+                                ApiDocumentUtils.getResponsePreProcessor(),
+                                RequestDocumentation.pathParameters(
+                                        parameterWithName("profileId").description("프로필 식별자")
+                                ),
+                                HeaderDocumentation.requestHeaders(
+                                        headerWithName("Authorization").description("AccessToken")
+                                )));
     }
 
 
