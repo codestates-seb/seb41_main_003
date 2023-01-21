@@ -8,7 +8,7 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 
 @Configuration
 public class RedisConfig {
-    @Value("${spring.redis.host}")
+    @Value("${AWS_ELASTICACHE_END_POINT}")
     private String host;
 
     @Value("${spring.redis.port}")
