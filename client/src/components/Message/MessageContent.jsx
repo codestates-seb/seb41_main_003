@@ -22,12 +22,17 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
   const resetModal = useResetRecoilState(ModalState);
 
   // messageList가 변경될때마다 message의 receiver를 변경해줌
-  useEffect(() => {
+  const func2 = () => {
     if (profileId === tuteeId) {
       setReceiveMessageId(tutorId);
     } else setReceiveMessageId(tuteeId);
+    console.log('sender실행하니?');
+  };
+
+  console.log(receiveMessageId, 'senderID');
+  useEffect(() => {
+    func2();
   }, [CurrentRoomId]);
-  console.log(tutoringId, 'tutoringId');
 
   // 메세지 post API
   const sendMessage = async () => {
@@ -182,7 +187,6 @@ MessageContent.propTypes = {
   messageRoom: PropType.object,
   delMessageRoom: PropType.func,
   getMessageRoom: PropType.func,
-  profile: PropType.object,
 };
 
 export default MessageContent;

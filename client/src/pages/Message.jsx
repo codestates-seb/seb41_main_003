@@ -29,7 +29,6 @@ const Message = () => {
   useEffect(() => {
     getMessageRoom();
   }, [CurrentRoomId]);
-  console.log(CurrentRoomId, 'CurrentRoomId');
 
   const getMessageList = async () => {
     await axios

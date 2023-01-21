@@ -102,11 +102,11 @@ const App = () => {
               path="/tuteelist"
               element={<TuteeList footerRef={footerRef} />}
             />
-            <Route path="/tutoringlist" element={<TutoringList />} />
+            <Route path="/tutoringlist/:profileId" element={<TutoringList />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/tutoring" element={<Tutoring />} />
+            <Route path="/tutoring:tutoringId" element={<Tutoring />} />
             <Route path="/tutorprofile/:profileId" element={<TutorProfile />} />
             <Route path="/tuteeprofile/:profileId" element={<TuteeProfile />} />
             <Route path="/userinfo" element={<UserInfo />} />
@@ -114,9 +114,9 @@ const App = () => {
             <Route path="/editprofile/:profileId" element={<EditProfile />} />
             <Route path="/message/:profileId" element={<Message />} />
             <Route path="/myprofile/:profileId" element={<MyProfile />} />
-            <Route path="/journal" element={<Journal />} />
-            <Route path="/editjournal" element={<EditJournal />} />
-            <Route path="/addjournal" element={<AddJournal />} />
+            <Route path="/journal:journalId" element={<Journal />} />
+            <Route path="/editjournal:journalId" element={<EditJournal />} />
+            <Route path="/addjournal:tutoringId" element={<AddJournal />} />
           </Routes>
         </div>
         <GlobalModal />
