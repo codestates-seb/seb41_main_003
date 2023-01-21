@@ -21,6 +21,28 @@
   }
 }
 
+.requiredIcon {
+  position: relative;
+  top: -10px;
+  margin: 0 4px;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: $red;
+}
+
+.required {
+  display: block;
+  text-align: right;
+  font-size: $sub;
+  font-weight: 500;
+
+  .requiredIcon {
+    top: -5px;
+  }
+}
+
 .journalContainer {
   width: 1048px;
   height: 100%;
@@ -32,138 +54,141 @@
 
   .buttonContainer {
     display: flex;
-    width: 203px;
     position: absolute;
     right: 32px;
     top: 20px;
-    justify-content: space-between;
-  }
-}
+    align-items: flex-end;
 
-.upperPart {
-  display: flex;
-  margin-bottom: 32px;
-
-  .titleContainer {
-    width: 843px;
-    height: 36px;
-    margin-top: 17px;
-  }
-}
-
-.lowerPart {
-  display: flex;
-
-  h4 {
-    margin-bottom: 16px;
-  }
-
-  .noticeHomework {
-    margin-right: 12px;
-  }
-
-  .noticeArea {
-    width: 484px;
-    height: 120px;
-
-    > * {
-      resize: none;
-
-      &::-webkit-scrollbar {
-        display: none; /* Chrome , Safari , Opera */
-      }
+    > button {
+      margin-left: 8px;
     }
   }
 
-  .scheduleArea {
-    width: 488px;
-    height: 388px;
-
-    > * {
-      resize: none;
-
-      &::-webkit-scrollbar {
-        display: none; /* Chrome , Safari , Opera */
-      }
-    }
-  }
-
-  .homeworkContainer {
-    margin-top: 16px;
-    width: 484px;
-  }
-}
-
-.homeworkArea {
-  width: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  height: 209px;
-  scrollbar-width: auto;
-  scrollbar-color: #666 #f00;
-
-  &::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: none;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: $nickel;
-    border-radius: 10px;
-    border: none;
-  }
-
-  .checkBoxContainer {
+  .upperPart {
     display: flex;
-    padding: 4px;
-    margin-bottom: 8px;
-    position: relative;
-    border-radius: 3px;
+    margin-bottom: 32px;
 
-    .homeworkMenu {
-      position: absolute;
-      right: 4px;
-      opacity: 0;
-      transition: 0.2s ease-in-out;
+    .titleContainer {
+      width: 843px;
+      height: 36px;
+      margin-top: 17px;
+    }
+  }
 
-      > button svg {
-        font-size: 20px;
-        fill: $nickel;
+  .lowerPart {
+    display: flex;
+
+    h4 {
+      margin-bottom: 16px;
+    }
+
+    .noticeHomework {
+      margin-right: 12px;
+    }
+
+    .noticeArea {
+      width: 484px;
+      height: 120px;
+
+      > * {
+        resize: none;
+
+        &::-webkit-scrollbar {
+          display: none; /* Chrome , Safari , Opera */
+        }
       }
     }
 
-    &:hover {
-      background-color: $snow;
+    .scheduleArea {
+      width: 488px;
+      height: 388px;
+
+      > * {
+        resize: none;
+
+        &::-webkit-scrollbar {
+          display: none; /* Chrome , Safari , Opera */
+        }
+      }
+    }
+
+    .homeworkContainer {
+      margin-top: 16px;
+      width: 484px;
+    }
+  }
+
+  .homeworkArea {
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 209px;
+    scrollbar-width: auto;
+    scrollbar-color: #666 #f00;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $nickel;
+      border-radius: 10px;
+      border: none;
+    }
+
+    .checkBoxContainer {
+      display: flex;
+      padding: 4px;
+      margin-bottom: 8px;
+      position: relative;
+      border-radius: 3px;
 
       .homeworkMenu {
-        opacity: 1;
+        position: absolute;
+        right: 4px;
+        opacity: 0;
+        transition: 0.2s ease-in-out;
+
+        > button svg {
+          font-size: 20px;
+          fill: $nickel;
+        }
+      }
+
+      &:hover {
+        background-color: $snow;
+
+        .homeworkMenu {
+          opacity: 1;
+        }
       }
     }
-  }
 
-  .homeworkBody {
-    margin-left: 8px;
-    font-size: $para;
-    font-weight: $para;
-    overflow: hidden;
-    word-wrap: break-word;
-    padding-right: 20px;
-  }
+    .homeworkBody {
+      margin-left: 8px;
+      font-size: $para;
+      font-weight: $para;
+      overflow: hidden;
+      word-wrap: break-word;
+      padding-right: 20px;
+    }
 
-  .addHomework {
-    display: flex;
-    padding: 4px;
+    .addHomework {
+      display: flex;
+      padding: 4px;
 
-    input {
-      width: 300px;
-      margin: 0 8px;
-      border: 0;
-      border-bottom: 2px solid $moon;
-      outline: none;
-      flex: 1 0 0;
+      input {
+        width: 300px;
+        margin: 0 8px;
+        border: 0;
+        border-bottom: 2px solid $moon;
+        outline: none;
+        flex: 1 0 0;
+      }
     }
   }
 }
