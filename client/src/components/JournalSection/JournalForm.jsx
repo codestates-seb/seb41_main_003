@@ -6,8 +6,9 @@ import DropDown from './DropDown';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 
-const JournalForm = ({ user }) => {
+const JournalForm = ({ userData }) => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
 
@@ -18,8 +19,8 @@ const JournalForm = ({ user }) => {
     endTime,
     scheduleBody,
     noticeBody,
-    Homeworks,
-  } = user;
+    homeworks,
+  } = userData;
 
   const confirm = {
     isOpen: true,
@@ -44,10 +45,12 @@ const JournalForm = ({ user }) => {
         <section className={styles.upperPart}>
           <div className={styles.pickerContainer}>
             <p className={styles.font1}>19</p>
-            <p className={styles.font5}>{new Date(startTime).toDateString}</p>
+            <p className={styles.font5}>
+              {dayjs(startTime).format('YYYY년 M월')}
+            </p>
             <p className={styles.font6}>
-              {new Date(startTime).toTimeString().slice(0, 5)}~
-              {new Date(endTime).toTimeString().slice(0, 5)}
+              {dayjs(startTime).format('HH:mm')}~
+              {dayjs(endTime).format('HH:mm')}
             </p>
           </div>
           <div className={styles.upperGoal}>
@@ -75,14 +78,14 @@ const JournalForm = ({ user }) => {
                 <h4>과제 체크리스트</h4>
               </label>
               <div className={styles.homeworkArea}>
-                {Homeworks.map((el) => {
+                {homeworks?.map((el) => {
                   return (
                     <div
                       key={el.homeworkId}
                       className={styles.checkBoxContainer}
                     >
                       <CheckBox
-                        value={el.HomeworkStatus === 'FINISHED' ? true : false}
+                        value={el.homeworkStatus === 'FINISH' ? true : false}
                       />
                       <p className={styles.homeworkBody}>{el.homeworkBody}</p>
                     </div>
@@ -103,7 +106,6 @@ const JournalForm = ({ user }) => {
   );
 };
 JournalForm.propTypes = {
-  user: PropType.object,
-  setUser: PropType.func,
+  userData: PropType.object,
 };
 export default JournalForm;
