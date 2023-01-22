@@ -9,9 +9,14 @@ import Profile from '../../recoil/profile';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import PropType from 'prop-types';
+import Journals from './Journals';
 
-const FinishedJournalList = ({ tutoring, pageInfo, setTutoring }) => {
-  //TODO:무한 스크롤 구현
+const FinishedJournalList = ({
+  tutoring,
+  pageInfo,
+  setPageInfo,
+  setTutoring,
+}) => {
   const [reviewDetail, setReviewDetail] = useState({
     reviewId: 0,
     professional: 0,
@@ -42,33 +47,15 @@ const FinishedJournalList = ({ tutoring, pageInfo, setTutoring }) => {
     },
   };
 
+  //TODO: 과외 상태에 대한 정보가 body에 들어가지 않아도 변경이 잘 되는지 확인 필요
   const patchTitle = async (value) => {
     await axios
-      .patch(`tutoring/details/${tutoringId}`, { tutoringTitle: value })
+      .patch(`tutoring/details/${tutoringId}`, {
+        tutoringTitle: value,
+      })
       .then(({ data }) => {
         setTutoring(data.data);
       });
-  };
-
-  const confirmProps = {
-    isOpen: true,
-    modalType: 'confirm',
-    props: {
-      text: `과외를 삭제 하시겠습니까?
-      과외 삭제 시 과외 관리 내역이 모두 삭제됩니다.`,
-      modalHandler: () => {
-        console.log('과외 삭제 요청이 갑니다~');
-        reset();
-        deleteTutoring();
-      },
-    },
-  };
-
-  const deleteTutoring = async () => {
-    await axios
-      .delete(`tutoring/details/${tutoringId}`)
-      .then(() => console.log('과외가 삭제되어부림'))
-      .catch((err) => console.log(err));
   };
 
   const reviewDetailProps = {
@@ -85,9 +72,10 @@ const FinishedJournalList = ({ tutoring, pageInfo, setTutoring }) => {
     },
   };
 
+  //TODO: GEP 특정 과외 후기 조회 API 수정되면 tutoringId로 바꾸기
   const getReviewDetail = async () => {
     await axios
-      .get(`/reviews/${tutoringId}`)
+      .get(`/reviews/11`)
       .then(({ data }) => setReviewDetail(data.data))
       .catch((err) => console.log(err));
   };
@@ -137,36 +125,13 @@ const FinishedJournalList = ({ tutoring, pageInfo, setTutoring }) => {
               : `최근 공지사항 | ${tutoring.latestNoticeBody}`}
           </div>
         </Link>
-        <ul className={styles.list}>
-          {tutoring.dateNotices.map((el) => (
-            <Link to={`/journal/${el.dateNoticeId}`} key={el.dateNoticeId}>
-              <li key={el.dateNoticeId} className={styles.li}>
-                <div className={styles.dateBox}>
-                  <span className={styles.day}>
-                    {new Date(el.startTime).getDate()}
-                  </span>
-                  <span className={styles.yearMonth}>{`${new Date(
-                    el.startTime
-                  ).getFullYear()}년 ${
-                    new Date(el.startTime).getMonth() + 1
-                  }월`}</span>
-                </div>
-                <div className={styles.textBox}>
-                  <span
-                    className={styles.goal}
-                  >{`학습 목표 | ${el.dateNoticeTitle} `}</span>
-                  <span
-                    className={styles.homework}
-                  >{`과제 제출 완료 (${el.finishHomeworkCount}/${el.homeworkCount})`}</span>
-                </div>
-                <div className={styles.notiIcon}>
-                  <HiSpeakerphone className={styles.hiSpeaker} />
-                  공지
-                </div>
-              </li>
-            </Link>
-          ))}
-        </ul>
+        <Journals
+          tutoringId={tutoringId}
+          tutoring={tutoring}
+          setTutoring={setTutoring}
+          pageInfo={pageInfo}
+          setPageInfo={setPageInfo}
+        />
       </div>
       <div className={styles.rightCard}>
         <div className={styles.rightTextBox}>
@@ -191,22 +156,17 @@ const FinishedJournalList = ({ tutoring, pageInfo, setTutoring }) => {
             ).toLocaleDateString()}`}
           </span>
         </div>
-        <div className={styles.buttonBox}>
-          <ButtonNightBlue
-            text="작성된 리뷰 확인"
-            buttonHandler={(e) => {
-              e.preventDefault();
-              setModal(reviewDetailProps);
-            }}
-          />
-          <ButtonRed
-            text="과외 삭제"
-            buttonHandler={(e) => {
-              e.preventDefault();
-              setModal(confirmProps);
-            }}
-          />
-        </div>
+        {userStatus === 'TUTEE' && (
+          <div className={styles.buttonBox}>
+            <ButtonNightBlue
+              text="작성된 리뷰 확인"
+              buttonHandler={(e) => {
+                e.preventDefault();
+                setModal(reviewDetailProps);
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -215,6 +175,7 @@ const FinishedJournalList = ({ tutoring, pageInfo, setTutoring }) => {
 FinishedJournalList.propTypes = {
   tutoring: PropType.object,
   pageInfo: PropType.object,
+  setPageInfo: PropType.func,
   setTutoring: PropType.func,
 };
 
