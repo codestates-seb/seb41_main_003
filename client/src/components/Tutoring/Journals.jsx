@@ -1,5 +1,5 @@
 import PropType from 'prop-types';
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
 import { HiSpeakerphone } from 'react-icons/hi';
 import styles from './JournalList.module.css';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,7 @@ import useScroll from '../../util/useScroll';
 import Profile from '../../recoil/profile';
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 const Journals = ({
   tutoring,
@@ -15,16 +16,18 @@ const Journals = ({
   setPageInfo,
   tutoringId,
 }) => {
-  const lastJournalRef = useRef(null);
+  const loadingRef = useRef(null);
   const { profileId } = useRecoilValue(Profile);
 
-  const setIsNew = useScroll(() => {
+  const [isLoading, setIsLoading] = useScroll(() => {
     if (pageInfo.page < pageInfo.totalPages - 1) {
-      scrollFunc(pageInfo.page + 1);
-    } else {
-      setIsNew(false);
-    }
-  }, lastJournalRef);
+      console.log('true');
+      setTimeout(() => {
+        scrollFunc(pageInfo.page + 1);
+        setIsLoading(false);
+      }, 500);
+    } else setIsLoading(false);
+  }, loadingRef);
 
   const scrollFunc = async (page) => {
     await axios
@@ -42,7 +45,7 @@ const Journals = ({
   };
 
   return (
-    <ul className={styles.list} ref={lastJournalRef}>
+    <ul className={styles.list}>
       {tutoring.dateNotices.map((el) => {
         return (
           <Link to={`/journal/${el.dateNoticeId}`} key={el.dateNoticeId}>
@@ -73,6 +76,7 @@ const Journals = ({
           </Link>
         );
       })}
+      <LoadingIndicator ref={loadingRef} isLoading={isLoading} isSmall={true} />
     </ul>
   );
 };
