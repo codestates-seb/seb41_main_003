@@ -102,8 +102,10 @@ public class TutoringService {
             tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
             Tutoring progressTutoring = tutoringRepository.save(tutoring);
             return getTutoringDto(progressTutoring, pageable);
-        } else {
+        } else if (tutoring.getTutor().getProfileId().equals(profileId)) {
             return getTutoringDto(tutoring, pageable);
+        } else {
+            throw new ServiceLogicException(ErrorCode.ACCESS_DENIED);
         }
     }
 
