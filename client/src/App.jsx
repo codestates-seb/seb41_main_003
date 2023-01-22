@@ -20,13 +20,11 @@ import EditJournal from './pages/EditJournal';
 import Journal from './pages/Journal';
 import AddJournal from './pages/AddJournal';
 import { GlobalModal } from './components/modal/GlobalModal';
-import { useRef } from 'react';
 import { useResetRecoilState } from 'recoil';
 import axios from 'axios';
 import Profile from './recoil/profile';
 
 const App = () => {
-  const footerRef = useRef(null);
   const resetProfile = useResetRecoilState(Profile);
 
   axios.interceptors.request.use(
@@ -92,15 +90,9 @@ const App = () => {
         <Header />
         <div className="content">
           <Routes>
-            <Route path="/" element={<TutorList footerRef={footerRef} />} />
-            <Route
-              path="/tutorlist"
-              element={<TutorList footerRef={footerRef} />}
-            />
-            <Route
-              path="/tuteelist"
-              element={<TuteeList footerRef={footerRef} />}
-            />
+            <Route path="/" element={<TutorList />} />
+            <Route path="/tutorlist" element={<TutorList />} />
+            <Route path="/tuteelist" element={<TuteeList />} />
             <Route path="/tutoringlist/:profileId" element={<TutoringList />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/login" element={<Login />} />
@@ -123,7 +115,7 @@ const App = () => {
         </div>
         <GlobalModal />
       </Router>
-      <Footer ref={footerRef} />
+      <Footer />
     </div>
   );
 };
