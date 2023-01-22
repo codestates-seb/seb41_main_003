@@ -15,7 +15,6 @@ const initialLogindata = {
 const LoginForm = () => {
   const [loginData, setLoginData] = useState(initialLogindata);
   const [isIdChecked, setIsIdChecked] = useState(false);
-  const [isAutoLoginChecked, setIsAutoLoginChecked] = useState(false);
   const [isFail, setIsFail] = useState(0);
 
   const setProfile = useSetRecoilState(Profile);
@@ -37,15 +36,9 @@ const LoginForm = () => {
         .post(process.env.REACT_APP_BASE_URL + '/auth/login', loginData)
         .then(({ data: res }) => {
           if (isIdChecked) localStorage.setItem('saveId', loginData.username);
-          if (isAutoLoginChecked) {
-            localStorage.setItem('authorization', res.data.Authorization);
-            localStorage.setItem('userId', res.data.userId);
-            localStorage.setItem('userStatus', res.data.userStatus);
-          } else {
-            sessionStorage.setItem('authorization', res.data.Authorization);
-            sessionStorage.setItem('userId', res.data.userId);
-            sessionStorage.setItem('userStatus', res.data.userStatus);
-          }
+          sessionStorage.setItem('authorization', res.data.Authorization);
+          sessionStorage.setItem('userId', res.data.userId);
+          sessionStorage.setItem('userStatus', res.data.userStatus);
           console.log('로그인 완료');
           setProfile((prev) => ({
             ...prev,
@@ -105,12 +98,6 @@ const LoginForm = () => {
             handler={setIsIdChecked}
           />
           <span> 아이디 저장 </span>
-          <CheckBox
-            id="자동로그인"
-            value={isAutoLoginChecked}
-            handler={setIsAutoLoginChecked}
-          />
-          <span> 자동 로그인 </span>
         </div>
         <div className={styles.buttonContainer}>
           <span className={styles.failAuth}>
