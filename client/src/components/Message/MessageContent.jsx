@@ -23,16 +23,18 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
 
   // messageList가 변경될때마다 message의 receiver를 변경해줌
   const func2 = () => {
+    console.log('sender실행하니?');
     if (profileId === tuteeId) {
       setReceiveMessageId(tutorId);
     } else setReceiveMessageId(tuteeId);
-    console.log('sender실행하니?');
   };
 
-  console.log(receiveMessageId, 'senderID');
   useEffect(() => {
     func2();
+    console.log('currentId바껴서 useEffect');
   }, [CurrentRoomId]);
+
+  console.log(receiveMessageId, 'senderID');
 
   // 메세지 post API
   const sendMessage = async () => {

@@ -24,6 +24,7 @@ const Message = () => {
 
   useEffect(() => {
     getMessageList();
+    console.log(Profile, 'ffff');
   }, []);
 
   useEffect(() => {
