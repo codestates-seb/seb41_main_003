@@ -1,15 +1,15 @@
 import FeedItem from '../components/MainSection/FeedItem';
 import styles from '../pages/TuteeList.module.css';
 import { MdSearch, MdFilterList } from 'react-icons/md';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ButtonTop } from '../components/Button';
 import MenuButtons from '../components/MainSection/FilterButton';
 import axios from 'axios';
 import useScroll from '../util/useScroll';
-import PropType from 'prop-types';
+import LoadingIndicator from '../components/LoadingIndicator';
 
-const TuteeList = ({ footerRef }) => {
+const TuteeList = () => {
   const [tuteeData, setTuteeData] = useState([]);
   const [pageInfo, setPageInfo] = useState({
     page: 1,
@@ -18,13 +18,17 @@ const TuteeList = ({ footerRef }) => {
   const [search, setSearch] = useState('');
   const [searchValue, setSearchValue] = useState('');
 
-  const setIsNew = useScroll(() => {
+  const loadingRef = useRef(null);
+
+  const [isLoading, setIsLoading] = useScroll(() => {
     if (pageInfo.page < pageInfo.totalPages - 1) {
-      scrollFunc(pageInfo.page + 1);
-    } else {
-      setIsNew(false);
-    }
-  }, footerRef);
+      console.log('true');
+      setTimeout(() => {
+        scrollFunc(pageInfo.page + 1);
+        setIsLoading(false);
+      }, 500);
+    } else setIsLoading(false);
+  }, loadingRef);
 
   const scrollFunc = async (page) => {
     await axios
@@ -110,13 +114,11 @@ const TuteeList = ({ footerRef }) => {
             </Link>
           ))}
         </div>
+        <LoadingIndicator ref={loadingRef} isLoading={isLoading} />
       </div>
       <ButtonTop />
     </div>
   );
-};
-TuteeList.propTypes = {
-  footerRef: PropType.object,
 };
 
 export default TuteeList;
