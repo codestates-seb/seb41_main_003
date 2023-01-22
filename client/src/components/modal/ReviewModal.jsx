@@ -57,7 +57,7 @@ const ReviewModal = ({ modalHandler }) => {
             <StarRating
               reviewData={reviewData}
               setReviewData={setReviewData}
-              name="explantaion"
+              name="explanation"
             />
           </div>
           <div className={styles.star}>
