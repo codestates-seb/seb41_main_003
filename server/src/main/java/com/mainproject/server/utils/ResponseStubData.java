@@ -101,6 +101,7 @@ public class ResponseStubData {
                         createHomeworkResponse(),
                         createHomeworkResponse(),
                         createHomeworkResponse()))
+                .noticeStatus(NoticeStatus.NOTICE.name())
                 .build();
     }
 
@@ -119,17 +120,20 @@ public class ResponseStubData {
                 createDateNoticeResponse()
 
         );
-        Page page = new PageImpl(list, PageRequest.of(0, 10), list.size());
+        Page page = new PageImpl(list, PageRequest.of(0, 5), list.size());
         return TutoringDto.builder()
                 .tutoringId(1L)
                 .tutoringTitle("열심히 가르칩니다! 강호수입니다!")
                 .tutoringStatus(TutoringStatus.TUTOR_WAITING.name())
+                .latestNoticeId(1L)
+                .latestNoticeBody("공지")
                 .createAt(LocalDateTime.now())
                 .updateAt(LocalDateTime.now())
                 .tutorId(createProfileListResponse().getProfileId())
                 .tuteeId(createProfileListResponse().getProfileId())
                 .tutorName(createProfileListResponse().getName())
                 .tuteeName(createProfileListResponse().getName())
+                .reviewId(createReviewResponse().getReviewId())
                 .dateNotices(page).build();
     }
 
@@ -141,6 +145,7 @@ public class ResponseStubData {
                 .tutoringTitle("수학 뿌셔 과학 뿌셔")
                 .tutoringStatus(TutoringStatus.TUTEE_WAITING.name())
                 .createAt(LocalDateTime.now())
+                .updateAt(LocalDateTime.now())
                 .build();
     }
 

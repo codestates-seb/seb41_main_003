@@ -2,6 +2,7 @@ package com.mainproject.server.tutoring.dto;
 
 import com.mainproject.server.dateNotice.dto.DateNoticeResponseDto;
 import com.mainproject.server.dateNotice.entity.DateNotice;
+import com.mainproject.server.review.entity.Review;
 import com.mainproject.server.tutoring.entity.Tutoring;
 import lombok.*;
 import org.springframework.data.domain.Page;
@@ -40,6 +41,8 @@ public class TutoringDto {
 
     private String  tuteeName;
 
+    private Long reviewId;
+
     private Page<DateNoticeResponseDto> dateNotices;
 
     public TutoringDto(Tutoring tutoring, Page<DateNotice> dateNoticePage) {
@@ -54,6 +57,10 @@ public class TutoringDto {
         this.tuteeId = tutoring.getTutee().getProfileId();
         this.tutorName = tutoring.getTutor().getName();
         this.tuteeName = tutoring.getTutee().getName();
+        Review review = tutoring.getReview();
+        if (review != null) {
+            this.reviewId = review.getReviewId();
+        }
         if (!dateNoticePage.getContent().isEmpty()) {
             List<DateNoticeResponseDto> dtos = dateNoticePage.getContent()
                     .stream()
