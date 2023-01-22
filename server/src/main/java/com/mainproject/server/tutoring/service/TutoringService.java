@@ -116,6 +116,7 @@ public class TutoringService {
         TutoringStatus tutoringStatus = tutoring.getTutoringStatus();
         if (tutoringStatus != null &&
                 (tutoringStatus.equals(TutoringStatus.WAIT_FINISH) ||
+                        tutoringStatus.equals(TutoringStatus.UNCHECK) ||
                         tutoringStatus.equals(TutoringStatus.PROGRESS))
         ) {
             Optional.of(tutoringStatus)
