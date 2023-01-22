@@ -25,7 +25,17 @@ const Tutoring = () => {
     tutorName: '',
     createAt: '',
     updateAt: '',
-    dateNotices: [],
+    dateNotices: [
+      {
+        dateNoticeId: 1,
+        dateNoticeTitle: '',
+        startTime: '',
+        endTime: '',
+        homeworkCount: 0,
+        finishHomeworkCount: 0,
+        noticeStatus: '',
+      },
+    ],
   });
   const [pageInfo, setPageInfo] = useState({
     page: 1,
@@ -39,7 +49,7 @@ const Tutoring = () => {
 
   const getTutoringData = async () => {
     await axios
-      .get(`tutoring/details/${profileId}/${tutoringId}`)
+      .get(`tutoring/details/${profileId}/${tutoringId}?size=6`)
       .then(({ data }) => {
         setTutoring(data.data);
         setPageInfo(data.pageInfo);
@@ -60,12 +70,14 @@ const Tutoring = () => {
             tutoring={tutoring}
             setTutoring={setTutoring}
             pageInfo={pageInfo}
+            setPageInfo={setPageInfo}
           />
         ) : (
           <JournalList
             tutoring={tutoring}
             setTutoring={setTutoring}
             pageInfo={pageInfo}
+            setPageInfo={setPageInfo}
           />
         )}
       </div>
