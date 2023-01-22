@@ -1,4 +1,7 @@
 import { atom } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
+
+const { persistAtom } = recoilPersist();
 
 // key: 저장소에 저장되는 key 값
 // setSelf: 연결된 atom 의 값을 초기화 해주는 함수
@@ -22,6 +25,7 @@ const CurrentRoomIdState = atom({
   key: 'CurrentRoomId',
   default: 0,
   effects: [localStorageEffect('current_room_id')],
+  effects_UNSTABLE: [persistAtom],
 });
 
 export default CurrentRoomIdState;

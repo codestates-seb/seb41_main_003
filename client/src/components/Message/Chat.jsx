@@ -21,7 +21,7 @@ const Chat = ({ message, tutoringId, getMessageRoom }) => {
           window.location.href('/tutoring');
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err, '매칭요청'));
   };
 
   // 매칭 요청중인 과외 (완전 삭제) API
@@ -31,7 +31,7 @@ const Chat = ({ message, tutoringId, getMessageRoom }) => {
       .then(() => {
         console.log('요청취소 -> 특정과외삭제');
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err, '매칭요청 취소'));
   };
 
   // 요청 수락 버튼

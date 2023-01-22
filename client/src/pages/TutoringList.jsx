@@ -1,17 +1,18 @@
-import { useState, useEffect } from 'react';
-import Tutoring from '../components/TutoringList/Tutoring';
 import styles from './TutoringList.module.css';
 import PropType from 'prop-types';
 import axios from 'axios';
-import Profile from '../recoil/profile';
+import Tutoring from '../components/TutoringList/Tutoring';
+import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
+import Profile from '../recoil/profile';
+import Pagination from '../util/Pagination';
 
 const initialState = {
   data: [
     {
       tutoringId: 1,
-      tutorName: '강2호수',
-      tuteeName: '김다은',
+      tutorName: '튜터이름',
+      tuteeName: '유영민',
       tutoringTitle: '수1231241241학 뿌셔 과학 뿌셔',
       tutoringStatus: 'PROGRESS',
       createAt: '2023-01-11T20:25:40.9355865',
@@ -19,8 +20,8 @@ const initialState = {
     },
     {
       tutoringId: 2,
-      tutorName: '강호수',
-      tuteeName: '김다은',
+      tutorName: '튜터이름',
+      tuteeName: '유영민',
       tutoringTitle: '수학 뿌셔 과학 뿌셔',
       tutoringStatus: 'PROGRESS',
       createAt: '2023-01-11T20:25:40.9355865',
@@ -28,44 +29,17 @@ const initialState = {
     },
     {
       tutoringId: 3,
-      tutorName: '강호수',
-      tuteeName: '김다은',
+      tutorName: '튜터이름',
+      tuteeName: '유영민',
       tutoringTitle: '수학 뿌셔 과학 뿌셔',
-      tutoringStatus: 'UNCHECK',
-      createAt: '2023-01-11T20:25:40.9355865',
-      updateAt: '2023-01-11T20:25:40.9355865',
-    },
-    {
-      tutoringId: 1,
-      tutorName: '강호수',
-      tuteeName: '김다은',
-      tutoringTitle: '수학 뿌셔 과학 뿌셔',
-      tutoringStatus: 'PROGRESS',
-      createAt: '2023-01-11T20:25:40.9355865',
-      updateAt: '2023-01-11T20:25:40.9355865',
-    },
-    {
-      tutoringId: 2,
-      tutorName: '강호수',
-      tuteeName: '김다은',
-      tutoringTitle: '수학 뿌셔 과학 뿌셔',
-      tutoringStatus: 'PROGRESS',
-      createAt: '2023-01-11T20:25:40.9355865',
-      updateAt: '2023-01-11T20:25:40.9355865',
-    },
-    {
-      tutoringId: 3,
-      tutorName: '강호수',
-      tuteeName: '김다은',
-      tutoringTitle: '수학 뿌셔 과학 뿌셔',
-      tutoringStatus: 'UNCHECK',
+      tutoringStatus: 'FINISH',
       createAt: '2023-01-11T20:25:40.9355865',
       updateAt: '2023-01-11T20:25:40.9355865',
     },
     {
       tutoringId: 4,
-      tutorName: '강호수',
-      tuteeName: '김다은',
+      tutorName: '튜터이름',
+      tuteeName: '유영민',
       tutoringTitle: '수학 뿌셔 과학 뿌셔',
       tutoringStatus: 'PROGRESS',
       createAt: '2023-01-11T20:25:40.9355865',
@@ -73,8 +47,8 @@ const initialState = {
     },
     {
       tutoringId: 5,
-      tutorName: '강호수',
-      tuteeName: '김다은',
+      tutorName: '튜터이름',
+      tuteeName: '유영민',
       tutoringTitle: '수학 뿌셔 과학 뿌셔',
       tutoringStatus: 'PROGRESS',
       createAt: '2023-01-11T20:25:40.9355865',
@@ -82,84 +56,84 @@ const initialState = {
     },
     {
       tutoringId: 6,
-      tutorName: '강호수',
-      tuteeName: '김다은',
+      tutorName: '튜터이름',
+      tuteeName: '유영민',
       tutoringTitle: '수학 뿌셔 과학 뿌셔',
       tutoringStatus: 'UNCHECK',
       createAt: '2023-01-11T20:25:40.9355865',
       updateAt: '2023-01-11T20:25:40.9355865',
     },
     {
+      tutoringId: 7,
+      tutorName: '튜터이름',
+      tuteeName: '유영민',
+      tutoringTitle: '수학 뿌셔 과학 뿌셔',
+      tutoringStatus: 'PROGRESS',
+      createAt: '2023-01-11T20:25:40.9355865',
+      updateAt: '2023-01-11T20:25:40.9355865',
+    },
+    {
+      tutoringId: 8,
+      tutorName: '튜터이름',
+      tuteeName: '유영민',
+      tutoringTitle: '수학 뿌셔 과학 뿌셔',
+      tutoringStatus: 'PROGRESS',
+      createAt: '2023-01-11T20:25:40.9355865',
+      updateAt: '2023-01-11T20:25:40.9355865',
+    },
+    {
       tutoringId: 9,
-      tutorName: '강호수',
-      tuteeName: '김다은11',
-      tutoringTitle: '뿌셔뿌셔',
+      tutorName: '튜터이름',
+      tuteeName: '유영민',
+      tutoringTitle: '수학 뿌셔 과학 뿌셔',
       tutoringStatus: 'UNCHECK',
       createAt: '2023-01-11T20:25:40.9355865',
       updateAt: '2023-01-11T20:25:40.9355865',
     },
   ],
   pageInfo: {
-    page: 1,
-    size: 10,
-    totalElements: 10,
+    page: 0,
+    size: 9,
+    totalElements: 9,
     totalPages: 2,
   },
 };
 
 const TutoringList = () => {
   const [tutorings, setTutorings] = useState(initialState);
+  const [pageInfo, setPageInfo] = useState(initialState.pageInfo);
   const [isFinished, setIsFinished] = useState(false);
   const { profilId } = useRecoilValue(Profile);
+  const [page, setPage] = useState(0);
 
   const filterHandler = (e) => {
     const { name } = e.target;
     if (name === 'current') setIsFinished(false);
     else setIsFinished(true);
   };
-  //progress/finish 상태를 받아오는 API를 따로 만고
+  const aa = localStorage.getItem('current_user');
+  console.log(isFinished, 'isFinished');
+  console.log(profilId, 'profilId');
+  console.log(aa.profilId, '?');
+
+  //progress/finish 상태를 받아오는 API를 따로 만들고
   //진행중인과외/종료된 과외 누르면 불러오기
-  const getTutoringList = async () => {
-    await axios
-      .get(`/tutoring/${profilId}?get=${isFinished ? 'FINISH' : 'PROGRESS'}`)
-      .then((res) => {
-        console.log(res.data.data);
-        setTutorings(res.data.data);
-      })
-      .catch((error) => console.log(error));
-  };
-  useEffect(() => {
-    getTutoringList();
-  }, []);
-
-  //TODO: util 폴더에 있는 Pagination 컴포넌트로 바꿔서 사용하기
-  //TutoringList 속 pagination className도 제거하면 됨
-  const Pagination = ({ pageInfo }) => {
-    const { page, totalPages } = pageInfo;
-    const pageArray = new Array(totalPages).fill(0).map((_, idx) => idx + 1);
-
-    return (
-      <div className={styles.pagination}>
-        {pageArray.map((el) => (
-          <button className={el === page && styles.active} key={el}>
-            {el}
-          </button>
-        ))}
-      </div>
-    );
-  };
-
-  useEffect(() => {
-    //TODO: isFinished 상태 변경에 따라서
-    //tutorings 상태를 변경시킨다
-    //특정 프로필 과외 리스트를 조회하는 API 요청을 보내면 되는데
-    //tutoring/{profileId}?get=FINISH 와 같은 엔드 포인트로 요청을 보내면 됨
-    getTutoringList();
-  }, [isFinished]);
-
-  Pagination.propTypes = {
-    pageInfo: PropType.object,
-  };
+  // const getTutoringList = async () => {
+  //   await axios
+  //     .get(`/tutoring/${profilId}?get=${isFinished ? 'FINISH' : 'PROGRESS'}?page=${page}`)
+  //     .then((res) => {
+  //       console.log(res.data.data);
+  //       setTutorings(res.data.data);
+  //       setPageInfo(res.data.pageInfo)
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
+  // useEffect(() => {
+  //   getTutoringList();
+  // }, [page]);
+  // useEffect(() => {
+  //   getTutoringList();
+  // }, [isFinished]);
 
   return (
     <div className={styles.wrapper}>
@@ -188,7 +162,13 @@ const TutoringList = () => {
               <Tutoring tutoring={tutoring} key={tutoring.tutoringId} />
             ))}
         </ul>
-        <Pagination pageInfo={tutorings.pageInfo} />
+        <Pagination
+          pageInfo={pageInfo}
+          buttonHandler={(e) => {
+            const { name } = e.target;
+            setPage(name);
+          }}
+        />
       </div>
     </div>
   );

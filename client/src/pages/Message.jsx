@@ -24,7 +24,6 @@ const Message = () => {
 
   useEffect(() => {
     getMessageList();
-    console.log(Profile, 'ffff');
   }, []);
 
   useEffect(() => {
@@ -65,8 +64,6 @@ const Message = () => {
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <h2>메세지함</h2>
-        <button onClick={getMessageList}>getMessageList</button>
-        <button onClick={getMessageRoom}>getMessageRoom</button>
         <div className={styles.message}>
           <MessageList messageList={messageList} />
           <MessageContent
