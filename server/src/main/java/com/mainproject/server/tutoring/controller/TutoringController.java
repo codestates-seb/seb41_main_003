@@ -80,7 +80,7 @@ public class TutoringController {
     public ResponseEntity patchTutoringMatch(
             @PathVariable("profileId") @Positive Long profileId,
             @PathVariable("tutoringId") @Positive Long tutoringId,
-            @PageableDefault(page = 0, size = 5, sort = "dateNoticeId", direction = Sort.Direction.DESC)
+            @PageableDefault(page = 0, size = 6, sort = "dateNoticeId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
         TutoringDto tutoring =
@@ -98,7 +98,7 @@ public class TutoringController {
     public ResponseEntity getTutoring(
             @PathVariable("profileId") @Positive Long profileId,
             @PathVariable("tutoringId") @Positive Long tutoringId,
-            @PageableDefault(page = 0, size = 5, sort = "dateNoticeId", direction = Sort.Direction.DESC)
+            @PageableDefault(page = 0, size = 6, sort = "dateNoticeId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
         TutoringDto tutoring =
@@ -115,7 +115,7 @@ public class TutoringController {
     public ResponseEntity patchTutoring(
             @PathVariable("tutoringId") @Positive Long tutoringId,
             @RequestBody @Valid TutoringPatchDto tutoringPatchDto,
-            @PageableDefault(page = 0, size = 5, sort = "dateNoticeId", direction = Sort.Direction.DESC)
+            @PageableDefault(page = 0, size = 6, sort = "dateNoticeId", direction = Sort.Direction.DESC)
             Pageable pageable
             ) {
         TutoringDto tutoring = tutoringService.updateTutoring(
