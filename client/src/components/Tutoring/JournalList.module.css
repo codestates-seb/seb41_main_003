@@ -169,6 +169,13 @@
   font-weight: $paraW;
 }
 
+.waitingNoti {
+  font-size: $para;
+  font-weight: 600;
+  color: $red;
+  margin-top: 16px;
+}
+
 .mdEdit {
   fill: $nickel;
   font-size: 12px;
