@@ -24,8 +24,8 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final TutoringService tutoringService;
 
-    public Review getReview(Long tutoringId) {
-        return verifiedReviewById(tutoringId);
+    public Review getReview(Long reviewId) {
+        return verifiedReviewById(reviewId);
     }
 
     public Review createReview(Review review, Long tutoringId) {
