@@ -7,11 +7,11 @@ import ModalState from '../../recoil/modal.js';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import Profile from '../../recoil/profile';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import PropType from 'prop-types';
+import Journals from './Journals';
 
-const JournalList = ({ tutoring, setTutoring, pageInfo }) => {
-  //TODO: GET 요청시 받은 pageInfo는 무한 스크롤 구현에 사용합니다
+const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
   const setModal = useSetRecoilState(ModalState);
   const reset = useResetRecoilState(ModalState);
   const navigate = useNavigate();
@@ -26,13 +26,13 @@ const JournalList = ({ tutoring, setTutoring, pageInfo }) => {
     },
   };
 
+  //TODO: 과외 상태에 대한 정보가 body에 들어가지 않아도 변경이 잘 되는지 확인 필요
   const confirmTextProps = {
     isOpen: true,
     modalType: 'confirmText',
     props: {
       text: '과외 제목을 아래와 같이 수정합니다.',
       modalHandler: (e, value) => {
-        console.log(value);
         reset();
         patchTitle(value);
       },
@@ -55,8 +55,43 @@ const JournalList = ({ tutoring, setTutoring, pageInfo }) => {
       text: '과외 종료를 원하신다면 \n 아래의 입력창에 "과외 종료" 를 입력 후 \n 확인 버튼을 눌러주세요.',
       validation: '과외 종료',
       modalHandler: () => {
-        setModal(reviewProps);
+        patchFinish();
+        setModal(alertProps);
       },
+    },
+  };
+
+  //TODO: 과외 제목에 대한 정보가 body에 들어가지 않아도 변경이 잘 되는지 확인 필요
+  const patchFinish = async () => {
+    await axios
+      .patch(`/tutoring/details/${tutoringId}`, {
+        tutoringStatus: 'WAIT_FINISH',
+      })
+      .then(({ data }) => setTutoring({ ...data.data }))
+      .catch((err) => console.log(err));
+  };
+
+  const finishRquestProps = {
+    isOpen: true,
+    modalType: 'bothHandler',
+    props: {
+      text: '상대방이 과외 종료를 요청하였습니다. \n 과외 종료를 수락하시겠습니까?',
+      modalHandler: (e) => {
+        const { name } = e.target;
+        if (name === 'yes') {
+          setModal(reviewProps);
+        } else {
+          setModal(alertRejectProps);
+        }
+      },
+    },
+  };
+
+  const alertRejectProps = {
+    isOpen: true,
+    modalType: 'alert',
+    props: {
+      text: '과외 종료 요청이 거절되었습니다.',
     },
   };
 
@@ -67,9 +102,16 @@ const JournalList = ({ tutoring, setTutoring, pageInfo }) => {
       modalHandler: (e, value, reviewData) => {
         postReview(reviewData, value);
         console.log('리뷰 작성을 완료했다!');
-        setModal(alertProps);
-        //TODO: 과외 종료 API 필요 tutoringStatus를 변경하는 등... 조치 필요
+        setModal(alertFinishProps);
       },
+    },
+  };
+
+  const alertFinishProps = {
+    isOpen: true,
+    modalType: 'alert',
+    props: {
+      text: '과외가 종료되었습니다!',
     },
   };
 
@@ -82,6 +124,11 @@ const JournalList = ({ tutoring, setTutoring, pageInfo }) => {
       .then((res) => console.log(res));
   };
 
+  useEffect(() => {
+    if (userStatus === 'TUTEE' && tutoring.tutoringStatus === 'WAIT_FINISH')
+      setModal(finishRquestProps);
+  });
+
   return (
     <div className={styles.container}>
       <div className={styles.leftCard}>
@@ -93,36 +140,13 @@ const JournalList = ({ tutoring, setTutoring, pageInfo }) => {
               : `최근 공지사항 | ${tutoring.latestNoticeBody}`}
           </div>
         </Link>
-        <ul className={styles.list}>
-          {tutoring.dateNotices.map((el) => (
-            <Link to={`/journal/${el.dateNoticeId}`} key={el.dateNoticeId}>
-              <li className={styles.li}>
-                <div className={styles.dateBox}>
-                  <span className={styles.day}>
-                    {new Date(el.startTime).getDate()}
-                  </span>
-                  <span className={styles.yearMonth}>{`${new Date(
-                    el.startTime
-                  ).getFullYear()}년 ${
-                    new Date(el.startTime).getMonth() + 1
-                  }월`}</span>
-                </div>
-                <div className={styles.textBox}>
-                  <span
-                    className={styles.goal}
-                  >{`학습 목표 | ${el.dateNoticeTitle} `}</span>
-                  <span
-                    className={styles.homework}
-                  >{`과제 제출 완료 (${el.finishHomeworkCount}/${el.homeworkCount})`}</span>
-                </div>
-                <div className={styles.notiIcon}>
-                  <HiSpeakerphone className={styles.hiSpeaker} />
-                  공지
-                </div>
-              </li>
-            </Link>
-          ))}
-        </ul>
+        <Journals
+          tutoringId={tutoringId}
+          tutoring={tutoring}
+          setTutoring={setTutoring}
+          pageInfo={pageInfo}
+          setPageInfo={setPageInfo}
+        />
       </div>
       <div className={styles.rightCard}>
         <div className={styles.rightTextBox}>
@@ -144,8 +168,14 @@ const JournalList = ({ tutoring, setTutoring, pageInfo }) => {
           <span className={styles.tutoringDate}>
             {`${new Date(tutoring.createAt).toLocaleDateString()} ~`}
           </span>
+          {userStatus === 'TUTOR' &&
+            tutoring.tutoringStatus === 'WAIT_FINISH' && (
+              <span className={styles.waitingNoti}>
+                {`상대방의 과외 종료 요청 수락을 기다리는 중입니다.`}
+              </span>
+            )}
         </div>
-        {userStatus === 'TUTOR' && (
+        {userStatus === 'TUTOR' && tutoring.tutoringStatus === 'PROGRESS' && (
           <div className={styles.buttonBox}>
             <ButtonNightBlue
               text="과외 일지 작성"
@@ -167,8 +197,9 @@ const JournalList = ({ tutoring, setTutoring, pageInfo }) => {
 
 JournalList.propTypes = {
   tutoring: PropType.object,
-  pageInfo: PropType.object,
   setTutoring: PropType.func,
+  pageInfo: PropType.object,
+  setPageInfo: PropType.func,
 };
 
 export default JournalList;
