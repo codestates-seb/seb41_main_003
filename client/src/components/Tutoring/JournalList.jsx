@@ -52,7 +52,7 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
     isOpen: true,
     modalType: 'confirmVali',
     props: {
-      text: '과외 종료를 원하신다면 \n 아래의 입력창에 "과외 종료" 를 입력 후 \n 확인 버튼을 눌러주세요.',
+      text: '과외 종료를 원하신다면 \n 아래의 입력창에 "과외 종료" 를 입력 후 \n 확인 버튼을 눌러주세요.\n 과외가 종료되면 과외 제목 수정이나 일지 작성이 불가능해집니다.',
       validation: '과외 종료',
       modalHandler: () => {
         patchFinish();
@@ -75,7 +75,7 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
     isOpen: true,
     modalType: 'bothHandler',
     props: {
-      text: '상대방이 과외 종료를 요청하였습니다. \n 과외 종료를 수락하시겠습니까?',
+      text: '상대방이 과외 종료를 요청하였습니다. \n 과외 종료를 수락하시겠습니까? \n 과외가 종료되면 과외 제목 수정이 불가능해집니다.',
       modalHandler: (e) => {
         const { name } = e.target;
         if (name === 'yes') {
