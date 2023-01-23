@@ -51,6 +51,13 @@
   margin-left: 11px;
 }
 
+.emptyJournals {
+  font-size: $font4;
+  font-weight: $font4W;
+  text-align: center;
+  margin-top: 200px;
+}
+
 .list {
   overflow: hidden auto;
   width: 752px;

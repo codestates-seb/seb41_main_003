@@ -147,7 +147,9 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
         <Link to={`/journal/${tutoringId}/${tutoring.latestNoticeId}`}>
           <div className={styles.noti}>
             <HiSpeakerphone className={styles.icon} />
-            {tutoring.latestNoticeBody > 20
+            {tutoring.latestNoticeBody === null
+              ? '최근 공지가 없습니다.'
+              : tutoring.latestNoticeBody > 20
               ? `최근 공지사항 | ${tutoring.latestNoticeBody.slice(0, 20)}...`
               : `최근 공지사항 | ${tutoring.latestNoticeBody}`}
           </div>

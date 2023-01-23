@@ -46,39 +46,45 @@ const Journals = ({
 
   return (
     <ul className={styles.list}>
-      {tutoring.dateNotices.map((el) => {
-        return (
-          <Link
-            to={`/journal/${tutoringId}/${el.dateNoticeId}`}
-            key={el.dateNoticeId}
-          >
-            <li className={styles.li}>
-              <div className={styles.dateBox}>
-                <span className={styles.day}>
-                  {new Date(el.startTime).getDate()}
-                </span>
-                <span className={styles.yearMonth}>{`${new Date(
-                  el.startTime
-                ).getFullYear()}년 ${
-                  new Date(el.startTime).getMonth() + 1
-                }월`}</span>
-              </div>
-              <div className={styles.textBox}>
-                <span
-                  className={styles.goal}
-                >{`학습 목표 | ${el.dateNoticeTitle} `}</span>
-                <span
-                  className={styles.homework}
-                >{`과제 제출 완료 (${el.finishHomeworkCount}/${el.homeworkCount})`}</span>
-              </div>
-              <div className={styles.notiIcon}>
-                <HiSpeakerphone className={styles.hiSpeaker} />
-                공지
-              </div>
-            </li>
-          </Link>
-        );
-      })}
+      {tutoring.dateNotices.length === 0 ? (
+        <div className={styles.emptyJournals}>
+          아직 작성된 과외 일지가 없습니다.
+        </div>
+      ) : (
+        tutoring.dateNotices.map((el) => {
+          return (
+            <Link
+              to={`/journal/${tutoringId}/${el.dateNoticeId}`}
+              key={el.dateNoticeId}
+            >
+              <li className={styles.li}>
+                <div className={styles.dateBox}>
+                  <span className={styles.day}>
+                    {new Date(el.startTime).getDate()}
+                  </span>
+                  <span className={styles.yearMonth}>{`${new Date(
+                    el.startTime
+                  ).getFullYear()}년 ${
+                    new Date(el.startTime).getMonth() + 1
+                  }월`}</span>
+                </div>
+                <div className={styles.textBox}>
+                  <span
+                    className={styles.goal}
+                  >{`학습 목표 | ${el.dateNoticeTitle} `}</span>
+                  <span
+                    className={styles.homework}
+                  >{`과제 제출 완료 (${el.finishHomeworkCount}/${el.homeworkCount})`}</span>
+                </div>
+                <div className={styles.notiIcon}>
+                  <HiSpeakerphone className={styles.hiSpeaker} />
+                  공지
+                </div>
+              </li>
+            </Link>
+          );
+        })
+      )}
       <LoadingIndicator ref={loadingRef} isLoading={isLoading} isSmall={true} />
     </ul>
   );
