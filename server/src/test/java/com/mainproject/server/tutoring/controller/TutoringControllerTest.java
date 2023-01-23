@@ -9,6 +9,11 @@ import com.mainproject.server.auth.token.JwtAuthorityUtils;
 import com.mainproject.server.auth.token.JwtTokenizer;
 import com.mainproject.server.config.SecurityConfig;
 import com.mainproject.server.constant.TutoringStatus;
+import com.mainproject.server.dateNotice.dto.DateNoticePatchDto;
+import com.mainproject.server.dateNotice.dto.DateNoticePostDto;
+import com.mainproject.server.dateNotice.dto.HomeworkPatchDto;
+import com.mainproject.server.dateNotice.dto.HomeworkPostDto;
+import com.mainproject.server.dateNotice.entity.DateNotice;
 import com.mainproject.server.dateNotice.mapper.DateNoticeMapper;
 import com.mainproject.server.dateNotice.service.DateNoticeService;
 import com.mainproject.server.tutoring.dto.TutoringDto;
@@ -46,10 +51,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -166,7 +173,7 @@ class TutoringControllerTest {
         given(tutoringService.getAllTutoring(anyMap(), anyLong(), any(Pageable.class)))
                 .willReturn(pageProfile);
         given(tutoringMapper.tutoringListToTutoringSimpleResponseDtoList(anyList()))
-                .willReturn(List.of(tutoringSimpleResponse,tutoringSimpleResponse));
+                .willReturn(List.of(tutoringSimpleResponse, tutoringSimpleResponse));
         // When
         RequestBuilder result = RestDocumentationRequestBuilders
                 .get("/tutoring/{profileId}?page=0", profileId)
@@ -418,6 +425,303 @@ class TutoringControllerTest {
                                         )
                                 )
                         ));
+    }
+
+    @Test
+    @DisplayName("과외 삭제 TEST")
+    @WithMockUser
+    void deleteTutoring() throws Exception {
+        // Given
+        Long tutoringId = 1L;
+        doNothing().when(tutoringService).deleteTutoring(anyLong());
+        // When
+        RequestBuilder result = RestDocumentationRequestBuilders
+                .delete("/tutoring/details/{tutoringId}", tutoringId)
+                .header("Authorization", "Access Token Value")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8.displayName());
+        // Then
+        mockMvc.perform(result)
+                .andExpect(status().isNoContent())
+                .andDo(
+                        MockMvcRestDocumentation.document("deleteTutoring",
+                                ApiDocumentUtils.getRequestPreProcessor(),
+                                ApiDocumentUtils.getResponsePreProcessor(),
+                                RequestDocumentation.pathParameters(
+                                        parameterWithName("tutoringId").description("과외 식별자")
+                                ),
+                                HeaderDocumentation.requestHeaders(
+                                        headerWithName("Authorization").description("AccessToken")
+                                )));
+    }
+
+    @Test
+    @DisplayName("일지 등록 TEST")
+    @WithMockUser
+    void postDateNotice() throws Exception {
+        // Given
+        Long tutoringId = 1L;
+        DateNoticePostDto dateNoticePostDto = createDateNoticePostDto();
+        given(dateNoticeMapper.dateNoticePostDtoToDateNotice(any(DateNoticePostDto.class)))
+                .willReturn(new DateNotice());
+        given(dateNoticeService.createDateNotice(any(DateNotice.class), anyLong()))
+                .willReturn(new DateNotice());
+        given(dateNoticeMapper.dateNoticeToDateNoticeResponseDto(any(DateNotice.class)))
+                .willReturn(ResponseStubData.createDateNoticeResponse());
+        Gson gson = new Gson();
+        String content = gson.toJson(dateNoticePostDto);
+        // When
+        RequestBuilder result = RestDocumentationRequestBuilders
+                .post("/tutoring/date-notice/{tutoringId}", tutoringId)
+                .header("Authorization", "Access Token Value")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8.displayName());
+        // Then
+        mockMvc.perform(result)
+                .andExpect(status().isCreated())
+                .andDo(
+                        MockMvcRestDocumentation.document("postDateNotice",
+                                ApiDocumentUtils.getRequestPreProcessor(),
+                                ApiDocumentUtils.getResponsePreProcessor(),
+                                RequestDocumentation.pathParameters(
+                                        parameterWithName("tutoringId").description("과외 식별자")
+                                ),
+                                HeaderDocumentation.requestHeaders(
+                                        headerWithName("Authorization").description("AccessToken")
+                                ),
+                                PayloadDocumentation.requestFields(
+                                        List.of(
+                                                fieldWithPath("dateNoticeTitle").type(JsonFieldType.STRING).description("일지 타이틀"),
+                                                fieldWithPath("startTime").type(JsonFieldType.STRING).description("시작 시간"),
+                                                fieldWithPath("endTime").type(JsonFieldType.STRING).description("종료 시각"),
+                                                fieldWithPath("scheduleBody").type(JsonFieldType.STRING).description("일정 내용"),
+                                                fieldWithPath("noticeBody").type(JsonFieldType.STRING).description("공지 내용"),
+                                                fieldWithPath("homeworks").type(JsonFieldType.ARRAY).description("과제"),
+                                                fieldWithPath("homeworks[].homeworkBody").type(JsonFieldType.STRING).description("과제 내용"),
+                                                fieldWithPath("homeworks[].homeworkStatus").type(JsonFieldType.STRING).description("과제 상태 PROGRESS/FINISH")
+                                        )
+
+                                ),
+                                PayloadDocumentation.requestFields(
+                                        List.of(
+                                                fieldWithPath("dateNoticeTitle").type(JsonFieldType.STRING).description("일지 타이틀"),
+                                                fieldWithPath("startTime").type(JsonFieldType.STRING).description("시작 시각"),
+                                                fieldWithPath("endTime").type(JsonFieldType.STRING).description("종료 시각"),
+                                                fieldWithPath("scheduleBody").type(JsonFieldType.STRING).description("일정 내용"),
+                                                fieldWithPath("noticeBody").type(JsonFieldType.STRING).description("공지글 내용"),
+                                                fieldWithPath("homeworks").type(JsonFieldType.ARRAY).description("과제 리스트"),
+                                                fieldWithPath("homeworks[].homeworkBody").type(JsonFieldType.STRING).description("과제 내용"),
+                                                fieldWithPath("homeworks[].homeworkStatus").type(JsonFieldType.STRING).description("과제 상태")
+                                        )
+
+                                ),
+                                PayloadDocumentation.responseFields(
+                                        List.of(
+                                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+                                                fieldWithPath("data.dateNoticeId").type(JsonFieldType.NUMBER).description("일지 식별자"),
+                                                fieldWithPath("data.dateNoticeTitle").type(JsonFieldType.STRING).description("일지 제목"),
+                                                fieldWithPath("data.startTime").type(JsonFieldType.STRING).description("시작 시간"),
+                                                fieldWithPath("data.endTime").type(JsonFieldType.STRING).description("종료 시간"),
+                                                fieldWithPath("data.schedule").type(JsonFieldType.OBJECT).description("일정"),
+                                                fieldWithPath("data.schedule.scheduleId").type(JsonFieldType.NUMBER).description("일정 식별자"),
+                                                fieldWithPath("data.schedule.scheduleBody").type(JsonFieldType.STRING).description("일정 내용"),
+                                                fieldWithPath("data.notice").type(JsonFieldType.OBJECT).description("공지"),
+                                                fieldWithPath("data.notice.noticeId").type(JsonFieldType.NUMBER).description("공지 식별자"),
+                                                fieldWithPath("data.notice.noticeBody").type(JsonFieldType.STRING).description("공지 내용"),
+                                                fieldWithPath("data.homeworks").type(JsonFieldType.ARRAY).description("과제"),
+                                                fieldWithPath("data.homeworks[].homeworkId").type(JsonFieldType.NUMBER).description("과제 식별자"),
+                                                fieldWithPath("data.homeworks[].homeworkBody").type(JsonFieldType.STRING).description("과제 내용"),
+                                                fieldWithPath("data.homeworks[].homeworkStatus").type(JsonFieldType.STRING).description("과제 상태"),
+                                                fieldWithPath("data.noticeStatus").type(JsonFieldType.STRING).description("공지 글 유무 NOTICE/NONE")
+                                        )
+                                )
+                        ));
+    }
+
+    @Test
+    @DisplayName("일지 상세 조회 TEST")
+    @WithMockUser
+    void getDateNotice() throws Exception {
+        // Given
+        Long dateNoticeId = 1L;
+        given(dateNoticeService.getDateNotice(anyLong())).willReturn(new DateNotice());
+        given(dateNoticeMapper.dateNoticeToDateNoticeResponseDto(any(DateNotice.class)))
+                .willReturn(ResponseStubData.createDateNoticeResponse());
+        // When
+        RequestBuilder result = RestDocumentationRequestBuilders
+                .get("/tutoring/date-notice/{dateNoticeId}", dateNoticeId)
+                .header("Authorization", "Access Token Value")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8.displayName());
+        // Then
+        mockMvc.perform(result)
+                .andExpect(status().isOk())
+                .andDo(
+                        MockMvcRestDocumentation.document("getDateNotice",
+                                ApiDocumentUtils.getRequestPreProcessor(),
+                                ApiDocumentUtils.getResponsePreProcessor(),
+                                RequestDocumentation.pathParameters(
+                                        parameterWithName("dateNoticeId").description("일지 식별자")
+                                ),
+                                HeaderDocumentation.requestHeaders(
+                                        headerWithName("Authorization").description("AccessToken")
+                                ),
+                                PayloadDocumentation.responseFields(
+                                        List.of(
+                                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+                                                fieldWithPath("data.dateNoticeId").type(JsonFieldType.NUMBER).description("일지 식별자"),
+                                                fieldWithPath("data.dateNoticeTitle").type(JsonFieldType.STRING).description("일지 제목"),
+                                                fieldWithPath("data.startTime").type(JsonFieldType.STRING).description("일정 시작 시각"),
+                                                fieldWithPath("data.endTime").type(JsonFieldType.STRING).description("일정 종료 시각"),
+                                                fieldWithPath("data.schedule").type(JsonFieldType.OBJECT).description("일정"),
+                                                fieldWithPath("data.schedule.scheduleId").type(JsonFieldType.NUMBER).description("일정 식별자"),
+                                                fieldWithPath("data.schedule.scheduleBody").type(JsonFieldType.STRING).description("일정 내용"),
+                                                fieldWithPath("data.notice").type(JsonFieldType.OBJECT).description("공지"),
+                                                fieldWithPath("data.notice.noticeId").type(JsonFieldType.NUMBER).description("공지 식별자"),
+                                                fieldWithPath("data.notice.noticeBody").type(JsonFieldType.STRING).description("공지 내용"),
+                                                fieldWithPath("data.homeworks").type(JsonFieldType.ARRAY).description("과제"),
+                                                fieldWithPath("data.homeworks[].homeworkId").type(JsonFieldType.NUMBER).description("과제 식별자"),
+                                                fieldWithPath("data.homeworks[].homeworkBody").type(JsonFieldType.STRING).description("과제 내용"),
+                                                fieldWithPath("data.homeworks[].homeworkStatus").type(JsonFieldType.STRING).description("과제 상태"),
+                                                fieldWithPath("data.noticeStatus").type(JsonFieldType.STRING).description("공지 글 유무 NOTICE/NONE")
+                                        )
+                                )
+                        ));
+    }
+
+    @Test
+    @DisplayName("일지 수정 TEST")
+    @WithMockUser
+    void patchDateNotice() throws Exception {
+        // Given
+        Long dateNoticeId = 1L;
+        DateNoticePatchDto patchDto = createDateNoticePatchDto();
+        given(dateNoticeMapper.dateNoticePatchDtoToDateNotice(any(DateNoticePatchDto.class)))
+                .willReturn(new DateNotice());
+        given(dateNoticeService.updateDateNotice(any(DateNotice.class)))
+                .willReturn(new DateNotice());
+        given(dateNoticeMapper.dateNoticeToDateNoticeResponseDto(any(DateNotice.class)))
+                .willReturn(ResponseStubData.createDateNoticeResponse());
+        Gson gson = new Gson();
+        String content = gson.toJson(patchDto);
+        // When
+        RequestBuilder result = RestDocumentationRequestBuilders
+                .patch("/tutoring/date-notice/{dateNoticeId}", dateNoticeId)
+                .header("Authorization", "Access Token Value")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8.displayName());
+        // Then
+        mockMvc.perform(result)
+                .andExpect(status().isOk())
+                .andDo(
+                        MockMvcRestDocumentation.document("patchDateNotice",
+                                ApiDocumentUtils.getRequestPreProcessor(),
+                                ApiDocumentUtils.getResponsePreProcessor(),
+                                RequestDocumentation.pathParameters(
+                                        parameterWithName("dateNoticeId").description("일지 식별자")
+                                ),
+                                HeaderDocumentation.requestHeaders(
+                                        headerWithName("Authorization").description("AccessToken")
+                                ),
+                                PayloadDocumentation.requestFields(
+                                        List.of(
+                                                fieldWithPath("dateNoticeTitle").type(JsonFieldType.STRING).description("일지 타이틀"),
+                                                fieldWithPath("dateNoticeTitle").type(JsonFieldType.STRING).description("일지 타이틀"),
+                                                fieldWithPath("startTime").type(JsonFieldType.STRING).description("시작 시간"),
+                                                fieldWithPath("endTime").type(JsonFieldType.STRING).description("종료 시각"),
+                                                fieldWithPath("scheduleBody").type(JsonFieldType.STRING).description("일정 내용"),
+                                                fieldWithPath("noticeBody").type(JsonFieldType.STRING).description("공지 내용"),
+                                                fieldWithPath("homeworks").type(JsonFieldType.ARRAY).description("과제"),
+                                                fieldWithPath("homeworks[].homeworkBody").type(JsonFieldType.STRING).description("과제 내용"),
+                                                fieldWithPath("homeworks[].homeworkStatus").type(JsonFieldType.STRING).description("과제 상태 PROGRESS/FINISH")
+                                        )
+
+                                ),
+                                PayloadDocumentation.responseFields(
+                                        List.of(
+                                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+                                                fieldWithPath("data.dateNoticeId").type(JsonFieldType.NUMBER).description("일지 식별자"),
+                                                fieldWithPath("data.dateNoticeTitle").type(JsonFieldType.STRING).description("일지 제목"),
+                                                fieldWithPath("data.startTime").type(JsonFieldType.STRING).description("일정 시작 시각"),
+                                                fieldWithPath("data.endTime").type(JsonFieldType.STRING).description("일정 종료 시각"),
+                                                fieldWithPath("data.schedule").type(JsonFieldType.OBJECT).description("일정"),
+                                                fieldWithPath("data.schedule.scheduleId").type(JsonFieldType.NUMBER).description("일정 식별자"),
+                                                fieldWithPath("data.schedule.scheduleBody").type(JsonFieldType.STRING).description("일정 내용"),
+                                                fieldWithPath("data.notice").type(JsonFieldType.OBJECT).description("공지"),
+                                                fieldWithPath("data.notice.noticeId").type(JsonFieldType.NUMBER).description("공지 식별자"),
+                                                fieldWithPath("data.notice.noticeBody").type(JsonFieldType.STRING).description("공지 내용"),
+                                                fieldWithPath("data.homeworks").type(JsonFieldType.ARRAY).description("과제"),
+                                                fieldWithPath("data.homeworks[].homeworkId").type(JsonFieldType.NUMBER).description("과제 식별자"),
+                                                fieldWithPath("data.homeworks[].homeworkBody").type(JsonFieldType.STRING).description("과제 내용"),
+                                                fieldWithPath("data.homeworks[].homeworkStatus").type(JsonFieldType.STRING).description("과제 상태"),
+                                                fieldWithPath("data.noticeStatus").type(JsonFieldType.STRING).description("공지 글 유무 NOTICE/NONE")
+                                        )
+                                )
+                        ));
+    }
+
+    @Test
+    @DisplayName("일지 삭제 TEST")
+    @WithMockUser
+    void deleteDateNotice() throws Exception {
+        // Given
+        Long dateNoticeId = 1L;
+        doNothing().when(dateNoticeService).deleteDateNotice(anyLong());
+        // When
+        RequestBuilder result = RestDocumentationRequestBuilders
+                .delete("/tutoring/date-notice/{dateNoticeId}", dateNoticeId)
+                .header("Authorization", "Access Token Value")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8.displayName());
+        // Then
+        mockMvc.perform(result)
+                .andExpect(status().isNoContent())
+                .andDo(
+                        MockMvcRestDocumentation.document("deleteDateNotice",
+                                ApiDocumentUtils.getRequestPreProcessor(),
+                                ApiDocumentUtils.getResponsePreProcessor(),
+                                RequestDocumentation.pathParameters(
+                                        parameterWithName("dateNoticeId").description("일지 식별자")
+                                ),
+                                HeaderDocumentation.requestHeaders(
+                                        headerWithName("Authorization").description("AccessToken")
+                                )));
+    }
+
+    private DateNoticePostDto createDateNoticePostDto() {
+        DateNoticePostDto get = new DateNoticePostDto();
+        get.setDateNoticeTitle("test");
+        get.setStartTime(LocalDateTime.now().toString());
+        get.setEndTime(LocalDateTime.now().toString());
+        get.setScheduleBody("test");
+        get.setNoticeBody("test");
+        HomeworkPostDto dto = new HomeworkPostDto();
+        dto.setHomeworkBody("test");
+        dto.setHomeworkStatus("PROGRESS");
+        get.setHomeworks(List.of(dto));
+        return get;
+    }
+
+
+    private DateNoticePatchDto createDateNoticePatchDto() {
+        DateNoticePatchDto get = new DateNoticePatchDto();
+        get.setDateNoticeTitle("test");
+        get.setStartTime(LocalDateTime.now().toString());
+        get.setEndTime(LocalDateTime.now().toString());
+        get.setScheduleBody("test");
+        get.setNoticeBody("test");
+        HomeworkPatchDto dto = new HomeworkPatchDto();
+        dto.setHomeworkBody("test");
+        dto.setHomeworkStatus("PROGRESS");
+        get.setHomeworks(List.of(dto));
+        return get;
     }
 
 }
