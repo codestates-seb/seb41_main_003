@@ -14,6 +14,7 @@ const defaultOptions = {
  */
 const useScroll = (callbackFunc, ref, options = defaultOptions) => {
   const [isShow, setIsShow] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const intersectionFunc = (entries) => {
     entries.forEach((entry) => {
@@ -38,12 +39,13 @@ const useScroll = (callbackFunc, ref, options = defaultOptions) => {
   //* 상태가 true일 때 콜백함수 실행
   useEffect(() => {
     if (!isShow) return;
+    setIsLoading(true);
     setTimeout(() => {
       callbackFunc();
     }, 500);
   }, [isShow]);
 
-  return setIsShow;
+  return [isLoading, setIsLoading];
 };
 
 export default useScroll;
