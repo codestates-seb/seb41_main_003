@@ -31,7 +31,7 @@ const Journals = ({
 
   const scrollFunc = async (page) => {
     await axios
-      .get(`/tutoring/details/${profileId}/${tutoringId}?page=${page}&size=6`)
+      .get(`/tutoring/details/${profileId}/${tutoringId}?page=${page}`)
       .then(({ data }) => {
         console.log(data.pageInfo);
         setTutoring({
@@ -48,7 +48,10 @@ const Journals = ({
     <ul className={styles.list}>
       {tutoring.dateNotices.map((el) => {
         return (
-          <Link to={`/journal/${el.dateNoticeId}`} key={el.dateNoticeId}>
+          <Link
+            to={`/journal/${tutoringId}/${el.dateNoticeId}`}
+            key={el.dateNoticeId}
+          >
             <li className={styles.li}>
               <div className={styles.dateBox}>
                 <span className={styles.day}>
