@@ -63,8 +63,8 @@ public class ReviewService {
                     .map(review -> (review.getProfessional() +
                             review.getPunctuality() +
                             review.getExplanation() +
-                            review.getReadiness()) / 4)
-                    .mapToInt(i -> i)
+                            review.getReadiness()) / 4.0)
+                    .mapToDouble(i -> i)
                     .average()
                     .orElseThrow(
                             () -> new ServiceLogicException(ErrorCode.REVIEW_NOT_FOUND)
