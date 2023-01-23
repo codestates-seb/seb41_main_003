@@ -5,12 +5,13 @@ import { CheckBox } from '../Input';
 import DropDown from './DropDown';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 const JournalForm = ({ userData }) => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
+  const { tutoringId } = useParams();
 
   const Navigate = useNavigate();
   const {
@@ -28,8 +29,7 @@ const JournalForm = ({ userData }) => {
     props: {
       text: '과외 리스트 페이지로 이동하시겠습니까?',
       modalHandler: () => {
-        //TODO: 해당 프로필Id의 과외 리스트 페이지로 이동 (useParam)
-        Navigate('/tutoring');
+        Navigate(`/tutoring/${tutoringId}`);
         resetModal();
       },
     },

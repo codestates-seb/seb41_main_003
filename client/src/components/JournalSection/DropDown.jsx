@@ -11,7 +11,7 @@ const DropDown = () => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
   const navigate = useNavigate();
-  const { dateNoticeId } = useParams();
+  const { dateNoticeId, tutoringId } = useParams();
 
   const [isClicked, setIsClicked] = useState(false);
 
@@ -56,7 +56,7 @@ const DropDown = () => {
       text: '일지가 삭제 되었습니다.',
       modalHandler: () => {
         // TODO : 튜터링 페이지로 이동 필요
-        navigate(`/tutoring`);
+        navigate(`/tutoring/${tutoringId}`);
         resetModal();
       },
     },
