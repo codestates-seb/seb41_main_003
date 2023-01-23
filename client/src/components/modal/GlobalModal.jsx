@@ -20,7 +20,8 @@ import GetTextModal from './GetTextModal';
 
 export const GlobalModal = () => {
   const reset = useResetRecoilState(ModalState);
-  const { isOpen, modalType, props } = useRecoilValue(ModalState);
+  const { isOpen, modalType, props, backDropHandle } =
+    useRecoilValue(ModalState);
   if (!isOpen) return;
 
   const modal = {
@@ -43,10 +44,9 @@ export const GlobalModal = () => {
   return (
     <div
       className={styles.backdrop}
-      {...(modalType === 'admin' ||
-        modalType === 'bothHandler' || {
-          onClick: () => reset(),
-        })}
+      {...(!backDropHandle && {
+        onClick: () => reset(),
+      })}
       aria-hidden="true"
     >
       {modal[modalType]}
