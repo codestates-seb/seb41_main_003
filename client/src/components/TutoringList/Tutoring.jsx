@@ -27,11 +27,14 @@ const Tutoring = ({ tutoring }) => {
               : tutorName}
             | {tutoringTitle}
           </h4>
-          <span>
-            {new Date(createAt).toLocaleDateString()} ~{' '}
-            {tutoringStatus === 'FINISH' &&
-              new Date(updateAt).toLocaleDateString()}
-          </span>
+          {createAt === '' ? undefined : (
+            <span>
+              {new Date(createAt).toLocaleDateString()} ~{' '}
+              {tutoringStatus === 'FINISH' &&
+                new Date(updateAt).toLocaleDateString()}
+            </span>
+          )}
+
           {tutoringStatus === 'UNCHECK' && <span className={styles.noti} />}
         </div>
       </Link>

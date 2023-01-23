@@ -9,6 +9,7 @@ const MessageList = ({ messageList }) => {
 
   const getCurrentRoomId = (e) => {
     setCurrentRoomId(e.currentTarget.id);
+    console.log('CurrentRoomId 변경함수');
   };
   console.log(CurrentRoomId, '대화 상대를 누면 CurrentRoomId를 변경');
 

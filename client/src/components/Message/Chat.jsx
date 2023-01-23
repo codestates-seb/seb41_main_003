@@ -1,26 +1,43 @@
 import PropType from 'prop-types';
 import styles from './Chat.module.css';
 import axios from 'axios';
-import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
-import Profile from '../../recoil/profile';
+import { useResetRecoilState, useSetRecoilState } from 'recoil';
+
 import ModalState from '../../recoil/modal.js';
 
-const Chat = ({ message, tutoringId, getMessageRoom }) => {
+const Chat = ({
+  message,
+  getMessageRoom,
+  CurrentRoomId,
+  receiveMessageId,
+  tutoringId,
+}) => {
   const { senderId, messageContent, senderName, createAt } = message;
-  const { profileId } = useRecoilValue(Profile);
+  const profileId = JSON.parse(localStorage.getItem('current_user')).profileId;
 
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
+
+  const sendRQMessage = async () => {
+    await axios
+      .post(`/messages`, {
+        senderId: profileId,
+        receiverId: receiveMessageId,
+        messageRoomId: CurrentRoomId,
+        messageContent: '매칭요청이 취소되었습니다',
+      })
+      .then(() => {
+        console.log('메세지 전송');
+        getMessageRoom();
+      })
+      .catch((err) => console.log(err));
+  };
 
   // 매칭 요청 승인 API
   const confirmMatching = async () => {
     await axios
       .post(`/tutoring/details/${profileId}/${tutoringId}`)
-      .then((res) => {
-        if (res.data.data.tutoringStatus === 'PROGRESS') {
-          window.location.href('/tutoring');
-        }
-      })
+      .then((res) => console.log(res, '매칭요청'))
       .catch((err) => console.log(err, '매칭요청'));
   };
 
@@ -28,8 +45,9 @@ const Chat = ({ message, tutoringId, getMessageRoom }) => {
   const deleteTutoring = async () => {
     await axios
       .delete(`/tutoring/details/${tutoringId}`)
-      .then(() => {
-        console.log('요청취소 -> 특정과외삭제');
+      .then((res) => {
+        console.log(res, tutoringId, '매칭요청 취소');
+        sendRQMessage();
       })
       .catch((err) => console.log(err, '매칭요청 취소'));
   };
@@ -129,7 +147,9 @@ const Chat = ({ message, tutoringId, getMessageRoom }) => {
 
 Chat.propTypes = {
   message: PropType.object,
-  tutoringId: PropType.number,
+  receiveMessageId: PropType.string,
+  CurrentRoomId: PropType.string,
+  tutoringId: PropType.string,
   getMessageRoom: PropType.func,
 };
 

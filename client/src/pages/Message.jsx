@@ -3,9 +3,9 @@ import MessageList from '../components/Message/MessageList';
 import MessageContent from '../components/Message/MessageContent';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import CurrentRoomIdState from '../recoil/currentRoomId.js';
-import Profile from '../recoil/profile';
+import ModalState from '../recoil/modal.js';
 
 const initialState = {
   messageRoomId: 0,
@@ -17,10 +17,24 @@ const initialState = {
 };
 
 const Message = () => {
-  const { profileId } = useRecoilValue(Profile);
   const [messageList, setMessageList] = useState([]);
   const [messageRoom, setMessageRoom] = useState(initialState);
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
+  const profileId = JSON.parse(localStorage.getItem('current_user')).profileId;
+
+  const setModal = useSetRecoilState(ModalState);
+
+  const noMsgAlertModal = {
+    isOpen: true,
+    modalType: 'alert',
+    props: {
+      text: `대화상대가 없습니다.
+
+      ${
+        sessionStorage.getItem('userStatus') === 'TUTOR' ? '튜티' : '튜터'
+      } 프로필의 문의하기 버튼을 눌러서 대화를 시작해주세요.`,
+    },
+  };
 
   useEffect(() => {
     getMessageList();
@@ -47,7 +61,7 @@ const Message = () => {
         setMessageRoom(res.data.data);
         console.log(res.data.data, 'MessageRoom API');
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err.code));
   };
 
   const delMessageRoom = async () => {

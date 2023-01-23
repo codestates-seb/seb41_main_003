@@ -41,3 +41,15 @@
     align-content: flex-start;
   }
 }
+
+.none {
+  width: 50%;
+  max-width: 520px;
+  background-color: $white;
+  box-shadow: $buttonShadow;
+  margin-bottom: 8px;
+  border-radius: 5px;
+  padding: 24px;
+  font-size: $font4;
+  font-weight: $font4W;
+}

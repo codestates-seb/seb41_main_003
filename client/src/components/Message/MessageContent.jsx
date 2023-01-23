@@ -7,22 +7,20 @@ import { useRecoilValue, useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
 import axios from 'axios';
 import CurrentRoomIdState from '../../recoil/currentRoomId';
-import Profile from '../../recoil/profile';
 
 const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
-  const { tutorId, tuteeId, messages } = messageRoom;
-  const { profileId } = useRecoilValue(Profile);
+  const { tutorId, tuteeId, tutoringId, messages } = messageRoom;
   const [isMenu, setIsMenu] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [receiveMessageId, setReceiveMessageId] = useState(0);
-  const [tutoringId, setTutoringId] = useState(0);
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
+  const profileId = JSON.parse(localStorage.getItem('current_user')).profileId;
 
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
 
   // messageList가 변경될때마다 message의 receiver를 변경해줌
-  const func2 = () => {
+  const setReceiver = () => {
     console.log('sender실행하니?');
     if (profileId === tuteeId) {
       setReceiveMessageId(tutorId);
@@ -30,7 +28,7 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
   };
 
   useEffect(() => {
-    func2();
+    setReceiver();
     console.log('currentId바껴서 useEffect');
   }, [CurrentRoomId]);
 
@@ -63,7 +61,6 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
       })
       .then((res) => {
         console.log(res.data.data.tutoringId, '과외 생성 tutoringId');
-        setTutoringId(res.data.data.tutoringId);
       })
       .catch((err) => console.log(err));
   };
@@ -95,7 +92,6 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
       modalHandler: () => {
         resetModal();
         getMessageRoom();
-        window.location.href = `/message/${profileId}`;
       },
     },
   };
@@ -129,8 +125,10 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
           <Chat
             message={message}
             key={message.messageId}
-            tutoringId={tutoringId}
             getMessageRoom={getMessageRoom}
+            receiveMessageId={receiveMessageId}
+            CurrentRoomId={CurrentRoomId}
+            tutoringId={tutoringId}
           />
         ))}
       </div>
@@ -189,6 +187,8 @@ MessageContent.propTypes = {
   messageRoom: PropType.object,
   delMessageRoom: PropType.func,
   getMessageRoom: PropType.func,
+  receiveMessageId: PropType.string,
+  setReceiveMessageId: PropType.func,
 };
 
 export default MessageContent;
