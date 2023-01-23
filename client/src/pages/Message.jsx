@@ -21,6 +21,7 @@ const initialState = {
 const Message = () => {
   const [messageList, setMessageList] = useState([0]);
   const [messageRoom, setMessageRoom] = useState(initialState);
+  const [pageInfo, setPageInfo] = useState({});
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
   const { profileId } = useRecoilValue(Profile);
   const setModal = useSetRecoilState(ModalState);
@@ -42,10 +43,6 @@ const Message = () => {
   };
 
   useEffect(() => {
-    getMessageList();
-  }, []);
-
-  useEffect(() => {
     if (messageList.length !== 0) getMessageRoom();
     else setModal(noMsgAlertModal);
   }, [CurrentRoomId]);
@@ -55,10 +52,15 @@ const Message = () => {
       .get(`/messages/${profileId}`)
       .then((res) => {
         setMessageList(res.data.data);
-        console.log(res.data.data, '메세지 리스트 API');
+        setPageInfo(res.data.pageInfo);
+        console.log(res.data, '메세지 리스트 API');
       })
       .catch((err) => console.log(err, 'getMessageList'));
   };
+
+  useEffect(() => {
+    getMessageList();
+  }, []);
 
   const getMessageRoom = async () => {
     await axios
@@ -85,7 +87,12 @@ const Message = () => {
       <div className={styles.container}>
         <h2>메세지함</h2>
         <div className={styles.message}>
-          <MessageList messageList={messageList} />
+          <MessageList
+            messageList={messageList}
+            setMessageList={setMessageList}
+            pageInfo={pageInfo}
+            setPageInfo={setPageInfo}
+          />
           <MessageContent
             messageRoom={messageRoom}
             getMessageRoom={getMessageRoom}

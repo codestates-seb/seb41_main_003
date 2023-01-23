@@ -11,12 +11,12 @@
 }
 
 .message {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .person {
   width: 312px;
-  height: 72px;
+  height: 76px;
   background-color: $white;
   position: relative;
   display: flex;

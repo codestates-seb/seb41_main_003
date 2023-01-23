@@ -1,5 +1,9 @@
 import { atom } from 'recoil';
 
+// key: 저장소에 저장되는 key 값
+// setSelf: 연결된 atom 의 값을 초기화 해주는 함수
+// onSet: 해당하는 atom 의 값이 변경이 되었을 때 실행되는 함수
+
 const localStorageEffect =
   (key) =>
   ({ setSelf, onSet }) => {

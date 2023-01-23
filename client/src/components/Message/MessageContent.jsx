@@ -16,12 +16,16 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
   const [receiveMessageId, setReceiveMessageId] = useState(0);
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
   const { profileId } = useRecoilValue(Profile);
-  const scrollRef = useRef();
-
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
+  const scrollRef = useRef();
 
-  // messageList가 변경될때마다 message의 receiver를 변경해줌
+  //* 채팅창의 스크롤 위치 제어
+  useEffect(() => {
+    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }, [messageRoom]);
+
+  //* messageList가 변경될때마다 message의 receiver를 변경해줌
   const setReceiver = () => {
     if (profileId === tuteeId) {
       setReceiveMessageId(tutorId);
@@ -32,7 +36,7 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
     setReceiver();
   }, [messageRoom]);
 
-  // 메세지 post API
+  //* 메세지 post API
   const sendMessage = async () => {
     await axios
       .post(`/messages`, {
@@ -48,7 +52,7 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
       .catch((err) => console.log(err));
   };
 
-  // 과외 생성 API
+  //* 과외 생성 API
   const createTutoringAPI = async (value) => {
     await axios
       .post(`/tutoring/${profileId}`, {
@@ -58,7 +62,7 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
         messageRoomId: CurrentRoomId,
       })
       .then((res) => {
-        console.log(res.data.data.tutoringId, '과외 생성 tutoringId');
+        console.log(res.data.data.tutoringId, '과외 생성 API');
       })
       .catch((err) => console.log(err));
   };
@@ -80,6 +84,7 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
       placeHolder: '과외의 이름을 작성하세요',
     },
   };
+
   const matchAlertProps = {
     isOpen: true,
     modalType: 'handlerAlert',
@@ -110,15 +115,13 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
       },
     },
   };
+
   const cancelAlertProps = {
     isOpen: true,
     modalType: 'redAlert',
     props: { text: `상담이 취소되었습니다.` },
   };
 
-  useEffect(() => {
-    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-  }, [messageRoom]);
   return (
     <div className={styles.container}>
       <div className={styles.messageContainer} ref={scrollRef}>
