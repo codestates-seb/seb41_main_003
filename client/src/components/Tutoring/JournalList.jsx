@@ -75,6 +75,7 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
   const finishRquestProps = {
     isOpen: true,
     modalType: 'bothHandler',
+    backDropHandle: true,
     props: {
       text: '상대방이 과외 종료를 요청하였습니다. \n 과외 종료를 수락하시겠습니까? \n 과외가 종료되면 과외 제목 수정이 불가능해집니다.',
       modalHandler: (e) => {
