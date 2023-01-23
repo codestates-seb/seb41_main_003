@@ -9,8 +9,6 @@ import { MdStar } from 'react-icons/md';
 import axios from 'axios';
 import Profile from '../../recoil/profile';
 
-//문의하기 버튼을 눌렀을 때, 403 에러가 발생하면 reIssueToken 하도록
-
 const ProfileCard = ({ user }) => {
   const { name, rate, bio, school, subjects, profileImage } = user;
 
@@ -19,24 +17,23 @@ const ProfileCard = ({ user }) => {
 
   //상대방의 profileId
   const { profileId } = useParams();
+
   //내 프로필 아이디 myProfileId : 코드 작성 시점에는 0으로 고정되어 있는데,
   //로그인 시 혹은 프로필 전환 시 해당 프로필의 id 값으로 세팅 될 예정
   const myProfileId = useRecoilValue(Profile).profileId;
+  const { userStatus } = useRecoilValue(Profile);
   //UserStatus를 꺼내와서 그걸 확인한 다음에 상대가 누구인지 정한다.
   const postData =
-    sessionStorage.getItem('userStatus') === 'TUTOR'
+    userStatus === 'TUTOR'
       ? { tutorId: myProfileId, tuteeId: Number(profileId) }
       : { tutorId: Number(profileId), tuteeId: myProfileId };
 
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
 
   const postNewMessageRoom = async () => {
     await axios
-      .post(
-        `${process.env.REACT_APP_BASE_URL}/messages/${myProfileId}`,
-        postData
-      )
-      .then(() => (window.location.href = `/message/${myProfileId}`))
+      .post(`/messages/${myProfileId}`, postData)
+      .then(() => navigate(`/message`))
       .catch(({ response }) => {
         console.log(response);
         console.log(response.status);
@@ -51,7 +48,7 @@ const ProfileCard = ({ user }) => {
       text: '상대방에게 문의를 요청하시겠습니까?',
       modalHandler: () => {
         postNewMessageRoom();
-        Navigate(`/message/${myProfileId}`);
+        navigate(`/message`);
         reset();
       },
     },
@@ -87,15 +84,18 @@ const ProfileCard = ({ user }) => {
           </span>
         </div>
       </section>
-      <div className={styles.buttonBox}>
-        <ButtonNightBlue
-          buttonHandler={(e) => {
-            e.preventDefault();
-            setModal(confirm);
-          }}
-          text="문의하기"
-        />
-      </div>
+      {Number(profileId) !== myProfileId &&
+        !location.pathname.includes(userStatus.toLowerCase()) && (
+          <div className={styles.buttonBox}>
+            <ButtonNightBlue
+              buttonHandler={(e) => {
+                e.preventDefault();
+                setModal(confirm);
+              }}
+              text="문의하기"
+            />
+          </div>
+        )}
     </div>
   );
 };

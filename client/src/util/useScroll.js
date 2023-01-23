@@ -40,9 +40,7 @@ const useScroll = (callbackFunc, ref, options = defaultOptions) => {
   useEffect(() => {
     if (!isShow) return;
     setIsLoading(true);
-    setTimeout(() => {
-      callbackFunc();
-    }, 500);
+    callbackFunc();
   }, [isShow]);
 
   return [isLoading, setIsLoading];

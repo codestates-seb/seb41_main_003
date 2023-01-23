@@ -14,7 +14,7 @@ const MyProfileCard = ({ user, setUser }) => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
 
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
   const [{ profileId }, setProfile] = useRecoilState(Profile);
 
   const confirm = {
@@ -23,7 +23,9 @@ const MyProfileCard = ({ user, setUser }) => {
     props: {
       text: '프로필 수정 페이지로 이동 하시겠습니까?',
       modalHandler: () => {
-        Navigate(`/editProfile/${profileId}`);
+        navigate(`/editprofile`, {
+          state: { profileId },
+        });
         resetModal();
       },
     },

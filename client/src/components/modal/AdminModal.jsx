@@ -22,15 +22,8 @@ const AdminModal = () => {
   };
 
   const getUserProfile = async () => {
-    axios.defaults.headers.common['Authorization'] =
-      sessionStorage.getItem('authorization') ||
-      localStorage.getItem('authorization');
     axios
-      .get(
-        `/profiles/${
-          sessionStorage.getItem('userId') || localStorage.getItem('userId')
-        }`
-      )
+      .get(`/profiles/${sessionStorage.getItem('userId')}`)
       .then(({ data }) => {
         setProfiles(data.data);
       })
@@ -73,7 +66,7 @@ const AdminModal = () => {
           <h3>전환하실 프로필을 선택하세요.</h3>
           <ul className={styles.profilesList}>
             {profiles.map(({ profileId, name, url }) => (
-              <li className={styles.profile} key={profileId}>
+              <li className={styles.profile} key={`profile${profileId}`}>
                 <button
                   name={`profile${profileId}`}
                   onClick={() => switchHandler(profileId, name, url)}

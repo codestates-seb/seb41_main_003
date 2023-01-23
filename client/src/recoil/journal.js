@@ -30,7 +30,7 @@ const ChangeJournal = atom({
       .format('YYYY-MM-DD HH:mm'),
     scheduleBody: '',
     noticeBody: '',
-    Homeworks: [],
+    homeworks: [],
   },
   effects: [localStorageEffect('journal')],
 });

@@ -42,7 +42,7 @@ const AddJournal = () => {
         .format('YYYY-MM-DD HH:mm'),
       scheduleBody: '',
       noticeBody: '',
-      Homeworks: [],
+      homeworks: [],
     });
     if (initial !== JSON.stringify(userData)) setModal(confirmProps);
   }, []);
