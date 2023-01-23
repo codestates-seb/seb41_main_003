@@ -7,6 +7,7 @@ import { useRecoilValue, useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
 import axios from 'axios';
 import CurrentRoomIdState from '../../recoil/currentRoomId';
+import Profile from '../../recoil/profile';
 
 const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
   const { tutorId, tuteeId, tutoringId, messages } = messageRoom;
@@ -14,14 +15,13 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
   const [inputValue, setInputValue] = useState('');
   const [receiveMessageId, setReceiveMessageId] = useState(0);
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
-  const profileId = JSON.parse(localStorage.getItem('current_user')).profileId;
+  const { profileId } = useRecoilValue(Profile);
 
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
 
   // messageList가 변경될때마다 message의 receiver를 변경해줌
   const setReceiver = () => {
-    console.log('sender실행하니?');
     if (profileId === tuteeId) {
       setReceiveMessageId(tutorId);
     } else setReceiveMessageId(tuteeId);
@@ -29,10 +29,7 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
 
   useEffect(() => {
     setReceiver();
-    console.log('currentId바껴서 useEffect');
-  }, [CurrentRoomId]);
-
-  console.log(receiveMessageId, 'senderID');
+  }, [messageRoom]);
 
   // 메세지 post API
   const sendMessage = async () => {
@@ -187,8 +184,6 @@ MessageContent.propTypes = {
   messageRoom: PropType.object,
   delMessageRoom: PropType.func,
   getMessageRoom: PropType.func,
-  receiveMessageId: PropType.string,
-  setReceiveMessageId: PropType.func,
 };
 
 export default MessageContent;

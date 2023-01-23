@@ -1,7 +1,8 @@
 import PropType from 'prop-types';
 import styles from './Chat.module.css';
 import axios from 'axios';
-import { useResetRecoilState, useSetRecoilState } from 'recoil';
+import { useResetRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
+import Profile from '../../recoil/profile';
 
 import ModalState from '../../recoil/modal.js';
 
@@ -13,32 +14,18 @@ const Chat = ({
   tutoringId,
 }) => {
   const { senderId, messageContent, senderName, createAt } = message;
-  const profileId = JSON.parse(localStorage.getItem('current_user')).profileId;
+  // const profileId = JSON.parse(localStorage.getItem('current_user')).profileId;
+  const { profileId } = useRecoilValue(Profile);
 
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
 
-  const sendRQMessage = async () => {
-    await axios
-      .post(`/messages`, {
-        senderId: profileId,
-        receiverId: receiveMessageId,
-        messageRoomId: CurrentRoomId,
-        messageContent: '매칭요청이 취소되었습니다',
-      })
-      .then(() => {
-        console.log('메세지 전송');
-        getMessageRoom();
-      })
-      .catch((err) => console.log(err));
-  };
-
   // 매칭 요청 승인 API
   const confirmMatching = async () => {
     await axios
-      .post(`/tutoring/details/${profileId}/${tutoringId}`)
-      .then((res) => console.log(res, '매칭요청'))
-      .catch((err) => console.log(err, '매칭요청'));
+      .patch(`/tutoring/details/${profileId}/${tutoringId}`)
+      .then((res) => console.log(res, '매칭요청 승인'))
+      .catch((err) => console.log(err, '매칭요청 승인'));
   };
 
   // 매칭 요청중인 과외 (완전 삭제) API
@@ -47,12 +34,42 @@ const Chat = ({
       .delete(`/tutoring/details/${tutoringId}`)
       .then((res) => {
         console.log(res, tutoringId, '매칭요청 취소');
-        sendRQMessage();
       })
       .catch((err) => console.log(err, '매칭요청 취소'));
   };
 
-  // 요청 수락 버튼
+  //매칭요청 승인시에 보내는 메세지
+  const matchingConfirmMessage = async () => {
+    await axios
+      .post(`/messages`, {
+        senderId: profileId,
+        receiverId: receiveMessageId,
+        messageRoomId: CurrentRoomId,
+        messageContent: '< 매칭요청이 승인되었습니다 >',
+      })
+      .then(() => {
+        console.log('메세지 전송');
+        getMessageRoom();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  //매칭취소시에 보내는 메세지
+  const matchingCancelessage = async () => {
+    await axios
+      .post(`/messages`, {
+        senderId: profileId,
+        receiverId: receiveMessageId,
+        messageRoomId: CurrentRoomId,
+        messageContent: '< 매칭요청이 취소되었습니다 >',
+      })
+      .then(() => {
+        console.log('메세지 전송');
+        getMessageRoom();
+      })
+      .catch((err) => console.log(err));
+  };
+
   const matchConfirmModal = {
     isOpen: true,
     modalType: 'confirm',
@@ -62,6 +79,7 @@ const Chat = ({
     `,
       modalHandler: () => {
         confirmMatching();
+        matchingConfirmMessage();
         resetModal();
         getMessageRoom();
         setModal(matchAlertModal);
@@ -79,7 +97,6 @@ const Chat = ({
     },
   };
 
-  //요청 취소 버튼
   const cancelConfirmModal = {
     isOpen: true,
     modalType: 'redConfirm',
@@ -88,6 +105,7 @@ const Chat = ({
     `,
       modalHandler: () => {
         deleteTutoring();
+        matchingCancelessage();
         resetModal();
         getMessageRoom();
         setModal(cancelAlertModal);
@@ -149,7 +167,7 @@ Chat.propTypes = {
   message: PropType.object,
   receiveMessageId: PropType.string,
   CurrentRoomId: PropType.string,
-  tutoringId: PropType.string,
+  tutoringId: PropType.number,
   getMessageRoom: PropType.func,
 };
 

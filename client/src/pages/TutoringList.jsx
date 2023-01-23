@@ -31,7 +31,7 @@ const TutoringList = () => {
   const [pageInfo, setPageInfo] = useState(initialState.pageInfo);
   const [isFinished, setIsFinished] = useState(false);
   const [page, setPage] = useState(0);
-  const profilId = JSON.parse(localStorage.getItem('current_user')).profileId;
+  const { profileId } = useRecoilValue(Profile);
 
   const filterHandler = (e) => {
     const { name } = e.target;
@@ -41,7 +41,7 @@ const TutoringList = () => {
 
   const getTutoringList = async () => {
     await axios
-      .get(`/tutoring/${profilId}?get=${isFinished ? 'FINISH' : 'PROGRESS'}`)
+      .get(`/tutoring/${profileId}?get=${isFinished ? 'FINISH' : 'PROGRESS'}`)
       .then((res) => {
         if (res.data.data.length === 0) {
           console.log('과외 없다고 보여줘');

@@ -6,6 +6,8 @@ import axios from 'axios';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import CurrentRoomIdState from '../recoil/currentRoomId.js';
 import ModalState from '../recoil/modal.js';
+import { useNavigate } from 'react-router-dom';
+import Profile from '../recoil/profile';
 
 const initialState = {
   messageRoomId: 0,
@@ -17,22 +19,25 @@ const initialState = {
 };
 
 const Message = () => {
-  const [messageList, setMessageList] = useState([]);
+  const [messageList, setMessageList] = useState([0]);
   const [messageRoom, setMessageRoom] = useState(initialState);
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
-  const profileId = JSON.parse(localStorage.getItem('current_user')).profileId;
-
+  const { profileId } = useRecoilValue(Profile);
   const setModal = useSetRecoilState(ModalState);
+  const navigate = useNavigate();
 
   const noMsgAlertModal = {
     isOpen: true,
-    modalType: 'alert',
+    modalType: 'handleAlert',
     props: {
       text: `대화상대가 없습니다.
 
       ${
         sessionStorage.getItem('userStatus') === 'TUTOR' ? '튜티' : '튜터'
       } 프로필의 문의하기 버튼을 눌러서 대화를 시작해주세요.`,
+      modalHandler: () => {
+        navigate(-1);
+      },
     },
   };
 
@@ -41,7 +46,8 @@ const Message = () => {
   }, []);
 
   useEffect(() => {
-    getMessageRoom();
+    if (messageList.length !== 0) getMessageRoom();
+    else setModal(noMsgAlertModal);
   }, [CurrentRoomId]);
 
   const getMessageList = async () => {
@@ -49,9 +55,9 @@ const Message = () => {
       .get(`/messages/${profileId}`)
       .then((res) => {
         setMessageList(res.data.data);
-        console.log(res.data.data, 'getMessageList API');
+        console.log(res.data.data, '메세지 리스트 API');
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err, 'getMessageList'));
   };
 
   const getMessageRoom = async () => {
@@ -61,7 +67,7 @@ const Message = () => {
         setMessageRoom(res.data.data);
         console.log(res.data.data, 'MessageRoom API');
       })
-      .catch((err) => console.log(err.code));
+      .catch((err) => console.log(err.code, 'getMessageRoom'));
   };
 
   const delMessageRoom = async () => {
