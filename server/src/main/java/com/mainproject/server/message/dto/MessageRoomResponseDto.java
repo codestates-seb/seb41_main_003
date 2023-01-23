@@ -29,6 +29,8 @@ public class MessageRoomResponseDto {
 
     private String tuteeName;
 
+    private Long tutoringId;
+
     private List<MessageResponseDto> messages;
 
     public MessageRoomResponseDto(
@@ -40,6 +42,7 @@ public class MessageRoomResponseDto {
         this.tuteeId = messageRoom.getTutee().getProfileId();
         this.tutorName = messageRoom.getTutor().getName();
         this.tuteeName = messageRoom.getTutee().getName();
+        this.tutoringId = messageRoom.getTutoringId();
         this.messages = new ArrayList<>(messageRoom.getMessages())
                 .stream()
                 .map(MessageResponseDto::of)
