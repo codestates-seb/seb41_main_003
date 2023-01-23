@@ -23,7 +23,7 @@ const MessageList = ({ messageList }) => {
                 className={styles.person}
               >
                 <img
-                  src={list.targetImageUrl || defaultUser}
+                  src={list.targetProfileUrl || defaultUser}
                   alt="user"
                   className={styles.userImg}
                 />
