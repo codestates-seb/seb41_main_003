@@ -147,11 +147,7 @@ const Header = () => {
             <Link to="/tuteelist">학생 찾기</Link>
           </li>
           <li>
-            <button
-              onClick={() =>
-                notAuthNavigate(`/tutoringlist/${profile.profileId}`)
-              }
-            >
+            <button onClick={() => notAuthNavigate(`/tutoringlist`)}>
               과외 관리
             </button>
           </li>

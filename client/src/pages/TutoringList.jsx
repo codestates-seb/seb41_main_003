@@ -46,7 +46,6 @@ const TutoringList = () => {
         if (res.data.data.length === 0) {
           console.log('과외 없다고 보여줘');
         } else {
-          console.log(res.data, 'tutoringList');
           setTutorings(res.data);
           setPageInfo(res.data.pageInfo);
         }
