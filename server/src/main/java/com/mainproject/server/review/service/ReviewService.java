@@ -49,7 +49,8 @@ public class ReviewService {
                         () -> new ServiceLogicException(ErrorCode.REVIEW_NOT_FOUND)
                 );
         Review updateReview = updateReviewField(review, findReview);
-        setRate(review.getTutor());
+        updateReview.addTutor(tutoring.getTutor());
+        setRate(tutoring.getTutor());
         return reviewRepository.save(updateReview);
     }
 
