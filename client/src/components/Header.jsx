@@ -192,7 +192,7 @@ const Header = () => {
                 <Link to={`/myprofile/${profile.profileId}`}>프로필</Link>
               </li>
               <li>
-                <Link to={`/message/${profile.profileId}`}>메세지함</Link>
+                <Link to={`/message`}>메세지함</Link>
               </li>
               <li>
                 <button onClick={() => setModal(adminProps)}>
