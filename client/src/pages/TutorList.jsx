@@ -134,6 +134,11 @@ const TutorList = () => {
               <FeedItem data={tutor} userStatus="TUTOR" />
             </Link>
           ))}
+          {tutorData.length === 0 && (
+            <div className={styles.notFound}>
+              표시 할 튜터가 없습니다. 검색 조건을 확인하세요.
+            </div>
+          )}
         </div>
         <LoadingIndicator ref={loadingRef} isLoading={isLoading} />
       </div>
