@@ -86,7 +86,9 @@ const Admin = () => {
                             text: `프로필 수정 페이지로 이동합니다.`,
                             modalHandler: () => {
                               resetModal();
-                              navigate(`/editprofile/${obj.profileId}`);
+                              navigate(`/editprofile`, {
+                                state: { profileId: obj.profileId },
+                              });
                             },
                           },
                         });

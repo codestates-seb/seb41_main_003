@@ -189,7 +189,7 @@ const Header = () => {
           {isMenu && (
             <ul className={styles.dropdown}>
               <li>
-                <Link to={`/myprofile/${profile.profileId}`}>프로필</Link>
+                <Link to={`/myprofile`}>프로필</Link>
               </li>
               <li>
                 <Link to={`/message`}>메세지함</Link>

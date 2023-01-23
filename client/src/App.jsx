@@ -103,9 +103,9 @@ const App = () => {
             <Route path="/tuteeprofile/:profileId" element={<TuteeProfile />} />
             <Route path="/userinfo" element={<UserInfo />} />
             <Route path="/addprofile" element={<AddProfile />} />
-            <Route path="/editprofile/:profileId" element={<EditProfile />} />
+            <Route path="/editprofile" element={<EditProfile />} />
             <Route path="/message" element={<Message />} />
-            <Route path="/myprofile/:profileId" element={<MyProfile />} />
+            <Route path="/myprofile" element={<MyProfile />} />
             <Route
               path="/journal/:tutoringId/:dateNoticeId"
               element={<Journal />}
