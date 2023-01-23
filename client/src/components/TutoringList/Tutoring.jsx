@@ -19,7 +19,7 @@ const Tutoring = ({ tutoring }) => {
         tutoringStatus === 'FINISH' && styles.finish
       }`}
     >
-      <Link to={`/tutoring/${tutoringId}`}>
+      <Link to="/tutoring" state={{ tutoringId }}>
         <div>
           <h4>
             {sessionStorage.getItem('userStatus') === 'TUTOR'

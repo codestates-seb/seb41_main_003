@@ -1,7 +1,7 @@
 import styles from './Tutoring.module.css';
 import JournalList from '../components/Tutoring/JournalList';
 import FinishedJournalList from '../components/Tutoring/FinishedJournalList';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Profile from '../recoil/profile';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
@@ -40,7 +40,9 @@ const Tutoring = () => {
   });
 
   const { profileId } = useRecoilValue(Profile);
-  const { tutoringId } = useParams();
+
+  const tutoringId = useLocation().state.tutoringId;
+  console.log(tutoringId);
 
   const getTutoringData = async () => {
     await axios
