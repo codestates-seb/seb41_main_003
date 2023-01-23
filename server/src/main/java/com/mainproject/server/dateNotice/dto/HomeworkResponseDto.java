@@ -16,12 +16,12 @@ public class HomeworkResponseDto {
 
     private String homeworkBody;
 
-    private String HomeworkStatus;
+    private String homeworkStatus;
 
     public HomeworkResponseDto(Homework homework) {
         this.homeworkId = homework.getHomeworkId();
         this.homeworkBody = homework.getHomeworkBody();
-        this.HomeworkStatus = homework.getHomeworkStatus().name();
+        this.homeworkStatus = homework.getHomeworkStatus().name();
     }
 
     public static HomeworkResponseDto of(Homework homework) {
