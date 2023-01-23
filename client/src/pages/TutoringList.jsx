@@ -6,8 +6,8 @@ import Pagination from '../util/Pagination';
 import { useRecoilValue } from 'recoil';
 import Profile from '../recoil/profile';
 
-const initialState = {
-  data: [
+const TutoringList = () => {
+  const [tutorings, setTutorings] = useState([
     {
       tutoringId: '0',
       tutorName: '',
@@ -17,18 +17,13 @@ const initialState = {
       createAt: '',
       updateAt: '',
     },
-  ],
-  pageInfo: {
+  ]);
+  const [pageInfo, setPageInfo] = useState({
     page: 0,
     size: 1,
     totalElements: 1,
     totalPages: 1,
-  },
-};
-
-const TutoringList = () => {
-  const [tutorings, setTutorings] = useState({});
-  const [pageInfo, setPageInfo] = useState(initialState.pageInfo);
+  });
   const [isFinished, setIsFinished] = useState(false);
   const [page, setPage] = useState(0);
   const { profileId } = useRecoilValue(Profile);
@@ -46,7 +41,7 @@ const TutoringList = () => {
         if (res.data.data.length === 0) {
           console.log('과외 없다고 보여줘');
         } else {
-          setTutorings(res.data);
+          setTutorings(res.data.data);
           setPageInfo(res.data.pageInfo);
         }
       })
@@ -88,7 +83,7 @@ const TutoringList = () => {
           {Object.keys(tutorings).length == 0 ? (
             <div className={styles.none}>과외가 존재하지 않습니다.</div>
           ) : (
-            tutorings.data.map((tutoring) => (
+            tutorings.map((tutoring) => (
               <Tutoring tutoring={tutoring} key={tutoring.tutoringId} />
             ))
           )}
