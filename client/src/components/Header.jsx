@@ -21,12 +21,14 @@ const Header = () => {
   const adminProps = {
     isOpen: true,
     modalType: 'admin',
+    backDropHandle: true,
     props: {},
   };
 
   const statusNoneProps = {
     isOpen: true,
     modalType: 'bothHandler',
+    backDropHandle: true,
     props: {
       text: `서비스 이용을 위해 회원 정보 입력이 필요합니다. 
       회원 정보를 입력하시겠습니까?
