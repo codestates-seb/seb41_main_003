@@ -14,7 +14,6 @@
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   align-items: flex-start;
   overflow-x: hidden;
   overflow-y: auto;

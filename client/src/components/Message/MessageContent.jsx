@@ -1,7 +1,7 @@
 import styles from './MessageContent.module.css';
 import { MdMenu } from 'react-icons/md';
 import PropType from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Chat from './Chat';
 import { useRecoilValue, useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
@@ -16,6 +16,7 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
   const [receiveMessageId, setReceiveMessageId] = useState(0);
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
   const { profileId } = useRecoilValue(Profile);
+  const scrollRef = useRef();
 
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
@@ -115,9 +116,12 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
     props: { text: `상담이 취소되었습니다.` },
   };
 
+  useEffect(() => {
+    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }, [messageRoom]);
   return (
     <div className={styles.container}>
-      <div className={styles.messageContainer}>
+      <div className={styles.messageContainer} ref={scrollRef}>
         {messages.map((message) => (
           <Chat
             message={message}
