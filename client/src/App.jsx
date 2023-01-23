@@ -20,20 +20,17 @@ import EditJournal from './pages/EditJournal';
 import Journal from './pages/Journal';
 import AddJournal from './pages/AddJournal';
 import { GlobalModal } from './components/modal/GlobalModal';
-import { useRef } from 'react';
 import { useResetRecoilState } from 'recoil';
 import axios from 'axios';
 import Profile from './recoil/profile';
+import { useEffect } from 'react';
 
 const App = () => {
-  const footerRef = useRef(null);
   const resetProfile = useResetRecoilState(Profile);
 
   axios.interceptors.request.use(
     (config) => {
-      config.headers.Authorization =
-        sessionStorage.getItem('authorization') ||
-        localStorage.getItem('authorization');
+      config.headers.Authorization = sessionStorage.getItem('authorization');
       return config;
     },
     (err) => {
@@ -45,8 +42,6 @@ const App = () => {
   axios.interceptors.response.use(
     (response) => response,
     async (error) => {
-      console.log(error);
-
       const {
         config,
         response: { status },
@@ -58,24 +53,23 @@ const App = () => {
         status === 403 &&
         error.response.data.message === 'EXPIRED ACCESS TOKEN'
       ) {
+        console.log('Access Token 재발급');
         const originReq = config;
         originReq.sent = true;
 
-        const userId = await (sessionStorage.getItem('userId') ||
-          localStorage.getItem('userId'));
+        const userId = sessionStorage.getItem('userId');
+
         try {
           const {
             data: { authorization },
           } = await axios.get(`/auth/reissue-token/${userId}`);
 
-          localStorage.setItem('authorization', authorization);
           sessionStorage.setItem('authorization', authorization);
 
           originReq.headers.Authorization = authorization;
           return axios(originReq);
         } catch (err) {
           console.log(err);
-          localStorage.clear();
           sessionStorage.clear();
           resetProfile();
           location.href = '/login';
@@ -87,41 +81,45 @@ const App = () => {
 
   axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
+  useEffect(() => {
+    if (!sessionStorage.getItem('authorization')) resetProfile();
+  });
+
   return (
     <div className="app">
       <Router basename="/">
         <Header />
         <div className="content">
           <Routes>
-            <Route path="/" element={<TutorList footerRef={footerRef} />} />
-            <Route
-              path="/tutorlist"
-              element={<TutorList footerRef={footerRef} />}
-            />
-            <Route
-              path="/tuteelist"
-              element={<TuteeList footerRef={footerRef} />}
-            />
+            <Route path="/" element={<TutorList />} />
+            <Route path="/tutorlist" element={<TutorList />} />
+            <Route path="/tuteelist" element={<TuteeList />} />
             <Route path="/tutoringlist/:profileId" element={<TutoringList />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/tutoring:tutoringId" element={<Tutoring />} />
+            <Route path="/tutoring/:tutoringId" element={<Tutoring />} />
             <Route path="/tutorprofile/:profileId" element={<TutorProfile />} />
             <Route path="/tuteeprofile/:profileId" element={<TuteeProfile />} />
             <Route path="/userinfo" element={<UserInfo />} />
             <Route path="/addprofile" element={<AddProfile />} />
-            <Route path="/editprofile/:profileId" element={<EditProfile />} />
-            <Route path="/message/:profileId" element={<Message />} />
-            <Route path="/myprofile/:profileId" element={<MyProfile />} />
-            <Route path="/journal:journalId" element={<Journal />} />
-            <Route path="/editjournal:journalId" element={<EditJournal />} />
-            <Route path="/addjournal:tutoringId" element={<AddJournal />} />
+            <Route path="/editprofile" element={<EditProfile />} />
+            <Route path="/message" element={<Message />} />
+            <Route path="/myprofile" element={<MyProfile />} />
+            <Route
+              path="/journal/:tutoringId/:dateNoticeId"
+              element={<Journal />}
+            />
+            <Route
+              path="/editjournal/:dateNoticeId"
+              element={<EditJournal />}
+            />
+            <Route path="/addjournal/:tutoringId" element={<AddJournal />} />
           </Routes>
         </div>
         <GlobalModal />
       </Router>
-      <Footer ref={footerRef} />
+      <Footer />
     </div>
   );
 };

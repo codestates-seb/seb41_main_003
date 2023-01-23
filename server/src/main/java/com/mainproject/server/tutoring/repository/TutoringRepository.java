@@ -7,19 +7,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TutoringRepository extends JpaRepository<Tutoring, Long> {
-    Page<Tutoring> findAllByTutorProfileIdAndTutoringStatusOrTutorProfileIdAndTutoringStatus(
+    Page<Tutoring> findAllByTutorProfileIdAndTutoringStatusOrTutorProfileIdAndTutoringStatusOrTutorProfileIdAndTutoringStatus(
             Long tutorProfileIdOne,
             TutoringStatus tutoringStatusOne,
             Long tutorProfileIdTwo,
             TutoringStatus tutoringStatusTwo,
+            Long tutorProfileIdThree,
+            TutoringStatus tutoringStatusThree,
             Pageable pageable
     );
 
-    Page<Tutoring> findAllByTuteeProfileIdAndTutoringStatusOrTuteeProfileIdAndTutoringStatus(
+    Page<Tutoring> findAllByTuteeProfileIdAndTutoringStatusOrTuteeProfileIdAndTutoringStatusOrTuteeProfileIdAndTutoringStatus(
             Long tuteeProfileIdOne,
             TutoringStatus tutoringStatusOne,
             Long tuteeProfileIdTwo,
             TutoringStatus tutoringStatusTwo,
+            Long tuteeProfileIdThree,
+            TutoringStatus tutoringStatusThree,
             Pageable pageable
     );
 }

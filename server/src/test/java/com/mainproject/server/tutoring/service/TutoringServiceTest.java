@@ -64,7 +64,9 @@ class TutoringServiceTest {
         testProfile.setProfileStatus(ProfileStatus.TUTEE);
 
         given(profileService.verifiedProfileById(anyLong())).willReturn(testProfile);
-        given(tutoringRepository.findAllByTuteeProfileIdAndTutoringStatusOrTuteeProfileIdAndTutoringStatus(
+        given(tutoringRepository.findAllByTuteeProfileIdAndTutoringStatusOrTuteeProfileIdAndTutoringStatusOrTuteeProfileIdAndTutoringStatus(
+                anyLong(),
+                any(TutoringStatus.class),
                 anyLong(),
                 any(TutoringStatus.class),
                 anyLong(),
@@ -98,7 +100,9 @@ class TutoringServiceTest {
         testProfile.setProfileStatus(ProfileStatus.TUTOR);
 
         given(profileService.verifiedProfileById(anyLong())).willReturn(testProfile);
-        given(tutoringRepository.findAllByTutorProfileIdAndTutoringStatusOrTutorProfileIdAndTutoringStatus(
+        given(tutoringRepository.findAllByTutorProfileIdAndTutoringStatusOrTutorProfileIdAndTutoringStatusOrTutorProfileIdAndTutoringStatus(
+                anyLong(),
+                any(TutoringStatus.class),
                 anyLong(),
                 any(TutoringStatus.class),
                 anyLong(),

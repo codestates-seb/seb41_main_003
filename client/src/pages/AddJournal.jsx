@@ -15,6 +15,7 @@ const AddJournal = () => {
   const confirmProps = {
     isOpen: true,
     modalType: 'bothHandler',
+    backDropHandle: true,
     props: {
       text: `작성 중인 일지가 있습니다. 계속 작성하시겠습니까?
       취소를 누르시면 임시 저장된 데이터가 사라집니다.`,
@@ -42,7 +43,7 @@ const AddJournal = () => {
         .format('YYYY-MM-DD HH:mm'),
       scheduleBody: '',
       noticeBody: '',
-      Homeworks: [],
+      homeworks: [],
     });
     if (initial !== JSON.stringify(userData)) setModal(confirmProps);
   }, []);

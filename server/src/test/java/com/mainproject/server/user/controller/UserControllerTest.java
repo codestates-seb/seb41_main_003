@@ -268,7 +268,7 @@ class UserControllerTest {
         mockMvc.perform(result)
                 .andExpect(status().isNoContent())
                 .andDo(
-                        MockMvcRestDocumentation.document("patchUser",
+                        MockMvcRestDocumentation.document("deleteUser",
                                 ApiDocumentUtils.getRequestPreProcessor(),
                                 ApiDocumentUtils.getResponsePreProcessor(),
                                 RequestDocumentation.pathParameters(

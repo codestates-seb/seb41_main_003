@@ -16,7 +16,6 @@
   background-color: $white;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   padding: 16px;
   border-radius: 5px;
@@ -92,11 +91,39 @@
   font-weight: $font6W;
 }
 
+.nameBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-bottom: 24px;
+
+  > span {
+    font-size: $font2;
+    font-weight: $font2W;
+    margin-right: 16px;
+  }
+}
+
 .textBox {
   display: flex;
   flex-direction: column;
   width: 565px;
   padding-left: 12px;
+}
+
+.titleEditButtonBox {
+  margin-bottom: 16px;
+
+  > button {
+    display: flex;
+    justify-content: flex-start;
+
+    > span {
+      color: $nickel;
+      font-size: $sub;
+      font-weight: $subW;
+    }
+  }
 }
 
 .goal {
@@ -126,29 +153,6 @@
   margin: 4px;
 }
 
-.nameBox {
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 24px;
-
-  > span {
-    font-size: $font2;
-    font-weight: $font2W;
-    margin-right: 16px;
-  }
-
-  > button {
-    display: flex;
-    justify-content: flex-start;
-
-    > span {
-      color: $nickel;
-      font-size: $sub;
-      font-weight: $subW;
-    }
-  }
-}
-
 .buttonBox {
   display: flex;
   flex-direction: column;
@@ -162,12 +166,19 @@
   font-size: $font4;
   font-weight: $font4W;
   width: 200px;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .tutoringDate {
   font-size: $para;
   font-weight: $paraW;
+}
+
+.waitingNoti {
+  font-size: $para;
+  font-weight: 600;
+  color: $red;
+  margin-top: 16px;
 }
 
 .mdEdit {

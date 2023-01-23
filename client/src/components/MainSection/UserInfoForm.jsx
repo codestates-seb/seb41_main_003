@@ -1,7 +1,7 @@
 import styles from './UserInfoForm.module.css';
 import { LabelTextInput, TextInput } from '../Input';
 import { useState, useEffect } from 'react';
-import { ButtonNightBlue, ButtonRed } from '../Button';
+import { ButtonNightBlue } from '../Button';
 import axios from 'axios';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import validation from '../../util/validation';
@@ -85,11 +85,7 @@ const UserInfoForm = () => {
 
   const getUserInfo = async () => {
     axios
-      .get(
-        `/users/${
-          sessionStorage.getItem('userId') || localStorage.getItem('userId')
-        }`
-      )
+      .get(`/users/${sessionStorage.getItem('userId')}`)
       .then(({ data }) => {
         const { email, nickName, userStatus, phoneNumber } = data.data;
         setUserData({

@@ -16,11 +16,7 @@ const Admin = () => {
 
   const getUserProfile = async () => {
     await axios
-      .get(
-        `/profiles/${
-          sessionStorage.getItem('userId') || localStorage.getItem('userId')
-        }`
-      )
+      .get(`/profiles/${sessionStorage.getItem('userId')}`)
       .then(({ data }) => {
         console.log(data);
 
@@ -90,7 +86,9 @@ const Admin = () => {
                             text: `프로필 수정 페이지로 이동합니다.`,
                             modalHandler: () => {
                               resetModal();
-                              navigate(`/editprofile/${obj.profileId}`);
+                              navigate(`/editprofile`, {
+                                state: { profileId: obj.profileId },
+                              });
                             },
                           },
                         });

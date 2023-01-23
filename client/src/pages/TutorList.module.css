@@ -76,6 +76,15 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   margin-bottom: 16px;
+
+  .notFound {
+    width: 100%;
+    font-size: $font3;
+    font-weight: $font3W;
+    color: $nickel;
+    text-align: center;
+    padding: 160px 0;
+  }
 }
 
 .list {

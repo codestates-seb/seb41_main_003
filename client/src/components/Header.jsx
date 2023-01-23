@@ -21,12 +21,14 @@ const Header = () => {
   const adminProps = {
     isOpen: true,
     modalType: 'admin',
+    backDropHandle: true,
     props: {},
   };
 
   const statusNoneProps = {
     isOpen: true,
     modalType: 'bothHandler',
+    backDropHandle: true,
     props: {
       text: `서비스 이용을 위해 회원 정보 입력이 필요합니다. 
       회원 정보를 입력하시겠습니까?
@@ -39,7 +41,6 @@ const Header = () => {
           resetModal();
           navigate('/userinfo');
         } else {
-          localStorage.clear();
           sessionStorage.clear();
           resetProfile();
           resetModal();
@@ -63,9 +64,7 @@ const Header = () => {
   const verify2ndPassword = async (value, path) => {
     await axios
       .post(
-        `/auth/verify-second-password/${
-          sessionStorage.getItem('userId') || localStorage.getItem('userId')
-        }`,
+        `/auth/verify-second-password/${sessionStorage.getItem('userId')}`,
         { secondPassword: value }
       )
       .then(() => {
@@ -113,7 +112,6 @@ const Header = () => {
     props: {
       text: '로그아웃 하시겠습니까?',
       modalHandler: () => {
-        localStorage.clear();
         sessionStorage.clear();
         resetProfile();
         resetModal();
@@ -197,10 +195,10 @@ const Header = () => {
           {isMenu && (
             <ul className={styles.dropdown}>
               <li>
-                <Link to={`/myprofile/${profile.profileId}`}>프로필</Link>
+                <Link to={`/myprofile`}>프로필</Link>
               </li>
               <li>
-                <Link to={`/message/${profile.profileId}`}>메세지함</Link>
+                <Link to={`/message`}>메세지함</Link>
               </li>
               <li>
                 <button onClick={() => setModal(adminProps)}>

@@ -19,12 +19,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/profiles")
+@Validated
 public class ProfileController {
 
     private final ProfileService profileService;
@@ -33,7 +36,7 @@ public class ProfileController {
 
     @GetMapping("/{userId}")
     public ResponseEntity getProfiles(
-            @PathVariable Long userId
+            @PathVariable @Positive Long userId
     ) {
         List<Profile> profiles = profileService.getProfiles(userId);
         return new ResponseEntity<>(
@@ -44,7 +47,7 @@ public class ProfileController {
 
     @GetMapping("/details/{profileId}")
     public ResponseEntity getProfile(
-            @PathVariable Long profileId,
+            @PathVariable @Positive Long profileId,
             @PageableDefault(page = 0, size = 5, sort = "reviewId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
@@ -60,8 +63,8 @@ public class ProfileController {
 
     @PostMapping("/{userId}")
     public ResponseEntity postProfile(
-            @PathVariable Long userId,
-            @RequestBody @Validated ProfileDto profileDto,
+            @PathVariable @Positive Long userId,
+            @RequestBody @Valid ProfileDto profileDto,
             @PageableDefault(page = 0, size = 5, sort = "reviewId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
@@ -81,8 +84,8 @@ public class ProfileController {
 
     @PatchMapping("/details/{profileId}")
     public ResponseEntity patchProfile(
-            @PathVariable Long profileId,
-            @RequestBody ProfileDto profileDto,
+            @PathVariable @Positive Long profileId,
+            @RequestBody @Valid ProfileDto profileDto,
             @PageableDefault(page = 0, size = 5, sort = "reviewId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
@@ -104,8 +107,8 @@ public class ProfileController {
 
     @PatchMapping("/status/{profileId}")
     public ResponseEntity patchProfileStatus(
-            @PathVariable Long profileId,
-            @RequestBody WantedDto wantedDto,
+            @PathVariable @Positive Long profileId,
+            @RequestBody @Valid WantedDto wantedDto,
             @PageableDefault(page = 0, size = 5, sort = "reviewId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
@@ -126,7 +129,7 @@ public class ProfileController {
 
     @DeleteMapping("/details/{profileId}")
     public ResponseEntity deleteProfile(
-            @PathVariable Long profileId
+            @PathVariable @Positive Long profileId
     ) {
         profileService.deleteProfile(profileId);
         return ResponseEntity.noContent().build();

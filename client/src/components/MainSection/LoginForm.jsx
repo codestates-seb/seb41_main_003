@@ -1,6 +1,6 @@
 import styles from './LoginForm.module.css';
 import { CheckBox, TextInput } from '../Input';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSetRecoilState } from 'recoil';
@@ -26,6 +26,14 @@ const LoginForm = () => {
     setLoginData({ ...loginData, [id]: value });
   };
 
+  useEffect(() => {
+    setIsIdChecked(localStorage.getItem('saveId') !== null);
+    setLoginData({
+      ...loginData,
+      username: localStorage.getItem('saveId') || '',
+    });
+  }, []);
+
   const submitHandler = async (e) => {
     e.preventDefault();
     if (
@@ -36,9 +44,12 @@ const LoginForm = () => {
         .post(process.env.REACT_APP_BASE_URL + '/auth/login', loginData)
         .then(({ data: res }) => {
           if (isIdChecked) localStorage.setItem('saveId', loginData.username);
+          else localStorage.removeItem('saveId');
+
           sessionStorage.setItem('authorization', res.data.Authorization);
           sessionStorage.setItem('userId', res.data.userId);
           sessionStorage.setItem('userStatus', res.data.userStatus);
+
           console.log('로그인 완료');
           setProfile((prev) => ({
             ...prev,
@@ -51,9 +62,9 @@ const LoginForm = () => {
             navigate('/');
           }
         })
-        .catch(({ response }) => {
-          if (response.status === 401) {
-            console.log(response);
+        .catch((res) => {
+          if (res.response?.status === 401) {
+            console.log(res.response);
             console.log('비밀번호 오류');
             setIsFail(401);
           }

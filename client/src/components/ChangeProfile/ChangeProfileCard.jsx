@@ -5,9 +5,9 @@ import { MdMode } from 'react-icons/md';
 import PropType from 'prop-types';
 import SubjectsButtons from './SubjectsButtons';
 import ModalState from '../../recoil/modal.js';
-import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import defaultUser from '../../assets/defaultUser.png';
 import Profile from '../../recoil/profile';
@@ -18,11 +18,13 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
   const [imgSrc, setImgSrc] = useState();
   const navigate = useNavigate();
 
-  const { profileId } = useParams();
+  const profileId = useLocation().state?.profileId;
 
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
   const setProfile = useSetRecoilState(Profile);
+
+  const profile = useRecoilValue(Profile);
 
   const requiredProps = {
     isOpen: true,
@@ -56,7 +58,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
             ...prev,
             url: profileImage.url,
           }));
-          navigate(`/myprofile/${profileId}`);
+          navigate(`/myprofile`);
         }
       })
       .catch(({ response }) => {
@@ -89,21 +91,16 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
     console.log('PATCH 요청');
     patchProfile();
     resetModal();
-    navigate(`/myprofile/${profileId}`);
+    navigate(profile.profileId === profileId ? '/myprofile' : '/admin');
   };
 
   const postProfile = async () => {
     await axios
-      .post(
-        `/profiles/${
-          sessionStorage.getItem('userId') || localStorage.getItem('userId')
-        }`,
-        {
-          ...user,
-        }
-      )
+      .post(`/profiles/${sessionStorage.getItem('userId')}`, {
+        ...user,
+      })
       .then(({ data }) => {
-        patchImg(data.data.profileId, true);
+        if (imgSrc) patchImg(data.data.profileId, true);
         localStorage.removeItem('addProfile');
       })
       .catch(({ response }) => {

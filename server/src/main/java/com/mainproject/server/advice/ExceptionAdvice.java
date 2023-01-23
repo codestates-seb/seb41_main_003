@@ -16,6 +16,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
@@ -35,6 +36,14 @@ public class ExceptionAdvice {
             MethodArgumentNotValidException e
     ) {
         return ErrorResponse.of(e.getBindingResult());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse methodArgumentTypeMismatchHandle(
+            MethodArgumentTypeMismatchException e
+    ) {
+        return ErrorResponse.of(ErrorCode.ARGUMENT_MISMATCH_BAD_REQUEST);
     }
 
     @ExceptionHandler

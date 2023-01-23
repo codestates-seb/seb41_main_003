@@ -6,6 +6,7 @@ import com.mainproject.server.dateNotice.entity.Homework;
 import com.mainproject.server.dateNotice.entity.Notice;
 import com.mainproject.server.dateNotice.entity.Schedule;
 import com.mainproject.server.image.entity.ProfileImage;
+import com.mainproject.server.profile.dto.ProfileDto;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.review.entity.Review;
 import com.mainproject.server.subject.dto.SubjectDto;
@@ -16,6 +17,7 @@ import com.mainproject.server.user.entity.User;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 public class StubData {
@@ -197,6 +199,25 @@ public class StubData {
                 .subject(createSubject(id))
                 .content("test")
                 .subjectProfileId(id)
+                .build();
+    }
+
+    public static ProfileDto createProfileDto() {
+        return ProfileDto.builder()
+                .name("수포자")
+                .bio("잘찍습니다")
+                .school("고고고")
+                .way("잘합니다")
+                .subjects(
+                        List.of(
+                                createSubjectDto(1L),
+                                createSubjectDto(2L)))
+                .difference("할쑤이ㅅ써")
+                .gender("남여")
+                .character("소심함")
+                .pay("비싸다")
+                .wantDate("7/7 9 to 9")
+                .preTutoring("안됨")
                 .build();
     }
 }

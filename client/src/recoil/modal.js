@@ -5,6 +5,7 @@ const ModalState = atom({
   default: {
     isOpen: false,
     modalType: '',
+    backDropHandle: true,
     props: {},
   },
 });
