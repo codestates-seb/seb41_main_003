@@ -7,18 +7,14 @@ import StarRating from '../../util/StarRating';
 import { useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 
-//TODO: GET 매서드로 '특정 과외 후기 조회' 요청을 보낸 뒤 받은 응답을 이용해 이미 작성되어 있던 별점과 코멘트를 뿌려준다.
 const EditReviewModal = ({ modalHandler, initialReview }) => {
   const reset = useResetRecoilState(ModalState);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(initialReview.reviewBody);
   const [reviewData, setReviewData] = useState(initialReview);
 
   const valueHandler = (e) => {
     setValue(e.target.value);
   };
-
-  console.log(value);
-  console.log(reviewData);
 
   return (
     <div
@@ -59,7 +55,7 @@ const EditReviewModal = ({ modalHandler, initialReview }) => {
             <StarRating
               reviewData={reviewData}
               setReviewData={setReviewData}
-              name="explantaion"
+              name="explanation"
             />
           </div>
           <div className={styles.star}>
