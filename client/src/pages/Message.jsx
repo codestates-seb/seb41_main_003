@@ -3,8 +3,10 @@ import MessageList from '../components/Message/MessageList';
 import MessageContent from '../components/Message/MessageContent';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import CurrentRoomIdState from '../recoil/currentRoomId.js';
+import ModalState from '../recoil/modal.js';
+import { useNavigate } from 'react-router-dom';
 import Profile from '../recoil/profile';
 
 const initialState = {
@@ -17,28 +19,45 @@ const initialState = {
 };
 
 const Message = () => {
-  const { profileId } = useRecoilValue(Profile);
-  const [messageList, setMessageList] = useState([]);
+  const [messageList, setMessageList] = useState([0]);
   const [messageRoom, setMessageRoom] = useState(initialState);
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
+  const { profileId } = useRecoilValue(Profile);
+  const setModal = useSetRecoilState(ModalState);
+  const navigate = useNavigate();
+
+  const noMsgAlertModal = {
+    isOpen: true,
+    modalType: 'handleAlert',
+    props: {
+      text: `대화상대가 없습니다.
+
+      ${
+        sessionStorage.getItem('userStatus') === 'TUTOR' ? '튜티' : '튜터'
+      } 프로필의 문의하기 버튼을 눌러서 대화를 시작해주세요.`,
+      modalHandler: () => {
+        navigate(-1);
+      },
+    },
+  };
 
   useEffect(() => {
     getMessageList();
   }, []);
 
   useEffect(() => {
-    getMessageRoom();
+    if (messageList.length !== 0) getMessageRoom();
+    else setModal(noMsgAlertModal);
   }, [CurrentRoomId]);
-  console.log(CurrentRoomId, 'CurrentRoomId');
 
   const getMessageList = async () => {
     await axios
       .get(`/messages/${profileId}`)
       .then((res) => {
         setMessageList(res.data.data);
-        console.log(res.data.data, 'getMessageList API');
+        console.log(res.data.data, '메세지 리스트 API');
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err, 'getMessageList'));
   };
 
   const getMessageRoom = async () => {
@@ -48,7 +67,7 @@ const Message = () => {
         setMessageRoom(res.data.data);
         console.log(res.data.data, 'MessageRoom API');
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err.code, 'getMessageRoom'));
   };
 
   const delMessageRoom = async () => {
@@ -65,8 +84,6 @@ const Message = () => {
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <h2>메세지함</h2>
-        <button onClick={getMessageList}>getMessageList</button>
-        <button onClick={getMessageRoom}>getMessageRoom</button>
         <div className={styles.message}>
           <MessageList messageList={messageList} />
           <MessageContent

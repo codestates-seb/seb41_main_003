@@ -10,24 +10,26 @@ import CurrentRoomIdState from '../../recoil/currentRoomId';
 import Profile from '../../recoil/profile';
 
 const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
-  const { tutorId, tuteeId, messages } = messageRoom;
-  const { profileId } = useRecoilValue(Profile);
+  const { tutorId, tuteeId, tutoringId, messages } = messageRoom;
   const [isMenu, setIsMenu] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [receiveMessageId, setReceiveMessageId] = useState(0);
-  const [tutoringId, setTutoringId] = useState(0);
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
+  const { profileId } = useRecoilValue(Profile);
 
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
 
   // messageList가 변경될때마다 message의 receiver를 변경해줌
-  useEffect(() => {
+  const setReceiver = () => {
     if (profileId === tuteeId) {
       setReceiveMessageId(tutorId);
     } else setReceiveMessageId(tuteeId);
-  }, [CurrentRoomId]);
-  console.log(tutoringId, 'tutoringId');
+  };
+
+  useEffect(() => {
+    setReceiver();
+  }, [messageRoom]);
 
   // 메세지 post API
   const sendMessage = async () => {
@@ -56,7 +58,6 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
       })
       .then((res) => {
         console.log(res.data.data.tutoringId, '과외 생성 tutoringId');
-        setTutoringId(res.data.data.tutoringId);
       })
       .catch((err) => console.log(err));
   };
@@ -88,7 +89,6 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
       modalHandler: () => {
         resetModal();
         getMessageRoom();
-        window.location.href = `/message/${profileId}`;
       },
     },
   };
@@ -122,8 +122,10 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
           <Chat
             message={message}
             key={message.messageId}
-            tutoringId={tutoringId}
             getMessageRoom={getMessageRoom}
+            receiveMessageId={receiveMessageId}
+            CurrentRoomId={CurrentRoomId}
+            tutoringId={tutoringId}
           />
         ))}
       </div>
@@ -182,7 +184,6 @@ MessageContent.propTypes = {
   messageRoom: PropType.object,
   delMessageRoom: PropType.func,
   getMessageRoom: PropType.func,
-  profile: PropType.object,
 };
 
 export default MessageContent;

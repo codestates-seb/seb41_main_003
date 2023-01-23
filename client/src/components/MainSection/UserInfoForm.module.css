@@ -80,7 +80,7 @@
 
   > button:last-of-type {
     padding: 8px 103px;
-    margin-bottom: 36px;
+    margin-bottom: 16px;
   }
 }
 
@@ -145,4 +145,14 @@
   font-size: $font6;
   font-weight: $font6W;
   color: $snow;
+}
+
+.quitButton {
+  margin-bottom: 32px;
+  justify-content: center;
+  display: flex;
+
+  > button:last-of-type {
+    padding: 8px 127px;
+  }
 }

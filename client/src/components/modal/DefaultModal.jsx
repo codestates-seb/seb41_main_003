@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { ButtonNightBlue, ButtonSilver, ButtonRed } from '../Button';
 import { TextInput } from '../Input';
 import { useState } from 'react';
-import { useResetRecoilState, useRecoilState } from 'recoil';
+import { useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
-import TutoringTitleState from '../../recoil/tutoringTitle';
 
 export const AlertModal = ({ text }) => {
   const reset = useResetRecoilState(ModalState);
@@ -142,7 +141,6 @@ export const ConfirmTextModal = ({
 ConfirmTextModal.propTypes = {
   text: PropTypes.string,
   modalHandler: PropTypes.func,
-  setTutoringTitle: PropTypes.func,
   placeHolder: PropTypes.string,
   inputType: PropTypes.string,
 };
@@ -188,51 +186,4 @@ export const RedAlertModal = ({ text }) => {
 RedAlertModal.propTypes = {
   text: PropTypes.string,
   modalHandler: PropTypes.func,
-};
-
-export const GetTextModal = ({ text, modalHandler, placeHolder }) => {
-  const reset = useResetRecoilState(ModalState);
-  const [TutoringTitle, setTutoringTitle] = useRecoilState(TutoringTitleState);
-  // const [value, setValue] = useState('');
-
-  const valueHandler = (e) => {
-    setTutoringTitle(e.target.value);
-
-    console.log(e.target.value, 'in');
-    console.log(TutoringTitle, 'in');
-  };
-
-  console.log(TutoringTitle, 'out');
-  return (
-    <div
-      className={styles.view}
-      onClick={(e) => e.stopPropagation()}
-      role="dialog"
-      aria-hidden
-    >
-      <div className={styles.text}>{text}</div>
-      <div className={styles.input}>
-        <TextInput
-          id="confirmInput"
-          placeHolder={placeHolder}
-          value={TutoringTitle}
-          handler={valueHandler}
-        />
-      </div>
-      <div className={styles.buttonBox}>
-        <ButtonNightBlue
-          name="yes"
-          buttonHandler={(e) => modalHandler(e, TutoringTitle)}
-          text="확인"
-        />
-        <ButtonSilver name="no" buttonHandler={() => reset()} text="취소" />
-      </div>
-    </div>
-  );
-};
-
-GetTextModal.propTypes = {
-  text: PropTypes.string,
-  modalHandler: PropTypes.func,
-  placeHolder: PropTypes.string,
 };

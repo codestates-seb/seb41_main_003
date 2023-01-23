@@ -3,7 +3,7 @@ import { LabelTextInput, TextInput } from '../Input';
 import { useState, useEffect } from 'react';
 import { ButtonNightBlue } from '../Button';
 import axios from 'axios';
-import { useSetRecoilState } from 'recoil';
+import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import validation from '../../util/validation';
 import ModalState from '../../recoil/modal';
 import Profile from '../../recoil/profile';
@@ -27,8 +27,8 @@ const UserInfoForm = () => {
     secondPw: false,
   });
   const setModal = useSetRecoilState(ModalState);
+  const resetModal = useResetRecoilState(ModalState);
   const setProfile = useSetRecoilState(Profile);
-
   const isNewUser = userData.userStatus === 'NONE';
 
   const conflictProp = {
@@ -55,6 +55,31 @@ const UserInfoForm = () => {
     modalType: 'alert',
     props: {
       text: `수정이 완료되었습니다.`,
+    },
+  };
+
+  const confirmQuit = {
+    isOpen: true,
+    modalType: 'redConfirmVali',
+    props: {
+      text: '회원 탈퇴를 원하신다면 \n 아래의 입력창에 "회원 탈퇴" 를 입력 후 \n 확인 버튼을 눌러주세요.',
+      validation: '회원 탈퇴',
+      modalHandler: () => {
+        setModal(alertQuit);
+        deleteUserInfo();
+      },
+    },
+  };
+
+  const alertQuit = {
+    isOpen: true,
+    modalType: 'redHandlerAlert',
+    props: {
+      text: `회원 탈퇴가 완료되었습니다.`,
+      modalHandler: () => {
+        resetModal();
+        window.location.href = `/`;
+      },
     },
   };
 
@@ -180,6 +205,18 @@ const UserInfoForm = () => {
           setModal(conflictProp);
         }
       });
+  };
+
+  //회원탈퇴 API
+  const deleteUserInfo = async () => {
+    await axios
+      .delete(`/users/${sessionStorage.getItem('userId')}`)
+      .then(() => {
+        sessionStorage.clear();
+        localStorage.clear();
+        console.log('회원탈퇴 API 완료');
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -329,9 +366,14 @@ const UserInfoForm = () => {
             ? '비밀번호 확인 입력이 잘못되었습니다.'
             : ''}
         </span>
-
         <ButtonNightBlue text="수정 완료" form="editUserInfo" />
       </form>
+      <div className={styles.quitButton}>
+        <ButtonRed
+          text="회원 탈퇴"
+          buttonHandler={() => setModal(confirmQuit)}
+        />
+      </div>
     </article>
   );
 };

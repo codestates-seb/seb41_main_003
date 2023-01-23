@@ -1,16 +1,15 @@
 import styles from './MessageList.module.css';
 import defaultUser from '../../assets/defaultUser.png';
 import PropTypes from 'prop-types';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import CurrentRoomIdState from '../../recoil/currentRoomId.js';
 
 const MessageList = ({ messageList }) => {
-  const [CurrentRoomId, setCurrentRoomId] = useRecoilState(CurrentRoomIdState);
+  const setCurrentRoomId = useSetRecoilState(CurrentRoomIdState);
 
   const getCurrentRoomId = (e) => {
     setCurrentRoomId(e.currentTarget.id);
   };
-  console.log(CurrentRoomId, 'getCurrentRoomId');
 
   return (
     <div>
@@ -23,7 +22,11 @@ const MessageList = ({ messageList }) => {
                 onClick={getCurrentRoomId}
                 className={styles.person}
               >
-                <img src={defaultUser} alt="user" className={styles.userImg} />
+                <img
+                  src={list.targetImageUrl || defaultUser}
+                  alt="user"
+                  className={styles.userImg}
+                />
                 <div>
                   <h4>{list.targetName}</h4>
                   <p>{list.lastMessage}</p>

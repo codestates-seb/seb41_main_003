@@ -8,6 +8,10 @@
   margin-bottom: 8px;
   border-radius: 5px;
 
+  &.finish {
+    background-color: $silver;
+  }
+
   > a {
     display: block;
     padding: 16px;

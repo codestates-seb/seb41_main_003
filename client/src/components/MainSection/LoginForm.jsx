@@ -14,8 +14,7 @@ const initialLogindata = {
 
 const LoginForm = () => {
   const [loginData, setLoginData] = useState(initialLogindata);
-  const [isIdChecked, setIsIdChecked] = useState();
-  const [isAutoLoginChecked, setIsAutoLoginChecked] = useState(false);
+  const [isIdChecked, setIsIdChecked] = useState(false);
   const [isFail, setIsFail] = useState(0);
 
   const setProfile = useSetRecoilState(Profile);
@@ -110,12 +109,6 @@ const LoginForm = () => {
             handler={setIsIdChecked}
           />
           <span> 아이디 저장 </span>
-          <CheckBox
-            id="자동로그인"
-            value={isAutoLoginChecked}
-            handler={setIsAutoLoginChecked}
-          />
-          <span> 자동 로그인 </span>
         </div>
         <div className={styles.buttonContainer}>
           <span className={styles.failAuth}>
