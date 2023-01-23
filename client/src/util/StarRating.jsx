@@ -4,7 +4,24 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 const StarRating = ({ name, reviewData, setReviewData }) => {
-  const [clicked, setClicked] = useState([false, false, false, false, false]);
+  const getEditInitial = (rate) => {
+    const result = [];
+    for (let i = 0; i < 5; i++) {
+      if (i < rate) {
+        result.push(true);
+      } else {
+        result.push(false);
+      }
+    }
+    return result;
+  };
+
+  const initialData =
+    reviewData[name] !== 0
+      ? getEditInitial(reviewData[name])
+      : [false, false, false, false, false];
+
+  const [clicked, setClicked] = useState(initialData);
 
   const starArr = [0, 1, 2, 3, 4];
 
