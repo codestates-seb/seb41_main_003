@@ -17,14 +17,6 @@ public interface TutoringMapper {
 
     Tutoring tutoringPatchDtoToTutoring(TutoringPatchDto tutoringPatchDto);
 
-    @Mapping(source = "tutoringStatus", target = "tutoringStatus")
-    @Mapping(source = "tutee.profileId", target = "tuteeId")
-    @Mapping(source = "tutee.name", target = "tuteeName")
-    @Mapping(source = "tutor.profileId", target = "tutorId")
-    @Mapping(source = "tutor.name", target = "tutorName")
-    @ValueMapping(source = "noticeStatus", target = "noticeStatus")
-    TutoringResponseDto tutoringToTutoringResponseDto(Tutoring tutoring);
-
     @Mapping(source = "tutor.name", target = "tutorName")
     @Mapping(source = "tutee.name", target = "tuteeName")
     @ValueMapping(source = "tutoringStatus", target = "tutoringStatus")

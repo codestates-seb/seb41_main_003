@@ -55,7 +55,7 @@ class ReviewServiceTest {
         // When
         reviewService.setRate(profile);
         // Then
-        assertThat(profile.getRate()).isEqualTo(4.0);
+        assertThat(profile.getRate()).isEqualTo(4.5);
     }
 
     @Test

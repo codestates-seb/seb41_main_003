@@ -31,6 +31,8 @@ public class TutoringResponseDto {
 
     private String tutorName;
 
+    private Long reviewId;
+
     private LocalDateTime createAt;
 
     private LocalDateTime updateAt;
@@ -47,6 +49,7 @@ public class TutoringResponseDto {
         this.tuteeName = dto.getTuteeName();
         this.tutorId = dto.getTutorId();
         this.tutorName = dto.getTutorName();
+        this.reviewId = dto.getReviewId();
         this.createAt = dto.getCreateAt();
         this.updateAt = dto.getUpdateAt();
         this.dateNotices = dto.getDateNotices().getContent()

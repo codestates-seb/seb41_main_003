@@ -1,8 +1,11 @@
 package com.mainproject.server.dateNotice.mapper;
 
+import com.mainproject.server.constant.ErrorCode;
+import com.mainproject.server.constant.HomeworkStatus;
 import com.mainproject.server.dateNotice.dto.*;
 import com.mainproject.server.dateNotice.entity.DateNotice;
 import com.mainproject.server.dateNotice.entity.Homework;
+import com.mainproject.server.exception.ServiceLogicException;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.data.domain.Page;
@@ -38,6 +41,41 @@ public interface DateNoticeMapper {
 
 
     List<HomeworkResponseDto> homeworkSetToHomeworkResponseDto(Set<Homework> homeworkSet);
+
+
+    default Homework homeworkPostDtoToHomework(HomeworkPostDto homeworkPostDto) {
+        if ( homeworkPostDto == null ) {
+            return null;
+        }
+
+        Homework.HomeworkBuilder homework = Homework.builder();
+
+        homework.homeworkBody( homeworkPostDto.getHomeworkBody() );
+        if ( homeworkPostDto.getHomeworkStatus() != null ) {
+            homework.homeworkStatus( Enum.valueOf( HomeworkStatus.class, homeworkPostDto.getHomeworkStatus() ) );
+        } else {
+            throw new ServiceLogicException(ErrorCode.HOMEWORK_STATUS_NOT_NULL);
+        }
+
+        return homework.build();
+    }
+
+    default Homework homeworkPatchDtoToHomework(HomeworkPatchDto homeworkPatchDto) {
+        if ( homeworkPatchDto == null ) {
+            return null;
+        }
+
+        Homework.HomeworkBuilder homework = Homework.builder();
+
+        homework.homeworkBody( homeworkPatchDto.getHomeworkBody() );
+        if ( homeworkPatchDto.getHomeworkStatus() != null ) {
+            homework.homeworkStatus( Enum.valueOf( HomeworkStatus.class, homeworkPatchDto.getHomeworkStatus() ) );
+        } else {
+            throw new ServiceLogicException(ErrorCode.HOMEWORK_STATUS_NOT_NULL);
+        }
+
+        return homework.build();
+    }
 
 
 

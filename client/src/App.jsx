@@ -98,7 +98,7 @@ const App = () => {
             <Route path="/admin" element={<Admin />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/tutoring" element={<Tutoring />} />
+            <Route path="/tutoring/:tutoringId" element={<Tutoring />} />
             <Route path="/tutorprofile/:profileId" element={<TutorProfile />} />
             <Route path="/tuteeprofile/:profileId" element={<TuteeProfile />} />
             <Route path="/userinfo" element={<UserInfo />} />

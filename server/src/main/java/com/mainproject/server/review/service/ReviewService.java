@@ -24,12 +24,14 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final TutoringService tutoringService;
 
-    public Review getReview(Long tutoringId) {
-        return verifiedReviewById(tutoringId);
+    public Review getReview(Long reviewId) {
+        return verifiedReviewById(reviewId);
     }
 
     public Review createReview(Review review, Long tutoringId) {
         Tutoring tutoring = tutoringService.verifiedTutoring(tutoringId);
+        if (!tutoring.getTutoringStatus().equals(TutoringStatus.WAIT_FINISH))
+            throw new ServiceLogicException(ErrorCode.TUTORING_STATUS_NOT_WAIT_FINISH);
         tutoring.setTutoringStatus(TutoringStatus.FINISH);
         Profile tutee = tutoring.getTutee();
         Profile tutor = tutoring.getTutor();
@@ -47,6 +49,7 @@ public class ReviewService {
                         () -> new ServiceLogicException(ErrorCode.REVIEW_NOT_FOUND)
                 );
         Review updateReview = updateReviewField(review, findReview);
+        setRate(tutoring.getTutor());
         return reviewRepository.save(updateReview);
     }
 
@@ -59,8 +62,8 @@ public class ReviewService {
                     .map(review -> (review.getProfessional() +
                             review.getPunctuality() +
                             review.getExplanation() +
-                            review.getReadiness()) / 4)
-                    .mapToInt(i -> i)
+                            review.getReadiness()) / 4.0)
+                    .mapToDouble(i -> i)
                     .average()
                     .orElseThrow(
                             () -> new ServiceLogicException(ErrorCode.REVIEW_NOT_FOUND)

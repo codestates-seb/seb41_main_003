@@ -10,7 +10,7 @@ name: Java CI with Gradle
 on:
   push:
     branches:
-      - 'be/ci_cd_githubactions'
+      - 'dev'
     path:
       - 'server/**'
 
@@ -49,6 +49,7 @@ jobs:
           echo "MAIN_DB_URL: $MAIN_DB_URL" >> ./src/main/resources/env.yml
           echo "MAIN_DB_ID: $MAIN_DB_ID" >> ./src/main/resources/env.yml
           echo "MAIN_DB_PW: $MAIN_DB_PW" >> ./src/main/resources/env.yml
+          echo "AWS_ELASTICACHE_END_POINT: $AWS_ELASTICACHE_END_POINT" >> ./src/main/resources/env.yml
 
         env:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
@@ -62,6 +63,7 @@ jobs:
           MAIN_DB_URL: ${{ secrets.MAIN_DB_URL }}
           MAIN_DB_ID: ${{ secrets.MAIN_DB_ID }}
           MAIN_DB_PW: ${{ secrets.MAIN_DB_PW }}
+          AWS_ELASTICACHE_END_POINT: ${{ secrets.AWS_ELASTICACHE_END_POINT }}
 
 
       - name: Run chmod to make gradlew executable

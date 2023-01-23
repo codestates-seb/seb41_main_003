@@ -24,11 +24,11 @@ public class ReviewController {
     private final ReviewMapper mapper;
     private final ReviewService reviewService;
 
-    @GetMapping("/{tutoringId}")
+    @GetMapping("/{reviewId}")
     public ResponseEntity getReview(
-            @PathVariable("tutoringId") Long tutoringId
+            @PathVariable("reviewId") Long reviewId
     ) {
-        Review review = reviewService.getReview(tutoringId);
+        Review review = reviewService.getReview(reviewId);
         return new ResponseEntity(
                 ResponseDto.of(mapper.reviewToReviewResponseDto(review)),
                 HttpStatus.OK);
