@@ -6,7 +6,7 @@ spring:
   cache:
     type: redis
   redis:
-    host: ${AWS_ELASTICACHE_END_POINT}
+    host: localhost
     port: 6379
   h2:
     console:
