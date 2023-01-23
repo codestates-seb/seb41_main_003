@@ -33,7 +33,7 @@ const ProfileCard = ({ user }) => {
   const postNewMessageRoom = async () => {
     await axios
       .post(`/messages/${myProfileId}`, postData)
-      .then(() => navigate(`/message/`))
+      .then(() => navigate(`/message`))
       .catch(({ response }) => {
         console.log(response);
         console.log(response.status);
@@ -48,7 +48,7 @@ const ProfileCard = ({ user }) => {
       text: '상대방에게 문의를 요청하시겠습니까?',
       modalHandler: () => {
         postNewMessageRoom();
-        navigate(`/message/${myProfileId}`);
+        navigate(`/message`);
         reset();
       },
     },
