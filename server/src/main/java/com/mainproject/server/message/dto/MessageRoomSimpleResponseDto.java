@@ -26,6 +26,8 @@ public class MessageRoomSimpleResponseDto {
 
     private String targetName;
 
+    private String targetProfileUrl;
+
     private LocalDateTime createAt;
 
     public MessageRoomSimpleResponseDto(
@@ -36,8 +38,10 @@ public class MessageRoomSimpleResponseDto {
         this.messageStatus = messageRoom.getMessageStatus().name();
         if (status.equals(ProfileStatus.TUTEE)) {
             this.targetName = messageRoom.getTutor().getName();
+            this.targetProfileUrl = messageRoom.getTutor().getProfileImage().getUrl();
         } else {
             this.targetName = messageRoom.getTutee().getName();
+            this.targetProfileUrl = messageRoom.getTutee().getProfileImage().getUrl();
         }
         this.createAt = messageRoom.getCreateAt();
         List<Message> messages = new ArrayList<>(messageRoom.getMessages());

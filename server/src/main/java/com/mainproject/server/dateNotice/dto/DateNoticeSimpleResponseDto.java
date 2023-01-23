@@ -1,7 +1,6 @@
 package com.mainproject.server.dateNotice.dto;
 
 import com.mainproject.server.constant.HomeworkStatus;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
