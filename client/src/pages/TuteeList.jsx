@@ -33,7 +33,7 @@ const TuteeList = () => {
   const scrollFunc = async (page) => {
     await axios
       .get(
-        `/users/tutees?subject=${subjectMenu.join()}&name=${search}&page=${page}`
+        `/users/tutees?subject=${subjectMenu.join()}&search=${search}&page=${page}`
       )
       .then(({ data }) => {
         console.log(data.pageInfo);
@@ -45,7 +45,7 @@ const TuteeList = () => {
 
   const getTuteeData = async () => {
     await axios
-      .get(`/users/tutees?subject=${subjectMenu.join()}&name=${search}`)
+      .get(`/users/tutees?subject=${subjectMenu.join()}&search=${search}`)
       .then(({ data }) => {
         setTuteeData(data.data);
         setPageInfo(data.pageInfo);
