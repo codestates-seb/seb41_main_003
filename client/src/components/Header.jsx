@@ -39,7 +39,6 @@ const Header = () => {
           resetModal();
           navigate('/userinfo');
         } else {
-          localStorage.clear();
           sessionStorage.clear();
           resetProfile();
           resetModal();
@@ -63,9 +62,7 @@ const Header = () => {
   const verify2ndPassword = async (value, path) => {
     await axios
       .post(
-        `/auth/verify-second-password/${
-          sessionStorage.getItem('userId') || localStorage.getItem('userId')
-        }`,
+        `/auth/verify-second-password/${sessionStorage.getItem('userId')}`,
         { secondPassword: value }
       )
       .then(() => {
@@ -113,7 +110,6 @@ const Header = () => {
     props: {
       text: '로그아웃 하시겠습니까?',
       modalHandler: () => {
-        localStorage.clear();
         sessionStorage.clear();
         resetProfile();
         resetModal();

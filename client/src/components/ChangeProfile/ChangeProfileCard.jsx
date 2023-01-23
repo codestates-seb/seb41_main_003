@@ -94,14 +94,9 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
 
   const postProfile = async () => {
     await axios
-      .post(
-        `/profiles/${
-          sessionStorage.getItem('userId') || localStorage.getItem('userId')
-        }`,
-        {
-          ...user,
-        }
-      )
+      .post(`/profiles/${sessionStorage.getItem('userId')}`, {
+        ...user,
+      })
       .then(({ data }) => {
         patchImg(data.data.profileId, true);
         localStorage.removeItem('addProfile');

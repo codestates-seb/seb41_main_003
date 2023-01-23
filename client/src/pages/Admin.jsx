@@ -16,11 +16,7 @@ const Admin = () => {
 
   const getUserProfile = async () => {
     await axios
-      .get(
-        `/profiles/${
-          sessionStorage.getItem('userId') || localStorage.getItem('userId')
-        }`
-      )
+      .get(`/profiles/${sessionStorage.getItem('userId')}`)
       .then(({ data }) => {
         console.log(data);
 

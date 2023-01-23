@@ -22,15 +22,8 @@ const AdminModal = () => {
   };
 
   const getUserProfile = async () => {
-    axios.defaults.headers.common['Authorization'] =
-      sessionStorage.getItem('authorization') ||
-      localStorage.getItem('authorization');
     axios
-      .get(
-        `/profiles/${
-          sessionStorage.getItem('userId') || localStorage.getItem('userId')
-        }`
-      )
+      .get(`/profiles/${sessionStorage.getItem('userId')}`)
       .then(({ data }) => {
         setProfiles(data.data);
       })

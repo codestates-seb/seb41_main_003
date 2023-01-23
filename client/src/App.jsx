@@ -23,15 +23,14 @@ import { GlobalModal } from './components/modal/GlobalModal';
 import { useResetRecoilState } from 'recoil';
 import axios from 'axios';
 import Profile from './recoil/profile';
+import { useEffect } from 'react';
 
 const App = () => {
   const resetProfile = useResetRecoilState(Profile);
 
   axios.interceptors.request.use(
     (config) => {
-      config.headers.Authorization =
-        sessionStorage.getItem('authorization') ||
-        localStorage.getItem('authorization');
+      config.headers.Authorization = sessionStorage.getItem('authorization');
       return config;
     },
     (err) => {
@@ -58,21 +57,19 @@ const App = () => {
         const originReq = config;
         originReq.sent = true;
 
-        const userId = await (sessionStorage.getItem('userId') ||
-          localStorage.getItem('userId'));
+        const userId = sessionStorage.getItem('userId');
+
         try {
           const {
             data: { authorization },
           } = await axios.get(`/auth/reissue-token/${userId}`);
 
-          localStorage.setItem('authorization', authorization);
           sessionStorage.setItem('authorization', authorization);
 
           originReq.headers.Authorization = authorization;
           return axios(originReq);
         } catch (err) {
           console.log(err);
-          localStorage.clear();
           sessionStorage.clear();
           resetProfile();
           location.href = '/login';
@@ -83,6 +80,10 @@ const App = () => {
   );
 
   axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+
+  useEffect(() => {
+    if (!sessionStorage.getItem('authorization')) resetProfile();
+  });
 
   return (
     <div className="app">
