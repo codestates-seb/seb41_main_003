@@ -46,7 +46,7 @@ const FinishedJournalList = ({
 
   const getReviewDetail = async () => {
     await axios
-      .get(`/reviews/${tutoringId}`)
+      .get(`/reviews/${tutoring.reviewId}`)
       .then(({ data }) => setReviewDetail(data.data))
       .catch((err) => console.log(err));
   };

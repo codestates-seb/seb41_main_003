@@ -26,7 +26,6 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
     },
   };
 
-  //TODO: 과외 상태에 대한 정보가 body에 들어가지 않아도 변경이 잘 되는지 확인 필요
   const confirmTextProps = {
     isOpen: true,
     modalType: 'confirmText',
@@ -42,7 +41,10 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
 
   const patchTitle = async (value) => {
     await axios
-      .patch(`tutoring/details/${tutoringId}`, { tutoringTitle: value })
+      .patch(`tutoring/details/${tutoringId}`, {
+        tutoringTitle: value,
+        tutoringStatus: tutoring.tutoringStatus,
+      })
       .then(({ data }) => {
         setTutoring(data.data);
       });
@@ -52,17 +54,16 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
     isOpen: true,
     modalType: 'confirmVali',
     props: {
-      text: '과외 종료를 원하신다면 \n 아래의 입력창에 "과외 종료" 를 입력 후 \n 확인 버튼을 눌러주세요.\n 과외가 종료되면 과외 제목 수정이나 일지 작성이 불가능해집니다.',
+      text: '과외 종료를 원하신다면 \n 아래의 입력창에 "과외 종료" 를 입력 후 \n 확인 버튼을 눌러주세요.\n \n (과외가 종료되면 과외 제목 수정이나 \n 일지 작성이 불가능해집니다.)',
       validation: '과외 종료',
       modalHandler: () => {
-        patchFinish();
+        patchWaitFinish();
         setModal(alertProps);
       },
     },
   };
 
-  //TODO: 과외 제목에 대한 정보가 body에 들어가지 않아도 변경이 잘 되는지 확인 필요
-  const patchFinish = async () => {
+  const patchWaitFinish = async () => {
     await axios
       .patch(`/tutoring/details/${tutoringId}`, {
         tutoringStatus: 'WAIT_FINISH',
@@ -80,11 +81,21 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
         const { name } = e.target;
         if (name === 'yes') {
           setModal(reviewProps);
-        } else {
+        } else if (name === 'no') {
+          patchFinish();
           setModal(alertRejectProps);
         }
       },
     },
+  };
+
+  const patchFinish = async () => {
+    await axios
+      .patch(`/tutoring/details/${tutoringId}`, {
+        tutoringStatus: 'PROGRESS',
+      })
+      .then(({ data }) => setTutoring({ ...data.data }))
+      .catch((err) => console.log(err));
   };
 
   const alertRejectProps = {
@@ -132,7 +143,7 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
   return (
     <div className={styles.container}>
       <div className={styles.leftCard}>
-        <Link to={`/journal/${tutoring.latestNoticeId}`}>
+        <Link to={`/journal/${tutoringId}/${tutoring.latestNoticeId}`}>
           <div className={styles.noti}>
             <HiSpeakerphone className={styles.icon} />
             {tutoring.latestNoticeBody > 20
@@ -154,6 +165,9 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
             <span>
               {userStatus === 'TUTOR' ? tutoring.tuteeName : tutoring.tutorName}
             </span>
+          </div>
+          <span className={styles.tutoringTitle}>{tutoring.tutoringTitle}</span>
+          <div className={styles.titleEditButtonBox}>
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -164,7 +178,6 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
               <span>제목 수정하기</span>
             </button>
           </div>
-          <span className={styles.tutoringTitle}>{tutoring.tutoringTitle}</span>
           <span className={styles.tutoringDate}>
             {`${new Date(tutoring.createAt).toLocaleDateString()} ~`}
           </span>
