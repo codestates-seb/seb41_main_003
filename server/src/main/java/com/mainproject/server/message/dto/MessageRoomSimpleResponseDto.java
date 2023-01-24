@@ -24,6 +24,8 @@ public class MessageRoomSimpleResponseDto {
 
     private String lastMessage;
 
+    private Long lastSenderId;
+
     private String targetName;
 
     private String targetProfileUrl;
@@ -46,8 +48,9 @@ public class MessageRoomSimpleResponseDto {
         this.createAt = messageRoom.getCreateAt();
         List<Message> messages = new ArrayList<>(messageRoom.getMessages());
         if (!messages.isEmpty()) {
-            this.lastMessage = messages.get(messages.size() - 1)
-                    .getMessageContent();
+            Message lastMessage = messages.get(messages.size() - 1);
+            this.lastMessage = lastMessage.getMessageContent();
+            this.lastSenderId = lastMessage.getSender().getProfileId();
         }
     }
 
