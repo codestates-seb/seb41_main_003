@@ -99,8 +99,8 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/tutoring" element={<Tutoring />} />
-            <Route path="/tutorprofile/:profileId" element={<TutorProfile />} />
-            <Route path="/tuteeprofile/:profileId" element={<TuteeProfile />} />
+            <Route path="/tutorprofile" element={<TutorProfile />} />
+            <Route path="/tuteeprofile" element={<TuteeProfile />} />
             <Route path="/userinfo" element={<UserInfo />} />
             <Route path="/addprofile" element={<AddProfile />} />
             <Route path="/editprofile" element={<EditProfile />} />
