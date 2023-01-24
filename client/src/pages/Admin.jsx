@@ -70,7 +70,8 @@ const Admin = () => {
                 key={obj.profileId}
                 to={`/${
                   profile.userStatus === 'TUTOR' ? 'tutor' : 'tutee'
-                }profile/${obj.profileId}`}
+                }profile`}
+                state={{ profileId: obj.profileId }}
               >
                 <li className={styles.profileBox}>
                   <div className={styles.iconsBox}>

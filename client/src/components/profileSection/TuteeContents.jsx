@@ -6,10 +6,12 @@ const TuteeContents = ({ user }) => {
 
   return (
     <section className={styles.container}>
-      <div>
-        <p className={styles.font4}>성격</p>
-        <p className={styles.paragragh}>{character}</p>
-      </div>
+      {character.length !== 0 && (
+        <div>
+          <p className={styles.font4}>성격</p>
+          <p className={styles.paragragh}>{character}</p>
+        </div>
+      )}
       <div>
         <p className={styles.font4}>성별</p>
         <p className={styles.paragragh}>{gender}</p>
@@ -27,10 +29,12 @@ const TuteeContents = ({ user }) => {
         <p className={styles.font4}>선생님께 바라는 점</p>
         <p className={styles.paragragh}>{way}</p>
       </div>
-      <div>
-        <p className={styles.font4}>시범 과외 가능 여부</p>
-        <p className={styles.paragragh}>{preTutoring}</p>
-      </div>
+      {preTutoring.length !== 0 && (
+        <div>
+          <p className={styles.font4}>시범 과외 가능 여부</p>
+          <p className={styles.paragragh}>{preTutoring}</p>
+        </div>
+      )}
     </section>
   );
 };

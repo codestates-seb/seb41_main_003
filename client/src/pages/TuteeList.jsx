@@ -106,7 +106,8 @@ const TuteeList = () => {
         <div className={styles.feedContainer}>
           {tuteeData.map((tutee) => (
             <Link
-              to={`/tuteeprofile/${tutee.profileId}`}
+              to={`/tuteeprofile`}
+              state={{ profileId: tutee.profileId }}
               key={tutee.profileId}
               className={styles.list}
             >

@@ -129,3 +129,11 @@
     vertical-align: text-bottom;
   }
 }
+
+.noReview {
+  font-size: $font4;
+  font-weight: $font4W;
+  color: $coal;
+  padding: 64px 64px 32px;
+  text-align: center;
+}

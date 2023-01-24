@@ -168,7 +168,7 @@ RedConfirmModal.propTypes = {
   modalHandler: PropTypes.func,
 };
 
-export const RedAlertModal = ({ text }) => {
+export const RedAlertModal = ({ text, modalHandler }) => {
   const reset = useResetRecoilState(ModalState);
   return (
     <div
@@ -178,7 +178,10 @@ export const RedAlertModal = ({ text }) => {
       aria-hidden
     >
       <div className={styles.text}>{text}</div>
-      <ButtonRed buttonHandler={() => reset()} text="확인" />
+      <ButtonRed
+        buttonHandler={modalHandler ? modalHandler : () => reset()}
+        text="확인"
+      />
     </div>
   );
 };

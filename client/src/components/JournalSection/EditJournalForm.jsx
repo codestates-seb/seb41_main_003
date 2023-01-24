@@ -18,21 +18,22 @@ const EditJournalForm = () => {
   const [homeworkVal, setHomeworkVal] = useState('');
   const navigate = useNavigate();
 
+  const { dateNoticeId, tutoringId } = useLocation().state;
+  console.log(dateNoticeId, tutoringId);
   const { pathname } = useLocation();
+  console.log(pathname);
   const isAdd = pathname.includes('addjournal');
-  const id = isAdd ? pathname.slice(12) : pathname.slice(13);
+  const id = isAdd ? tutoringId : dateNoticeId;
 
   const { dateNoticeTitle, scheduleBody, noticeBody, homeworks } = userData;
-
-  let dateNoticeId = 0;
 
   const submitHandler = async () => {
     await axios[isAdd ? 'post' : 'patch'](
       `/tutoring/date-notice/${id}`,
       userData
     )
-      .then(({ data: { data } }) => {
-        dateNoticeId = data.dateNoticeId;
+      .then(() => {
+        console.log('성공적으로 일지 작성 혹은 수정을 완료함');
       })
       .catch((err) => console.log(err));
   };
@@ -57,8 +58,9 @@ const EditJournalForm = () => {
     props: {
       text: `일지가 ${isAdd ? '작성' : '수정'} 되었습니다.`,
       modalHandler: () => {
-        console.log(dateNoticeId);
-        navigate(`/journal/${dateNoticeId}`);
+        navigate(`/journal`, {
+          state: { dateNoticeId: id },
+        });
         resetJournal();
         resetModal();
       },
@@ -72,7 +74,11 @@ const EditJournalForm = () => {
       text: `취소 하시겠습니까?
       작성 중인 내용이 모두 사라집니다.`,
       modalHandler: () => {
-        navigate(isAdd ? `/tutoring/${id}` : `/journal/${id}`);
+        navigate(
+          isAdd
+            ? (`/tutoring`, { state: { tutoringId: id } })
+            : (`/journal`, { state: { dateNoticeId: id } })
+        );
         resetJournal();
         resetModal();
       },

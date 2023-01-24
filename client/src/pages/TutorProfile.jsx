@@ -3,10 +3,10 @@ import { ProfileContents, ProfileCard } from '../components/profileSection';
 import { ButtonTop } from '../components/Button';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const TutorProfile = () => {
-  const { profileId } = useParams();
+  const { profileId } = useLocation().state;
   const [profileDetail, setProfileDetail] = useState({
     profileId: 0,
     userId: 0,

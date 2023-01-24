@@ -1,14 +1,14 @@
 import styles from './ChangeJournal.module.css';
 import { useEffect } from 'react';
 import EditJournalForm from '../components/JournalSection/EditJournalForm';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useSetRecoilState } from 'recoil';
 import ChangeJournal from '../recoil/journal';
 
 const EditJournal = () => {
   const setUserData = useSetRecoilState(ChangeJournal);
-  const { dateNoticeId } = useParams();
+  const { dateNoticeId } = useLocation().state;
 
   useEffect(() => {
     axios

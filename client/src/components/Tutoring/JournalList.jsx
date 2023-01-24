@@ -4,7 +4,7 @@ import { MdEdit } from 'react-icons/md';
 import { ButtonNightBlue, ButtonRed } from '../Button';
 import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
 import ModalState from '../../recoil/modal.js';
-import { useNavigate, Link, useParams } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import Profile from '../../recoil/profile';
 import axios from 'axios';
 import { useEffect } from 'react';
@@ -16,7 +16,7 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
   const reset = useResetRecoilState(ModalState);
   const navigate = useNavigate();
   const { userStatus } = useRecoilValue(Profile);
-  const { tutoringId } = useParams();
+  const { tutoringId } = useLocation().state;
 
   const alertProps = {
     isOpen: true,
@@ -144,7 +144,13 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
   return (
     <div className={styles.container}>
       <div className={styles.leftCard}>
-        <Link to={`/journal/${tutoringId}/${tutoring.latestNoticeId}`}>
+        <Link
+          to={`/journal`}
+          state={{
+            tutoringId: tutoring.tutoringId,
+            dateNoticeId: tutoring.latestNoticeId,
+          }}
+        >
           <div className={styles.noti}>
             <HiSpeakerphone className={styles.icon} />
             {tutoring.latestNoticeBody === null
@@ -195,7 +201,11 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
           <div className={styles.buttonBox}>
             <ButtonNightBlue
               text="과외 일지 작성"
-              buttonHandler={() => navigate(`/addjournal/${tutoringId}`)}
+              buttonHandler={() =>
+                navigate(`/addjournal`, {
+                  state: { tutoringId },
+                })
+              }
             />
             <ButtonRed
               text="과외 종료"

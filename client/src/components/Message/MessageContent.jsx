@@ -19,7 +19,6 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
   const scrollRef = useRef();
-
   //* 채팅창의 스크롤 위치 제어
   useEffect(() => {
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -111,7 +110,6 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
         console.log('상담 취소');
         resetModal();
         setModal(cancelAlertProps);
-        window.location.href = `/message/${profileId}`;
       },
     },
   };
@@ -119,7 +117,12 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
   const cancelAlertProps = {
     isOpen: true,
     modalType: 'redAlert',
-    props: { text: `상담이 취소되었습니다.` },
+    props: {
+      text: `상담이 취소되었습니다.`,
+      modalHandler: () => {
+        window.location.href = `/message`;
+      },
+    },
   };
 
   return (
