@@ -53,6 +53,7 @@ const FinishedJournalList = ({
 
   const editReviewProps = {
     isOpen: true,
+    backDropHandle: true,
     modalType: 'editReview',
     props: {
       modalHandler: (e, value, reviewData) => {

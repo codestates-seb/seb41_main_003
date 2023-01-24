@@ -109,6 +109,7 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
 
   const reviewProps = {
     isOpen: true,
+    backDropHandle: true,
     modalType: 'review',
     props: {
       modalHandler: (e, value, reviewData) => {
