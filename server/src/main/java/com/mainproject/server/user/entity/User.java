@@ -56,6 +56,7 @@ public class User extends Auditable {
     private UserStatus userStatus;
 
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(joinColumns = @JoinColumn(name = "USER_ID"))
     @Setter
     private List<String> roles = new ArrayList<>();
 

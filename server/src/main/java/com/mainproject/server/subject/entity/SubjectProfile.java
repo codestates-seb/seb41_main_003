@@ -24,11 +24,13 @@ public class SubjectProfile {
 
     @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "PROFILE_ID")
     @Setter
     private Profile profile;
 
     @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "SUBJECT_ID")
     @Setter
     private Subject subject;
 

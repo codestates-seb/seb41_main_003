@@ -59,6 +59,7 @@ public class Tutoring extends Auditable {
 
     @ToString.Exclude
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "REVIEW_ID")
     @Setter
     private Review review;
 
