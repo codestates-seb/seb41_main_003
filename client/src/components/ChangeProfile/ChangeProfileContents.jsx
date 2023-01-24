@@ -5,11 +5,11 @@ import Profile from '../../recoil/profile';
 import { useRecoilValue } from 'recoil';
 
 const ChangeProfileContents = ({ user, setUser }) => {
-  const { profileStatus } = useRecoilValue(Profile);
+  const { userStatus } = useRecoilValue(Profile);
 
   return (
     <>
-      {profileStatus === 'TUTOR' ? (
+      {userStatus === 'TUTOR' ? (
         <TutorContents user={user} setUser={setUser} />
       ) : (
         <TuteeContents user={user} setUser={setUser} />
