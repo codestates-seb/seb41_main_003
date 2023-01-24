@@ -3,10 +3,10 @@ import { ProfileContents, ProfileCard } from '../components/profileSection';
 import { ButtonTop } from '../components/Button';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const TutorProfile = () => {
-  const { tutorProfileId } = useLocation().state;
+  const { profileId } = useLocation().state;
   const [profileDetail, setProfileDetail] = useState({
     profileId: 0,
     userId: 0,
@@ -37,7 +37,7 @@ const TutorProfile = () => {
 
   const getProfileData = async () => {
     await axios
-      .get(`/profiles/details/${tutorProfileId}?page=${page}`)
+      .get(`/profiles/details/${profileId}?page=${page}`)
       .then((res) => {
         setProfileDetail(res.data.data);
         setPageInfo(res.data.pageInfo);

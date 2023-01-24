@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const TuteeProfile = () => {
-  const { tuteeProfileId } = useLocation().state;
+  const { profileId } = useLocation().state;
   const [profileDetail, setProfileDetail] = useState({
     profileId: 0,
     userId: 0,
@@ -29,7 +29,7 @@ const TuteeProfile = () => {
 
   const getProfileData = async () => {
     await axios
-      .get(`/profiles/details/${tuteeProfileId}`)
+      .get(`/profiles/details/${profileId}`)
       .then((res) => {
         setProfileDetail(res.data.data);
         console.log(res.data.data);

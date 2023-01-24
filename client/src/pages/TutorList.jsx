@@ -128,7 +128,7 @@ const TutorList = () => {
           {tutorData.map((tutor) => (
             <Link
               to={`/tutorprofile`}
-              state={{ tutorProfileId: tutor.profileId }}
+              state={{ profileId: tutor.profileId }}
               key={tutor.profileId}
               className={styles.list}
             >

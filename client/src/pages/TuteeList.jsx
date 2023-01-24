@@ -107,7 +107,7 @@ const TuteeList = () => {
           {tuteeData.map((tutee) => (
             <Link
               to={`/tuteeprofile`}
-              state={{ tuteeProfileId: tutee.profileId }}
+              state={{ profileId: tutee.profileId }}
               key={tutee.profileId}
               className={styles.list}
             >

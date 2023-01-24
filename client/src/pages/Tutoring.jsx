@@ -42,7 +42,6 @@ const Tutoring = () => {
   const { profileId } = useRecoilValue(Profile);
 
   const tutoringId = useLocation().state.tutoringId;
-  console.log(tutoringId);
 
   const getTutoringData = async () => {
     await axios

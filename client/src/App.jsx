@@ -106,15 +106,9 @@ const App = () => {
             <Route path="/editprofile" element={<EditProfile />} />
             <Route path="/message" element={<Message />} />
             <Route path="/myprofile" element={<MyProfile />} />
-            <Route
-              path="/journal/:tutoringId/:dateNoticeId"
-              element={<Journal />}
-            />
-            <Route
-              path="/editjournal/:dateNoticeId"
-              element={<EditJournal />}
-            />
-            <Route path="/addjournal/:tutoringId" element={<AddJournal />} />
+            <Route path="/journal" element={<Journal />} />
+            <Route path="/editjournal" element={<EditJournal />} />
+            <Route path="/addjournal" element={<AddJournal />} />
           </Routes>
         </div>
         <GlobalModal />
