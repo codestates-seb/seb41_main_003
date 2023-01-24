@@ -9,7 +9,12 @@ import axios from 'axios';
 import CurrentRoomIdState from '../../recoil/currentRoomId';
 import Profile from '../../recoil/profile';
 
-const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
+const MessageContent = ({
+  messageRoom,
+  delMessageRoom,
+  getMessageRoom,
+  getMessageList,
+}) => {
   const { tutorId, tuteeId, tutoringId, messages } = messageRoom;
   const [isMenu, setIsMenu] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -46,6 +51,7 @@ const MessageContent = ({ messageRoom, delMessageRoom, getMessageRoom }) => {
       })
       .then(() => {
         console.log('메세지 전송');
+        getMessageList();
         getMessageRoom();
       })
       .catch((err) => console.log(err));
@@ -194,6 +200,7 @@ MessageContent.propTypes = {
   messageRoom: PropType.object,
   delMessageRoom: PropType.func,
   getMessageRoom: PropType.func,
+  getMessageList: PropType.func,
 };
 
 export default MessageContent;

@@ -34,7 +34,6 @@ const Tutoring = ({ tutoring }) => {
                 new Date(updateAt).toLocaleDateString()}
             </span>
           )}
-
           {tutoringStatus === 'UNCHECK' && <span className={styles.noti} />}
         </div>
       </Link>

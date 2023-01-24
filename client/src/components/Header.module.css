@@ -127,6 +127,10 @@
       margin-bottom: 24px;
       text-align: center;
 
+      &:hover {
+        text-decoration: underline;
+      }
+
       &:last-child {
         margin: 0;
       }
@@ -136,6 +140,10 @@
       > button {
         font-size: $font5;
         font-weight: $font5W;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }
