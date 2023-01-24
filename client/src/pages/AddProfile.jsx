@@ -12,7 +12,6 @@ const initialState = {
   wantDate: '',
   pay: '',
   way: '',
-  profileStatus: 'TUTOR',
   gender: '',
   preTutoring: '',
   difference: '',
