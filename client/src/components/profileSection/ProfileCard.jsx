@@ -20,7 +20,6 @@ const ProfileCard = ({ user }) => {
 
   const myProfileId = useRecoilValue(Profile).profileId;
   const { userStatus } = useRecoilValue(Profile);
-  console.log(userStatus);
 
   const postData =
     userStatus === 'TUTOR'
