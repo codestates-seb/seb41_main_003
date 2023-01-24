@@ -130,6 +130,7 @@ public class TutoringService {
     }
 
     public void deleteTutoring(Long tutoringId) {
+        messageService.deleteMessageRoomTutoringId(tutoringId);
         tutoringRepository.delete(verifiedTutoring(tutoringId));
     }
 

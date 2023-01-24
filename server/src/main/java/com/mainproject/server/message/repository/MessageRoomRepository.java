@@ -11,4 +11,6 @@ public interface MessageRoomRepository extends JpaRepository<MessageRoom, Long> 
     Page<MessageRoom> findAllByTutorProfileIdOrTuteeProfileId(Long profileId, Long profileId1, Pageable pageable);
 
     Optional<MessageRoom> findByTutorProfileIdAndTuteeProfileId(Long tutorId, Long tuteeId);
+
+    Optional<MessageRoom> findByTutoringId(Long tutoringId);
 }
