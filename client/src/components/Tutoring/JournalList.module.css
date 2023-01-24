@@ -42,6 +42,11 @@
   font-weight: $font6W;
   background-color: $whiteBlue;
   margin-bottom: 16px;
+
+  > div {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .icon {
