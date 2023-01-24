@@ -10,7 +10,8 @@ import axios from 'axios';
 import Profile from '../../recoil/profile';
 
 const ProfileCard = ({ user }) => {
-  const { name, rate, bio, school, subjects, profileImage } = user;
+  const { name, rate, bio, school, subjects, profileImage, profileStatus } =
+    user;
 
   const setModal = useSetRecoilState(ModalState);
   const reset = useResetRecoilState(ModalState);
@@ -19,6 +20,7 @@ const ProfileCard = ({ user }) => {
 
   const myProfileId = useRecoilValue(Profile).profileId;
   const { userStatus } = useRecoilValue(Profile);
+  console.log(userStatus);
 
   const postData =
     userStatus === 'TUTOR'
@@ -57,10 +59,12 @@ const ProfileCard = ({ user }) => {
       <section className={styles.textContainer}>
         <div className={styles.starLine}>
           <h3 className={styles.font1}>{name}</h3>
-          <div className={styles.starBox}>
-            <MdStar fill="#F0C24D" size="21" />
-            <p className={styles.paragragh}>{rate} / 5 </p>
-          </div>
+          {profileStatus === 'TUTOR' && (
+            <div className={styles.starBox}>
+              <MdStar fill="#F0C24D" size="21" />
+              <p className={styles.paragragh}>{rate} / 5 </p>
+            </div>
+          )}
         </div>
         <div>
           <p className={styles.font4}>한 줄 소개</p>
