@@ -46,12 +46,12 @@ const Journals = ({
 
   return (
     <ul className={styles.list}>
-      {tutoring.dateNotices.length === 0 ? (
+      {tutoring.dateNotices?.length === 0 ? (
         <div className={styles.emptyJournals}>
           아직 작성된 과외 일지가 없습니다.
         </div>
       ) : (
-        tutoring.dateNotices.map((el) => {
+        tutoring.dateNotices?.map((el) => {
           return (
             <Link
               to={`/journal/${tutoringId}/${el.dateNoticeId}`}
