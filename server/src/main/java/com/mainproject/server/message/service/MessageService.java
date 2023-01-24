@@ -102,7 +102,7 @@ public class MessageService {
 
     public MessageRoom updateMessageRoom(Long messageRoomId, Long tutoringId) {
         MessageRoom messageRoom = verifiedMessageRoom(messageRoomId);
-        if (messageRoom.getTutoringId() != null) {
+        if (messageRoom.getTutoringId() == null) {
             messageRoom.setTutoringId(tutoringId);
         } else {
             throw new ServiceLogicException(ErrorCode.MATCHING_REQUEST_EXISTS);
