@@ -29,7 +29,7 @@ const MessageList = ({
       setTimeout(() => {
         scrollFunc(pageInfo.page + 1);
         setIsLoading(false);
-      }, 500);
+      }, 100);
     } else setIsLoading(false);
   }, loadingRef);
 
@@ -63,11 +63,19 @@ const MessageList = ({
                 />
                 <div>
                   <h4>{list.targetName}</h4>
-                  <p>{list.lastMessage}</p>
+                  <p>
+                    {list.lastMessage === 'REQ_UEST'
+                      ? '매칭 요청'
+                      : list.lastMessage}
+                  </p>
                 </div>
-                {list.messageStatus === 'UNCHECK' && (
-                  <span className={styles.badge} />
-                )}
+                {
+                  list.lastSenderId !== profileId ? (
+                    list.messageStatus === 'UNCHECK' ? (
+                      <span className={styles.badge} />
+                    ) : undefined // 상대가 보내고 체크된 msg
+                  ) : undefined // 내가 보낸 msg
+                }
               </button>
             </li>
           );

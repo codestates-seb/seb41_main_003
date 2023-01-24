@@ -7,17 +7,7 @@ import { useRecoilValue } from 'recoil';
 import Profile from '../recoil/profile';
 
 const TutoringList = () => {
-  const [tutorings, setTutorings] = useState([
-    {
-      tutoringId: '0',
-      tutorName: '',
-      tuteeName: '',
-      tutoringTitle: '진행 중인 과외가 없습니다',
-      tutoringStatus: 'PROGRESS',
-      createAt: '',
-      updateAt: '',
-    },
-  ]);
+  const [tutorings, setTutorings] = useState([]);
   const [pageInfo, setPageInfo] = useState({
     page: 0,
     size: 1,
@@ -38,25 +28,19 @@ const TutoringList = () => {
     await axios
       .get(`/tutoring/${profileId}?get=${isFinished ? 'FINISH' : 'PROGRESS'}`)
       .then((res) => {
-        if (res.data.data.length === 0) {
-          console.log('과외 없다고 보여줘');
-        } else {
-          setTutorings(res.data.data);
-          setPageInfo(res.data.pageInfo);
-        }
+        setTutorings(res.data.data);
+        setPageInfo(res.data.pageInfo);
       })
       .catch((error) => console.log(error));
   };
-  useEffect(() => {
-    getTutoringList();
-  }, []);
-  useEffect(() => {
-    getTutoringList();
-  }, [page]);
 
   useEffect(() => {
     getTutoringList();
-  }, [isFinished]);
+  }, []);
+
+  useEffect(() => {
+    getTutoringList();
+  }, [page, isFinished]);
 
   return (
     <div className={styles.wrapper}>
@@ -80,14 +64,17 @@ const TutoringList = () => {
           </button>
         </div>
         <ul className={styles.tutoringList}>
-          {Object.keys(tutorings).length == 0 ? (
-            <div className={styles.none}>과외가 존재하지 않습니다.</div>
+          {tutorings.length === 0 ? (
+            <div className={styles.noContent}>
+              <p>아직 진행중인 과외가 없습니다.</p>
+            </div>
           ) : (
             tutorings.map((tutoring) => (
               <Tutoring tutoring={tutoring} key={tutoring.tutoringId} />
             ))
           )}
         </ul>
+
         <Pagination
           pageInfo={pageInfo}
           buttonHandler={(e) => {

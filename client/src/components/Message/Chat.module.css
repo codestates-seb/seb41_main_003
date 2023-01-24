@@ -82,3 +82,18 @@
   font-weight: $font5W;
   font-size: $font5;
 }
+
+.matchingConfirm {
+  background-color: $night;
+}
+
+.matchingCalcel {
+  background-color: $night;
+  border-radius: 5px;
+
+  > p {
+    color: $white;
+    padding: 8px;
+    font-weight: $font5W;
+  }
+}
