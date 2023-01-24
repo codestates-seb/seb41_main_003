@@ -149,13 +149,14 @@ public class TutoringService {
         Tutoring tutoring = verifiedTutoring(tutoringId);
         if ((tutoring.getTutor().getProfileId().equals(profileId) ||
                 tutoring.getTutee().getProfileId().equals(profileId)) &&
-                !tutoring.getTutoringStatus().equals(TutoringStatus.FINISH)
+                !tutoring.getTutoringStatus().equals(TutoringStatus.FINISH) &&
+                !tutoring.getTutoringStatus().equals(TutoringStatus.PROGRESS)
         ) {
             tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
             Tutoring progressTutoring = tutoringRepository.save(tutoring);
             return getTutoringDto(progressTutoring, pageable);
         } else {
-            throw new ServiceLogicException(ErrorCode.ACCESS_DENIED);
+            throw new ServiceLogicException(ErrorCode.TUTORING_STATUS_BAD_REQUEST);
         }
     }
 
