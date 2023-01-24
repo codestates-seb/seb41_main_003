@@ -144,18 +144,18 @@ const Chat = ({
             <button
               className={styles.checkRequestBtn}
               onClick={() => setModal(matchConfirmModal)}
-              // disabled={username === '' || password === '' ? true : false}
+              // disabled={ ? true : false}
             >
               요청 확인하기
             </button>
           </div>
         )
       ) : messageContent === 'MAT_CHING_CON_FIRM' ? (
-        <div className={styles.matchingConfirm}>
+        <div className={styles.matchingComent}>
           <p>매칭 요청이 승인 되었습니다.</p>
         </div>
       ) : messageContent === 'MAT_CHING_CAN_CEL' ? (
-        <div className={styles.matchingCalcel}>
+        <div className={styles.matchingComent}>
           <p>매칭 요청이 취소 되었습니다.</p>
         </div>
       ) : (
@@ -167,7 +167,6 @@ const Chat = ({
           {createAt.slice(11, 16)}
         </span>
       )}
-      {/* {createAt} */}
     </div>
   );
 };

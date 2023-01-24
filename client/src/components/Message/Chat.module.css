@@ -84,11 +84,7 @@
   font-size: $font5;
 }
 
-.matchingConfirm {
-  background-color: $night;
-}
-
-.matchingCalcel {
+.matchingComent {
   background-color: $night;
   border-radius: 5px;
 

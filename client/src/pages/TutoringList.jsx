@@ -7,7 +7,7 @@ import { useRecoilValue } from 'recoil';
 import Profile from '../recoil/profile';
 
 const TutoringList = () => {
-  const [tutorings, setTutorings] = useState([]);
+  const [tutorings, setTutorings] = useState([0]);
   const [pageInfo, setPageInfo] = useState({
     page: 0,
     size: 1,
@@ -36,10 +36,6 @@ const TutoringList = () => {
 
   useEffect(() => {
     getTutoringList();
-  }, []);
-
-  useEffect(() => {
-    getTutoringList();
   }, [page, isFinished]);
 
   return (
@@ -65,15 +61,12 @@ const TutoringList = () => {
         </div>
         <ul className={styles.tutoringList}>
           {tutorings.length === 0 ? (
-            isFinished === false ? (
-              <div className={styles.noContent}>
-                <p>아직 진행중인 과외가 없습니다.</p>
-              </div>
-            ) : (
-              <div className={styles.noContent}>
-                <p>아직 종료된 과외가 없습니다.</p>
-              </div>
-            )
+            <div className={styles.noContent}>
+              <p>
+                아직 {isFinished === false ? '진행중인' : '종료된'} 과외가
+                없습니다.
+              </p>
+            </div>
           ) : (
             tutorings.map((tutoring) => (
               <Tutoring tutoring={tutoring} key={tutoring.tutoringId} />

@@ -44,12 +44,11 @@
 
 .noContent {
   background-color: $silver;
-  margin-left: 50px;
-  margin-top: 50px;
   border-radius: 5px;
+  box-shadow: $defaultShadow;
 
   > p {
-    padding: 50px;
+    padding: 70px;
     font-size: $font4;
     font-weight: $font4W;
     text-align: center;
