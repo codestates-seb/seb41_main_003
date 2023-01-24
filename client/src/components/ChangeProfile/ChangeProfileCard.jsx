@@ -32,7 +32,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
     props: { text: '필수 입력 사항을 모두 작성해주세요.' },
   };
 
-  const patchImg = async (id, isAdd = false) => {
+  const patchImg = async (id) => {
     const formData = new FormData();
     formData.append('image', imgFile);
     for (const key of formData.keys()) {
@@ -52,13 +52,11 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
         console.log(profileImage);
         console.log('성공!');
 
-        if (isAdd) navigate(`/admin`);
-        else {
+        if (profile.profileId === profileId) {
           setProfile((prev) => ({
             ...prev,
             url: profileImage.url,
           }));
-          navigate(`/myprofile`);
         }
       })
       .catch(({ response }) => {
@@ -74,10 +72,11 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
         ...user,
       })
       .then(({ data }) => {
-        setProfile((prev) => ({
-          ...prev,
-          name: data.data.name,
-        }));
+        if (profile.profileId === profileId)
+          setProfile((prev) => ({
+            ...prev,
+            name: data.data.name,
+          }));
         if (imgSrc) patchImg(data.data.profileId);
       })
       .catch(({ response }) => {
@@ -91,7 +90,9 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
     console.log('PATCH 요청');
     patchProfile();
     resetModal();
-    navigate(profile.profileId === profileId ? '/myprofile' : '/admin');
+    setTimeout(() => {
+      navigate(profile.profileId === profileId ? '/myprofile' : '/admin');
+    }, 500);
   };
 
   const postProfile = async () => {
@@ -100,7 +101,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
         ...user,
       })
       .then(({ data }) => {
-        if (imgSrc) patchImg(data.data.profileId, true);
+        if (imgSrc) patchImg(data.data.profileId);
         localStorage.removeItem('addProfile');
       })
       .catch(({ response }) => {
@@ -114,7 +115,9 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
     console.log('POST 요청');
     postProfile();
     resetModal();
-    navigate(`/admin`);
+    setTimeout(() => {
+      navigate(`/admin`);
+    }, 500);
   };
 
   const editConfirmProps = {
