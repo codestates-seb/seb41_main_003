@@ -40,19 +40,16 @@ public class DateNotice extends Auditable {
 
     @ToString.Exclude
     @OneToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "NOTICE_ID")
     @Setter
     private Notice notice;
 
     @ToString.Exclude
     @OneToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "SCHEDULE_ID")
     @Setter
     private Schedule schedule;
 
     @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "TUTORING_ID")
     @Setter
     private Tutoring tutoring;
 
