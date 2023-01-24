@@ -66,6 +66,10 @@ const MessageList = ({
                   <p>
                     {list.lastMessage === 'REQ_UEST'
                       ? '매칭 요청'
+                      : list.lastMessage === 'MAT_CHING_CAN_CEL'
+                      ? '매칭 요청 취소'
+                      : list.lastMessage === 'MAT_CHING_CON_FIRM'
+                      ? '매칭 요청 승인'
                       : list.lastMessage}
                   </p>
                 </div>
