@@ -54,7 +54,8 @@ const Journals = ({
         tutoring.dateNotices?.map((el) => {
           return (
             <Link
-              to={`/journal/${tutoringId}/${el.dateNoticeId}`}
+              to={`/journal`}
+              state={{ tutoringId: tutoringId, dateNoticeId: el.dateNoticeId }}
               key={el.dateNoticeId}
             >
               <li className={styles.li}>

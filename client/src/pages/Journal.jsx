@@ -2,7 +2,7 @@ import styles from './Journal.module.css';
 import JournalForm from '../components/JournalSection/JournalForm';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const initialData = {
   dateNoticeTitle: '',
@@ -15,7 +15,7 @@ const initialData = {
 };
 
 const Journal = () => {
-  const { dateNoticeId } = useParams();
+  const { dateNoticeId } = useLocation().state;
   const [userData, setUserData] = useState(initialData);
 
   useEffect(() => {

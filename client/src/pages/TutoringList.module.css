@@ -42,14 +42,15 @@
   }
 }
 
-.none {
-  width: 50%;
-  max-width: 520px;
-  background-color: $white;
-  box-shadow: $buttonShadow;
-  margin-bottom: 8px;
+.noContent {
+  background-color: $silver;
   border-radius: 5px;
-  padding: 24px;
-  font-size: $font4;
-  font-weight: $font4W;
+  box-shadow: $defaultShadow;
+
+  > p {
+    padding: 70px;
+    font-size: $font4;
+    font-weight: $font4W;
+    text-align: center;
+  }
 }

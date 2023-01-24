@@ -1,12 +1,12 @@
 import styles from './TuteeProfile.module.css';
 import { ProfileContents, ProfileCard } from '../components/profileSection';
 import { ButtonTop } from '../components/Button';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const TuteeProfile = () => {
-  const { profileId } = useParams();
+  const { profileId } = useLocation().state;
   const [profileDetail, setProfileDetail] = useState({
     profileId: 0,
     userId: 0,

@@ -3,7 +3,7 @@ import { HiSpeakerphone } from 'react-icons/hi';
 import { ButtonNightBlue } from '../Button';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import ModalState from '../../recoil/modal.js';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Profile from '../../recoil/profile';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
@@ -29,7 +29,7 @@ const FinishedJournalList = ({
   });
   const setModal = useSetRecoilState(ModalState);
   const { userStatus } = useRecoilValue(Profile);
-  const { tutoringId } = useParams();
+  const { tutoringId } = useLocation().state;
 
   const reviewDetailProps = {
     isOpen: true,
@@ -91,7 +91,8 @@ const FinishedJournalList = ({
         {tutoring.latestNoticeBody ? (
           <Link
             className={styles.noti}
-            to={`/journal/${tutoringId}/${tutoring.latestNoticeId}`}
+            to={`/journal`}
+            state={{ dateNoticeId: tutoring.latestNoticeId }}
           >
             <div>
               <HiSpeakerphone className={styles.icon} />

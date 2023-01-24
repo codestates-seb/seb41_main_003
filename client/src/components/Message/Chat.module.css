@@ -11,6 +11,7 @@
   h5 {
     font-size: $font6;
     font-weight: $font6W;
+    margin-bottom: 1px;
   }
 
   .text {
@@ -81,4 +82,15 @@
   border-radius: 5px;
   font-weight: $font5W;
   font-size: $font5;
+}
+
+.matchingComent {
+  background-color: $night;
+  border-radius: 5px;
+
+  > p {
+    color: $white;
+    padding: 8px;
+    font-weight: $font5W;
+  }
 }

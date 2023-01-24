@@ -127,7 +127,8 @@ const TutorList = () => {
         <div className={styles.feedContainer}>
           {tutorData.map((tutor) => (
             <Link
-              to={`/tutorprofile/${tutor.profileId}`}
+              to={`/tutorprofile`}
+              state={{ profileId: tutor.profileId }}
               key={tutor.profileId}
               className={styles.list}
             >

@@ -5,7 +5,12 @@ import { ButtonNightBlue } from '../Button.jsx';
 import { BlueSubject } from '../Subject.jsx';
 import { MdStar, MdDelete } from 'react-icons/md';
 import Toggle from './Toggle';
-import { useSetRecoilState, useResetRecoilState, useRecoilState } from 'recoil';
+import {
+  useSetRecoilState,
+  useResetRecoilState,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil';
 import ModalState from '../../recoil/modal';
 import Profile from '../../recoil/profile';
 import axios from 'axios';
@@ -16,6 +21,7 @@ const MyProfileCard = ({ user, setUser }) => {
 
   const navigate = useNavigate();
   const [{ profileId }, setProfile] = useRecoilState(Profile);
+  const { userStatus } = useRecoilValue(Profile);
 
   const confirm = {
     isOpen: true,
@@ -83,10 +89,12 @@ const MyProfileCard = ({ user, setUser }) => {
       <section className={styles.textContainer}>
         <div className={styles.starLine}>
           <p className={styles.font1}>{user.name}</p>
-          <div className={styles.starBox}>
-            <MdStar fill="#F0C24D" size="21" />
-            <p className={styles.paragragh}>{user.rate} / 5 </p>
-          </div>
+          {userStatus === 'TUTOR' && (
+            <div className={styles.starBox}>
+              <MdStar fill="#F0C24D" size="21" />
+              <p className={styles.paragragh}>{user.rate} / 5 </p>
+            </div>
+          )}
         </div>
         <div>
           <p className={styles.font4}>한 줄 소개</p>

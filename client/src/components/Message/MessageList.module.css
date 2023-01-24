@@ -42,6 +42,7 @@
 
     p {
       font-size: $para;
+      color: $coal;
     }
   }
 

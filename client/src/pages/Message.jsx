@@ -3,33 +3,31 @@ import MessageList from '../components/Message/MessageList';
 import MessageContent from '../components/Message/MessageContent';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState, useResetRecoilState } from 'recoil';
 import CurrentRoomIdState from '../recoil/currentRoomId.js';
 import ModalState from '../recoil/modal.js';
 import { useNavigate } from 'react-router-dom';
 import Profile from '../recoil/profile';
 
-const initialState = {
-  messageRoomId: 0,
-  messages: [
-    {
-      messageContent: '대화를 선택해주세요',
-    },
-  ],
-};
-
 const Message = () => {
   const [messageList, setMessageList] = useState([0]);
-  const [messageRoom, setMessageRoom] = useState(initialState);
+  const [messageRoom, setMessageRoom] = useState({
+    messages: [
+      {
+        messageContent: '대화를 선택해주세요',
+      },
+    ],
+  });
   const [pageInfo, setPageInfo] = useState({});
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
   const { profileId } = useRecoilValue(Profile);
   const setModal = useSetRecoilState(ModalState);
+  const resetModal = useResetRecoilState(ModalState);
   const navigate = useNavigate();
 
-  const noMsgAlertModal = {
+  const noListAlertModal = {
     isOpen: true,
-    modalType: 'handleAlert',
+    modalType: 'handlerAlert',
     props: {
       text: `대화상대가 없습니다.
 
@@ -38,14 +36,10 @@ const Message = () => {
       } 프로필의 문의하기 버튼을 눌러서 대화를 시작해주세요.`,
       modalHandler: () => {
         navigate(-1);
+        resetModal();
       },
     },
   };
-
-  useEffect(() => {
-    if (messageList.length !== 0) getMessageRoom();
-    else setModal(noMsgAlertModal);
-  }, [CurrentRoomId]);
 
   const getMessageList = async () => {
     await axios
@@ -53,7 +47,7 @@ const Message = () => {
       .then((res) => {
         setMessageList(res.data.data);
         setPageInfo(res.data.pageInfo);
-        console.log(res.data, '메세지 리스트 API');
+        console.log(res.data.data, '메세지 리스트 API');
       })
       .catch((err) => console.log(err, 'getMessageList'));
   };
@@ -61,6 +55,16 @@ const Message = () => {
   useEffect(() => {
     getMessageList();
   }, []);
+
+  useEffect(() => {
+    if (messageList.length !== 0) getMessageRoom();
+    else {
+      setModal(noListAlertModal);
+    }
+  }, [messageList]);
+  useEffect(() => {
+    getMessageRoom();
+  }, [CurrentRoomId]);
 
   const getMessageRoom = async () => {
     await axios
@@ -95,6 +99,7 @@ const Message = () => {
           />
           <MessageContent
             messageRoom={messageRoom}
+            getMessageList={getMessageList}
             getMessageRoom={getMessageRoom}
             delMessageRoom={delMessageRoom}
           />

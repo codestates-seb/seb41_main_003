@@ -14,9 +14,7 @@ const Chat = ({
   tutoringId,
 }) => {
   const { senderId, messageContent, senderName, createAt } = message;
-  // const profileId = JSON.parse(localStorage.getItem('current_user')).profileId;
   const { profileId } = useRecoilValue(Profile);
-
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
 
@@ -45,7 +43,7 @@ const Chat = ({
         senderId: profileId,
         receiverId: receiveMessageId,
         messageRoomId: CurrentRoomId,
-        messageContent: '< 매칭요청이 승인되었습니다 >',
+        messageContent: 'MAT_CHING_CON_FIRM',
       })
       .then(() => {
         console.log('메세지 전송');
@@ -61,7 +59,7 @@ const Chat = ({
         senderId: profileId,
         receiverId: receiveMessageId,
         messageRoomId: CurrentRoomId,
-        messageContent: '< 매칭요청이 취소되었습니다 >',
+        messageContent: 'MAT_CHING_CAN_CEL',
       })
       .then(() => {
         console.log('메세지 전송');
@@ -128,6 +126,7 @@ const Chat = ({
       }`}
     >
       {senderId === profileId ? undefined : <h5>{senderName}</h5>}
+
       {messageContent === 'REQ_UEST' ? (
         senderId === profileId ? (
           <div className={styles.matchingBox}>
@@ -145,11 +144,20 @@ const Chat = ({
             <button
               className={styles.checkRequestBtn}
               onClick={() => setModal(matchConfirmModal)}
+              // disabled={ ? true : false}
             >
               요청 확인하기
             </button>
           </div>
         )
+      ) : messageContent === 'MAT_CHING_CON_FIRM' ? (
+        <div className={styles.matchingComent}>
+          <p>매칭 요청이 승인 되었습니다.</p>
+        </div>
+      ) : messageContent === 'MAT_CHING_CAN_CEL' ? (
+        <div className={styles.matchingComent}>
+          <p>매칭 요청이 취소 되었습니다.</p>
+        </div>
       ) : (
         <p className={styles.text}>{messageContent}</p>
       )}

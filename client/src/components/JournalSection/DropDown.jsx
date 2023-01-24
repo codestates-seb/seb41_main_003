@@ -4,14 +4,14 @@ import { ButtonNightBlue, ButtonRed } from '../Button';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 import { MdMenu, MdClose } from 'react-icons/md';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 const DropDown = () => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
   const navigate = useNavigate();
-  const { dateNoticeId, tutoringId } = useParams();
+  const { dateNoticeId, tutoringId } = useLocation().state;
 
   const [isClicked, setIsClicked] = useState(false);
 
@@ -23,7 +23,9 @@ const DropDown = () => {
       modalHandler: () => {
         console.log('일지 수정페이지로 이동');
         resetModal();
-        navigate(`/editjournal/${dateNoticeId}`);
+        navigate(`/editjournal`, {
+          state: { dateNoticeId },
+        });
       },
     },
   };
@@ -55,8 +57,9 @@ const DropDown = () => {
     props: {
       text: '일지가 삭제 되었습니다.',
       modalHandler: () => {
-        // TODO : 튜터링 페이지로 이동 필요
-        navigate(`/tutoring/${tutoringId}`);
+        navigate(`/tutoring`, {
+          state: { tutoringId },
+        });
         resetModal();
       },
     },
