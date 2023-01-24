@@ -109,6 +109,7 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
 
   const reviewProps = {
     isOpen: true,
+    backDropHandle: true,
     modalType: 'review',
     props: {
       modalHandler: (e, value, reviewData) => {
@@ -144,22 +145,34 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
   return (
     <div className={styles.container}>
       <div className={styles.leftCard}>
-        <Link
-          to={`/journal`}
-          state={{
-            tutoringId: tutoring.tutoringId,
-            dateNoticeId: tutoring.latestNoticeId,
-          }}
-        >
-          <div className={styles.noti}>
-            <HiSpeakerphone className={styles.icon} />
-            {tutoring.latestNoticeBody === null
-              ? '최근 공지가 없습니다.'
-              : tutoring.latestNoticeBody > 20
-              ? `최근 공지사항 | ${tutoring.latestNoticeBody.slice(0, 20)}...`
-              : `최근 공지사항 | ${tutoring.latestNoticeBody}`}
-          </div>
-        </Link>
+        {tutoring.latestNoticeBody &&
+          (tutoring.latestNoticeBody ? (
+            <Link
+              className={styles.noti}
+              to={`/journal`}
+              state={{
+                tutoringId: tutoring.tutoringId,
+                dateNoticeId: tutoring.latestNoticeId,
+              }}
+            >
+              <div>
+                <HiSpeakerphone className={styles.icon} />
+                {tutoring.latestNoticeBody > 20
+                  ? `최근 공지사항 | ${tutoring.latestNoticeBody.slice(
+                      0,
+                      20
+                    )}...`
+                  : `최근 공지사항 | ${tutoring.latestNoticeBody}`}
+              </div>
+            </Link>
+          ) : (
+            <div className={styles.noti}>
+              <div>
+                <HiSpeakerphone className={styles.icon} />
+                최근 공지가 없습니다.
+              </div>
+            </div>
+          ))}
         <Journals
           tutoringId={tutoringId}
           tutoring={tutoring}
@@ -172,7 +185,10 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
         <div className={styles.rightTextBox}>
           <div className={styles.nameBox}>
             <span>
-              {userStatus === 'TUTOR' ? tutoring.tuteeName : tutoring.tutorName}
+              {tutoring.tuteeName &&
+                (userStatus === 'TUTOR'
+                  ? tutoring.tuteeName
+                  : tutoring.tutorName)}
             </span>
           </div>
           <span className={styles.tutoringTitle}>{tutoring.tutoringTitle}</span>

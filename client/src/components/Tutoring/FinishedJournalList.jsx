@@ -53,6 +53,7 @@ const FinishedJournalList = ({
 
   const editReviewProps = {
     isOpen: true,
+    backDropHandle: true,
     modalType: 'editReview',
     props: {
       modalHandler: (e, value, reviewData) => {
@@ -87,14 +88,27 @@ const FinishedJournalList = ({
   return (
     <div className={styles.container}>
       <div className={styles.leftCard}>
-        <Link to={`/journal`} state={{ dateNoticeId: tutoring.latestNoticeId }}>
+        {tutoring.latestNoticeBody ? (
+          <Link
+            className={styles.noti}
+            to={`/journal`}
+            state={{ dateNoticeId: tutoring.latestNoticeId }}
+          >
+            <div>
+              <HiSpeakerphone className={styles.icon} />
+              {tutoring.latestNoticeBody > 20
+                ? `최근 공지사항 | ${tutoring.latestNoticeBody.slice(0, 20)}...`
+                : `최근 공지사항 | ${tutoring.latestNoticeBody}`}
+            </div>
+          </Link>
+        ) : (
           <div className={styles.noti}>
-            <HiSpeakerphone className={styles.icon} />
-            {tutoring.latestNoticeBody > 20
-              ? `최근 공지사항 | ${tutoring.latestNoticeBody.slice(0, 20)}...`
-              : `최근 공지사항 | ${tutoring.latestNoticeBody}`}
+            <div>
+              <HiSpeakerphone className={styles.icon} />
+              최근 공지가 없습니다.
+            </div>
           </div>
-        </Link>
+        )}
         <Journals
           tutoringId={tutoringId}
           tutoring={tutoring}
@@ -107,14 +121,20 @@ const FinishedJournalList = ({
         <div className={styles.rightTextBox}>
           <div className={styles.nameBox}>
             <span>
-              {userStatus === 'TUTOR' ? tutoring.tuteeName : tutoring.tutorName}
+              {tutoring.tuteeName &&
+                (userStatus === 'TUTOR'
+                  ? tutoring.tuteeName
+                  : tutoring.tutorName)}
             </span>
           </div>
-          <span className={styles.tutoringTitle}>{tutoring.tutoringTitle}</span>
+          <span className={styles.tutoringTitle}>
+            {tutoring.tutoringTitle && tutoring.tutoringTitle}
+          </span>
           <span className={styles.tutoringDate}>
-            {`${new Date(tutoring.createAt).toLocaleDateString()} ~ ${new Date(
-              tutoring.updateAt
-            ).toLocaleDateString()}`}
+            {tutoring.createAt &&
+              `${new Date(tutoring.createAt).toLocaleDateString()} ~ ${new Date(
+                tutoring.updateAt
+              ).toLocaleDateString()}`}
           </span>
         </div>
         {userStatus === 'TUTEE' && (

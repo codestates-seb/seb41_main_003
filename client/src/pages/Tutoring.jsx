@@ -8,30 +8,7 @@ import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 
 const Tutoring = () => {
-  const [tutoring, setTutoring] = useState({
-    tutoringId: 0,
-    tutoringTitle: '',
-    tutoringStatus: 'PROGRESS',
-    latestNoticeId: 0,
-    latestNoticeBody: '',
-    tuteeId: 0,
-    tuteeName: '',
-    tutorId: 0,
-    tutorName: '',
-    createAt: '',
-    updateAt: '',
-    dateNotices: [
-      {
-        dateNoticeId: 1,
-        dateNoticeTitle: '',
-        startTime: '',
-        endTime: '',
-        homeworkCount: 0,
-        finishHomeworkCount: 0,
-        noticeStatus: '',
-      },
-    ],
-  });
+  const [tutoring, setTutoring] = useState({});
   const [pageInfo, setPageInfo] = useState({
     page: 1,
     size: 5,

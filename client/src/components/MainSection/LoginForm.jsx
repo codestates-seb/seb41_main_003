@@ -72,6 +72,34 @@ const LoginForm = () => {
     } else setIsFail(400);
   };
 
+  const OAuthSubmitHandler = (social) => {
+    axios
+      .get(`/oauth2/authorization/${social}`)
+      .then(({ data: res }) => {
+        if (isIdChecked) localStorage.setItem('saveId', loginData.username);
+        else localStorage.removeItem('saveId');
+
+        sessionStorage.setItem('authorization', res.data.Authorization);
+        sessionStorage.setItem('userId', res.data.userId);
+        sessionStorage.setItem('userStatus', res.data.userStatus);
+
+        console.log('로그인 완료');
+        setProfile((prev) => ({
+          ...prev,
+          isLogin: true,
+          userStatus: res.data.userStatus,
+        }));
+        if (res.data.userStatus === 'NONE') {
+          console.log('회원정보 입력 필요');
+        } else {
+          navigate('/');
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  };
+
   return (
     <div className={styles.loginContainer}>
       <span className={styles.loginText}>로그인 후 이용하실 수 있습니다.</span>
@@ -118,7 +146,13 @@ const LoginForm = () => {
           <button type="submit" className={styles.loginButton}>
             로그인
           </button>
-          <button type="button" className={styles.kakaoLoginButton}>
+          <button
+            type="button"
+            className={styles.kakaoLoginButton}
+            onClick={() => {
+              OAuthSubmitHandler('kakao');
+            }}
+          >
             <svg
               width="22"
               height="21"
@@ -143,7 +177,13 @@ const LoginForm = () => {
             </svg>
             <span>카카오 로그인</span>
           </button>
-          <button type="button" className={styles.googleLoginButton}>
+          <button
+            type="button"
+            className={styles.googleLoginButton}
+            onClick={() => {
+              OAuthSubmitHandler('google');
+            }}
+          >
             <svg
               width="18"
               height="18"
