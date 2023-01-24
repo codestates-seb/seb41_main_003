@@ -30,7 +30,6 @@ public class Homework extends Auditable {
     /* 연관 관계 매핑 */
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "DATE_NOTICE_ID")
     @Setter
     private DateNotice dateNotice;
 

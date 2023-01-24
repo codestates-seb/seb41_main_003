@@ -82,7 +82,7 @@ values
     ('basic','https://image-test-suyoung.s3.ap-northeast-2.amazonaws.com/image/user.png')
 ;
 
-insert into `profile` (`bio`, `characters`, `difference`, `gender`, `name`, `pay`, `pre_tutoring`, `profile_status`, `rate`, `school`, `subject_string`, `want_date`, `wanted_status`, `way`, `profile_image_id`, `user_id`)
+insert into `profile` (`bio`, `characters`, `difference`, `gender`, `name`, `pay`, `pre_tutoring`, `profile_status`, `rate`, `school`, `subject_string`, `want_date`, `wanted_status`, `way`, `profile_image_profile_image_id`, `user_user_id`)
 values
     ('수학 갈아드립니다', '소심함', null, '남', '1번회원이다', '시간당 20마넌', '가능합니다', 'TUTEE', 0.0, '제주대 철학과 19학번',
      '수학,영어,과학', '암때나 가능', 'REQUEST', '알아서 합니다', 1, 10),
@@ -217,7 +217,7 @@ values
     ('기타')
 ;
 
-insert into `subject_profile` (`content`, `profile_id`, `subject_id`)
+insert into `subject_profile` (`content`, `profile_profile_id`, `subject_subject_id`)
 values
     ('',1,2),('',1,1),('',1,5),
     ('',2,2),('',2,1),('',2,5),('',2,6),
