@@ -65,9 +65,15 @@ const TutoringList = () => {
         </div>
         <ul className={styles.tutoringList}>
           {tutorings.length === 0 ? (
-            <div className={styles.noContent}>
-              <p>아직 진행중인 과외가 없습니다.</p>
-            </div>
+            isFinished === false ? (
+              <div className={styles.noContent}>
+                <p>아직 진행중인 과외가 없습니다.</p>
+              </div>
+            ) : (
+              <div className={styles.noContent}>
+                <p>아직 종료된 과외가 없습니다.</p>
+              </div>
+            )
           ) : (
             tutorings.map((tutoring) => (
               <Tutoring tutoring={tutoring} key={tutoring.tutoringId} />

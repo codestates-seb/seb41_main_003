@@ -144,6 +144,7 @@ const Chat = ({
             <button
               className={styles.checkRequestBtn}
               onClick={() => setModal(matchConfirmModal)}
+              // disabled={username === '' || password === '' ? true : false}
             >
               요청 확인하기
             </button>
@@ -180,45 +181,3 @@ Chat.propTypes = {
 };
 
 export default Chat;
-
-{
-  /* <div
-className={`${styles.chatContainer} ${
-  senderId === profileId ? styles.sendChat : undefined
-}`}
->
-{senderId === profileId ? undefined : <h5>{senderName}</h5>}
-{messageContent === 'REQ_UEST' ? (
-  senderId === profileId ? (
-    <div className={styles.matchingBox}>
-      <p>매칭 요청을 보냈습니다.</p>
-      <button
-        className={styles.requestCancelBtn}
-        onClick={() => setModal(cancelConfirmModal)}
-      >
-        요청 취소하기
-      </button>
-    </div>
-  ) : (
-    <div className={styles.matchingBox}>
-      <p>매칭 요청이 도착했습니다.</p>
-      <button
-        className={styles.checkRequestBtn}
-        onClick={() => setModal(matchConfirmModal)}
-      >
-        요청 확인하기
-      </button>
-    </div>
-  )
-) : (
-  <p className={styles.text}>{messageContent}</p>
-)}
-{createAt && (
-  <span className={styles.time}>
-    {Number(createAt.slice(11, 13)) >= 12 ? 'PM' : 'AM'}
-    {createAt.slice(11, 16)}
-  </span>
-)}
-{createAt}
-</div> */
-}
