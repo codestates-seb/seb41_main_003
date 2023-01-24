@@ -281,7 +281,7 @@ values
     ('잘알려드릴게',60,1),('잘알려드릴게',60,2)
 ;
 
-insert into `user_roles`(`user_id`, `roles`)
+insert into `user_roles`(`user_user_id`, `roles`)
 values
     (1, 'USER'),
     (2, 'USER'),
