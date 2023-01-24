@@ -1,5 +1,6 @@
 package com.mainproject.server.review.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import javax.validation.constraints.Min;
 
 @Getter
 @Setter
+@Builder
 public class ReviewPostDto {
 
     @Min(1) @Max(5)

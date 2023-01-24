@@ -197,7 +197,7 @@ class TutoringServiceTest {
         //then
         assertThat(throwable)
                 .isInstanceOf(ServiceLogicException.class)
-                .hasMessageContaining(ErrorCode.ACCESS_DENIED.getMessage());
+                .hasMessageContaining(ErrorCode.TUTORING_STATUS_BAD_REQUEST.getMessage());
     }
 
 

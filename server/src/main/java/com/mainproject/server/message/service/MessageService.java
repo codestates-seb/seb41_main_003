@@ -22,6 +22,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -101,8 +102,11 @@ public class MessageService {
 
     public MessageRoom updateMessageRoom(Long messageRoomId, Long tutoringId) {
         MessageRoom messageRoom = verifiedMessageRoom(messageRoomId);
-        messageRoom.setTutoringId(tutoringId);
-
+        if (messageRoom.getTutoringId() == null) {
+            messageRoom.setTutoringId(tutoringId);
+        } else {
+            throw new ServiceLogicException(ErrorCode.MATCHING_REQUEST_EXISTS);
+        }
         return messageRoomRepository.save(messageRoom);
     }
 
@@ -141,6 +145,15 @@ public class MessageService {
     }
 
     /* 검증 및 유틸 로직 */
+
+    public void deleteMessageRoomTutoringId(Long tutoringId) {
+        Optional<MessageRoom> findMessageRoom =
+                messageRoomRepository.findByTutoringId(tutoringId);
+        if (findMessageRoom.isPresent()) {
+            findMessageRoom.get().setTutoringId(null);
+            messageRoomRepository.save(findMessageRoom.get());
+        }
+    }
 
     public MessageRoom verifiedMessageRoom(Long messageRoomId) {
         return messageRoomRepository.findById(messageRoomId)
