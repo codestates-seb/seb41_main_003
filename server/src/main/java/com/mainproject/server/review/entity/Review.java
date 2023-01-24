@@ -41,11 +41,13 @@ public class Review extends Auditable {
 
     @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "TUTOR_ID")
     @Setter
     private Profile tutor;
 
     @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "TUTEE_ID")
     @Setter
     private Profile tutee;
 
