@@ -40,6 +40,10 @@
     font-size: $font6;
     font-weight: $font6W;
   }
+
+  > textarea {
+    resize: none;
+  }
 }
 
 .starBox {
