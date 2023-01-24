@@ -71,7 +71,7 @@ const Admin = () => {
                 to={`/${
                   profile.userStatus === 'TUTOR' ? 'tutor' : 'tutee'
                 }profile`}
-                state={obj.profileId}
+                state={{ profileId: obj.profileId }}
               >
                 <li className={styles.profileBox}>
                   <div className={styles.iconsBox}>
