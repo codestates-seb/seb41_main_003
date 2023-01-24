@@ -43,11 +43,13 @@ public class Tutoring extends Auditable {
 
     @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "TUTOR_ID")
     @Setter
     private Profile tutor;
 
     @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "TUTEE_ID")
     @Setter
     private Profile tutee;
 
@@ -59,6 +61,7 @@ public class Tutoring extends Auditable {
 
     @ToString.Exclude
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "REVIEW_ID")
     @Setter
     private Review review;
 

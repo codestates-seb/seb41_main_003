@@ -30,16 +30,19 @@ public class Message extends Auditable {
     /* 연관 관계 매핑 */
     @ToString.Exclude
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "MESSAGE_ROOM_ID")
     @Setter
     private MessageRoom messageRoom;
 
     @ToString.Exclude
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "SENDER_ID")
     @Setter
     private Profile sender;
 
     @ToString.Exclude
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "RECEIVER_ID")
     @Setter
     private Profile receiver;
 

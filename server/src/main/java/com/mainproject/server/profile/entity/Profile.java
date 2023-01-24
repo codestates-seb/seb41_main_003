@@ -86,12 +86,14 @@ public class Profile extends Auditable {
     /* 연관 관계 매핑*/
     @ToString.Exclude
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID")
     @Setter
     private User user;
 
 
     @ToString.Exclude
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "PROFILE_IMAGE_ID")
     @Setter
     private ProfileImage profileImage;
 
