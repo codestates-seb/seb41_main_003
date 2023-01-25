@@ -69,17 +69,23 @@ const Journals = ({
                     new Date(el.startTime).getMonth() + 1
                   }월`}</span>
                 </div>
-                <div className={styles.textBox}>
-                  <span
-                    className={styles.goal}
-                  >{`학습 목표 | ${el.dateNoticeTitle} `}</span>
-                  <span
-                    className={styles.homework}
-                  >{`과제 제출 완료 (${el.finishHomeworkCount}/${el.homeworkCount})`}</span>
-                </div>
-                <div className={styles.notiIcon}>
-                  <HiSpeakerphone className={styles.hiSpeaker} />
-                  공지
+                <div className={styles.textAndNotiBox}>
+                  <div className={styles.textBox}>
+                    <span className={styles.goal}>
+                      {el.dateNoticeTitle.length > 20
+                        ? `학습 목표 | ${el.dateNoticeTitle.slice(0, 30)}... `
+                        : `학습 목표 | ${el.dateNoticeTitle}`}
+                    </span>
+                    <span
+                      className={styles.homework}
+                    >{`과제 제출 완료 (${el.finishHomeworkCount}/${el.homeworkCount})`}</span>
+                  </div>
+                  {el.noticeStatus === 'NOTICE' && (
+                    <div className={styles.notiIcon}>
+                      <HiSpeakerphone className={styles.hiSpeaker} />
+                      공지
+                    </div>
+                  )}
                 </div>
               </li>
             </Link>

@@ -74,7 +74,7 @@
 
 .li {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   margin-bottom: 8px;
   background-color: $snow;
@@ -116,10 +116,15 @@
   }
 }
 
+.textAndNotiBox {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .textBox {
   display: flex;
   flex-direction: column;
-  width: 565px;
   padding-left: 12px;
 }
 
