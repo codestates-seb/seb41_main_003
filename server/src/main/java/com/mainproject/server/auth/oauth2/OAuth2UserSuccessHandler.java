@@ -73,8 +73,6 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         String accessToken = token.getAccessToken();
         String refreshToken = token.getRefreshToken();
         refreshService.createRefresh(user.getEmail(), refreshToken);
-        Map<String, Object> claims = verifyJws(accessToken);
-        setAuthenticationToContext(claims);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.OK.value());
         return UriComponentsBuilder.fromUriString("http://localhost:3000/auth?")
@@ -120,21 +118,5 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
                 throw se;
             }
         }
-    }
-
-    private Map<String, Object> verifyJws(String accessToken) {
-        String jws = accessToken.replace("Bearer ", "");
-        String base64SecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-        log.info("OAuth2UserSuccessHandler verifyJws Do");
-        return jwtTokenizer.getClaims(jws, base64SecretKey).getBody();
-    }
-
-    private void setAuthenticationToContext(Map<String ,Object> claims) {
-        String username = (String) claims.get("username");
-        List<GrantedAuthority> roles = authorityUtils.createAuthorities((List<String>) claims.get("roles"));
-        Authentication authentication =
-                new UsernamePasswordAuthenticationToken(username, null, roles);
-        log.info("OAuth2UserSuccessHandler setAuthenticationToContext Do");
-        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
