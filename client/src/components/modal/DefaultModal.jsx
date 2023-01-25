@@ -58,7 +58,7 @@ export const ConfirmValiModal = ({ text, modalHandler, validation }) => {
   };
 
   return (
-    <div
+    <form
       className={styles.view}
       onClick={(e) => e.stopPropagation()}
       role="dialog"
@@ -84,7 +84,7 @@ export const ConfirmValiModal = ({ text, modalHandler, validation }) => {
         />
         <ButtonSilver name="no" buttonHandler={() => reset()} text="취소" />
       </div>
-    </div>
+    </form>
   );
 };
 
@@ -108,7 +108,7 @@ export const ConfirmTextModal = ({
   };
 
   return (
-    <div
+    <form
       className={styles.view}
       onClick={(e) => e.stopPropagation()}
       role="dialog"
@@ -134,7 +134,7 @@ export const ConfirmTextModal = ({
         />
         <ButtonSilver name="no" buttonHandler={() => reset()} text="취소" />
       </div>
-    </div>
+    </form>
   );
 };
 
