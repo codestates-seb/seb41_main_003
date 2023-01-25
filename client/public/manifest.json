@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "과외차이",
+  "name": "통합 관리 과외 서비스, 과외차이",
   "icons": [
     {
       "src": "favicon.ico",
@@ -19,7 +19,7 @@
     }
   ],
   "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
+  "display": "browser",
+  "theme_color": "#023373",
   "background_color": "#ffffff"
 }
