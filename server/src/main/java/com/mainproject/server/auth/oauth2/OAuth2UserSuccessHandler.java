@@ -45,6 +45,8 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
     private final JwtAuthorityUtils authorityUtils;
 
+    private final String serviceUrl = "http://tutor-diff.s3-website.ap-northeast-2.amazonaws.com";
+
     @Override
     public void onAuthenticationSuccess(
             HttpServletRequest request,
@@ -74,7 +76,7 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         refreshService.createRefresh(user.getEmail(), refreshToken);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.OK.value());
-        return UriComponentsBuilder.fromUriString("http://localhost:3000/auth?")
+        return UriComponentsBuilder.fromUriString(serviceUrl + "/auth?")
                 .queryParam("Authorization", "Bearer " + accessToken)
                 .queryParam("userId", user.getUserId().toString())
                 .queryParam("userStatus", user.getUserStatus().name())
@@ -85,7 +87,7 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     private String getExceptionRedirectUri(HttpServletResponse response, ErrorCode code) {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.OK.value());
-        return UriComponentsBuilder.fromUriString("http://localhost:3000/auth?")
+        return UriComponentsBuilder.fromUriString(serviceUrl + "/auth?")
                 .queryParam("code", code.getStatus())
                 .queryParam("message", code.getMessage())
                 .build()
