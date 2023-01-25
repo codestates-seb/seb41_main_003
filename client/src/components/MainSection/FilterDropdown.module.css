@@ -19,6 +19,10 @@
   align-items: center;
   margin-bottom: 24px;
 
+  &:hover {
+    text-decoration: underline;
+  }
+
   &:last-child {
     margin: 0;
   }

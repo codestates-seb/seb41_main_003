@@ -24,6 +24,7 @@ const MessageContent = ({
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
   const scrollRef = useRef();
+
   //* 채팅창의 스크롤 위치 제어
   useEffect(() => {
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -57,7 +58,7 @@ const MessageContent = ({
       .catch((err) => console.log(err));
   };
 
-  //* 과외 생성 API
+  //* 매칭 요청 (과외 생성) API
   const createTutoringAPI = async (value) => {
     await axios
       .post(`/tutoring/${profileId}`, {
@@ -67,11 +68,28 @@ const MessageContent = ({
         messageRoomId: CurrentRoomId,
       })
       .then((res) => {
+        setModal(matchAlertProps);
         console.log(res.data.data.tutoringId, '과외 생성 API');
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (err.message === 'Request failed with status code 409') {
+          setModal(alreadyMatchModal);
+          // 매칭 요청이 있는게 아니라 이미 진행중인 과외가 있을때도 409에러
+        }
+        console.log(err, '매칭 요청');
+      });
   };
 
+  //* 매칭 중복 요청 오류 모달
+  const alreadyMatchModal = {
+    isOpen: true,
+    modalType: 'alert',
+    props: {
+      text: `이미 진행중인 매칭 요청 이나 과외가 있습니다.`,
+    },
+  };
+
+  //* 매칭 요청 모달
   const matchConfirmProps = {
     isOpen: true,
     modalType: 'confirmText',
@@ -84,12 +102,10 @@ const MessageContent = ({
       modalHandler: (_, value) => {
         createTutoringAPI(value);
         resetModal();
-        setModal(matchAlertProps);
       },
       placeHolder: '과외의 이름을 작성하세요',
     },
   };
-
   const matchAlertProps = {
     isOpen: true,
     modalType: 'handlerAlert',
@@ -104,7 +120,7 @@ const MessageContent = ({
     },
   };
 
-  // 상담 취소 버튼 모달
+  //* 상담 취소 버튼 모달
   const cancelConfirmProps = {
     isOpen: true,
     modalType: 'redConfirm',
@@ -119,7 +135,6 @@ const MessageContent = ({
       },
     },
   };
-
   const cancelAlertProps = {
     isOpen: true,
     modalType: 'redAlert',

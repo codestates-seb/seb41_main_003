@@ -22,21 +22,38 @@ const Chat = ({
   const confirmMatching = async () => {
     await axios
       .patch(`/tutoring/details/${profileId}/${tutoringId}`)
-      .then((res) => console.log(res, '매칭요청 승인'))
-      .catch((err) => console.log(err, '매칭요청 승인'));
+      .then((res) => {
+        console.log(res, '매칭요청 승인');
+        matchingConfirmMessage();
+        setModal(matchAlertModal);
+        // 승인 되고 나면 상대에게 메세지 보내지고 모달 띄움
+      })
+      .catch((err) => {
+        if (err.message === 'Request failed with status code 400') {
+          setModal(alreadyConfirmedModal);
+        }
+        console.log(err, '매칭요청 승인');
+      });
   };
 
-  // 매칭 요청중인 과외 (완전 삭제) API
+  //* 매칭 요청 취소 (과외 삭제) API
   const deleteTutoring = async () => {
     await axios
       .delete(`/tutoring/details/${tutoringId}`)
       .then((res) => {
         console.log(res, tutoringId, '매칭요청 취소');
+        matchingCancelessage();
+        setModal(cancelAlertModal);
       })
-      .catch((err) => console.log(err, '매칭요청 취소'));
+      .catch((err) => {
+        if (err.message === 'Request failed with status code 400') {
+          setModal(alreadyCanceledMatchModal);
+        }
+        console.log(err, '매칭요청 취소');
+      });
   };
 
-  //매칭요청 승인시에 보내는 메세지
+  //* 매칭요청 승인시에 보내는 메세지
   const matchingConfirmMessage = async () => {
     await axios
       .post(`/messages`, {
@@ -52,7 +69,7 @@ const Chat = ({
       .catch((err) => console.log(err));
   };
 
-  //매칭취소시에 보내는 메세지
+  //* 매칭 취소시에 보내는 메세지
   const matchingCancelessage = async () => {
     await axios
       .post(`/messages`, {
@@ -77,14 +94,11 @@ const Chat = ({
     `,
       modalHandler: () => {
         confirmMatching();
-        matchingConfirmMessage();
         resetModal();
         getMessageRoom();
-        setModal(matchAlertModal);
       },
     },
   };
-
   const matchAlertModal = {
     isOpen: true,
     modalType: 'alert',
@@ -103,19 +117,36 @@ const Chat = ({
     `,
       modalHandler: () => {
         deleteTutoring();
-        matchingCancelessage();
         resetModal();
         getMessageRoom();
-        setModal(cancelAlertModal);
       },
     },
   };
-
   const cancelAlertModal = {
     isOpen: true,
     modalType: 'redAlert',
     props: {
       text: `매칭 요청 취소가 완료되었습니다.`,
+    },
+  };
+
+  //* 매칭 중복 수락 오류 모달
+  const alreadyConfirmedModal = {
+    isOpen: true,
+    modalType: 'alert',
+    props: {
+      text: `이미 수락된 매칭 입니다.
+          
+          과외 관리 메뉴의 과외 리스트를 확인해주세요.`,
+    },
+  };
+
+  //* 매칭 취소 요청 오류 모달
+  const alreadyCanceledMatchModal = {
+    isOpen: true,
+    modalType: 'redAlert',
+    props: {
+      text: `이미 취소된 요청입니다.`,
     },
   };
 
@@ -144,7 +175,6 @@ const Chat = ({
             <button
               className={styles.checkRequestBtn}
               onClick={() => setModal(matchConfirmModal)}
-              // disabled={ ? true : false}
             >
               요청 확인하기
             </button>
@@ -163,7 +193,7 @@ const Chat = ({
       )}
       {createAt && (
         <span className={styles.time}>
-          {Number(createAt.slice(11, 13)) >= 12 ? 'PM' : 'AM'}
+          {Number(createAt.slice(11, 13)) >= 12 ? 'PM' : 'AM'}{' '}
           {createAt.slice(11, 16)}
         </span>
       )}

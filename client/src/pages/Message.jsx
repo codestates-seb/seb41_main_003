@@ -62,6 +62,7 @@ const Message = () => {
       setModal(noListAlertModal);
     }
   }, [messageList]);
+
   useEffect(() => {
     getMessageRoom();
   }, [CurrentRoomId]);
@@ -73,7 +74,7 @@ const Message = () => {
         setMessageRoom(res.data.data);
         console.log(res.data.data, 'MessageRoom API');
       })
-      .catch((err) => console.log(err.code, 'getMessageRoom'));
+      .catch((err) => console.log(err, 'getMessageRoom'));
   };
 
   const delMessageRoom = async () => {
