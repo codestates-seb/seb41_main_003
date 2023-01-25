@@ -24,7 +24,11 @@ public class CorsFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         log.info("Do CORS Filter");
-        List<String> list = List.of("http://localhost:3000", "http://localhost:8080");
+        List<String> list = List.of(
+                "http://localhost:3000",
+                "http://localhost:8080",
+                "http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com"
+        );
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = (HttpServletRequest) req;
         String requestURI = request.getRequestURL().toString();
