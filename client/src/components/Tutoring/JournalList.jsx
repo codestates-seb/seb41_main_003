@@ -145,36 +145,32 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
   return (
     <div className={styles.container}>
       <div className={styles.leftCard}>
-        {tutoring.latestNoticeBody &&
-          (tutoring.dateNotices
-            .map((el) => el.dateNoticeId)
-            .includes(tutoring.latestNoticeId) ? (
-            <Link
-              className={styles.noti}
-              to={`/journal`}
-              state={{
-                tutoringId: tutoring.tutoringId,
-                dateNoticeId: tutoring.latestNoticeId,
-              }}
-            >
-              <div>
-                <HiSpeakerphone className={styles.icon} />
-                {tutoring.latestNoticeBody > 20
-                  ? `최근 공지사항 | ${tutoring.latestNoticeBody.slice(
-                      0,
-                      20
-                    )}...`
-                  : `최근 공지사항 | ${tutoring.latestNoticeBody}`}
-              </div>
-            </Link>
-          ) : (
-            <div className={styles.noti}>
-              <div>
-                <HiSpeakerphone className={styles.icon} />
-                최근 공지가 없습니다.
-              </div>
+        {tutoring.dateNotices
+          .map((el) => el.dateNoticeId)
+          .includes(tutoring.latestNoticeId) ? (
+          <Link
+            className={styles.noti}
+            to={`/journal`}
+            state={{
+              tutoringId: tutoring.tutoringId,
+              dateNoticeId: tutoring.latestNoticeId,
+            }}
+          >
+            <div>
+              <HiSpeakerphone className={styles.icon} />
+              {tutoring.latestNoticeBody > 20
+                ? `최근 공지사항 | ${tutoring.latestNoticeBody.slice(0, 20)}...`
+                : `최근 공지사항 | ${tutoring.latestNoticeBody}`}
             </div>
-          ))}
+          </Link>
+        ) : (
+          <div className={styles.noti}>
+            <div>
+              <HiSpeakerphone className={styles.icon} />
+              최근 공지가 없습니다.
+            </div>
+          </div>
+        )}
         <Journals
           tutoringId={tutoringId}
           tutoring={tutoring}
