@@ -70,7 +70,7 @@ const MessageList = ({
                       ? '매칭 요청 취소'
                       : list.lastMessage === 'MAT_CHING_CON_FIRM'
                       ? '매칭 요청 승인'
-                      : list.lastMessage.length > 15
+                      : list.lastMessage && list.lastMessage.length > 15
                       ? `${list.lastMessage.slice(0, 15)}...`
                       : list.lastMessage}
                   </p>
