@@ -17,7 +17,7 @@ const OAuth = () => {
   const message = urlParams.get('message');
 
   useEffect(() => {
-    if (code === '409' && message === 'USER_EMAIL_EXISTS') {
+    if (code === '409' && message === 'USER EMAIL EXISTS') {
       navigate('/login');
       setModal({
         isOpen: true,
