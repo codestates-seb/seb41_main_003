@@ -59,12 +59,10 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("userId", userId.toString());
         response.setHeader("userStatus", user.getUserStatus().name());
-        Gson gson = new Gson();
-        ResponseDto responseDto = ResponseDto.of(AuthSuccessTokenResponseDto.of(response));
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.OK.value());
-        response.getWriter().write(gson.toJson(responseDto,ResponseDto.class));
-        String redirect = UriComponentsBuilder.fromUriString("http://localhost:3000/auth")
+        String redirect = UriComponentsBuilder.fromUriString("http://localhost:3000/auth?")
+                .queryParam("Authorization",response.getHeaders("Authorization"))
                 .build()
                 .toUriString();
         getRedirectStrategy().sendRedirect(request, response, redirect);
