@@ -57,9 +57,11 @@ const EditJournalForm = () => {
     props: {
       text: `일지가 ${isAdd ? '작성' : '수정'} 되었습니다.`,
       modalHandler: () => {
-        navigate(`/journal`, {
-          state: { dateNoticeId },
-        });
+        isAdd
+          ? navigate(`/tutoring`, {
+              state: { tutoringId },
+            })
+          : navigate(`/journal`, { state: { dateNoticeId } });
         resetJournal();
         resetModal();
       },
@@ -73,11 +75,9 @@ const EditJournalForm = () => {
       text: `취소 하시겠습니까?
       작성 중인 내용이 모두 사라집니다.`,
       modalHandler: () => {
-        navigate(
-          isAdd
-            ? (`/tutoring`, { state: { tutoringId } })
-            : (`/journal`, { state: { dateNoticeId } })
-        );
+        isAdd
+          ? navigate(`/tutoring`, { state: { tutoringId } })
+          : navigate(`/journal`, { state: { dateNoticeId } });
         resetJournal();
         resetModal();
       },
