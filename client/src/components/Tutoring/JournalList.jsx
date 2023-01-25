@@ -146,7 +146,9 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
     <div className={styles.container}>
       <div className={styles.leftCard}>
         {tutoring.latestNoticeBody &&
-          (tutoring.latestNoticeBody ? (
+          (tutoring.dateNotices
+            .map((el) => el.dateNoticeId)
+            .includes(tutoring.latestNoticeId) ? (
             <Link
               className={styles.noti}
               to={`/journal`}
