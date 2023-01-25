@@ -43,21 +43,38 @@ const SignUpForm = () => {
     },
   };
 
+  const alert = {
+    isOpen: true,
+    modalType: 'alert',
+    props: {
+      text: '이미 가입된 이메일입니다.\n\n카카오/구글 계정으로 로그인 한 적이 있으시다면\n해당 계정으로 로그인 해주세요.',
+    },
+  };
+
   useEffect(() => {
     confirmHandler();
   }, [signupData.passwordConfirm, signupData.password]);
 
   const postSignUpData = async () => {
-    await axios.post(`/users`, {
-      ...signupData,
-    });
+    await axios
+      .post(`/users`, {
+        ...signupData,
+      })
+      .then(() => {
+        setModal(signUpconfirmProps);
+      })
+      .catch(({ response }) => {
+        if (
+          response.data.status === 409 &&
+          response.data.message === 'USER EMAIL EXISTS'
+        )
+          setModal(alert);
+      });
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
     postSignUpData();
-    console.log('submit!');
-    setModal(signUpconfirmProps);
   };
 
   return (
