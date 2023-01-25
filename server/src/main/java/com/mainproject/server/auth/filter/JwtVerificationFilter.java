@@ -31,10 +31,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     private final JwtAuthorityUtils authorityUtils;
 
-    /* 인증 후 권한 검증 Filter
-    * GrantedAuthority 를 생성하여
-    * UsernamePasswordAuthenticationToken 적용 후
-    * SecurityContextHolder 인가 정보를 저장한다 */
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
