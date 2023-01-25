@@ -65,9 +65,6 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
                 getRedirectStrategy().sendRedirect(request, response, exceptionRedirectUri);
             }
         }
-
-
-
     }
 
     private String getRedirectUri(HttpServletResponse response, User user) {
@@ -128,7 +125,7 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     private Map<String, Object> verifyJws(String accessToken) {
         String jws = accessToken.replace("Bearer ", "");
         String base64SecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-        log.error("OAuth2UserSuccessHandler verifyJws Do");
+        log.info("OAuth2UserSuccessHandler verifyJws Do");
         return jwtTokenizer.getClaims(jws, base64SecretKey).getBody();
     }
 
@@ -137,7 +134,7 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         List<GrantedAuthority> roles = authorityUtils.createAuthorities((List<String>) claims.get("roles"));
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(username, null, roles);
-        log.error("OAuth2UserSuccessHandler setAuthenticationToContext Do");
+        log.info("OAuth2UserSuccessHandler setAuthenticationToContext Do");
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
