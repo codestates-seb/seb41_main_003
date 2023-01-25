@@ -3,15 +3,17 @@ import PropType from 'prop-types';
 import { ButtonSilver } from '../Button';
 import { CheckBox } from '../Input';
 import DropDown from './DropDown';
-import { useSetRecoilState, useResetRecoilState } from 'recoil';
+import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
 import ModalState from '../../recoil/modal';
 import { useNavigate, useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
+import Profile from '../../recoil/profile';
 
 const JournalForm = ({ userData }) => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
   const { tutoringId } = useLocation().state;
+  const { userStatus } = useRecoilValue(Profile);
 
   const Navigate = useNavigate();
   const {
@@ -61,7 +63,7 @@ const JournalForm = ({ userData }) => {
                 <label htmlFor="dateNoticeTitle">
                   <h4>학습목표</h4>
                 </label>
-                <DropDown />
+                {userStatus === 'TUTOR' && <DropDown />}
               </div>
               <h5 className={styles.noticeArea}>{dateNoticeTitle}</h5>
             </div>
