@@ -19,8 +19,8 @@ import java.util.List;
 public class CorsFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(
-            HttpServletRequest req,
-            HttpServletResponse res,
+            HttpServletRequest request,
+            HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
         log.info("Do CORS Filter");
@@ -30,13 +30,11 @@ public class CorsFilter extends OncePerRequestFilter {
                 "http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com:8080",
                 "http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com"
         );
-        HttpServletResponse response = (HttpServletResponse) res;
-        HttpServletRequest request = (HttpServletRequest) req;
-        String requestUrl = request.getHeader("Origin");
-        log.info("requestURL = {}", requestUrl);
+        String originUrl = request.getHeader("Origin");
+        log.info("requestURL = {}", originUrl);
         String origin = list.stream().filter(
-                o -> o.equals(requestUrl)
-        ).findFirst().orElse(requestUrl);
+                o -> o.equals(originUrl)
+        ).findFirst().orElse(originUrl);
         response.setHeader("Access-Control-Allow-Origin", origin);
         response.setHeader("Access-Control-Allow-Methods","GET, POST, DELETE, PATCH, OPTIONS");
         response.setHeader("Access-Control-Max-Age", "3600");
@@ -46,7 +44,7 @@ public class CorsFilter extends OncePerRequestFilter {
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
-            filterChain.doFilter(req, res);
+            filterChain.doFilter(request, response);
         }
     }
 }
