@@ -73,7 +73,12 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     private User saveUser(String email, String nickName) {
         try {
             log.info(" #### OAuth2 Login ");
-            return userService.verifiedUserByEmail(email);
+            User user = userService.verifiedUserByEmail(email);
+            if (user.getLoginType().equals(LoginType.SOCIAL)) {
+                return user;
+            } else {
+                throw new ServiceLogicException(ErrorCode.USER_EMAIL_EXISTS);
+            }
         } catch (ServiceLogicException se) {
             if (se.getErrorCode().equals(ErrorCode.USER_NOT_FOUND)) {
                 User build = User.builder()
