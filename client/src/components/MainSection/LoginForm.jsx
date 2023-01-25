@@ -72,34 +72,6 @@ const LoginForm = () => {
     } else setIsFail(400);
   };
 
-  const OAuthSubmitHandler = (social) => {
-    axios
-      .get(`/oauth2/authorization/${social}`)
-      .then(({ data: res }) => {
-        if (isIdChecked) localStorage.setItem('saveId', loginData.username);
-        else localStorage.removeItem('saveId');
-
-        sessionStorage.setItem('authorization', res.data.Authorization);
-        sessionStorage.setItem('userId', res.data.userId);
-        sessionStorage.setItem('userStatus', res.data.userStatus);
-
-        console.log('로그인 완료');
-        setProfile((prev) => ({
-          ...prev,
-          isLogin: true,
-          userStatus: res.data.userStatus,
-        }));
-        if (res.data.userStatus === 'NONE') {
-          console.log('회원정보 입력 필요');
-        } else {
-          navigate('/');
-        }
-      })
-      .catch((res) => {
-        console.log(res);
-      });
-  };
-
   return (
     <div className={styles.loginContainer}>
       <span className={styles.loginText}>로그인 후 이용하실 수 있습니다.</span>
@@ -146,12 +118,10 @@ const LoginForm = () => {
           <button type="submit" className={styles.loginButton}>
             로그인
           </button>
-          <button
-            type="button"
+
+          <a
+            href="http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com/oauth2/authorization/kakao"
             className={styles.kakaoLoginButton}
-            onClick={() => {
-              OAuthSubmitHandler('kakao');
-            }}
           >
             <svg
               width="22"
@@ -176,13 +146,10 @@ const LoginForm = () => {
               </defs>
             </svg>
             <span>카카오 로그인</span>
-          </button>
-          <button
-            type="button"
+          </a>
+          <a
+            href="http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com/oauth2/authorization/kakao"
             className={styles.googleLoginButton}
-            onClick={() => {
-              OAuthSubmitHandler('google');
-            }}
           >
             <svg
               width="18"
@@ -217,7 +184,7 @@ const LoginForm = () => {
               />
             </svg>
             <span>Google 계정으로 로그인</span>
-          </button>
+          </a>
           <span>회원이 아니신가요?</span>
           <button
             type="button"

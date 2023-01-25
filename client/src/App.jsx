@@ -24,6 +24,7 @@ import { useResetRecoilState } from 'recoil';
 import axios from 'axios';
 import Profile from './recoil/profile';
 import { useEffect } from 'react';
+import OAuth from './pages/OAuth';
 
 const App = () => {
   const resetProfile = useResetRecoilState(Profile);
@@ -109,6 +110,7 @@ const App = () => {
             <Route path="/journal" element={<Journal />} />
             <Route path="/editjournal" element={<EditJournal />} />
             <Route path="/addjournal" element={<AddJournal />} />
+            <Route path="/auth" element={<OAuth />} />
           </Routes>
         </div>
         <GlobalModal />
