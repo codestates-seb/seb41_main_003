@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRecoilValue, useSetRecoilState, useResetRecoilState } from 'recoil';
 import CurrentRoomIdState from '../recoil/currentRoomId.js';
-<<<<<<< Updated upstream
 import ModalState from '../recoil/modal.js';
 import { useNavigate } from 'react-router-dom';
 import Profile from '../recoil/profile';
@@ -52,56 +51,17 @@ const Message = () => {
       })
       .catch((err) => console.log(err, 'getMessageList'));
   };
-=======
-import Profile from '../recoil/profile';
-// import reIssueToken from '../util/reIssueToken.js';
-
-const initialState = {
-  messageRoomId: 0,
-  messages: [
-    {
-      messageContent: '대화를 선택해주세요..',
-      createAt: '2023-01-10T10:53:13.9958657',
-    },
-  ],
-  createAt: '2023-01-10T10:53:13.9958657',
-};
-
-const Message = () => {
-  const profile = useRecoilValue(Profile);
-  const [CurrentRoomId, setCurrentRoomId] = useRecoilState(CurrentRoomIdState);
-  const [messageList, setMessageList] = useState([]);
-  const [messageRoom, setMessageRoom] = useState(initialState);
->>>>>>> Stashed changes
 
   useEffect(() => {
     getMessageList();
   }, []);
 
-<<<<<<< Updated upstream
   useEffect(() => {
     if (messageList.length !== 0) getMessageRoom();
     else {
       setModal(noListAlertModal);
     }
   }, [messageList]);
-=======
-  //프로필 메세지 방 리스트 조회 API
-  const getMessageList = async () => {
-    await axios.get(`/messages/${profile.profileId}`).then((res) => {
-      setMessageList(res.data.data);
-      console.log('getMessageList API');
-    });
-    // .catch(({ response }) => {
-    //   if (response.data.message === 'EXPIRED ACCESS TOKEN') {
-    //     reIssueToken(getMessageList).catch(() => {
-    //       console.log(response, 'getMessageList 403 error');
-    //       window.location.href = '/login';
-    //     });
-    //   }
-    // });
-  };
->>>>>>> Stashed changes
 
   useEffect(() => {
     getMessageRoom();
@@ -110,7 +70,6 @@ const Message = () => {
   //대화 화면 조회 API
   const getMessageRoom = async () => {
     await axios
-<<<<<<< Updated upstream
       .get(`/messages/rooms/${profileId}/${CurrentRoomId}`)
       .then((res) => {
         setMessageRoom(res.data.data);
@@ -127,36 +86,6 @@ const Message = () => {
         console.log('현재 대화방 삭제');
       })
       .catch((err) => console.log(err));
-=======
-      .get(`/messages/rooms/${profile.profileId}/${CurrentRoomId}`)
-      .then((res) => {
-        setMessageRoom(res.data.data);
-        console.log('MessageRoom API');
-      });
-    // .catch(({ response }) => {
-    //   if (response.data.message === 'EXPIRED ACCESS TOKEN') {
-    //     reIssueToken(getMessageRoom).catch(() => {
-    //       console.log(response, 'getMessageRoom 403 error');
-    //       window.location.href = '/login';
-    //     });
-    //   }
-    // });
-  };
-
-  const delMessageRoom = async () => {
-    await axios.delete(`/messages/rooms/${CurrentRoomId}`).then(() => {
-      setCurrentRoomId();
-      console.log('현재 대화방 삭제');
-    });
-    // .catch(({ response }) => {
-    //   if (response.data.message === 'EXPIRED ACCESS TOKEN') {
-    //     reIssueToken(delMessageRoom).catch(() => {
-    //       console.log(response, 'delMessageRoom 403 error');
-    //       window.location.href = '/login';
-    //     });
-    //   }
-    // });
->>>>>>> Stashed changes
   };
 
   return (
@@ -171,10 +100,6 @@ const Message = () => {
             setPageInfo={setPageInfo}
           />
           <MessageContent
-<<<<<<< Updated upstream
-=======
-            profile={profile}
->>>>>>> Stashed changes
             messageRoom={messageRoom}
             getMessageList={getMessageList}
             getMessageRoom={getMessageRoom}
