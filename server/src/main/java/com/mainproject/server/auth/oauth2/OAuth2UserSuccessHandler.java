@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,12 +59,15 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("userId", userId.toString());
         response.setHeader("userStatus", user.getUserStatus().name());
-
         Gson gson = new Gson();
         ResponseDto responseDto = ResponseDto.of(AuthSuccessTokenResponseDto.of(response));
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.OK.value());
         response.getWriter().write(gson.toJson(responseDto,ResponseDto.class));
+        String redirect = UriComponentsBuilder.fromUriString("http://localhost:3000/auth")
+                .build()
+                .toUriString();
+        getRedirectStrategy().sendRedirect(request, response, redirect);
     }
 
     private User saveUser(String email, String nickName) {
