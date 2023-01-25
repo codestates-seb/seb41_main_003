@@ -68,7 +68,6 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     }
 
     private String getRedirectUri(HttpServletResponse response, User user) {
-        log.info("# OAuth2 Get RedirectUri!");
         Token token = jwtTokenizer.delegateToken(user);
         String accessToken = token.getAccessToken();
         String refreshToken = token.getRefreshToken();
@@ -84,7 +83,6 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     }
 
     private String getExceptionRedirectUri(HttpServletResponse response, ErrorCode code) {
-        log.info("# OAuth2 Get ExceptionRedirectUri!");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.OK.value());
         return UriComponentsBuilder.fromUriString("http://localhost:3000/auth?")
@@ -96,12 +94,10 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
     private User saveUser(String email, String nickName) {
         try {
-            log.info(" #### OAuth2 Login ");
             User user = userService.verifiedUserByEmail(email);
             if (user.getLoginType().equals(LoginType.SOCIAL)) {
                 return user;
             } else {
-                log.info(" #### OAuth2 User Email Exists");
                 throw new ServiceLogicException(ErrorCode.USER_EMAIL_EXISTS);
             }
         } catch (ServiceLogicException se) {

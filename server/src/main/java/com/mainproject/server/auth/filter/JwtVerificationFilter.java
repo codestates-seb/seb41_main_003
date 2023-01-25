@@ -38,18 +38,15 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         try {
-            log.info("JwtVerificationFilter doFilterInternal Do");
             Map<String, Object> claims = verifyJws(request);
             setAuthenticationToContext(claims);
         } catch (SignatureException se) {
-            log.info("JwtVerificationFilter SignatureException = {}", se.getMessage());
             request.setAttribute("exception", se);
         } catch (ExpiredJwtException ee) {
             request.setAttribute(
                     "exception",
                     new ServiceLogicException(ErrorCode.EXPIRED_ACCESS_TOKEN));
         } catch (Exception e) {
-            log.info("JwtVerificationFilter Exception = {}", e.getMessage());
             request.setAttribute("exception", e);
         }
         filterChain.doFilter(request, response);
@@ -66,7 +63,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     private Map<String, Object> verifyJws(HttpServletRequest request) {
         String jws = request.getHeader("Authorization").replace("Bearer ", "");
         String base64SecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-        log.info("JwtVerificationFilter verifyJws Do");
         return jwtTokenizer.getClaims(jws, base64SecretKey).getBody();
     }
 
@@ -77,7 +73,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         List<GrantedAuthority> roles = authorityUtils.createAuthorities((List<String>) claims.get("roles"));
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(username, null, roles);
-        log.info("JwtVerificationFilter setAuthenticationToContext Do");
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
