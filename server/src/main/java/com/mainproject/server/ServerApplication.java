@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 @PropertySource("classpath:/env.yml")
 public class ServerApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(ServerApplication.class, args);
 	}
