@@ -78,7 +78,7 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.OK.value());
         return UriComponentsBuilder.fromUriString("http://localhost:3000/auth?")
-                .queryParam("Authorization", accessToken)
+                .queryParam("Authorization", "Bearer " + accessToken)
                 .queryParam("userId", user.getUserId().toString())
                 .queryParam("userStatus", user.getUserStatus().name())
                 .build()
