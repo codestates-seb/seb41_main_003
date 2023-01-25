@@ -50,23 +50,24 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         String nickName = String.valueOf(oAuth2User.getAttributes().get("name"));
         User user = saveUser(email, nickName);
 
+        String redirect = getRedirectUri(response, user);
+        getRedirectStrategy().sendRedirect(request, response, redirect);
+    }
 
+    private String getRedirectUri(HttpServletResponse response, User user) {
+        log.info("# OAuth2 Get RedirectUri!");
         Token token = jwtTokenizer.delegateToken(user);
         String accessToken = token.getAccessToken();
         String refreshToken = token.getRefreshToken();
         refreshService.createRefresh(user.getEmail(), refreshToken);
-        response.setHeader("Authorization", "Bearer " + accessToken);
-        response.setHeader("userId", user.getUserId().toString());
-        response.setHeader("userStatus", user.getUserStatus().name());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.OK.value());
-        String redirect = UriComponentsBuilder.fromUriString("http://localhost:3000/auth?")
-                .queryParam("Authorization",response.getHeaders("Authorization"))
-                .queryParam("userId",response.getHeaders("userId"))
-                .queryParam("userStatus",response.getHeaders("userStatus"))
+        return UriComponentsBuilder.fromUriString("http://localhost:3000/auth?")
+                .queryParam("Authorization", accessToken)
+                .queryParam("userId", user.getUserId().toString())
+                .queryParam("userStatus", user.getUserStatus().name())
                 .build()
                 .toUriString();
-        getRedirectStrategy().sendRedirect(request, response, redirect);
     }
 
     private User saveUser(String email, String nickName) {
