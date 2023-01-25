@@ -26,15 +26,17 @@ public class CorsFilter extends OncePerRequestFilter {
         log.info("Do CORS Filter");
         List<String> list = List.of(
                 "http://localhost:3000",
-                "http://localhost:8080"
+                "http://localhost:8080",
+                "http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com:8080",
+                "http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com"
         );
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = (HttpServletRequest) req;
-        String requestURL = request.getRequestURL().toString();
-        log.info("requestURL = {}", requestURL);
+        String requestUrl = request.getHeader("Origin");
+        log.info("requestURL = {}", requestUrl);
         String origin = list.stream().filter(
-                o -> requestURL.contains(o)
-        ).findFirst().orElse("*");
+                o -> o.equals(requestUrl)
+        ).findFirst().orElse(requestUrl);
         response.setHeader("Access-Control-Allow-Origin", origin);
         response.setHeader("Access-Control-Allow-Methods","GET, POST, DELETE, PATCH, OPTIONS");
         response.setHeader("Access-Control-Max-Age", "3600");
