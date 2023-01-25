@@ -61,7 +61,7 @@ const EditJournalForm = () => {
           ? navigate(`/tutoring`, {
               state: { tutoringId },
             })
-          : navigate(`/journal`, { state: { dateNoticeId } });
+          : navigate(`/journal`, { state: { dateNoticeId, tutoringId } });
         resetJournal();
         resetModal();
       },

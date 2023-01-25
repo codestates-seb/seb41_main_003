@@ -24,7 +24,7 @@ const DropDown = () => {
         console.log('일지 수정페이지로 이동');
         resetModal();
         navigate(`/editjournal`, {
-          state: { dateNoticeId },
+          state: { dateNoticeId, tutoringId },
         });
       },
     },
