@@ -9,10 +9,11 @@ import MenuButtons from '../components/MainSection/FilterButton';
 import axios from 'axios';
 import useScroll from '../util/useScroll';
 import LoadingIndicator from '../components/LoadingIndicator';
+import Loading from '../components/Loading';
 
 const TutorList = () => {
   // API에서 받아온 데이터
-  const [tutorData, setTutorData] = useState([]);
+  const [tutorData, setTutorData] = useState();
   const [pageInfo, setPageInfo] = useState({
     page: 1,
   });
@@ -125,7 +126,7 @@ const TutorList = () => {
           </div>
         </div>
         <div className={styles.feedContainer}>
-          {tutorData.map((tutor) => (
+          {tutorData?.map((tutor) => (
             <Link
               to={`/tutorprofile`}
               state={{ profileId: tutor.profileId }}
@@ -135,11 +136,12 @@ const TutorList = () => {
               <FeedItem data={tutor} userStatus="TUTOR" />
             </Link>
           ))}
-          {tutorData.length === 0 && (
+          {tutorData?.length === 0 && (
             <div className={styles.notFound}>
               표시 할 튜터가 없습니다. 검색 조건을 확인하세요.
             </div>
           )}
+          {tutorData === undefined && <Loading />}
         </div>
         <LoadingIndicator ref={loadingRef} isLoading={isLoading} />
       </div>

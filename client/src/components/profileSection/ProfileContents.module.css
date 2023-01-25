@@ -2,12 +2,13 @@
 
 .container {
   width: 696px;
+  min-height: 672px;
   padding: 32px 32px 0;
   display: flex;
   flex-direction: column;
   box-shadow: $bigShadow;
   border-radius: 5px;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin-bottom: 32px;
   background-color: $white;
   position: relative;

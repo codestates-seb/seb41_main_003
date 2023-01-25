@@ -3,6 +3,7 @@ import JournalForm from '../components/JournalSection/JournalForm';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+import Loading from '../components/Loading';
 
 const initialData = {
   dateNoticeTitle: '',
@@ -10,7 +11,6 @@ const initialData = {
   endTime: '',
   schedule: {},
   notice: {},
-  subjects: [],
   Homeworks: [],
 };
 
@@ -45,7 +45,11 @@ const Journal = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.background}>
-        <JournalForm userData={userData} />
+        {userData.startTime !== '' ? (
+          <JournalForm userData={userData} />
+        ) : (
+          <Loading height="800px" />
+        )}
       </div>
     </div>
   );

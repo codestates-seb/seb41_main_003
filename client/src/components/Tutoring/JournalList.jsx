@@ -213,25 +213,27 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
               </span>
             )}
         </div>
-        {userStatus === 'TUTOR' && tutoring.tutoringStatus === 'PROGRESS' && (
-          <div className={styles.buttonBox}>
-            <ButtonNightBlue
-              text="과외 일지 작성"
-              buttonHandler={() =>
-                navigate(`/addjournal`, {
-                  state: { tutoringId },
-                })
-              }
-            />
-            <ButtonRed
-              text="과외 종료"
-              buttonHandler={(e) => {
-                e.preventDefault();
-                setModal(confirmValiProps);
-              }}
-            />
-          </div>
-        )}
+        {userStatus === 'TUTOR' &&
+          (tutoring.tutoringStatus === 'PROGRESS' ||
+            tutoring.tutoringStatus === 'UNCHECK') && (
+            <div className={styles.buttonBox}>
+              <ButtonNightBlue
+                text="과외 일지 작성"
+                buttonHandler={() =>
+                  navigate(`/addjournal`, {
+                    state: { tutoringId },
+                  })
+                }
+              />
+              <ButtonRed
+                text="과외 종료"
+                buttonHandler={(e) => {
+                  e.preventDefault();
+                  setModal(confirmValiProps);
+                }}
+              />
+            </div>
+          )}
       </div>
     </div>
   );

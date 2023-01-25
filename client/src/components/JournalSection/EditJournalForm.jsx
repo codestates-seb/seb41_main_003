@@ -23,13 +23,12 @@ const EditJournalForm = () => {
   const { pathname } = useLocation();
   console.log(pathname);
   const isAdd = pathname.includes('addjournal');
-  const id = isAdd ? tutoringId : dateNoticeId;
 
   const { dateNoticeTitle, scheduleBody, noticeBody, homeworks } = userData;
 
   const submitHandler = async () => {
     await axios[isAdd ? 'post' : 'patch'](
-      `/tutoring/date-notice/${id}`,
+      `/tutoring/date-notice/${isAdd ? tutoringId : dateNoticeId}`,
       userData
     )
       .then(() => {
@@ -59,7 +58,7 @@ const EditJournalForm = () => {
       text: `일지가 ${isAdd ? '작성' : '수정'} 되었습니다.`,
       modalHandler: () => {
         navigate(`/journal`, {
-          state: { dateNoticeId: id },
+          state: { dateNoticeId },
         });
         resetJournal();
         resetModal();
@@ -76,8 +75,8 @@ const EditJournalForm = () => {
       modalHandler: () => {
         navigate(
           isAdd
-            ? (`/tutoring`, { state: { tutoringId: id } })
-            : (`/journal`, { state: { dateNoticeId: id } })
+            ? (`/tutoring`, { state: { tutoringId } })
+            : (`/journal`, { state: { dateNoticeId } })
         );
         resetJournal();
         resetModal();

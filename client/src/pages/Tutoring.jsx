@@ -6,6 +6,7 @@ import Profile from '../recoil/profile';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
+import Loading from '../components/Loading';
 
 const Tutoring = () => {
   const [tutoring, setTutoring] = useState({});
@@ -38,21 +39,27 @@ const Tutoring = () => {
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <div className={styles.title}>과외 관리</div>
-        {tutoring.tutoringStatus === 'FINISH' ? (
-          <FinishedJournalList
-            tutoring={tutoring}
-            setTutoring={setTutoring}
-            pageInfo={pageInfo}
-            setPageInfo={setPageInfo}
-          />
-        ) : (
-          <JournalList
-            tutoring={tutoring}
-            setTutoring={setTutoring}
-            pageInfo={pageInfo}
-            setPageInfo={setPageInfo}
-          />
-        )}
+        <div className={styles.listContainer}>
+          {Object.keys(tutoring).length !== 0 ? (
+            tutoring.tutoringStatus === 'FINISH' ? (
+              <FinishedJournalList
+                tutoring={tutoring}
+                setTutoring={setTutoring}
+                pageInfo={pageInfo}
+                setPageInfo={setPageInfo}
+              />
+            ) : (
+              <JournalList
+                tutoring={tutoring}
+                setTutoring={setTutoring}
+                pageInfo={pageInfo}
+                setPageInfo={setPageInfo}
+              />
+            )
+          ) : (
+            <Loading />
+          )}
+        </div>
       </div>
     </div>
   );

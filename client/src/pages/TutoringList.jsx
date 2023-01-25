@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import Pagination from '../util/Pagination';
 import { useRecoilValue } from 'recoil';
 import Profile from '../recoil/profile';
+import Loading from '../components/Loading';
 
 const TutoringList = () => {
   const [tutorings, setTutorings] = useState([0]);
@@ -25,6 +26,7 @@ const TutoringList = () => {
   };
 
   const getTutoringList = async () => {
+    setTutorings([0]);
     await axios
       .get(`/tutoring/${profileId}?get=${isFinished ? 'FINISH' : 'PROGRESS'}`)
       .then((res) => {
@@ -60,17 +62,21 @@ const TutoringList = () => {
           </button>
         </div>
         <ul className={styles.tutoringList}>
-          {tutorings.length === 0 ? (
-            <div className={styles.noContent}>
-              <p>
-                아직 {isFinished === false ? '진행중인' : '종료된'} 과외가
-                없습니다.
-              </p>
-            </div>
+          {tutorings[0] !== 0 ? (
+            tutorings.length === 0 ? (
+              <div className={styles.noContent}>
+                <p>
+                  아직 {isFinished === false ? '진행중인' : '종료된'} 과외가
+                  없습니다.
+                </p>
+              </div>
+            ) : (
+              tutorings.map((tutoring) => (
+                <Tutoring tutoring={tutoring} key={tutoring.tutoringId} />
+              ))
+            )
           ) : (
-            tutorings.map((tutoring) => (
-              <Tutoring tutoring={tutoring} key={tutoring.tutoringId} />
-            ))
+            <Loading />
           )}
         </ul>
 

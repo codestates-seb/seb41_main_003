@@ -8,9 +8,10 @@ import MenuButtons from '../components/MainSection/FilterButton';
 import axios from 'axios';
 import useScroll from '../util/useScroll';
 import LoadingIndicator from '../components/LoadingIndicator';
+import Loading from '../components/Loading';
 
 const TuteeList = () => {
-  const [tuteeData, setTuteeData] = useState([]);
+  const [tuteeData, setTuteeData] = useState();
   const [pageInfo, setPageInfo] = useState({
     page: 1,
   });
@@ -104,7 +105,7 @@ const TuteeList = () => {
           </div>
         </div>
         <div className={styles.feedContainer}>
-          {tuteeData.map((tutee) => (
+          {tuteeData?.map((tutee) => (
             <Link
               to={`/tuteeprofile`}
               state={{ profileId: tutee.profileId }}
@@ -114,11 +115,12 @@ const TuteeList = () => {
               <FeedItem data={tutee} userStatus="TUTEE" />
             </Link>
           ))}
-          {tuteeData.length === 0 && (
+          {tuteeData?.length === 0 && (
             <div className={styles.notFound}>
               표시 할 튜티가 없습니다. 검색 조건을 확인하세요.
             </div>
           )}
+          {tuteeData === undefined && <Loading />}
         </div>
         <LoadingIndicator ref={loadingRef} isLoading={isLoading} />
       </div>

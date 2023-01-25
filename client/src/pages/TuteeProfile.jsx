@@ -4,6 +4,7 @@ import { ButtonTop } from '../components/Button';
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Loading from '../components/Loading';
 
 const TuteeProfile = () => {
   const { profileId } = useLocation().state;
@@ -43,10 +44,15 @@ const TuteeProfile = () => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.container}>
-        <ProfileCard user={profileDetail} />
-        <ProfileContents user={profileDetail} />
-      </div>
+      {profileDetail.profileId !== 0 ? (
+        <div className={styles.container}>
+          <ProfileCard user={profileDetail} />
+          <ProfileContents user={profileDetail} />
+        </div>
+      ) : (
+        <Loading height="720px" />
+      )}
+
       <ButtonTop />
     </div>
   );

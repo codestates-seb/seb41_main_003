@@ -5,6 +5,7 @@ import { ButtonTop } from '../components/Button';
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 import Profile from '../recoil/profile';
+import Loading from '../components/Loading';
 const MyProfile = () => {
   const { profileId } = useRecoilValue(Profile);
   const [user, setUser] = useState({
@@ -53,10 +54,15 @@ const MyProfile = () => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.container}>
-        <MyProfileCard user={user} setUser={setUser} />
-        <ProfileContents user={user} pageInfo={pageInfo} setPage={setPage} />
-      </div>
+      {user.profileId !== 0 ? (
+        <div className={styles.container}>
+          <MyProfileCard user={user} setUser={setUser} />
+          <ProfileContents user={user} pageInfo={pageInfo} setPage={setPage} />
+        </div>
+      ) : (
+        <Loading height="720px" />
+      )}
+
       <ButtonTop />
     </div>
   );

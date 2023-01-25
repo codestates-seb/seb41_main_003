@@ -96,7 +96,7 @@ Journals.propTypes = {
   setTutoring: PropType.func,
   pageInfo: PropType.object,
   setPageInfo: PropType.func,
-  tutoringId: PropType.string,
+  tutoringId: PropType.number,
 };
 
 export default Journals;
