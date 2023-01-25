@@ -12,18 +12,32 @@ import Profile from '../../recoil/profile';
 const MessageContent = ({
   messageRoom,
   delMessageRoom,
+<<<<<<< Updated upstream
+=======
+  headers,
+>>>>>>> Stashed changes
   getMessageRoom,
   getMessageList,
 }) => {
   const { tutorId, tuteeId, tutoringId, messages } = messageRoom;
   const [isMenu, setIsMenu] = useState(false);
   const [inputValue, setInputValue] = useState('');
+<<<<<<< Updated upstream
   const [receiveMessageId, setReceiveMessageId] = useState(0);
+=======
+  const [myProfileId, setIsMyProfileId] = useState(tuteeId);
+  const [yourProfileId, setYourProfileId] = useState(tutorId);
+  const profile = useRecoilValue(Profile);
+>>>>>>> Stashed changes
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
   const { profileId } = useRecoilValue(Profile);
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
+<<<<<<< Updated upstream
   const scrollRef = useRef();
+=======
+  const [title, setTitle] = useState('');
+>>>>>>> Stashed changes
 
   //* 채팅창의 스크롤 위치 제어
   useEffect(() => {
@@ -52,12 +66,18 @@ const MessageContent = ({
       })
       .then(() => {
         console.log('메세지 전송');
+<<<<<<< Updated upstream
         getMessageList();
+=======
+        //메세지 보낸후 메세지 창 다시 받아옴
+>>>>>>> Stashed changes
         getMessageRoom();
       })
+      // 404에러 -> MessageList가 존재 하지 않을때
       .catch((err) => console.log(err));
   };
 
+<<<<<<< Updated upstream
   //* 매칭 요청 (과외 생성) API
   const createTutoringAPI = async (value) => {
     await axios
@@ -87,6 +107,39 @@ const MessageContent = ({
     props: {
       text: `이미 진행중인 매칭 요청 이나 과외가 있습니다.`,
     },
+=======
+
+
+  const createTutoring = async () => {
+    await axios
+      .post(
+        `${process.env.REACT_APP_BASE_URL}/tutoring/${myProfileId}`,
+        {
+          tutorId: tutorId,
+          tuteeId: tuteeId,
+          tutoringTitle: tutoringTitle,
+          messageRoomId: CurrentRoomId,
+        },
+        {
+          headers: headers,
+        }
+      )
+
+  //과외 생성 API >> 매칭 요청을 누르면 과외가 생성이 되고 상대방에게 'REQ_EST'로 메세지가 감
+  //요청 취소 하기 누르면 특정 과외 삭제 API 사용하기
+  const createTutoring = async () => {
+    await axios
+      .post(`${process.env.REACT_APP_BASE_URL}/tutoring/${myProfileId}`, {
+        tutorId: tutorId,
+        tuteeId: tuteeId,
+        tutoringTitle: title,
+        messageRoomId: CurrentRoomId,
+      })
+      .then(() => {
+        console.log('메세지 전송');
+      })
+      .catch((err) => console.log(err));
+>>>>>>> Stashed changes
   };
 
   //* 매칭 요청 모달
@@ -100,7 +153,12 @@ const MessageContent = ({
     매칭을 원하신다면 과외의 이름을 작성해주세요.
     `,
       modalHandler: (_, value) => {
+<<<<<<< Updated upstream
         createTutoringAPI(value);
+=======
+        setTitle(value);
+        console.log(title, 'confirm');
+>>>>>>> Stashed changes
         resetModal();
       },
       placeHolder: '과외의 이름을 작성하세요',
@@ -114,6 +172,12 @@ const MessageContent = ({
     상대방의 요청 수락 이후에는 과외 관리 페이지에서
     확인하실 수 있습니다.`,
       modalHandler: () => {
+<<<<<<< Updated upstream
+=======
+        //첫번째 모달에서 과외를 생성할지 두번째 alert모달에서 과외를 생성할지 고민해보기
+        createTutoring();
+        console.log(title, 'alertModal');
+>>>>>>> Stashed changes
         resetModal();
         getMessageRoom();
       },
@@ -128,8 +192,8 @@ const MessageContent = ({
       text: `상담 취소 하시겠습니까?
       상담 취소 시 대화 내역이 모두 삭제됩니다.`,
       modalHandler: () => {
-        delMessageRoom();
         console.log('상담 취소');
+        delMessageRoom();
         resetModal();
         setModal(cancelAlertProps);
       },
