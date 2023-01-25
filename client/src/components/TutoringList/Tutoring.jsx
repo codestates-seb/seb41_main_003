@@ -1,6 +1,8 @@
 import styles from './Tutoring.module.css';
 import { Link } from 'react-router-dom';
 import PropType from 'prop-types';
+import { useRecoilValue } from 'recoil';
+import Profile from '../../recoil/profile';
 
 const Tutoring = ({ tutoring }) => {
   const {
@@ -12,6 +14,8 @@ const Tutoring = ({ tutoring }) => {
     createAt,
     updateAt,
   } = tutoring;
+
+  const { userStatus } = useRecoilValue(Profile);
 
   return (
     <li
@@ -34,7 +38,9 @@ const Tutoring = ({ tutoring }) => {
                 new Date(updateAt).toLocaleDateString()}
             </span>
           )}
-          {tutoringStatus === 'UNCHECK' && <span className={styles.noti} />}
+          {tutoringStatus === 'UNCHECK' && userStatus === 'TUTEE' && (
+            <span className={styles.noti} />
+          )}
         </div>
       </Link>
     </li>
