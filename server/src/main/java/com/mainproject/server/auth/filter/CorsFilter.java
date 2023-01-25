@@ -30,13 +30,12 @@ public class CorsFilter extends OncePerRequestFilter {
         );
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = (HttpServletRequest) req;
-        String requestURL = request.getRequestURL().toString().toUpperCase();
+        String requestURL = request.getRequestURL().toString();
         log.info("requestURL = {}", requestURL);
         String origin = list.stream().filter(
-                o -> requestURL.contains(o.toUpperCase())
-        ).findFirst().orElse("http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com");
+                o -> requestURL.contains(o)
+        ).findFirst().orElse("*");
         response.setHeader("Access-Control-Allow-Origin", origin);
-//        response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods","GET, POST, DELETE, PATCH, OPTIONS");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Expose-Headers", "Authorization, userId, userStatus");
