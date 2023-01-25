@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -23,9 +24,12 @@ public class CorsFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         log.info("Do CORS Filter");
+        List<String> list = List.of("http://localhost:3000", "http://localhost:8080");
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = (HttpServletRequest) req;
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000, http://localhost:8080");
+        String requestURI = request.getRequestURL().toString();
+        String origin = list.stream().filter(requestURI::contains).findFirst().orElse("*");
+        response.setHeader("Access-Control-Allow-Origin", origin);
 //        response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods","GET, POST, DELETE, PATCH, OPTIONS");
         response.setHeader("Access-Control-Max-Age", "3600");
