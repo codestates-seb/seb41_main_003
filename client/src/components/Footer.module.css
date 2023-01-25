@@ -20,16 +20,24 @@
   display: flex;
   flex-direction: column;
   text-align: left;
+  margin-left: 32px;
 }
 
 .copyright {
   display: flex;
   flex-direction: column;
   text-align: right;
+  margin-right: 32px;
 
   > div {
     color: $white;
     font-size: $para;
     font-weight: $paraW;
+  }
+
+  .name {
+    margin-top: 16px;
+    font-size: $sub;
+    font-weight: $sub;
   }
 }
