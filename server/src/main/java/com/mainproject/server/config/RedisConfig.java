@@ -22,7 +22,7 @@ public class RedisConfig {
 
 //    @Bean
 //    public RedisConnectionFactory redisConnectionFactory() {
-//        return new LettuceConnectionFactory(host, port);
+//        return new LettuceConnectionFactory("localhost", port);
 //    }
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
