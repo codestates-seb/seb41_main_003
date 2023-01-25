@@ -17,7 +17,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -26,6 +29,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -37,6 +42,8 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     private final JwtTokenizer jwtTokenizer;
 
     private final RefreshService refreshService;
+
+    private final JwtAuthorityUtils authorityUtils;
 
     @Override
     public void onAuthenticationSuccess(
@@ -69,6 +76,8 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         String accessToken = token.getAccessToken();
         String refreshToken = token.getRefreshToken();
         refreshService.createRefresh(user.getEmail(), refreshToken);
+        Map<String, Object> claims = verifyJws(accessToken);
+        setAuthenticationToContext(claims);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.OK.value());
         return UriComponentsBuilder.fromUriString("http://localhost:3000/auth?")
@@ -114,5 +123,21 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
                 throw se;
             }
         }
+    }
+
+    private Map<String, Object> verifyJws(String accessToken) {
+        String jws = accessToken.replace("Bearer ", "");
+        String base64SecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+        log.error("OAuth2UserSuccessHandler verifyJws Do");
+        return jwtTokenizer.getClaims(jws, base64SecretKey).getBody();
+    }
+
+    private void setAuthenticationToContext(Map<String ,Object> claims) {
+        String username = (String) claims.get("username");
+        List<GrantedAuthority> roles = authorityUtils.createAuthorities((List<String>) claims.get("roles"));
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken(username, null, roles);
+        log.error("OAuth2UserSuccessHandler setAuthenticationToContext Do");
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
