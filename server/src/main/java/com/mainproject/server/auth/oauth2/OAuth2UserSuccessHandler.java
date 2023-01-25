@@ -45,6 +45,8 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
     private final JwtAuthorityUtils authorityUtils;
 
+    private final String serviceUrl = "http://tutor-diff.s3-website.ap-northeast-2.amazonaws.com";
+
     @Override
     public void onAuthenticationSuccess(
             HttpServletRequest request,
@@ -68,14 +70,13 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     }
 
     private String getRedirectUri(HttpServletResponse response, User user) {
-        log.info("# OAuth2 Get RedirectUri!");
         Token token = jwtTokenizer.delegateToken(user);
         String accessToken = token.getAccessToken();
         String refreshToken = token.getRefreshToken();
         refreshService.createRefresh(user.getEmail(), refreshToken);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.OK.value());
-        return UriComponentsBuilder.fromUriString("http://localhost:3000/auth?")
+        return UriComponentsBuilder.fromUriString(serviceUrl + "/auth?")
                 .queryParam("Authorization", "Bearer " + accessToken)
                 .queryParam("userId", user.getUserId().toString())
                 .queryParam("userStatus", user.getUserStatus().name())
@@ -84,10 +85,9 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     }
 
     private String getExceptionRedirectUri(HttpServletResponse response, ErrorCode code) {
-        log.info("# OAuth2 Get ExceptionRedirectUri!");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.OK.value());
-        return UriComponentsBuilder.fromUriString("http://localhost:3000/auth?")
+        return UriComponentsBuilder.fromUriString(serviceUrl + "/auth?")
                 .queryParam("code", code.getStatus())
                 .queryParam("message", code.getMessage())
                 .build()
@@ -96,12 +96,10 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
     private User saveUser(String email, String nickName) {
         try {
-            log.info(" #### OAuth2 Login ");
             User user = userService.verifiedUserByEmail(email);
             if (user.getLoginType().equals(LoginType.SOCIAL)) {
                 return user;
             } else {
-                log.info(" #### OAuth2 User Email Exists");
                 throw new ServiceLogicException(ErrorCode.USER_EMAIL_EXISTS);
             }
         } catch (ServiceLogicException se) {

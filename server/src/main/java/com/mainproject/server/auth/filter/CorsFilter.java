@@ -26,9 +26,7 @@ public class CorsFilter extends OncePerRequestFilter {
         log.info("Do CORS Filter");
         List<String> list = List.of(
                 "http://localhost:3000",
-                "http://localhost:8080",
-                "http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com:8080",
-                "http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com"
+                "http://localhost:8080"
         );
         String originUrl = request.getHeader("Origin");
         log.info("requestURL = {}", originUrl);
