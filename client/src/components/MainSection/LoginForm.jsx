@@ -148,7 +148,7 @@ const LoginForm = () => {
             <span>카카오 로그인</span>
           </a>
           <a
-            href="http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com/oauth2/authorization/kakao"
+            href="http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com/oauth2/authorization/google"
             className={styles.googleLoginButton}
           >
             <svg

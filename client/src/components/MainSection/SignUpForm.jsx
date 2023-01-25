@@ -152,7 +152,10 @@ const SignUpForm = () => {
         <button form="signUp" className={styles.signupButton} type="submit">
           회원가입
         </button>
-        <button className={styles.kakaoLoginButton}>
+        <a
+          href="http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com/oauth2/authorization/kakao"
+          className={styles.kakaoLoginButton}
+        >
           <svg
             width="22"
             height="21"
@@ -176,8 +179,11 @@ const SignUpForm = () => {
             </defs>
           </svg>
           <span>카카오 로그인</span>
-        </button>
-        <button className={styles.googleLoginButton}>
+        </a>
+        <a
+          href="http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com/oauth2/authorization/google"
+          className={styles.googleLoginButton}
+        >
           <svg
             width="18"
             height="18"
@@ -211,7 +217,7 @@ const SignUpForm = () => {
             />
           </svg>
           <span>Google 계정으로 로그인</span>
-        </button>
+        </a>
       </div>
     </article>
   );
