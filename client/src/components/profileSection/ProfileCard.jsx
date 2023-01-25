@@ -85,7 +85,7 @@ const ProfileCard = ({ user }) => {
         </div>
       </section>
       {Number(profileId) !== myProfileId &&
-        !location.pathname.includes(userStatus.toLowerCase()) && (
+        !location.pathname.includes(userStatus?.toLowerCase()) && (
           <div className={styles.buttonBox}>
             <ButtonNightBlue
               buttonHandler={(e) => {
