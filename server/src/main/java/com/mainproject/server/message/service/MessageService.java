@@ -56,9 +56,14 @@ public class MessageService {
         Profile profile = profileService.verifiedProfileById(profileId);
         Profile tutor = profileService.verifiedProfileById(postDto.getTutorId());
         Profile tutee = profileService.verifiedProfileById(postDto.getTuteeId());
-        verifyMessageRoom(tutor, tutee);
-        MessageRoom save = saveMessageRoom(tutor, tutee);
-        return MessageRoomSimpleResponseDto.of(profile.getProfileStatus(), save);
+        if (tutor.getProfileStatus().equals(ProfileStatus.TUTOR) &&
+                tutee.getProfileStatus().equals(ProfileStatus.TUTEE)) {
+            verifyMessageRoom(tutor, tutee);
+            MessageRoom save = saveMessageRoom(tutor, tutee);
+            return MessageRoomSimpleResponseDto.of(profile.getProfileStatus(), save);
+        } else {
+            throw new ServiceLogicException(ErrorCode.WRONG_TUTOR_AND_TUTEE);
+        }
     }
 
     public Page<MessageRoomSimpleResponseDto> getMessageRooms(
