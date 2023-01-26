@@ -262,6 +262,7 @@ public class ResponseStubData {
                 .tutorName("너에게")
                 .tuteeId(1L)
                 .tuteeName("나에게")
+                .tutoringId(1L)
                 .build();
     }
 

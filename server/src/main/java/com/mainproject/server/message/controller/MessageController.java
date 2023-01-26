@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Positive;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -51,7 +53,7 @@ public class MessageController {
 
 
     @GetMapping("/{profileId}")
-    public ResponseEntity getMessage(
+    public ResponseEntity getMessageRooms(
             @PathVariable("profileId")Long profileId,
             @PageableDefault(page = 0, size = 7, sort = "messageRoomId", direction = Sort.Direction.DESC)
             Pageable pageable
@@ -66,8 +68,8 @@ public class MessageController {
 
     @GetMapping("/rooms/{profileId}/{messageRoomId}")
     public ResponseEntity getMessages(
-            @PathVariable ("profileId") Long profileId,
-            @PathVariable ("messageRoomId") Long messageRoomId
+            @PathVariable ("profileId") @Positive Long profileId,
+            @PathVariable ("messageRoomId") @Positive Long messageRoomId
     ) {
         ResponseDto response =
                 ResponseDto.of(messageService.getMessageRoom(messageRoomId, profileId));
@@ -76,7 +78,7 @@ public class MessageController {
 
 
     @DeleteMapping("/rooms/{messageRoomId}")
-    public ResponseEntity deleteMessages(
+    public ResponseEntity deleteMessageRoom(
             @PathVariable("messageRoomId") Long messageRoomId
     ) {
         messageService.deleteMessageRoom(messageRoomId);
