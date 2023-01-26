@@ -9,12 +9,7 @@ import Loading from '../components/Loading';
 
 const TutoringList = () => {
   const [tutorings, setTutorings] = useState([0]);
-  const [pageInfo, setPageInfo] = useState({
-    page: 0,
-    size: 1,
-    totalElements: 1,
-    totalPages: 1,
-  });
+  const [pageInfo, setPageInfo] = useState({});
   const [isFinished, setIsFinished] = useState(false);
   const [page, setPage] = useState(0);
   const { profileId } = useRecoilValue(Profile);
@@ -26,15 +21,22 @@ const TutoringList = () => {
   };
 
   const getTutoringList = async () => {
-    setTutorings([0]);
     await axios
-      .get(`/tutoring/${profileId}?get=${isFinished ? 'FINISH' : 'PROGRESS'}`)
+      .get(
+        `/tutoring/${profileId}?get=${
+          isFinished ? 'FINISH' : 'PROGRESS'
+        }&page=${page}`
+      )
       .then((res) => {
         setTutorings(res.data.data);
         setPageInfo(res.data.pageInfo);
       })
       .catch((error) => console.log(error));
   };
+
+  useEffect(() => {
+    getTutoringList();
+  }, []);
 
   useEffect(() => {
     getTutoringList();
