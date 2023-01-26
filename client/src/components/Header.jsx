@@ -7,6 +7,7 @@ import ModalState from '../recoil/modal.js';
 import defaultUser from '../assets/defaultUser.png';
 import Profile from '../recoil/profile';
 import axios from 'axios';
+import CurrentRoomIdState from '../recoil/currentRoomId';
 
 const Header = () => {
   const [isMenu, setIsMenu] = useState(false);
@@ -17,6 +18,7 @@ const Header = () => {
   const setModal = useSetRecoilState(ModalState);
   const resetProfile = useResetRecoilState(Profile);
   const resetModal = useResetRecoilState(ModalState);
+  const resetCurrentRoom = useResetRecoilState(CurrentRoomIdState);
 
   const adminProps = {
     isOpen: true,
@@ -115,6 +117,7 @@ const Header = () => {
         sessionStorage.clear();
         resetProfile();
         resetModal();
+        resetCurrentRoom();
         navigate('/');
       },
     },
