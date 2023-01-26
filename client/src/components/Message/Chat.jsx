@@ -3,7 +3,6 @@ import styles from './Chat.module.css';
 import axios from 'axios';
 import { useResetRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import Profile from '../../recoil/profile';
-
 import ModalState from '../../recoil/modal.js';
 
 const Chat = ({
@@ -26,7 +25,6 @@ const Chat = ({
         console.log(res, '매칭요청 승인');
         matchingConfirmMessage();
         setModal(matchAlertModal);
-        // 승인 되고 나면 상대에게 메세지 보내지고 모달 띄움
       })
       .catch((err) => {
         if (err.message === 'Request failed with status code 400') {

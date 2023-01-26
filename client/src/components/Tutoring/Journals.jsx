@@ -21,7 +21,6 @@ const Journals = ({
 
   const [isLoading, setIsLoading] = useScroll(() => {
     if (pageInfo.page < pageInfo.totalPages - 1) {
-      console.log('true');
       setTimeout(() => {
         scrollFunc(pageInfo.page + 1);
         setIsLoading(false);
@@ -33,12 +32,10 @@ const Journals = ({
     await axios
       .get(`/tutoring/details/${profileId}/${tutoringId}?page=${page}`)
       .then(({ data }) => {
-        console.log(data.pageInfo);
         setTutoring({
           ...data.data,
           dateNotices: [...tutoring.dateNotices, ...data.data.dateNotices],
         });
-        console.log(tutoring.dateNotices);
         setPageInfo(data.pageInfo);
       })
       .catch((err) => console.error(err.message));

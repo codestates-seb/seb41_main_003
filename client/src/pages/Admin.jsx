@@ -19,8 +19,6 @@ const Admin = () => {
     await axios
       .get(`/profiles/${sessionStorage.getItem('userId')}`)
       .then(({ data }) => {
-        console.log(data);
-
         setProfilesData(data.data);
       })
       .catch((err) => {
@@ -44,7 +42,6 @@ const Admin = () => {
             },
           },
         });
-        console.log('삭제 완료!');
       })
       .catch(({ response }) => {
         console.log(response);

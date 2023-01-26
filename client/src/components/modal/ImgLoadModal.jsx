@@ -11,7 +11,6 @@ const ImgLoadModal = ({ setImgFile, setImgSrc }) => {
   const reset = useResetRecoilState(ModalState);
 
   const changeHandler = (e) => {
-    console.log(e.target.files[0]);
     if (e.target.files[0].size >= 5 * 1024 * 1024) {
       alert('파일의 크기는 최대 5MB입니다.');
       return;
@@ -24,7 +23,6 @@ const ImgLoadModal = ({ setImgFile, setImgSrc }) => {
   };
 
   const saveHandler = (file) => {
-    console.log(file);
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {

@@ -33,7 +33,6 @@ const TuteeProfile = () => {
       .get(`/profiles/details/${profileId}`)
       .then((res) => {
         setProfileDetail(res.data.data);
-        console.log(res.data.data);
       })
       .catch((err) => console.log(err.status));
   };

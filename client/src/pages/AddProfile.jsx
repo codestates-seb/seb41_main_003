@@ -43,13 +43,11 @@ const AddProfile = () => {
     },
   };
 
-  //* 렌더링 될 때 로컬 스토리지에 키가 있는지 파악하여 모달 출력
   useEffect(() => {
     if (localStorage.addProfile) setModal(confirmProps);
   }, []);
 
   useEffect(() => {
-    //* 초기 상태 값에서 변화가 있으면 로컬 스토리지에만 저장하도록 변경
     if (JSON.stringify(user) !== JSON.stringify(initialState))
       localStorage.setItem('addProfile', JSON.stringify(user));
   }, [user]);

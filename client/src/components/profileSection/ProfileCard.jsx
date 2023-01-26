@@ -19,7 +19,9 @@ const ProfileCard = ({ user }) => {
   const { profileId } = useLocation().state;
 
   const myProfileId = useRecoilValue(Profile).profileId;
-  const { userStatus } = useRecoilValue(Profile);
+  const userStatus = sessionStorage.getItem('userStatus');
+  const { isLogin } = useRecoilValue(Profile);
+
 
   const postData =
     userStatus === 'TUTOR'
@@ -46,7 +48,7 @@ const ProfileCard = ({ user }) => {
       text: '상대방에게 문의를 요청하시겠습니까?',
       modalHandler: () => {
         postNewMessageRoom();
-        navigate(`/message`);
+        setTimeout(() => navigate(`/message`), 1000);
         reset();
       },
     },
@@ -84,7 +86,9 @@ const ProfileCard = ({ user }) => {
           </span>
         </div>
       </section>
-      {Number(profileId) !== myProfileId &&
+
+      {isLogin &&
+        profileId !== myProfileId &&
         !location.pathname.includes(userStatus?.toLowerCase()) && (
           <div className={styles.buttonBox}>
             <ButtonNightBlue

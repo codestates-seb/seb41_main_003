@@ -1,5 +1,5 @@
 import styles from './MessageContent.module.css';
-import { MdMenu } from 'react-icons/md';
+import { MdMenu, MdRefresh } from 'react-icons/md';
 import PropType from 'prop-types';
 import { useState, useEffect, useRef } from 'react';
 import Chat from './Chat';
@@ -32,6 +32,11 @@ const MessageContent = ({
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messageRoom]);
 
+  //*
+  const refreshMessage = () => {
+    getMessageList();
+    getMessageRoom();
+  };
   //* messageList가 변경될때마다 message의 receiver를 변경해줌
   const setReceiver = () => {
     if (profileId === tuteeId) {
@@ -54,10 +59,8 @@ const MessageContent = ({
       })
       .then(() => {
         console.log('메세지 전송');
-        getMessageList();
-        getMessageRoom();
+        refreshMessage();
       })
-      // 404에러 -> MessageList가 존재 하지 않을때
       .catch((err) => console.log(err));
   };
 
@@ -77,7 +80,6 @@ const MessageContent = ({
       .catch((err) => {
         if (err.message === 'Request failed with status code 409') {
           setModal(alreadyMatchModal);
-          // 매칭 요청이 있는게 아니라 이미 진행중인 과외가 있을때도 409에러
         }
         console.log(err, '매칭 요청');
       });
@@ -97,7 +99,7 @@ const MessageContent = ({
     isOpen: true,
     modalType: 'confirmText',
     props: {
-      text: `상대방의 요청 수락 시 매칭이 완료됩니다.
+      text: `상대방의 요청 수락 후에 매칭이 완료됩니다.
     매칭 요청 하시겠습니까?
 
     매칭을 원하신다면 과외의 이름을 작성해주세요.
@@ -118,7 +120,7 @@ const MessageContent = ({
     확인하실 수 있습니다.`,
       modalHandler: () => {
         resetModal();
-        getMessageRoom();
+        refreshMessage();
       },
     },
   };
@@ -152,6 +154,9 @@ const MessageContent = ({
   return (
     <div className={styles.container}>
       <div className={styles.messageContainer} ref={scrollRef}>
+        <button className={styles.refresh} onClick={() => refreshMessage()}>
+          <MdRefresh size={24} />
+        </button>
         {messages.map((message) => (
           <Chat
             message={message}
