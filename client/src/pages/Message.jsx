@@ -14,15 +14,17 @@ const Message = () => {
   const [messageRoom, setMessageRoom] = useState({
     messages: [
       {
-        messageContent: '대화를 선택해주세요',
+        messageContent: '※ 대화 상대를 선택해주세요 ※',
       },
     ],
   });
   const [pageInfo, setPageInfo] = useState({});
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
+  const resetCurrentRoomId = useResetRecoilState(CurrentRoomIdState);
   const { profileId } = useRecoilValue(Profile);
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
+
   const navigate = useNavigate();
 
   const noListAlertModal = {
@@ -57,23 +59,29 @@ const Message = () => {
   }, []);
 
   useEffect(() => {
+    return () => {
+      resetCurrentRoomId();
+    };
+  }, []);
+
+  useEffect(() => {
     if (messageList.length === 0) setModal(noListAlertModal);
   }, [messageList]);
 
   useEffect(() => {
     getMessageRoom();
-    console.log('누구때문에 바뀌는지');
   }, [CurrentRoomId]);
 
   //대화 화면 조회 API
   const getMessageRoom = async () => {
-    await axios
-      .get(`/messages/rooms/${profileId}/${CurrentRoomId}`)
-      .then((res) => {
-        setMessageRoom(res.data.data);
-        console.log(res.data.data, 'MessageRoom API');
-      })
-      .catch((err) => console.log(err, 'getMessageRoom'));
+    CurrentRoomId !== 0 &&
+      (await axios
+        .get(`/messages/rooms/${profileId}/${CurrentRoomId}`)
+        .then((res) => {
+          setMessageRoom(res.data.data);
+          console.log(res.data.data, 'MessageRoom API');
+        })
+        .catch((err) => console.log(err, 'getMessageRoom')));
   };
 
   const delMessageRoom = async () => {
@@ -93,8 +101,8 @@ const Message = () => {
         <div className={styles.message}>
           <MessageList
             messageList={messageList}
-            setMessageList={setMessageList}
             pageInfo={pageInfo}
+            setMessageList={setMessageList}
             setPageInfo={setPageInfo}
           />
           <MessageContent
