@@ -9,9 +9,9 @@
 
 v1.0.0, 2023.01.19
 
-- 배포 주소
+- API 서버 배포 링크
 
-<>
+<http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com>
 
 == 쓰앵님 팀원
 
@@ -712,3 +712,112 @@ include::{snippets}/patchReview/response-body.adoc[]
 
 .response-fields
 include::{snippets}/patchReview/response-fields.adoc[]
+
+
+== Message
+=== 메세지 생성
+
+.http-request
+include::{snippets}/postMessage/http-request.adoc[]
+
+.request-headers
+include::{snippets}/postMessage/request-headers.adoc[]
+
+.request-body
+include::{snippets}/postMessage/request-body.adoc[]
+
+.request-fields
+include::{snippets}/postMessage/request-fields.adoc[]
+
+.http-response
+include::{snippets}/postMessage/http-response.adoc[]
+
+.response-body
+include::{snippets}/postMessage/response-body.adoc[]
+
+.response-fields
+include::{snippets}/postMessage/response-fields.adoc[]
+
+
+=== 메세지 룸 생성
+
+.http-request
+include::{snippets}/postMessageRoom/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/postMessageRoom/path-parameters.adoc[]
+
+.request-headers
+include::{snippets}/postMessageRoom/request-headers.adoc[]
+
+.request-body
+include::{snippets}/postMessageRoom/request-body.adoc[]
+
+.request-fields
+include::{snippets}/postMessageRoom/request-fields.adoc[]
+
+.http-response
+include::{snippets}/postMessageRoom/http-response.adoc[]
+
+.response-body
+include::{snippets}/postMessageRoom/response-body.adoc[]
+
+.response-fields
+include::{snippets}/postMessageRoom/response-fields.adoc[]
+
+
+=== 특정 프로필 메세지 룸 리스트 조회
+
+.http-request
+include::{snippets}/getMessageRooms/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/getMessageRooms/path-parameters.adoc[]
+
+.request-headers
+include::{snippets}/getMessageRooms/request-headers.adoc[]
+
+.http-response
+include::{snippets}/getMessageRooms/http-response.adoc[]
+
+.response-body
+include::{snippets}/getMessageRooms/response-body.adoc[]
+
+.response-fields
+include::{snippets}/getMessageRooms/response-fields.adoc[]
+
+
+=== 특정 메세지 룸 전체 메세지 조회
+
+.http-request
+include::{snippets}/getMessages/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/getMessages/path-parameters.adoc[]
+
+.request-headers
+include::{snippets}/getMessages/request-headers.adoc[]
+
+.http-response
+include::{snippets}/getMessages/http-response.adoc[]
+
+.response-body
+include::{snippets}/getMessages/response-body.adoc[]
+
+.response-fields
+include::{snippets}/getMessages/response-fields.adoc[]
+
+
+=== 특정 메세지 룸 삭제
+
+.http-request
+include::{snippets}/deleteMessageRoom/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/deleteMessageRoom/path-parameters.adoc[]
+
+.request-headers
+include::{snippets}/deleteMessageRoom/request-headers.adoc[]
+
+.http-response
+include::{snippets}/deleteMessageRoom/http-response.adoc[]
