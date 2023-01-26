@@ -119,25 +119,24 @@
     top: 64px;
     right: 5px;
     background-color: $white;
-    padding: 24px;
+    padding: 0 24px;
     border-radius: 0 0 5px 5px;
     box-shadow: $defaultShadow;
 
     li {
-      margin-bottom: 24px;
+      margin: 24px 0;
+      height: 20px;
       text-align: center;
 
       &:hover {
         text-decoration: underline;
       }
 
-      &:last-child {
-        margin: 0;
-      }
-
       /* stylelint-disable-next-line no-descending-specificity */
       > a,
       > button {
+        display: inline-block;
+        width: 100%;
         font-size: $font5;
         font-weight: $font5W;
 
