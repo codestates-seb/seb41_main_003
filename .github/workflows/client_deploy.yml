@@ -1,0 +1,44 @@
+name: Client Build and Deploy to S3 # 실행할 액션의 이름
+
+# 액션이 실행되는 조건(이벤트)
+on:
+  push:
+    branches:
+      - dev # dev 브랜치에 push가 생길 때 실행된다.
+    path:
+      - "client/**"
+
+# 액션 워크플로
+# 워크플로의 이름을 key로 지정한다. 여러 개의 워크플로가 들어갈 수도 있다.
+# 각각의 jobs는 독립된 환경(인스턴스)에서 실행된다.
+# 병렬 처리가 가능해 효율을 높일 수 있다.
+jobs:
+  build: # job의 이름
+    runs-on: ubuntu-latest # 액션을 실행 할 OS 지정
+    steps: # 인스턴스에서 실행 할 각 절차
+      - name: Checkout source code. # Github Checkout Action : 레포지토리에서 코드를 내려받는다.
+        uses: actions/checkout@v2
+      - name: Install dependencies # npm package install
+        run: npm install
+        working-directory: ./client # 경로를 지정할 수도 있다.
+      - name: Build # react build 실행
+        run: npm run build
+        working-directory: ./client
+      - name: SHOW AWS CLI VERSION # 기본적으로 설치된 AWS CLI의 버전 확인
+        env: # 레포지토리의 secret을 이용해 env로 지정할 수 있다.
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_FE_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_FE_SECRET_KEY }}
+          AWS_EC2_METADATA_DISABLED: true
+        run: |
+          aws --version
+      - name: Sync Bucket # AWS S3 버켓에 Build된 파일 업로드
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_FE_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_FE_SECRET_KEY }}
+          AWS_EC2_METADATA_DISABLED: true
+        run: |
+          aws s3 sync \
+            --region ap-northeast-2 \
+            build s3://tutor-diff \
+            --delete
+        working-directory: ./client
