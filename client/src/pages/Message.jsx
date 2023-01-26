@@ -90,7 +90,7 @@ const Message = () => {
     props: {
       text: `상담이 취소되었습니다.`,
       modalHandler: () => {
-        window.location.href = `/message`;
+        location.reload();
       },
     },
   };
@@ -99,7 +99,6 @@ const Message = () => {
     await axios
       .delete(`/messages/rooms/${CurrentRoomId}`)
       .then(() => {
-        window.location.ref('/message');
         console.log('현재 대화방 삭제');
         setModal(cancelAlertProps);
       })
