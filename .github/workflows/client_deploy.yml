@@ -18,14 +18,17 @@ jobs:
     steps: # 인스턴스에서 실행 할 각 절차
       - name: Checkout source code. # Github Checkout Action : 레포지토리에서 코드를 내려받는다.
         uses: actions/checkout@v3
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        shell: bash
+        run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
       - name: Cache node modules
         uses: actions/cache@v3
         with:
-          path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.OS }}-build-
-            ${{ runner.OS }}-
+            ${{ runner.os }}-node-
       - name: Install dependencies # npm package install
         run: npm install
         working-directory: ./client # 경로를 지정할 수도 있다.
@@ -52,6 +55,6 @@ jobs:
         run: |
           aws s3 sync \
             --region ap-northeast-2 \
-            build s3://tutor-diff \
+            build s3://tutordiff.site \
             --delete
         working-directory: ./client
