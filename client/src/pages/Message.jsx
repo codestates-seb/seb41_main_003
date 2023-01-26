@@ -57,14 +57,12 @@ const Message = () => {
   }, []);
 
   useEffect(() => {
-    if (messageList.length !== 0) getMessageRoom();
-    else {
-      setModal(noListAlertModal);
-    }
+    if (messageList.length === 0) setModal(noListAlertModal);
   }, [messageList]);
 
   useEffect(() => {
     getMessageRoom();
+    console.log('누구때문에 바뀌는지');
   }, [CurrentRoomId]);
 
   //대화 화면 조회 API

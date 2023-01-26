@@ -4,6 +4,16 @@
   width: 696px;
   height: 640px;
   border-radius: 5px;
+  position: relative;
+
+  .refresh {
+    position: absolute;
+    right: 2px;
+    top: -43px;
+    background-color: $snow;
+    border-radius: 5px;
+    padding: 7px 5px 0;
+  }
 }
 
 .messageContainer {

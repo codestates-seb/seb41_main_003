@@ -46,7 +46,7 @@ const ProfileCard = ({ user }) => {
       text: '상대방에게 문의를 요청하시겠습니까?',
       modalHandler: () => {
         postNewMessageRoom();
-        navigate(`/message`);
+        setTimeout(() => navigate(`/message`), 1000);
         reset();
       },
     },
