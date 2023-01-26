@@ -10,6 +10,7 @@ import axios from 'axios';
 import useScroll from '../util/useScroll';
 import LoadingIndicator from '../components/LoadingIndicator';
 import Loading from '../components/Loading';
+import useOutSideRef from '../util/useOutSideRef';
 
 const TutorList = () => {
   // API에서 받아온 데이터
@@ -18,7 +19,8 @@ const TutorList = () => {
     page: 1,
   });
   //정렬 메뉴 오픈 상태
-  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef(null);
+  const [dropdownRef, isOpen, setIsOpen] = useOutSideRef(menuRef);
   //과목 필터 메뉴에서 선택한 과목들
   const [subjectMenu, setSubjectMenu] = useState([]);
   //검색창에서 입력한 검색어 반영
@@ -119,10 +121,13 @@ const TutorList = () => {
             className={styles.filter}
             onClick={filterHandler}
             aria-hidden="true"
+            ref={menuRef}
           >
             <MdFilterList className={styles.mdFilterList} />
             <span>{sort === 'rate' ? '평점 순' : '최신 순'}</span>
-            {isOpen ? <FilterDropdown setFilter={setSort} /> : null}
+            {isOpen ? (
+              <FilterDropdown setFilter={setSort} ref={dropdownRef} />
+            ) : null}
           </div>
         </div>
         <div className={styles.feedContainer}>

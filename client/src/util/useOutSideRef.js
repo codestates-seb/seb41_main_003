@@ -5,15 +5,8 @@ const useOutSideRef = (menuRef) => {
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    const childNode = Array.prototype.slice.call(menuRef.current.children);
-
     const handleClickOutside = (event) => {
-      if (
-        ref.current &&
-        !ref.current.contains(event.target) &&
-        event.target !== menuRef.current &&
-        !childNode.includes(event.target)
-      ) {
+      if (ref.current && !menuRef.current.contains(event.target)) {
         setIsActive(!isActive);
       }
     };

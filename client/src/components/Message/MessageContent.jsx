@@ -8,6 +8,7 @@ import ModalState from '../../recoil/modal.js';
 import axios from 'axios';
 import CurrentRoomIdState from '../../recoil/currentRoomId';
 import Profile from '../../recoil/profile';
+import useOutSideRef from '../../util/useOutSideRef';
 
 const MessageContent = ({
   messageRoom,
@@ -16,7 +17,8 @@ const MessageContent = ({
   getMessageList,
 }) => {
   const { tutorId, tuteeId, tutoringId, messages } = messageRoom;
-  const [isMenu, setIsMenu] = useState(false);
+  const menuRef = useRef(null);
+  const [dropdownRef, isMenu, setIsMenu] = useOutSideRef(menuRef);
   const [inputValue, setInputValue] = useState('');
   const [receiveMessageId, setReceiveMessageId] = useState(0);
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
@@ -165,9 +167,7 @@ const MessageContent = ({
         <button
           className={styles.menu}
           onClick={() => setIsMenu((prev) => !prev)}
-          onBlur={() => {
-            setTimeout(() => setIsMenu(false), 100);
-          }}
+          ref={menuRef}
         >
           <MdMenu />
         </button>
@@ -198,7 +198,7 @@ const MessageContent = ({
         </button>
         {/* dropDown */}
         {isMenu && (
-          <div className={styles.dropdown}>
+          <div className={styles.dropdown} ref={dropdownRef}>
             <button onClick={() => setModal(matchConfirmProps)}>
               매칭 요청
             </button>

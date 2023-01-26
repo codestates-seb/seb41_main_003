@@ -1,13 +1,14 @@
 import styles from './FilterDropdown.module.css';
 import PropType from 'prop-types';
+import { forwardRef } from 'react';
 
-const FilterDropdown = ({ setFilter }) => {
+const FilterDropdown = ({ setFilter }, ref) => {
   const clickHandler = (e) => {
     setFilter(e.target.name);
   };
 
   return (
-    <ul className={styles.dropdownContainer}>
+    <ul className={styles.dropdownContainer} ref={ref}>
       <li className={styles.dropdown}>
         <button name="createAt" onClick={clickHandler}>
           최신 순
@@ -26,4 +27,4 @@ FilterDropdown.propTypes = {
   setFilter: PropType.func,
 };
 
-export default FilterDropdown;
+export default forwardRef(FilterDropdown);
