@@ -1,10 +1,9 @@
 import styles from './FinishedJournalList.module.css';
 import { HiSpeakerphone } from 'react-icons/hi';
 import { ButtonNightBlue } from '../Button';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
 import { Link, useLocation } from 'react-router-dom';
-import Profile from '../../recoil/profile';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import PropType from 'prop-types';
@@ -28,7 +27,7 @@ const FinishedJournalList = ({
     updateAt: '',
   });
   const setModal = useSetRecoilState(ModalState);
-  const { userStatus } = useRecoilValue(Profile);
+  const userStatus = sessionStorage.getItem('userStatus');
   const { tutoringId } = useLocation().state;
 
   const reviewDetailProps = {

@@ -50,12 +50,12 @@ const LoginForm = () => {
           sessionStorage.setItem('userId', res.data.userId);
           sessionStorage.setItem('userStatus', res.data.userStatus);
 
-          console.log('로그인 완료');
           setProfile((prev) => ({
             ...prev,
             isLogin: true,
             userStatus: res.data.userStatus,
           }));
+          sessionStorage.setItem('userStatus', res.data.userStatus);
           if (res.data.userStatus === 'NONE') {
             console.log('회원정보 입력 필요');
           } else {

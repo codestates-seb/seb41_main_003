@@ -21,7 +21,6 @@ const DropDown = () => {
     props: {
       text: '일지 수정 페이지로 이동 하시겠습니까?',
       modalHandler: () => {
-        console.log('일지 수정페이지로 이동');
         resetModal();
         navigate(`/editjournal`, {
           state: { dateNoticeId, tutoringId },
@@ -33,7 +32,6 @@ const DropDown = () => {
   const deleteHandler = async () => {
     axios
       .delete(`/tutoring/date-notice/${dateNoticeId}`)
-      .then(() => console.log('삭제완료'))
       .catch((err) => console.log(err));
   };
 
@@ -45,7 +43,6 @@ const DropDown = () => {
       삭제한 일지는 되돌릴 수 없습니다.`,
       modalHandler: () => {
         deleteHandler();
-        console.log('일지 삭제');
         setModal(alertModal);
       },
     },

@@ -19,9 +19,7 @@ const EditJournalForm = () => {
   const navigate = useNavigate();
 
   const { dateNoticeId, tutoringId } = useLocation().state;
-  console.log(dateNoticeId, tutoringId);
   const { pathname } = useLocation();
-  console.log(pathname);
   const isAdd = pathname.includes('addjournal');
 
   const { dateNoticeTitle, scheduleBody, noticeBody, homeworks } = userData;
@@ -30,11 +28,7 @@ const EditJournalForm = () => {
     await axios[isAdd ? 'post' : 'patch'](
       `/tutoring/date-notice/${isAdd ? tutoringId : dateNoticeId}`,
       userData
-    )
-      .then(() => {
-        console.log('성공적으로 일지 작성 혹은 수정을 완료함');
-      })
-      .catch((err) => console.log(err));
+    ).catch((err) => console.log(err));
   };
 
   const confirm = {
@@ -94,7 +88,6 @@ const EditJournalForm = () => {
     setUserData({
       ...userData,
       homeworks: homeworks.filter((el) => {
-        console.log(el);
         return el.homeworkId !== Number(id);
       }),
     });

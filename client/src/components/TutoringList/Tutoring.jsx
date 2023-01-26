@@ -1,8 +1,6 @@
 import styles from './Tutoring.module.css';
 import { Link } from 'react-router-dom';
 import PropType from 'prop-types';
-import { useRecoilValue } from 'recoil';
-import Profile from '../../recoil/profile';
 
 const Tutoring = ({ tutoring }) => {
   const {
@@ -15,7 +13,7 @@ const Tutoring = ({ tutoring }) => {
     updateAt,
   } = tutoring;
 
-  const { userStatus } = useRecoilValue(Profile);
+  const userStatus = sessionStorage.getItem('userStatus');
 
   return (
     <li

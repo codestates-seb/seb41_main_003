@@ -17,7 +17,6 @@ const Toggle = ({ user, setUser }) => {
       text: '공고 상태를 변경하시겠습니까?',
       modalHandler: () => {
         patchWantedStatus();
-        console.log(user.wantedStatus);
         resetModal();
       },
     },

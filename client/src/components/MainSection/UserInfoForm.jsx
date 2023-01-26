@@ -96,6 +96,7 @@ const UserInfoForm = () => {
           phoneNumber: phoneNumber === null ? '' : phoneNumber,
         });
         setUserStatus(userStatus);
+        sessionStorage.setItem('userStatus', userStatus);
       })
       .catch(({ response }) => {
         console.log(response);
@@ -115,6 +116,7 @@ const UserInfoForm = () => {
 
   const radioHandler = (e) => {
     setUserStatus(e.target.value);
+    sessionStorage.setItem('userStatus', e.target.value);
   };
 
   //* 비밀번호와 비밀번호 확인 체크하는 핸들러 함수
@@ -183,8 +185,6 @@ const UserInfoForm = () => {
       userStatus,
     };
 
-    console.log('수정 요청');
-
     await axios
       .patch(
         `/users/${
@@ -193,9 +193,9 @@ const UserInfoForm = () => {
         patchData
       )
       .then(({ data: { data } }) => {
-        console.log('수정완료');
         setModal(submitProp);
         setProfile((prev) => ({ ...prev, userStatus: data.userState }));
+        sessionStorage.setItem('userStatus', data.userStatus);
       })
       .catch(({ response }) => {
         console.log(response);
@@ -214,7 +214,6 @@ const UserInfoForm = () => {
       .then(() => {
         sessionStorage.clear();
         localStorage.clear();
-        console.log('회원탈퇴 API 완료');
       })
       .catch((err) => console.log(err));
   };
