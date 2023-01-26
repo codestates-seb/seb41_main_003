@@ -21,6 +21,7 @@ const TutoringList = () => {
   };
 
   const getTutoringList = async () => {
+    setTutorings([0]);
     await axios
       .get(
         `/tutoring/${profileId}?get=${
