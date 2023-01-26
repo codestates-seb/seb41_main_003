@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
+@Builder
 @AllArgsConstructor
 public class Message extends Auditable {
 
