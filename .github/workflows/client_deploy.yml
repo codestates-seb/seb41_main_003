@@ -19,7 +19,7 @@ jobs:
       - name: Checkout source code. # Github Checkout Action : 레포지토리에서 코드를 내려받는다.
         uses: actions/checkout@v3
       - name: Cache node modules
-        use: actions/cache@v3
+        uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
