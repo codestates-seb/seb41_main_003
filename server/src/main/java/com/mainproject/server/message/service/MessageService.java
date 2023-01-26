@@ -117,6 +117,7 @@ public class MessageService {
 
     public void deleteMessageRoom(Long messageRoomId) {
         MessageRoom messageRoom = verifiedMessageRoom(messageRoomId);
+        // Todo Tutoring이 진행중이라면, 삭제 제한 필요할듯 - Tutoring 매칭 완료후 삭제 불가능
         if (messageRoom.getTutoringId() != null) {
             tutoringRepository.deleteById(messageRoom.getTutoringId());
         }
@@ -189,8 +190,7 @@ public class MessageService {
         messageRoom.setMessageStatus(MessageStatus.UNCHECK);
         messageRoom.addTutor(tutor);
         messageRoom.addTutee(tutee);
-        MessageRoom save = messageRoomRepository.save(messageRoom);
-        return save;
+        return messageRoomRepository.save(messageRoom);
     }
 
 }
