@@ -19,7 +19,7 @@ const ProfileCard = ({ user }) => {
   const { profileId } = useLocation().state;
 
   const myProfileId = useRecoilValue(Profile).profileId;
-  const { userStatus } = useRecoilValue(Profile);
+  const { userStatus, isLogin } = useRecoilValue(Profile);
 
   const postData =
     userStatus === 'TUTOR'
@@ -84,7 +84,9 @@ const ProfileCard = ({ user }) => {
           </span>
         </div>
       </section>
-      {Number(profileId) !== myProfileId &&
+
+      {isLogin &&
+        profileId !== myProfileId &&
         !location.pathname.includes(userStatus?.toLowerCase()) && (
           <div className={styles.buttonBox}>
             <ButtonNightBlue
