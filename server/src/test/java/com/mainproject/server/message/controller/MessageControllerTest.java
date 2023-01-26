@@ -72,10 +72,11 @@ class MessageControllerTest {
     private RefreshRepository refreshRepository;
 
     @MockBean
-    private MessageService messageService;
+    private UserService userService;
 
     @MockBean
-    private UserService userService;
+    private MessageService messageService;
+
 
     @Test
     @DisplayName("메세지 생성 TEST")

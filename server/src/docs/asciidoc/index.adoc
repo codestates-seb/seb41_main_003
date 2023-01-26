@@ -821,3 +821,39 @@ include::{snippets}/deleteMessageRoom/request-headers.adoc[]
 
 .http-response
 include::{snippets}/deleteMessageRoom/http-response.adoc[]
+
+
+== Image
+=== 프로필 이미지 등록 및 수정
+
+- PATCH 동일한 조건으로 요청 가능
+
+.http-request
+include::{snippets}/postProfileImage/curl-request.adoc[]
+
+.request-headers
+include::{snippets}/postProfileImage/request-headers.adoc[]
+
+
+.http-response
+include::{snippets}/postProfileImage/http-response.adoc[]
+
+.response-body
+include::{snippets}/postProfileImage/response-body.adoc[]
+
+.response-fields
+include::{snippets}/postProfileImage/response-fields.adoc[]
+
+=== 프로필 이미지 삭제
+
+.http-request
+include::{snippets}/deleteProfileImage/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/deleteProfileImage/path-parameters.adoc[]
+
+.request-headers
+include::{snippets}/deleteProfileImage/request-headers.adoc[]
+
+.http-response
+include::{snippets}/deleteProfileImage/http-response.adoc[]
