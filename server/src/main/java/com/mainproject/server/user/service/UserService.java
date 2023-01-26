@@ -64,6 +64,7 @@ public class UserService {
         return userRepository.save(findUser);
     }
 
+    // Todo 회원 삭제 안됨 - 프로필 존재 경우 ?
     public void deleteUser(Long userId) {
         userRepository.delete(verifiedUserById(userId));
     }
@@ -150,7 +151,7 @@ public class UserService {
     public Profile createBasicProfile(User user) {
         ProfileImage basicImage = imageService.getBasicImage();
         Profile get = Profile.builder()
-                .name("기본 프로필을 수정 해 주세요").rate(0.0)
+                .name("프로필 수정해 주세요").rate(0.0)
                 .bio("한줄 소개를 수정 해 주세요").wantDate("").pay("").way("")
                 .profileStatus(ProfileStatus.valueOf(user.getUserStatus().name()))
                 .wantedStatus(WantedStatus.BASIC)

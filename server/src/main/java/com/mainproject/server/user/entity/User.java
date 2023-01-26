@@ -63,7 +63,7 @@ public class User extends Auditable {
 
     @ToString.Exclude
     @OrderBy("profileId")
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Setter
     private Set<Profile> profiles = new LinkedHashSet<>();
 
