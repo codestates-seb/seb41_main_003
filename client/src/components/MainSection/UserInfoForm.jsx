@@ -185,8 +185,6 @@ const UserInfoForm = () => {
       userStatus,
     };
 
-    console.log('수정 요청');
-
     await axios
       .patch(
         `/users/${
@@ -195,7 +193,6 @@ const UserInfoForm = () => {
         patchData
       )
       .then(({ data: { data } }) => {
-        console.log('수정완료');
         setModal(submitProp);
         setProfile((prev) => ({ ...prev, userStatus: data.userState }));
         sessionStorage.setItem('userStatus', data.userStatus);
@@ -217,7 +214,6 @@ const UserInfoForm = () => {
       .then(() => {
         sessionStorage.clear();
         localStorage.clear();
-        console.log('회원탈퇴 API 완료');
       })
       .catch((err) => console.log(err));
   };

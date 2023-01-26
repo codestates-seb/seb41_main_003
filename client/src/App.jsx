@@ -54,7 +54,6 @@ const App = () => {
         status === 403 &&
         error.response.data.message === 'EXPIRED ACCESS TOKEN'
       ) {
-        console.log('Access Token 재발급');
         const originReq = config;
         originReq.sent = true;
 

@@ -20,7 +20,6 @@ const TutorContents = ({ user, pageInfo, setPage }) => {
 
   const isContent =
     subjects.filter((el) => el.content.length === 0).length < subjects.length;
-  console.log(isContent);
 
   const reviewRef = useRef(null);
   const starMaker = (key) => {

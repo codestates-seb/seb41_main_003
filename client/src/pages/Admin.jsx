@@ -19,8 +19,6 @@ const Admin = () => {
     await axios
       .get(`/profiles/${sessionStorage.getItem('userId')}`)
       .then(({ data }) => {
-        console.log(data);
-
         setProfilesData(data.data);
       })
       .catch((err) => {

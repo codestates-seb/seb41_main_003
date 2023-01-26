@@ -70,13 +70,10 @@ const Header = () => {
         { secondPassword: value }
       )
       .then(() => {
-        console.log('검증 완료');
         navigate(path);
       })
       .catch(({ response }) => {
         console.log(response);
-        console.log(response?.status);
-        console.log(response?.data?.message);
         if (response.data.message === 'WRONG SECOND PASSWORD') {
           setModal({
             isOpen: true,

@@ -50,7 +50,6 @@ const LoginForm = () => {
           sessionStorage.setItem('userId', res.data.userId);
           sessionStorage.setItem('userStatus', res.data.userStatus);
 
-          console.log('로그인 완료');
           setProfile((prev) => ({
             ...prev,
             isLogin: true,

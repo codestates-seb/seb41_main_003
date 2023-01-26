@@ -113,7 +113,6 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
     props: {
       modalHandler: (e, value, reviewData) => {
         postReview(reviewData, value);
-        console.log('리뷰 작성을 완료했다!');
         setModal(alertFinishProps);
       },
     },

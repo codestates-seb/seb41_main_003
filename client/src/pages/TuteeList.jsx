@@ -23,7 +23,6 @@ const TuteeList = () => {
 
   const [isLoading, setIsLoading] = useScroll(() => {
     if (pageInfo.page < pageInfo.totalPages - 1) {
-      console.log('true');
       setTimeout(() => {
         scrollFunc(pageInfo.page + 1);
         setIsLoading(false);

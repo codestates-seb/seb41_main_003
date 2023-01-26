@@ -35,12 +35,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
   const patchImg = async (id) => {
     const formData = new FormData();
     formData.append('image', imgFile);
-    for (const key of formData.keys()) {
-      console.log(key);
-    }
-    for (const value of formData.values()) {
-      console.log(value);
-    }
+
     await axios
       .patch(`/upload/profile-image/${id}`, formData, {
         headers: {
@@ -49,8 +44,6 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
       })
       .then(({ data }) => {
         const profileImage = data.data[0];
-        console.log(profileImage);
-        console.log('성공!');
 
         if (profile.profileId === profileId) {
           setProfile((prev) => ({
@@ -87,7 +80,6 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
   };
 
   const editHandler = () => {
-    console.log('PATCH 요청');
     patchProfile();
     resetModal();
     setTimeout(() => {
@@ -112,7 +104,6 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
   };
 
   const addHandler = () => {
-    console.log('POST 요청');
     postProfile();
     resetModal();
     setTimeout(() => {
