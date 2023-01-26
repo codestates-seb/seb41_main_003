@@ -3,6 +3,7 @@ package com.mainproject.server.message.service;
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.MessageStatus;
 import com.mainproject.server.constant.ProfileStatus;
+import com.mainproject.server.constant.TutoringStatus;
 import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.message.dto.*;
 import com.mainproject.server.message.entity.Message;
@@ -11,6 +12,7 @@ import com.mainproject.server.message.repository.MessageRepository;
 import com.mainproject.server.message.repository.MessageRoomRepository;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.service.ProfileService;
+import com.mainproject.server.tutoring.entity.Tutoring;
 import com.mainproject.server.tutoring.repository.TutoringRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -118,7 +120,16 @@ public class MessageService {
     public void deleteMessageRoom(Long messageRoomId) {
         MessageRoom messageRoom = verifiedMessageRoom(messageRoomId);
         if (messageRoom.getTutoringId() != null) {
-            tutoringRepository.deleteById(messageRoom.getTutoringId());
+            Long tutoringId = messageRoom.getTutoringId();
+            Tutoring tutoring = tutoringRepository.findById(tutoringId)
+                    .orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
+            if (tutoring.getTutoringStatus().equals(TutoringStatus.TUTOR_WAITING) ||
+                    tutoring.getTutoringStatus().equals(TutoringStatus.TUTEE_WAITING)
+            ) {
+                tutoringRepository.delete(tutoring);
+            } else {
+                throw new ServiceLogicException(ErrorCode.PROGRESS_TUTORING_BAD_REQUEST);
+            }
         }
         messageRepository.deleteAllById(messageRoom.getMessages()
                 .stream().map(Message::getMessageId)
