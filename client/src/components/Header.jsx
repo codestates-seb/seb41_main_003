@@ -1,16 +1,16 @@
 import styles from './Header.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MdNotifications } from 'react-icons/md';
 import { useSetRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import ModalState from '../recoil/modal.js';
 import defaultUser from '../assets/defaultUser.png';
 import Profile from '../recoil/profile';
 import axios from 'axios';
+import useOutSideRef from '../util/useOutSideRef';
 import CurrentRoomIdState from '../recoil/currentRoomId';
 
 const Header = () => {
-  const [isMenu, setIsMenu] = useState(false);
   const [isNoti, setIsNoti] = useState(false);
   const navigate = useNavigate();
 
@@ -19,6 +19,9 @@ const Header = () => {
   const resetProfile = useResetRecoilState(Profile);
   const resetModal = useResetRecoilState(ModalState);
   const resetCurrentRoom = useResetRecoilState(CurrentRoomIdState);
+
+  const menuRef = useRef(null);
+  const [dropDownRef, isMenu, setIsMenu] = useOutSideRef(menuRef);
 
   const adminProps = {
     isOpen: true,
@@ -170,10 +173,10 @@ const Header = () => {
             <li>
               <button
                 className={styles.profileButton}
-                onClick={() => setIsMenu(!isMenu)}
-                onBlur={() => {
-                  setTimeout(() => setIsMenu(false), 100);
+                onClick={() => {
+                  setIsMenu(!isMenu);
                 }}
+                ref={menuRef}
               >
                 <img
                   src={profile.url || defaultUser}
@@ -189,7 +192,7 @@ const Header = () => {
           )}
 
           {isMenu && (
-            <ul className={styles.dropdown}>
+            <ul className={styles.dropdown} ref={dropDownRef}>
               <li>
                 <Link to={`/myprofile`}>프로필</Link>
               </li>
