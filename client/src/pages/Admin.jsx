@@ -44,7 +44,6 @@ const Admin = () => {
             },
           },
         });
-        console.log('삭제 완료!');
       })
       .catch(({ response }) => {
         console.log(response);

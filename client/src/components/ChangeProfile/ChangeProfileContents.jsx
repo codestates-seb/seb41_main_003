@@ -1,7 +1,6 @@
 import PropType from 'prop-types';
 import TutorContents from './TutorContents';
 import TuteeContents from './TuteeContents';
-import Profile from '../../recoil/profile';
 
 const ChangeProfileContents = ({ user, setUser }) => {
   const userStatus = sessionStorage.getItem('userStatus');

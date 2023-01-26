@@ -12,20 +12,14 @@ import LoadingIndicator from '../components/LoadingIndicator';
 import Loading from '../components/Loading';
 
 const TutorList = () => {
-  // API에서 받아온 데이터
   const [tutorData, setTutorData] = useState();
   const [pageInfo, setPageInfo] = useState({
     page: 1,
   });
-  //정렬 메뉴 오픈 상태
   const [isOpen, setIsOpen] = useState(false);
-  //과목 필터 메뉴에서 선택한 과목들
   const [subjectMenu, setSubjectMenu] = useState([]);
-  //검색창에서 입력한 검색어 반영
   const [search, setSearch] = useState('');
-  //검색창 값 핸들링 상태
   const [searchValue, setSearchValue] = useState('');
-  //정렬 메뉴 '최신 순'인지 '별점 순'인지
   const [sort, setSort] = useState('');
 
   const loadingRef = useRef(null);
@@ -65,7 +59,6 @@ const TutorList = () => {
       .catch((err) => console.error(err.message));
   };
 
-  //정렬 메뉴 오픈 핸들러
   const filterHandler = () => {
     setIsOpen(!isOpen);
   };
