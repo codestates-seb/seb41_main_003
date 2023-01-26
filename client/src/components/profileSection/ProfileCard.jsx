@@ -22,7 +22,6 @@ const ProfileCard = ({ user }) => {
   const userStatus = sessionStorage.getItem('userStatus');
   const { isLogin } = useRecoilValue(Profile);
 
-
   const postData =
     userStatus === 'TUTOR'
       ? { tutorId: myProfileId, tuteeId: profileId }
