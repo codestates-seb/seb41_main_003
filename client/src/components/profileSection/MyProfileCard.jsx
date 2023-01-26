@@ -5,12 +5,7 @@ import { ButtonNightBlue } from '../Button.jsx';
 import { BlueSubject } from '../Subject.jsx';
 import { MdStar, MdDelete } from 'react-icons/md';
 import Toggle from './Toggle';
-import {
-  useSetRecoilState,
-  useResetRecoilState,
-  useRecoilState,
-  useRecoilValue,
-} from 'recoil';
+import { useSetRecoilState, useResetRecoilState, useRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 import Profile from '../../recoil/profile';
 import axios from 'axios';
@@ -21,7 +16,7 @@ const MyProfileCard = ({ user, setUser }) => {
 
   const navigate = useNavigate();
   const [{ profileId }, setProfile] = useRecoilState(Profile);
-  const { userStatus } = useRecoilValue(Profile);
+  const userStatus = sessionStorage.getItem('userStatus');
 
   const confirm = {
     isOpen: true,

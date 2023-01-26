@@ -3,17 +3,16 @@ import PropType from 'prop-types';
 import { ButtonSilver } from '../Button';
 import { CheckBox } from '../Input';
 import DropDown from './DropDown';
-import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal';
 import { useNavigate, useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
-import Profile from '../../recoil/profile';
 
 const JournalForm = ({ userData }) => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
   const { tutoringId } = useLocation().state;
-  const { userStatus } = useRecoilValue(Profile);
+  const userStatus = sessionStorage.getItem('userStatus');
 
   const Navigate = useNavigate();
   const {

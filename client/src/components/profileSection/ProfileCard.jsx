@@ -19,7 +19,7 @@ const ProfileCard = ({ user }) => {
   const { profileId } = useLocation().state;
 
   const myProfileId = useRecoilValue(Profile).profileId;
-  const { userStatus } = useRecoilValue(Profile);
+  const userStatus = sessionStorage.getItem('userStatus');
 
   const postData =
     userStatus === 'TUTOR'

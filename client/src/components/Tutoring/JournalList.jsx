@@ -2,10 +2,9 @@ import styles from './JournalList.module.css';
 import { HiSpeakerphone } from 'react-icons/hi';
 import { MdEdit } from 'react-icons/md';
 import { ButtonNightBlue, ButtonRed } from '../Button';
-import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import Profile from '../../recoil/profile';
 import axios from 'axios';
 import { useEffect } from 'react';
 import PropType from 'prop-types';
@@ -15,7 +14,7 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
   const setModal = useSetRecoilState(ModalState);
   const reset = useResetRecoilState(ModalState);
   const navigate = useNavigate();
-  const { userStatus } = useRecoilValue(Profile);
+  const userStatus = sessionStorage.getItem('userStatus');
   const { tutoringId } = useLocation().state;
 
   const alertProps = {

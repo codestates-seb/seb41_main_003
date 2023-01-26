@@ -2,10 +2,9 @@ import PropType from 'prop-types';
 import TutorContents from './TutorContents';
 import TuteeContents from './TuteeContents';
 import Profile from '../../recoil/profile';
-import { useRecoilValue } from 'recoil';
 
 const ChangeProfileContents = ({ user, setUser }) => {
-  const { userStatus } = useRecoilValue(Profile);
+  const userStatus = sessionStorage.getItem('userStatus');
 
   return (
     <>
