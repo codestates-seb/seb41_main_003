@@ -17,15 +17,24 @@ jobs:
     runs-on: ubuntu-latest # 액션을 실행 할 OS 지정
     steps: # 인스턴스에서 실행 할 각 절차
       - name: Checkout source code. # Github Checkout Action : 레포지토리에서 코드를 내려받는다.
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Cache node modules
+        use: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
       - name: Install dependencies # npm package install
         run: npm install
         working-directory: ./client # 경로를 지정할 수도 있다.
-      - name: Set .env # .ㄷ
+      - name: Set .env # .env 파일 생성
         run: |
           echo "REACT_APP_BASE_URL=${{ secrets.BASE_URL }}" >> .env
           cat .env
-      - name: Build # react build 실행
+        working-directory: ./client
+      - name: Build # react buld 실행
         run: npm run build
         working-directory: ./client
       - name: SHOW AWS CLI VERSION # 기본적으로 설치된 AWS CLI의 버전 확인
