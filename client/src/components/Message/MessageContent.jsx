@@ -88,7 +88,7 @@ const MessageContent = ({
   //* 매칭 중복 요청 오류 모달
   const alreadyMatchModal = {
     isOpen: true,
-    modalType: 'alert',
+    modalType: 'redAlert',
     props: {
       text: `이미 진행중인 매칭 요청 이나 과외가 있습니다.`,
     },
@@ -135,18 +135,6 @@ const MessageContent = ({
       modalHandler: () => {
         console.log('상담 취소');
         delMessageRoom();
-        resetModal();
-        setModal(cancelAlertProps);
-      },
-    },
-  };
-  const cancelAlertProps = {
-    isOpen: true,
-    modalType: 'redAlert',
-    props: {
-      text: `상담이 취소되었습니다.`,
-      modalHandler: () => {
-        window.location.href = `/message`;
       },
     },
   };

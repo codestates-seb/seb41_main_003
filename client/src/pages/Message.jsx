@@ -84,14 +84,34 @@ const Message = () => {
         .catch((err) => console.log(err, 'getMessageRoom')));
   };
 
+  const cancelAlertProps = {
+    isOpen: true,
+    modalType: 'redAlert',
+    props: {
+      text: `상담이 취소되었습니다.`,
+      modalHandler: () => {
+        window.location.href = `/message`;
+      },
+    },
+  };
+
   const delMessageRoom = async () => {
     await axios
       .delete(`/messages/rooms/${CurrentRoomId}`)
       .then(() => {
         window.location.ref('/message');
         console.log('현재 대화방 삭제');
+        setModal(cancelAlertProps);
       })
-      .catch((err) => console.log(err));
+      .catch(() => {
+        setModal({
+          isOpen: true,
+          modalType: 'alert',
+          props: {
+            text: '대화 상대와 매칭중인 과외가 있다면\n상담 취소를 할 수 없습니다.',
+          },
+        });
+      });
   };
 
   return (
