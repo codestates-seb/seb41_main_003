@@ -27,7 +27,10 @@ const Tutoring = ({ tutoring }) => {
             {sessionStorage.getItem('userStatus') === 'TUTOR'
               ? tuteeName
               : tutorName}
-            | {tutoringTitle}
+            |{' '}
+            {tutoringTitle.length >= 21
+              ? `${tutoringTitle.slice(0, 21)} ...`
+              : tutoringTitle}
           </h4>
           {createAt === '' ? undefined : (
             <span>
