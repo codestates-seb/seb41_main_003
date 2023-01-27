@@ -1,12 +1,13 @@
 .app {
+  min-height: 100vh;
   margin: 0;
+  padding-bottom: 160px;
+  position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .content {
   width: 100%;
+  min-height: 100%;
   margin-top: 64px;
 }
