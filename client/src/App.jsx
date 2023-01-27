@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from 'react-router-dom';
 import './App.css';
 import TutorList from './pages/TutorList';
 import TuteeList from './pages/TuteeList';
@@ -31,6 +36,8 @@ import ModalState from './recoil/modal';
 const App = () => {
   const resetProfile = useResetRecoilState(Profile);
   const setModal = useSetRecoilState(ModalState);
+
+  const navigate = useNavigate();
 
   axios.interceptors.request.use(
     (config) => {
@@ -95,7 +102,7 @@ const App = () => {
           console.log(err);
           sessionStorage.clear();
           resetProfile();
-          location.href = '/login';
+          navigate('/login');
         }
       }
       return Promise.reject(error);

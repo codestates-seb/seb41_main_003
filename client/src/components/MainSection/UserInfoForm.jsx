@@ -7,6 +7,7 @@ import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import validation from '../../util/validation';
 import ModalState from '../../recoil/modal';
 import Profile from '../../recoil/profile';
+import { useNavigate } from 'react-router-dom';
 
 const initialUserInfo = {
   nickName: '',
@@ -28,7 +29,9 @@ const UserInfoForm = () => {
   });
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
+  const resetProfile = useResetRecoilState(Profile);
   const setProfile = useSetRecoilState(Profile);
+  const navigate = useNavigate();
   const isNewUser = userData.userStatus === 'NONE';
 
   const conflictProp = {
@@ -78,7 +81,7 @@ const UserInfoForm = () => {
       text: `회원 탈퇴가 완료되었습니다.`,
       modalHandler: () => {
         resetModal();
-        window.location.href = `/`;
+        navigate('/');
       },
     },
   };
@@ -208,6 +211,7 @@ const UserInfoForm = () => {
       .then(() => {
         sessionStorage.clear();
         localStorage.clear();
+        resetProfile();
       })
       .catch((err) => console.log(err));
   };

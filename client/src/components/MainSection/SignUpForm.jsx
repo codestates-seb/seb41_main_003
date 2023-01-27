@@ -5,6 +5,7 @@ import validation from '../../util/validation';
 import axios from 'axios';
 import ModalState from '../../recoil/modal.js';
 import { useSetRecoilState } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 
 const initialSignupdata = {
   nickName: '',
@@ -16,6 +17,8 @@ const initialSignupdata = {
 const SignUpForm = () => {
   const [signupData, setSignupData] = useState(initialSignupdata);
   const [confirmPassword, setConfirmPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   const setModal = useSetRecoilState(ModalState);
 
@@ -39,7 +42,7 @@ const SignUpForm = () => {
     props: {
       text: '회원 가입이 완료되었습니다!',
       modalHandler: () => {
-        window.location.href = '/login';
+        navigate('/login');
       },
     },
   };
