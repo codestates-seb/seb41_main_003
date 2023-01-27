@@ -3,6 +3,7 @@ package com.mainproject.server.review.service;
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.TutoringStatus;
 import com.mainproject.server.exception.ServiceLogicException;
+import com.mainproject.server.message.service.MessageService;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.review.entity.Review;
 import com.mainproject.server.review.repository.ReviewRepository;
@@ -24,6 +25,8 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final TutoringService tutoringService;
 
+    private final MessageService messageService;
+
     public Review getReview(Long reviewId) {
         return verifiedReviewById(reviewId);
     }
@@ -33,6 +36,7 @@ public class ReviewService {
         if (!tutoring.getTutoringStatus().equals(TutoringStatus.WAIT_FINISH))
             throw new ServiceLogicException(ErrorCode.TUTORING_STATUS_NOT_WAIT_FINISH);
         tutoring.setTutoringStatus(TutoringStatus.FINISH);
+        messageService.deleteMessageRoomTutoringId(tutoringId);
         Profile tutee = tutoring.getTutee();
         Profile tutor = tutoring.getTutor();
         review.addTutor(tutor);
