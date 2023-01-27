@@ -45,7 +45,7 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
     private final JwtAuthorityUtils authorityUtils;
 
-    private final String serviceUrl = "http://tutor-diff.s3-website.ap-northeast-2.amazonaws.com";
+    private final String serviceUrl = "http://tutordiff.site";
 
     @Override
     public void onAuthenticationSuccess(
