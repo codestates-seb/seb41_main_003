@@ -1,6 +1,7 @@
 import PropType from 'prop-types';
 import styles from './Input.module.css';
 import { MdCheck } from 'react-icons/md';
+import { forwardRef } from 'react';
 
 export const CheckBox = ({ id = '', value = false, handler = () => {} }) => {
   return (
@@ -27,27 +28,35 @@ CheckBox.propTypes = {
   handler: PropType.func,
 };
 
-export const TextInput = ({
-  id = '',
-  placeHolder = '',
-  type = 'text',
-  value = '',
-  handler = () => {},
-  required,
-}) => {
-  return (
-    <input
-      className={styles.textInput}
-      type={type}
-      name={id}
-      id={id}
-      value={value}
-      placeholder={placeHolder}
-      onChange={handler}
-      {...(required ? { required: required } : {})}
-    />
-  );
-};
+export const TextInput = forwardRef(
+  (
+    {
+      id = '',
+      placeHolder = '',
+      type = 'text',
+      value = '',
+      handler = () => {},
+      required,
+    },
+    ref
+  ) => {
+    return (
+      <input
+        className={styles.textInput}
+        type={type}
+        name={id}
+        id={id}
+        value={value}
+        placeholder={placeHolder}
+        onChange={handler}
+        {...(required ? { required: required } : {})}
+        ref={ref}
+      />
+    );
+  }
+);
+TextInput.displayName = 'TextInput';
+
 TextInput.propTypes = {
   id: PropType.string,
   type: PropType.string,

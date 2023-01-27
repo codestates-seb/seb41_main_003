@@ -193,7 +193,7 @@ const Chat = ({
 
 Chat.propTypes = {
   message: PropType.object,
-  receiveMessageId: PropType.string,
+  receiveMessageId: PropType.number,
   CurrentRoomId: PropType.string,
   tutoringId: PropType.number,
   getMessageRoom: PropType.func,

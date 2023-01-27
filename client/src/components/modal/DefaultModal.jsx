@@ -2,7 +2,7 @@ import styles from './DefaultModal.module.css';
 import PropTypes from 'prop-types';
 import { ButtonNightBlue, ButtonSilver, ButtonRed } from '../Button';
 import { TextInput } from '../Input';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
 
@@ -54,8 +54,15 @@ export const ConfirmValiModal = ({ text, modalHandler, validation }) => {
   const [value, setValue] = useState('');
 
   const validationHandler = (e) => {
+    e.preventDefault();
     if (value === validation) modalHandler(e);
   };
+
+  const textInput = useRef(null);
+
+  useEffect(() => {
+    textInput.current.focus();
+  }, []);
 
   return (
     <form
@@ -71,6 +78,7 @@ export const ConfirmValiModal = ({ text, modalHandler, validation }) => {
           placeHolder={validation}
           value={value}
           handler={(e) => setValue(e.target.value)}
+          ref={textInput}
         />
         <span>
           {value !== validation && `${validation}를(을) 정확히 입력해주세요.`}
@@ -107,6 +115,12 @@ export const ConfirmTextModal = ({
     setValue(e.target.value);
   };
 
+  const textInput = useRef(null);
+
+  useEffect(() => {
+    textInput.current.focus();
+  }, []);
+
   return (
     <form
       className={styles.view}
@@ -122,6 +136,7 @@ export const ConfirmTextModal = ({
           placeHolder={placeHolder}
           value={value}
           handler={valueHandler}
+          ref={textInput}
         />
       </div>
       <div className={styles.buttonBox}>

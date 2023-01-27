@@ -64,9 +64,12 @@ public class UserService {
         return userRepository.save(findUser);
     }
 
-    // Todo 회원 삭제 안됨 - 프로필 존재 경우 ?
     public void deleteUser(Long userId) {
-        userRepository.delete(verifiedUserById(userId));
+        User findUser = verifiedUserById(userId);
+        findUser.setUserStatus(UserStatus.INACTIVE);
+        findUser.getProfiles()
+                .forEach(p -> p.setWantedStatus(WantedStatus.NONE));
+        userRepository.save(findUser);
     }
 
 
@@ -133,7 +136,7 @@ public class UserService {
         UserStatus findUserStatus = findUser.getUserStatus();
         UserStatus userStatus = postUser.getUserStatus();
         if (findUserStatus.equals(UserStatus.NONE)) {
-            if (userStatus == null || userStatus.equals(UserStatus.NONE)){
+            if (userStatus == null || userStatus.equals(UserStatus.NONE)) {
                 throw new ServiceLogicException(ErrorCode.USER_TYPE_NOT_NONE);
             }
             findUser.setUserStatus(userStatus);

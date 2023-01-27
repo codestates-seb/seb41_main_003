@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useSetRecoilState } from 'recoil';
 import Profile from '../../recoil/profile';
 import validation from '../../util/validation';
+import ModalState from '../../recoil/modal';
 
 const initialLogindata = {
   username: '',
@@ -17,6 +18,7 @@ const LoginForm = () => {
   const [isIdChecked, setIsIdChecked] = useState(false);
   const [isFail, setIsFail] = useState(0);
 
+  const setModal = useSetRecoilState(ModalState);
   const setProfile = useSetRecoilState(Profile);
 
   const navigate = useNavigate();
@@ -61,6 +63,17 @@ const LoginForm = () => {
         .catch((err) => {
           if (err.response?.status === 401) {
             setIsFail(401);
+          } else if (
+            res.response?.status === 403 &&
+            res.response?.data.message === 'INACTIVE USER'
+          ) {
+            setModal({
+              isOpen: true,
+              modalType: 'alert',
+              props: {
+                text: '탈퇴한 회원입니다.',
+              },
+            });
           }
         });
     } else setIsFail(400);

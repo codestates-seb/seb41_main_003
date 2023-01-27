@@ -18,8 +18,13 @@ const TuteeList = () => {
   const [subjectMenu, setSubjectMenu] = useState([]);
   const [search, setSearch] = useState('');
   const [searchValue, setSearchValue] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
 
   const loadingRef = useRef(null);
+
+  const filterHandler = () => {
+    setIsOpen(!isOpen);
+  };
 
   const [isLoading, setIsLoading] = useScroll(() => {
     if (pageInfo.page < pageInfo.totalPages - 1) {
@@ -97,10 +102,15 @@ const TuteeList = () => {
             subjectMenu={subjectMenu}
             subjectHandler={subjectHandler}
           />
-          <div className={styles.filter}>
+          <button className={styles.filter} onClick={filterHandler}>
             <MdFilterList className={styles.mdFilterList} />
             <span>최신 순</span>
-          </div>
+            {isOpen ? (
+              <div className={styles.dropDown}>
+                <span>최신 순</span>
+              </div>
+            ) : null}
+          </button>
         </div>
         <div className={styles.feedContainer}>
           {tuteeData?.map((tutee) => (

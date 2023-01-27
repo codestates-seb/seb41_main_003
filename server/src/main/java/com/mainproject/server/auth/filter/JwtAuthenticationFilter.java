@@ -5,6 +5,9 @@ import com.mainproject.server.auth.dto.LoginDto;
 import com.mainproject.server.auth.redis.service.RefreshService;
 import com.mainproject.server.auth.token.JwtTokenizer;
 import com.mainproject.server.auth.token.Token;
+import com.mainproject.server.constant.ErrorCode;
+import com.mainproject.server.constant.UserStatus;
+import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -57,8 +60,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     ) throws IOException, ServletException {
         User user = (User) authResult.getPrincipal();
         Long userId = user.getUserId();
-
-
         Token token = jwtTokenizer.delegateToken(user);
         String accessToken = token.getAccessToken();
         String refreshToken = token.getRefreshToken();

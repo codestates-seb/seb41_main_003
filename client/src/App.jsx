@@ -19,6 +19,7 @@ import Footer from './components/Footer';
 import EditJournal from './pages/EditJournal';
 import Journal from './pages/Journal';
 import AddJournal from './pages/AddJournal';
+import Error from './pages/Error';
 import { GlobalModal } from './components/modal/GlobalModal';
 import { useResetRecoilState, useSetRecoilState } from 'recoil';
 import axios from 'axios';
@@ -132,6 +133,7 @@ const App = () => {
             <Route path="/editjournal" element={<EditJournal />} />
             <Route path="/addjournal" element={<AddJournal />} />
             <Route path="/auth" element={<OAuth />} />
+            <Route path="/*" element={<Error />} />
           </Routes>
         </div>
         <GlobalModal />

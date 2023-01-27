@@ -77,3 +77,20 @@
     margin-bottom: 0;
   }
 }
+
+.selectBox {
+  height: 40px;
+  width: 240px;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  appearance: none;
+  background: url('../../assets/arrowDrop.png') no-repeat right 8px center;
+  background-size: 16px;
+  background-color: $snow;
+  color: $nickel;
+
+  &:focus {
+    outline: 1px solid $silver;
+  }
+}

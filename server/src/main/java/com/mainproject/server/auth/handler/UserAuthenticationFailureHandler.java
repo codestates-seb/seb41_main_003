@@ -1,5 +1,7 @@
 package com.mainproject.server.auth.handler;
 
+import com.mainproject.server.constant.ErrorCode;
+import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.utils.ErrorResponder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,10 @@ public class UserAuthenticationFailureHandler implements AuthenticationFailureHa
             AuthenticationException exception
     ) throws IOException, ServletException {
         log.error("# Authentication failed: {}", exception.getMessage());
-        ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
+        if (exception.getMessage().equals(ErrorCode.USER_INACTIVE.getMessage())) {
+            ErrorResponder.sendErrorResponse(response, ErrorCode.USER_INACTIVE);
+        } else {
+            ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
+        }
     }
 }
