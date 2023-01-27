@@ -64,8 +64,8 @@ const LoginForm = () => {
           if (err.response?.status === 401) {
             setIsFail(401);
           } else if (
-            res.response?.status === 403 &&
-            res.response?.data.message === 'INACTIVE USER'
+            err.response?.status === 403 &&
+            err.response?.data.message === 'INACTIVE USER'
           ) {
             setModal({
               isOpen: true,
