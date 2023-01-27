@@ -1,14 +1,24 @@
 import styles from './ChangeProfileContents.module.css';
-import { Textarea, TextInput } from '../Input';
+import { Textarea } from '../Input';
 import PropType from 'prop-types';
+import { useState, useEffect } from 'react';
 
 const TuteeContents = ({ user, setUser }) => {
   const { way, gender, character, pay, wantDate, preTutoring } = user;
+  const [genderValue, setGenderValue] = useState(gender);
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
+
+  const changeHandler = (e) => {
+    setGenderValue(e.target.value);
+  };
+
+  useEffect(() => {
+    setUser({ ...user, gender: genderValue });
+  }, [genderValue]);
 
   return (
     <div className={styles.container}>
@@ -34,16 +44,29 @@ const TuteeContents = ({ user, setUser }) => {
             </h4>
           </label>
           <div>
-            <TextInput
+            <select
               id="gender"
-              type="text"
-              handler={inputHandler}
-              value={gender}
-              placeHolder="성별을 입력하세요."
+              className={styles.selectBox}
+              defaultValue={genderValue}
+              key={genderValue}
+              onChange={changeHandler}
               required
-            />
+            >
+              <option value="" onChange={changeHandler}>
+                성별을 선택해주세요.
+              </option>
+              <option value="남성" onChange={changeHandler}>
+                남성
+              </option>
+              <option value="여성" onChange={changeHandler}>
+                여성
+              </option>
+              <option value="밝히지 않음" onChange={changeHandler}>
+                밝히지 않음
+              </option>
+            </select>
             <span className={styles.required}>
-              {!gender && '내용을 작성해야 합니다.'}
+              {genderValue === '' && '성별을 선택해주세요.'}
             </span>
           </div>
         </div>

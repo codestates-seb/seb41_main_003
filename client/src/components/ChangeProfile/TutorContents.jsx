@@ -1,6 +1,9 @@
 import styles from './ChangeProfileContents.module.css';
-import { Textarea, TextInput } from '../Input';
+import { Textarea } from '../Input';
 import PropType from 'prop-types';
+import { useState, useEffect } from 'react';
+
+//수정시 들어온 값을 이미 띄워주고 싶은데 select 박스에...
 
 const TutorContents = ({ user, setUser }) => {
   const {
@@ -13,10 +16,15 @@ const TutorContents = ({ user, setUser }) => {
     wantDate,
     preTutoring,
   } = user;
+  const [genderValue, setGenderValue] = useState(gender);
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
+  };
+
+  const changeHandler = (e) => {
+    setGenderValue(e.target.value);
   };
 
   const subjectHandler = (e) => {
@@ -34,6 +42,10 @@ const TutorContents = ({ user, setUser }) => {
       ),
     });
   };
+
+  useEffect(() => {
+    setUser({ ...user, gender: genderValue });
+  }, [genderValue]);
 
   return (
     <div className={styles.container}>
@@ -97,16 +109,29 @@ const TutorContents = ({ user, setUser }) => {
             </h4>
           </label>
           <div className={styles.inlineInput}>
-            <TextInput
+            <select
               id="gender"
-              type="text"
-              handler={inputHandler}
-              value={gender}
-              placeHolder="성별을 입력하세요."
+              className={styles.selectBox}
+              defaultValue={genderValue}
+              key={genderValue}
+              onChange={changeHandler}
               required
-            />
+            >
+              <option value="" onChange={changeHandler}>
+                성별을 선택해주세요.
+              </option>
+              <option value="남성" onChange={changeHandler}>
+                남성
+              </option>
+              <option value="여성" onChange={changeHandler}>
+                여성
+              </option>
+              <option value="밝히지 않음" onChange={changeHandler}>
+                밝히지 않음
+              </option>
+            </select>
             <span className={styles.required}>
-              {!gender && '내용을 작성해야 합니다.'}
+              {genderValue === '' && '성별을 선택해주세요.'}
             </span>
           </div>
         </div>
