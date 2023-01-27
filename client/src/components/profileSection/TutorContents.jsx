@@ -142,13 +142,7 @@ const TutorContents = ({ user, pageInfo, setPage }) => {
             })
           )}
         </div>
-        <Pagination
-          pageInfo={pageInfo}
-          buttonHandler={(e) => {
-            const { name } = e.target;
-            setPage(name);
-          }}
-        />
+        <Pagination pageInfo={pageInfo} setPage={setPage} />
       </div>
       <button
         className={styles.reviewBtn}
