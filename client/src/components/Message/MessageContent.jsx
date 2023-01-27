@@ -18,6 +18,8 @@ const MessageContent = ({
 }) => {
   const { tutorId, tuteeId, tutoringId, messages } = messageRoom;
   const menuRef = useRef(null);
+  const scrollRef = useRef(null);
+  const inputRef = useRef(null);
   const [dropdownRef, isMenu, setIsMenu] = useOutSideRef(menuRef);
   const [inputValue, setInputValue] = useState('');
   const [receiveMessageId, setReceiveMessageId] = useState(0);
@@ -25,11 +27,11 @@ const MessageContent = ({
   const { profileId } = useRecoilValue(Profile);
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
-  const scrollRef = useRef();
 
   //* 채팅창의 스크롤 위치 제어
   useEffect(() => {
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    inputRef.current.focus();
   }, [messageRoom]);
 
   //*
@@ -175,6 +177,7 @@ const MessageContent = ({
               setInputValue('');
             }
           }}
+          ref={inputRef}
           disabled={CurrentRoomId === 0 ? true : false}
         />
         <button
