@@ -62,9 +62,13 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
             String redirect = getRedirectUri(response, user);
             getRedirectStrategy().sendRedirect(request, response, redirect);
         } catch (ServiceLogicException se) {
-            if (se.getErrorCode().equals(ErrorCode.USER_EMAIL_EXISTS)) {
+            if (se.getErrorCode().equals(ErrorCode.USER_EMAIL_EXISTS) ||
+                    se.getErrorCode().equals(ErrorCode.USER_INACTIVE)
+            ) {
                 String exceptionRedirectUri = getExceptionRedirectUri(response, se.getErrorCode());
                 getRedirectStrategy().sendRedirect(request, response, exceptionRedirectUri);
+            } else {
+                throw se;
             }
         }
     }
@@ -97,7 +101,9 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     private User saveUser(String email, String nickName) {
         try {
             User user = userService.verifiedUserByEmail(email);
-            if (user.getLoginType().equals(LoginType.SOCIAL)) {
+            if (user.getUserStatus().equals(UserStatus.INACTIVE)) {
+                throw new ServiceLogicException(ErrorCode.USER_INACTIVE);
+            }else if (user.getLoginType().equals(LoginType.SOCIAL)) {
                 return user;
             } else {
                 throw new ServiceLogicException(ErrorCode.USER_EMAIL_EXISTS);
