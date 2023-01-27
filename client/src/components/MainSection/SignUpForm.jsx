@@ -87,7 +87,14 @@ const SignUpForm = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setModal(signUpVali);
+    if (
+      validation(signupData.nickName, 'name') &&
+      validation(signupData.email, 'email') &&
+      validation(signupData.password, 'password') &&
+      confirmPassword
+    ) {
+      setModal(signUpVali);
+    }
   };
 
   return (
@@ -108,10 +115,10 @@ const SignUpForm = () => {
         />
         <span
           className={
-            validation(signupData.nickName, 'nickName') && styles.validationText
+            validation(signupData.nickName, 'name') && styles.validationText
           }
         >
-          닉네임은 최소 2글자 이상이어야 합니다.
+          이름은 한글 2~6자, 영어 4~12글자까지 쓸 수 있습니다.
         </span>
         <LabelTextInput
           id="email"
