@@ -8,11 +8,32 @@
 
   .refresh {
     position: absolute;
-    right: 2px;
-    top: -43px;
+    right: 0;
+    top: -46px;
     background-color: $snow;
     border-radius: 5px;
-    padding: 7px 5px 0;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    > svg {
+      font-size: 24px;
+    }
+
+    > span {
+      position: relative;
+      top: 1px;
+      font-size: $sub;
+      font-weight: 600;
+    }
+
+    &:hover {
+      > svg {
+        transform: rotate(90deg);
+        transition: all 0.3s;
+      }
+    }
   }
 }
 

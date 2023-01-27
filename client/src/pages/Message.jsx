@@ -12,11 +12,7 @@ import Profile from '../recoil/profile';
 const Message = () => {
   const [messageList, setMessageList] = useState([0]);
   const [messageRoom, setMessageRoom] = useState({
-    messages: [
-      {
-        messageContent: '※ 대화 상대를 선택해주세요 ※',
-      },
-    ],
+    messages: [],
   });
   const [pageInfo, setPageInfo] = useState({});
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
@@ -124,12 +120,18 @@ const Message = () => {
             setMessageList={setMessageList}
             setPageInfo={setPageInfo}
           />
-          <MessageContent
-            messageRoom={messageRoom}
-            getMessageList={getMessageList}
-            getMessageRoom={getMessageRoom}
-            delMessageRoom={delMessageRoom}
-          />
+          {CurrentRoomId === 0 ? (
+            <div className={styles.initialContain}>
+              대화 상대를 선택해주세요.
+            </div>
+          ) : (
+            <MessageContent
+              messageRoom={messageRoom}
+              getMessageList={getMessageList}
+              getMessageRoom={getMessageRoom}
+              delMessageRoom={delMessageRoom}
+            />
+          )}
         </div>
       </div>
     </div>

@@ -28,3 +28,16 @@
   align-items: flex-start;
   margin-bottom: 24px;
 }
+
+.initialContain {
+  width: 696px;
+  height: 640px;
+  background-color: $snow;
+  border-radius: 5px;
+  font-size: $font3;
+  font-weight: $font3W;
+  color: $nickel;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

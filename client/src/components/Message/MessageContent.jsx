@@ -143,7 +143,8 @@ const MessageContent = ({
     <div className={styles.container}>
       <div className={styles.messageContainer} ref={scrollRef}>
         <button className={styles.refresh} onClick={() => refreshMessage()}>
-          <MdRefresh size={24} />
+          <span>새로고침</span>
+          <MdRefresh />
         </button>
         {messages.map((message) => (
           <Chat
