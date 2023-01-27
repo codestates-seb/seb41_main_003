@@ -47,15 +47,25 @@
   }
 
   .textContainer {
-    height: 100%;
     margin-top: 16px;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
   }
 
+  .starLine {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+    &.overName {
+      flex-direction: column;
+    }
+  }
+
   .starBox {
     display: flex;
+    align-self: flex-end;
 
     p {
       margin-left: 5px;
@@ -63,20 +73,15 @@
     }
   }
 
-  .starLine {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-  }
-
   .subjects {
     ul {
-      height: 56px;
       display: flex;
       flex-wrap: wrap;
+      padding-bottom: 32px;
 
       > div {
         margin-right: 10px;
+        margin-bottom: 5px;
       }
     }
   }
@@ -106,6 +111,11 @@
   .font1 {
     font-size: $font1;
     font-weight: $font1W;
+  }
+
+  .font2 {
+    font-size: $font2;
+    font-weight: $font2W;
   }
 
   .font4 {

@@ -82,8 +82,16 @@ const MyProfileCard = ({ user, setUser }) => {
       </div>
 
       <section className={styles.textContainer}>
-        <div className={styles.starLine}>
-          <p className={styles.font1}>{user.name}</p>
+        <div
+          className={`${styles.starLine}  ${
+            user.name.length >= 6 ? styles.overName : ''
+          }`}
+        >
+          <p
+            className={` ${user.name.length > 4 ? styles.font2 : styles.font1}`}
+          >
+            {user.name}
+          </p>
           {userStatus === 'TUTOR' && (
             <div className={styles.starBox}>
               <MdStar fill="#F0C24D" size="21" />
@@ -96,7 +104,9 @@ const MyProfileCard = ({ user, setUser }) => {
           <p className={styles.paragragh}>{user.bio}</p>
         </div>
         <div>
-          <p className={styles.font4}>학교</p>
+          <p className={styles.font4}>
+            {userStatus === 'TUTOR' ? '학교 , 학번' : '학년'}
+          </p>
           <p className={styles.paragragh}>{user.school}</p>
         </div>
         <div>

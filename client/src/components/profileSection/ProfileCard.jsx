@@ -8,6 +8,7 @@ import ModalState from '../../recoil/modal';
 import { MdStar } from 'react-icons/md';
 import axios from 'axios';
 import Profile from '../../recoil/profile';
+import CurrentRoomIdState from '../../recoil/currentRoomId.js';
 
 const ProfileCard = ({ user }) => {
   const { name, rate, bio, school, subjects, profileImage, profileStatus } =
@@ -15,6 +16,7 @@ const ProfileCard = ({ user }) => {
 
   const setModal = useSetRecoilState(ModalState);
   const reset = useResetRecoilState(ModalState);
+  const setCurrentRoomId = useSetRecoilState(CurrentRoomIdState);
 
   const { profileId } = useLocation().state;
 
@@ -32,11 +34,16 @@ const ProfileCard = ({ user }) => {
   const postNewMessageRoom = async () => {
     await axios
       .post(`/messages/${myProfileId}`, postData)
-      .then(() => navigate(`/message`))
+      .then((res) => {
+        console.log(res.data.data.messageRoomId, '아아아');
+        setCurrentRoomId(res.data.data.messageRoomId);
+        setTimeout(() => navigate(`/message`), 2000);
+      })
       .catch(({ response }) => {
         console.log(response);
-        console.log(response.status);
-        console.log(response.data.message);
+        if (response.data.message === 'MESSAGE ROOM EXISTS') {
+          setModal(already);
+        }
       });
   };
 
@@ -47,9 +54,16 @@ const ProfileCard = ({ user }) => {
       text: '상대방에게 문의를 요청하시겠습니까?',
       modalHandler: () => {
         postNewMessageRoom();
-        setTimeout(() => navigate(`/message`), 1000);
         reset();
       },
+    },
+  };
+
+  const already = {
+    isOpen: true,
+    modalType: 'alert',
+    props: {
+      text: '이미 대화중인 상대입니다',
     },
   };
 
@@ -57,8 +71,14 @@ const ProfileCard = ({ user }) => {
     <div className={styles.cardContainer}>
       <img alt="user img" src={profileImage?.url} />
       <section className={styles.textContainer}>
-        <div className={styles.starLine}>
-          <h3 className={styles.font1}>{name}</h3>
+        <div
+          className={`${styles.starLine}  ${
+            name.length >= 6 ? styles.overName : ''
+          }`}
+        >
+          <h3 className={` ${name.length > 4 ? styles.font2 : styles.font1}`}>
+            {name}
+          </h3>
           {profileStatus === 'TUTOR' && (
             <div className={styles.starBox}>
               <MdStar fill="#F0C24D" size="21" />
@@ -71,7 +91,9 @@ const ProfileCard = ({ user }) => {
           <p className={styles.paragragh}>{bio}</p>
         </div>
         <div>
-          <p className={styles.font4}>학교</p>
+          <p className={styles.font4}>
+            {profileStatus === 'TUTOR' ? '학교 / 학번' : '학년'}
+          </p>
           <p className={styles.paragragh}>{school}</p>
         </div>
         <div>
