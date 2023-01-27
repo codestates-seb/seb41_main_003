@@ -146,7 +146,7 @@ const UserInfoForm = () => {
 
     if (isNewUser) {
       if (
-        validation(userData.nickName, 'nickName') &&
+        validation(userData.nickName, 'name') &&
         (userData.password.length === 0 ||
           validation(userData.password, 'password')) &&
         validation(userData.phoneNumber, 'phoneNumber') &&
@@ -159,7 +159,7 @@ const UserInfoForm = () => {
       }
     } else {
       if (
-        validation(userData.nickName, 'nickName') &&
+        validation(userData.nickName, 'name') &&
         (userData.password.length === 0 ||
           validation(userData.password, 'password')) &&
         validation(userData.phoneNumber, 'phoneNumber') &&
@@ -169,6 +169,14 @@ const UserInfoForm = () => {
         confirmPassword.secondPw
       ) {
         setModal(confirmProp);
+      } else {
+        setModal({
+          isOpen: true,
+          modalType: 'alert',
+          props: {
+            text: `필수 항목을 입력해주세요.`,
+          },
+        });
       }
     }
   };
