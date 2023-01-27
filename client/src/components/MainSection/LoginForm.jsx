@@ -73,7 +73,6 @@ const LoginForm = () => {
             res.response?.status === 403 &&
             res.response?.data.message === 'INACTIVE USER'
           ) {
-            console.log('비활성화 유저');
             setModal({
               isOpen: true,
               modalType: 'alert',
