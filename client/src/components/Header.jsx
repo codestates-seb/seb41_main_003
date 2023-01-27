@@ -57,7 +57,6 @@ const Header = () => {
   };
 
   useEffect(() => {
-    console.log(location.pathname);
     if (profile.userStatus === 'NONE' && location.pathname !== '/userinfo')
       setModal(statusNoneProps);
     else if (
@@ -78,7 +77,6 @@ const Header = () => {
         navigate(path);
       })
       .catch(({ response }) => {
-        console.log(response);
         if (response.data.message === 'WRONG SECOND PASSWORD') {
           setModal({
             isOpen: true,

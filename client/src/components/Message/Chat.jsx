@@ -22,8 +22,7 @@ const Chat = ({
   const confirmMatching = async () => {
     await axios
       .patch(`/tutoring/details/${profileId}/${tutoringId}`)
-      .then((res) => {
-        console.log(res, '매칭요청 승인');
+      .then(() => {
         matchingConfirmMessage();
         setModal(matchAlertModal);
       })
@@ -31,7 +30,6 @@ const Chat = ({
         if (err.message === 'Request failed with status code 400') {
           setModal(alreadyConfirmedModal);
         }
-        console.log(err, '매칭요청 승인');
       });
   };
 
@@ -39,8 +37,7 @@ const Chat = ({
   const deleteTutoring = async () => {
     await axios
       .delete(`/tutoring/details/${tutoringId}`)
-      .then((res) => {
-        console.log(res, tutoringId, '매칭요청 취소');
+      .then(() => {
         matchingCancelessage();
         setModal(cancelAlertModal);
       })
@@ -48,7 +45,6 @@ const Chat = ({
         if (err.message === 'Request failed with status code 400') {
           setModal(alreadyCanceledMatchModal);
         }
-        console.log(err, '매칭요청 취소');
       });
   };
 
@@ -62,7 +58,6 @@ const Chat = ({
         messageContent: 'MAT_CHING_CON_FIRM',
       })
       .then(() => {
-        console.log('메세지 전송');
         getMessageRoom();
       })
       .catch((err) => console.log(err));
@@ -78,7 +73,6 @@ const Chat = ({
         messageContent: 'MAT_CHING_CAN_CEL',
       })
       .then(() => {
-        console.log('메세지 전송');
         getMessageRoom();
       })
       .catch((err) => console.log(err));

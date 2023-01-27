@@ -33,11 +33,7 @@ const ProfileCard = ({ user }) => {
     await axios
       .post(`/messages/${myProfileId}`, postData)
       .then(() => navigate(`/message`))
-      .catch(({ response }) => {
-        console.log(response);
-        console.log(response.status);
-        console.log(response.data.message);
-      });
+      .catch((err) => console.log(err));
   };
 
   const confirm = {

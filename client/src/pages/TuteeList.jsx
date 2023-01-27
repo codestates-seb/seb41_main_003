@@ -36,11 +36,10 @@ const TuteeList = () => {
         `/users/tutees?subject=${subjectMenu.join()}&search=${search}&page=${page}`
       )
       .then(({ data }) => {
-        console.log(data.pageInfo);
         setTuteeData([...tuteeData, ...data.data]);
         setPageInfo(data.pageInfo);
       })
-      .catch((err) => console.error(err.message));
+      .catch((err) => console.log(err));
   };
 
   const getTuteeData = async () => {

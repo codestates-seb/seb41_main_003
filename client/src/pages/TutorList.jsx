@@ -44,7 +44,6 @@ const TutorList = () => {
         `/users/tutees?subject=${subjectMenu.join()}&search=${search}&sort=${sort}&page=${page}`
       )
       .then(({ data }) => {
-        console.log(data.pageInfo);
         setTutorData([...tutorData, ...data.data]);
         setPageInfo(data.pageInfo);
       })

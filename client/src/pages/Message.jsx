@@ -45,9 +45,8 @@ const Message = () => {
       .then((res) => {
         setMessageList(res.data.data);
         setPageInfo(res.data.pageInfo);
-        console.log(res.data.data, '메세지 리스트 API');
       })
-      .catch((err) => console.log(err, 'getMessageList'));
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -75,9 +74,8 @@ const Message = () => {
         .get(`/messages/rooms/${profileId}/${CurrentRoomId}`)
         .then((res) => {
           setMessageRoom(res.data.data);
-          console.log(res.data.data, 'MessageRoom API');
         })
-        .catch((err) => console.log(err, 'getMessageRoom')));
+        .catch((err) => console.log(err)));
   };
 
   const cancelAlertProps = {
@@ -95,7 +93,6 @@ const Message = () => {
     await axios
       .delete(`/messages/rooms/${CurrentRoomId}`)
       .then(() => {
-        console.log('현재 대화방 삭제');
         setModal(cancelAlertProps);
       })
       .catch(() => {

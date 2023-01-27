@@ -21,10 +21,7 @@ const Admin = () => {
       .then(({ data }) => {
         setProfilesData(data.data);
       })
-      .catch((err) => {
-        console.log(err.response.status);
-        console.log(err.response.data.message);
-      });
+      .catch((err) => console.log(err));
   };
 
   const deleteHandler = async (id) => {
@@ -43,11 +40,7 @@ const Admin = () => {
           },
         });
       })
-      .catch(({ response }) => {
-        console.log(response);
-        console.log(response.status);
-        console.log(response.data.message);
-      });
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {

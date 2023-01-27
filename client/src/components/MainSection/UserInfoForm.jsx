@@ -98,11 +98,7 @@ const UserInfoForm = () => {
         setUserStatus(userStatus);
         sessionStorage.setItem('userStatus', userStatus);
       })
-      .catch(({ response }) => {
-        console.log(response);
-        console.log(response.status);
-        console.log(response.data.message);
-      });
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -197,11 +193,9 @@ const UserInfoForm = () => {
         setProfile((prev) => ({ ...prev, userStatus: data.userState }));
         sessionStorage.setItem('userStatus', data.userStatus);
       })
-      .catch(({ response }) => {
-        console.log(response);
-        console.log(response.status);
-        console.log(response.data.message);
-        if (response.status === 409) {
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 409) {
           setModal(conflictProp);
         }
       });

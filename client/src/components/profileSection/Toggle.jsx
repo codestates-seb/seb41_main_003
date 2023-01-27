@@ -28,7 +28,6 @@ const Toggle = ({ user, setUser }) => {
         wantedStatus: user.wantedStatus === 'NONE' ? 'REQUEST' : 'NONE',
       })
       .then(({ data }) => {
-        console.log(data.data.wantedStatus);
         setUser({
           ...user,
           wantedStatus: data.data.wantedStatus,

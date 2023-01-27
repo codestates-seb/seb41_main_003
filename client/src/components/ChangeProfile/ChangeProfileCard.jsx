@@ -53,11 +53,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
           }));
         }
       })
-      .catch(({ response }) => {
-        console.log(response);
-        console.log(response.status);
-        console.log(response.data.message);
-      });
+      .catch((err) => console.log(err));
   };
 
   const patchProfile = async () => {
@@ -73,11 +69,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
           }));
         if (imgSrc) patchImg(data.data.profileId);
       })
-      .catch(({ response }) => {
-        console.log(response);
-        console.log(response.status);
-        console.log(response.data.message);
-      });
+      .catch((err) => console.log(err));
   };
 
   const editHandler = () => {
@@ -97,11 +89,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
         if (imgSrc) patchImg(data.data.profileId);
         localStorage.removeItem('addProfile');
       })
-      .catch(({ response }) => {
-        console.log(response);
-        console.log(response.status);
-        console.log(response.data.message);
-      });
+      .catch((err) => console.log(err));
   };
 
   const addHandler = () => {

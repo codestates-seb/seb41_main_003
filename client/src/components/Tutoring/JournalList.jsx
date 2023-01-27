@@ -132,7 +132,7 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
         ...review,
         reviewBody: comment,
       })
-      .then((res) => console.log(res));
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {

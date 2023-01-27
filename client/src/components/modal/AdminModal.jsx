@@ -31,11 +31,7 @@ const AdminModal = () => {
         setProfiles(data.data);
         setIsLoading(false);
       })
-      .catch(({ response }) => {
-        console.log(response);
-        console.log(response.status);
-        console.log(response.data.message);
-      });
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
