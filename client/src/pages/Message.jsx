@@ -111,7 +111,7 @@ const Message = () => {
       .catch(() => {
         setModal({
           isOpen: true,
-          modalType: 'alert',
+          modalType: 'redAlert',
           props: {
             text: '대화 상대와 매칭중인 과외가 있다면\n상담 취소를 할 수 없습니다.',
           },

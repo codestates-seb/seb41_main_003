@@ -112,6 +112,30 @@
   align-items: center;
   font-size: $font6;
   font-weight: $font6W;
+
+  .dropDown {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background-color: $snow;
+    padding: 24px;
+    border-radius: 3px;
+    box-shadow: $defaultShadow;
+    width: 120px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    > span {
+      font-size: $font5;
+      font-weight: $font5W;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
 }
 
 .mdFilterList {
