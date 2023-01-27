@@ -54,6 +54,7 @@ export const ConfirmValiModal = ({ text, modalHandler, validation }) => {
   const [value, setValue] = useState('');
 
   const validationHandler = (e) => {
+    e.preventDefault();
     if (value === validation) modalHandler(e);
   };
 

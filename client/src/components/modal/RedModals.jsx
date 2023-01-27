@@ -11,11 +11,12 @@ export const RedConfirmValiModal = ({ text, modalHandler, validation }) => {
   const [value, setValue] = useState('');
 
   const validationHandler = (e) => {
+    e.preventDefault();
     if (value === validation) modalHandler(e);
   };
 
   return (
-    <div
+    <form
       className={styles.view}
       onClick={(e) => e.stopPropagation()}
       role="dialog"
@@ -37,7 +38,7 @@ export const RedConfirmValiModal = ({ text, modalHandler, validation }) => {
         <ButtonRed name="yes" buttonHandler={validationHandler} text="확인" />
         <ButtonSilver name="no" buttonHandler={() => reset()} text="취소" />
       </div>
-    </div>
+    </form>
   );
 };
 

@@ -71,14 +71,17 @@ const MyProfileCard = ({ user, setUser }) => {
     <div className={styles.cardContainer}>
       <div className={styles.userImage}>
         <img alt="user img" src={user.profileImage.url} />
-        <button
-          type="button"
-          onClick={() => {
-            setModal(deleteProps);
-          }}
-        >
-          <MdDelete />
-        </button>
+        {user.profileImage.url !==
+          'https://image-test-suyoung.s3.ap-northeast-2.amazonaws.com/image/user.png' && (
+          <button
+            type="button"
+            onClick={() => {
+              setModal(deleteProps);
+            }}
+          >
+            <MdDelete />
+          </button>
+        )}
       </div>
 
       <section className={styles.textContainer}>
