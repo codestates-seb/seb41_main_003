@@ -7,9 +7,11 @@ import ModalState from '../../recoil/modal';
 import { useNavigate } from 'react-router-dom';
 import { ButtonNightBlue } from '../Button';
 import { MdOutlineWarning } from 'react-icons/md';
+import Loading from '../Loading';
 
 const AdminModal = () => {
   const [profiles, setProfiles] = useState([0]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const setProfile = useSetRecoilState(Profile);
   const resetModal = useResetRecoilState(ModalState);
@@ -22,10 +24,12 @@ const AdminModal = () => {
   };
 
   const getUserProfile = async () => {
+    setIsLoading(true);
     axios
       .get(`/profiles/${sessionStorage.getItem('userId')}`)
       .then(({ data }) => {
         setProfiles(data.data);
+        setIsLoading(false);
       })
       .catch(({ response }) => {
         console.log(response);
@@ -35,6 +39,7 @@ const AdminModal = () => {
   };
 
   useEffect(() => {
+    setProfiles([0]);
     getUserProfile();
   }, []);
 
@@ -64,19 +69,23 @@ const AdminModal = () => {
       ) : (
         <>
           <h3>전환하실 프로필을 선택하세요.</h3>
-          <ul className={styles.profilesList}>
-            {profiles.map(({ profileId, name, url }) => (
-              <li className={styles.profile} key={`profile${profileId}`}>
-                <button
-                  name={`profile${profileId}`}
-                  onClick={() => switchHandler(profileId, name, url)}
-                >
-                  <img className={styles.userImage} src={url} alt="user" />
-                  <p>{name}</p>
-                </button>
-              </li>
-            ))}
-          </ul>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <ul className={styles.profilesList}>
+              {profiles.map(({ profileId, name, url }) => (
+                <li className={styles.profile} key={`profile${profileId}`}>
+                  <button
+                    name={`profile${profileId}`}
+                    onClick={() => switchHandler(profileId, name, url)}
+                  >
+                    <img className={styles.userImage} src={url} alt="user" />
+                    <p>{name}</p>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </>
       )}
     </div>
