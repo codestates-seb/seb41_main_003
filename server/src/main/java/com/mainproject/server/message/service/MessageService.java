@@ -119,7 +119,6 @@ public class MessageService {
 
     public void deleteMessageRoom(Long messageRoomId) {
         MessageRoom messageRoom = verifiedMessageRoom(messageRoomId);
-        // Todo Tutoring이 진행중이라면, 삭제 제한 필요할듯 - Tutoring 매칭 완료후 삭제 불가능
         if (messageRoom.getTutoringId() != null) {
             Long tutoringId = messageRoom.getTutoringId();
             Tutoring tutoring = tutoringRepository.findById(tutoringId)

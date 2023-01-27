@@ -126,6 +126,10 @@ public class TutoringService {
         } else {
             throw new ServiceLogicException(ErrorCode.WRONG_STATUS_PROPERTY);
         }
+
+        if (findTutoring.getTutoringStatus().equals(TutoringStatus.FINISH)) {
+            messageService.deleteMessageRoomTutoringId(findTutoring.getTutoringId());
+        }
         return getTutoringDto(tutoringRepository.save(findTutoring), pageable);
     }
 
