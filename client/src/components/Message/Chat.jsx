@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useResetRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import Profile from '../../recoil/profile';
 import ModalState from '../../recoil/modal.js';
+import dayjs from 'dayjs';
 
 const Chat = ({
   message,
@@ -190,10 +191,7 @@ const Chat = ({
         <p className={styles.text}>{messageContent}</p>
       )}
       {createAt && (
-        <span className={styles.time}>
-          {Number(createAt.slice(11, 13)) >= 12 ? 'PM' : 'AM'}{' '}
-          {createAt.slice(11, 16)}
-        </span>
+        <span className={styles.time}>{dayjs(createAt).format('HH:mm')}</span>
       )}
     </div>
   );
