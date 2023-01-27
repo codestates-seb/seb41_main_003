@@ -9,6 +9,7 @@ import Profile from '../recoil/profile';
 import axios from 'axios';
 import useOutSideRef from '../util/useOutSideRef';
 import CurrentRoomIdState from '../recoil/currentRoomId';
+import ChangeJournal from '../recoil/journal';
 
 const Header = () => {
   const [isNoti, setIsNoti] = useState(false);
@@ -19,6 +20,7 @@ const Header = () => {
   const resetProfile = useResetRecoilState(Profile);
   const resetModal = useResetRecoilState(ModalState);
   const resetCurrentRoom = useResetRecoilState(CurrentRoomIdState);
+  const resetJournal = useResetRecoilState(ChangeJournal);
 
   const menuRef = useRef(null);
   const [dropDownRef, isMenu, setIsMenu] = useOutSideRef(menuRef);
@@ -115,6 +117,8 @@ const Header = () => {
       text: '로그아웃 하시겠습니까?',
       modalHandler: () => {
         sessionStorage.clear();
+        localStorage.removeItem('addProfile');
+        resetJournal();
         resetProfile();
         resetModal();
         resetCurrentRoom();
