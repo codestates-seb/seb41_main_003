@@ -152,6 +152,7 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
             state={{
               tutoringId: tutoring.tutoringId,
               dateNoticeId: tutoring.latestNoticeId,
+              isFinished: false,
             }}
           >
             <div>
@@ -175,6 +176,7 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
           setTutoring={setTutoring}
           pageInfo={pageInfo}
           setPageInfo={setPageInfo}
+          isFinished={false}
         />
       </div>
       <div className={styles.rightCard}>

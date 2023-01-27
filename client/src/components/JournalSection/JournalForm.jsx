@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 const JournalForm = ({ userData }) => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
-  const { tutoringId } = useLocation().state;
+  const { tutoringId, isFinished } = useLocation().state;
   const userStatus = sessionStorage.getItem('userStatus');
 
   const Navigate = useNavigate();
@@ -62,7 +62,7 @@ const JournalForm = ({ userData }) => {
                 <label htmlFor="dateNoticeTitle">
                   <h4>학습목표</h4>
                 </label>
-                {userStatus === 'TUTOR' && <DropDown />}
+                {userStatus === 'TUTOR' && !isFinished && <DropDown />}
               </div>
               <h5 className={styles.noticeArea}>{dateNoticeTitle}</h5>
             </div>

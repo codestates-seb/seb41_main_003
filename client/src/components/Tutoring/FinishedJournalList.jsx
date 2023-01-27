@@ -91,7 +91,11 @@ const FinishedJournalList = ({
           <Link
             className={styles.noti}
             to={`/journal`}
-            state={{ dateNoticeId: tutoring.latestNoticeId }}
+            state={{
+              tutoringId: tutoring.tutoringId,
+              dateNoticeId: tutoring.latestNoticeId,
+              isFinished: true,
+            }}
           >
             <div>
               <HiSpeakerphone className={styles.icon} />
@@ -114,6 +118,7 @@ const FinishedJournalList = ({
           setTutoring={setTutoring}
           pageInfo={pageInfo}
           setPageInfo={setPageInfo}
+          isFinished={true}
         />
       </div>
       <div className={styles.rightCard}>
