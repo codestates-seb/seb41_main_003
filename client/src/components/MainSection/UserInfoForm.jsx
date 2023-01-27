@@ -239,8 +239,8 @@ const UserInfoForm = () => {
           required
         />
         <span className={styles.vali}>
-          {!validation(userData.nickName, 'nickName') &&
-            '닉네임은 최소 2글자 이상 10글자 이하여야 합니다.'}
+          {!validation(userData.nickName, 'name') &&
+            '닉네임은 한글 2~6자, 영어 4~12글자까지 사용할 수 있습니다.'}
         </span>
 
         <div className={styles.emailBox}>
