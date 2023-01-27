@@ -35,6 +35,7 @@ const SignUpForm = () => {
   const signUpconfirmProps = {
     isOpen: true,
     modalType: 'handlerAlert',
+    backDropHandle: true,
     props: {
       text: '회원 가입이 완료되었습니다!',
       modalHandler: () => {
@@ -72,9 +73,21 @@ const SignUpForm = () => {
       });
   };
 
+  const signUpVali = {
+    isOpen: true,
+    modalType: 'confirm',
+    backDropHandle: true,
+    props: {
+      text: '이 정보로 회원 가입하시겠습니까?',
+      modalHandler: () => {
+        postSignUpData();
+      },
+    },
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
-    postSignUpData();
+    setModal(signUpVali);
   };
 
   return (
