@@ -142,7 +142,9 @@ const TutorContents = ({ user, pageInfo, setPage }) => {
             })
           )}
         </div>
-        <Pagination pageInfo={pageInfo} setPage={setPage} />
+        {reviews.length !== 0 && (
+          <Pagination pageInfo={pageInfo} setPage={setPage} />
+        )}
       </div>
       <button
         className={styles.reviewBtn}
