@@ -1,6 +1,9 @@
 package com.mainproject.server.auth.details;
 
 
+import com.mainproject.server.constant.ErrorCode;
+import com.mainproject.server.constant.UserStatus;
+import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.user.entity.User;
 import com.mainproject.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,9 @@ public class UserCustomDetailsService implements UserDetailsService {
         User user = findUser.orElseThrow(
                 () -> new UsernameNotFoundException("Not Found Username")
         );
+        if (user.getUserStatus().equals(UserStatus.INACTIVE)) {
+            throw new ServiceLogicException(ErrorCode.USER_INACTIVE);
+        }
         return new UserDetail(user);
     }
 

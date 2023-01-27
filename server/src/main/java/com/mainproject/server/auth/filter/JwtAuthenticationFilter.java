@@ -59,9 +59,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             Authentication authResult
     ) throws IOException, ServletException {
         User user = (User) authResult.getPrincipal();
-        if (user.getUserStatus().equals(UserStatus.INACTIVE)) {
-            throw new ServiceLogicException(ErrorCode.USER_INACTIVE);
-        }
         Long userId = user.getUserId();
         Token token = jwtTokenizer.delegateToken(user);
         String accessToken = token.getAccessToken();
