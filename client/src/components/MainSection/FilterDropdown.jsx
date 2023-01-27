@@ -2,7 +2,7 @@ import styles from './FilterDropdown.module.css';
 import PropType from 'prop-types';
 import { forwardRef } from 'react';
 
-const FilterDropdown = ({ setFilter }, ref) => {
+const FilterDropdown = forwardRef(({ setFilter }, ref) => {
   const clickHandler = (e) => {
     setFilter(e.target.name);
   };
@@ -21,10 +21,12 @@ const FilterDropdown = ({ setFilter }, ref) => {
       </li>
     </ul>
   );
-};
+});
 
 FilterDropdown.propTypes = {
   setFilter: PropType.func,
 };
 
-export default forwardRef(FilterDropdown);
+FilterDropdown.displayName = 'FilterDropdown';
+
+export default FilterDropdown;
