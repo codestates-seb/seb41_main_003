@@ -58,16 +58,10 @@ const LoginForm = () => {
             userStatus: res.data.userStatus,
           }));
           sessionStorage.setItem('userStatus', res.data.userStatus);
-          if (res.data.userStatus === 'NONE') {
-            console.log('회원정보 입력 필요');
-          } else {
-            navigate('/');
-          }
+          navigate('/');
         })
-        .catch((res) => {
-          if (res.response?.status === 401) {
-            console.log(res.response);
-            console.log('비밀번호 오류');
+        .catch((err) => {
+          if (err.response?.status === 401) {
             setIsFail(401);
           } else if (
             res.response?.status === 403 &&

@@ -98,11 +98,7 @@ const UserInfoForm = () => {
         setUserStatus(userStatus);
         sessionStorage.setItem('userStatus', userStatus);
       })
-      .catch(({ response }) => {
-        console.log(response);
-        console.log(response.status);
-        console.log(response.data.message);
-      });
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -197,11 +193,9 @@ const UserInfoForm = () => {
         setProfile((prev) => ({ ...prev, userStatus: data.userState }));
         sessionStorage.setItem('userStatus', data.userStatus);
       })
-      .catch(({ response }) => {
-        console.log(response);
-        console.log(response.status);
-        console.log(response.data.message);
-        if (response.status === 409) {
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 409) {
           setModal(conflictProp);
         }
       });
@@ -239,8 +233,8 @@ const UserInfoForm = () => {
           required
         />
         <span className={styles.vali}>
-          {!validation(userData.nickName, 'nickName') &&
-            '닉네임은 최소 2글자 이상 10글자 이하여야 합니다.'}
+          {!validation(userData.nickName, 'name') &&
+            '닉네임은 한글 2~6자, 영어 4~12글자까지 사용할 수 있습니다.'}
         </span>
 
         <div className={styles.emailBox}>

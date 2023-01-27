@@ -11,6 +11,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import defaultUser from '../../assets/defaultUser.png';
 import Profile from '../../recoil/profile';
+import validation from '../../util/validation';
 
 const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
   const { name, bio, school, subjects, profileStatus, profileImage } = user;
@@ -52,11 +53,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
           }));
         }
       })
-      .catch(({ response }) => {
-        console.log(response);
-        console.log(response.status);
-        console.log(response.data.message);
-      });
+      .catch((err) => console.log(err));
   };
 
   const patchProfile = async () => {
@@ -72,11 +69,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
           }));
         if (imgSrc) patchImg(data.data.profileId);
       })
-      .catch(({ response }) => {
-        console.log(response);
-        console.log(response.status);
-        console.log(response.data.message);
-      });
+      .catch((err) => console.log(err));
   };
 
   const editHandler = () => {
@@ -96,11 +89,7 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
         if (imgSrc) patchImg(data.data.profileId);
         localStorage.removeItem('addProfile');
       })
-      .catch(({ response }) => {
-        console.log(response);
-        console.log(response.status);
-        console.log(response.data.message);
-      });
+      .catch((err) => console.log(err));
   };
 
   const addHandler = () => {
@@ -141,7 +130,16 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
   const submitHandler = (e) => {
     e.preventDefault();
     const { way, gender, pay, wantDate } = user;
-    if (!(way && gender && pay && wantDate)) {
+    if (
+      !(
+        way &&
+        gender &&
+        pay &&
+        wantDate &&
+        subjects.length !== 0 &&
+        validation(name, 'name')
+      )
+    ) {
       setModal(requiredProps);
     } else {
       isNew ? setModal(addConfirmProps) : setModal(editConfirmProps);
@@ -170,33 +168,50 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
           <span className={styles.requiredIcon} />은 필수 입력 사항입니다.
         </span>
         <div className={styles.userInfo}>
-          <LabelTextInput
-            id="name"
-            name="이름"
-            placeHolder="이름"
-            type="text"
-            value={name}
-            handler={inputHandler}
-            required
-          />
-          <LabelTextInput
-            id="bio"
-            name="한 줄 소개"
-            placeHolder="한 줄 소개"
-            type="text"
-            value={bio}
-            handler={inputHandler}
-            required
-          />
-          <LabelTextInput
-            id="school"
-            name={profileStatus === 'TUTOR' ? '학교 / 학번' : '학년'}
-            placeHolder={profileStatus === 'TUTEE' ? '학교 / 학번' : '학년'}
-            type="text"
-            value={school}
-            handler={inputHandler}
-            required
-          />
+          <div className={styles.inputContain}>
+            <LabelTextInput
+              id="name"
+              name="이름"
+              placeHolder="이름"
+              type="text"
+              value={name}
+              handler={inputHandler}
+              required
+            />
+            <span className={styles.vali}>
+              {!validation(name, 'name') &&
+                `이름은 한글 2~6자, 영어 4~12글자까지 쓸 수 있습니다.`}
+            </span>
+          </div>
+          <div className={styles.inputContain}>
+            <LabelTextInput
+              id="bio"
+              name="한 줄 소개"
+              placeHolder="한 줄 소개"
+              type="text"
+              value={bio}
+              handler={inputHandler}
+              required
+            />
+            <span className={styles.desc}>본인을 간단히 표현해보세요.</span>
+          </div>
+
+          <div className={styles.inputContain}>
+            <LabelTextInput
+              id="school"
+              name={profileStatus === 'TUTOR' ? '학교 / 학번' : '학년'}
+              placeHolder={profileStatus === 'TUTOR' ? '학교 / 학번' : '학년'}
+              type="text"
+              value={school}
+              handler={inputHandler}
+              required
+            />
+            <span className={styles.desc}>
+              {profileStatus === 'TUTOR'
+                ? 'ex. 한국대학교 16학번 졸업'
+                : 'ex. 고등학교 2학년'}
+            </span>
+          </div>
         </div>
         <div className={styles.subject}>
           과목

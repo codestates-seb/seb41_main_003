@@ -15,6 +15,7 @@ const Journals = ({
   pageInfo,
   setPageInfo,
   tutoringId,
+  isFinished,
 }) => {
   const loadingRef = useRef(null);
   const { profileId } = useRecoilValue(Profile);
@@ -52,7 +53,11 @@ const Journals = ({
           return (
             <Link
               to={`/journal`}
-              state={{ tutoringId: tutoringId, dateNoticeId: el.dateNoticeId }}
+              state={{
+                tutoringId: tutoringId,
+                dateNoticeId: el.dateNoticeId,
+                isFinished,
+              }}
               key={el.dateNoticeId}
             >
               <li className={styles.li}>
@@ -100,6 +105,7 @@ Journals.propTypes = {
   pageInfo: PropType.object,
   setPageInfo: PropType.func,
   tutoringId: PropType.number,
+  isFinished: PropType.bool,
 };
 
 export default Journals;

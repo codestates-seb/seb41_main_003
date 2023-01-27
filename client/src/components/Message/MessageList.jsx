@@ -37,7 +37,6 @@ const MessageList = ({
     await axios
       .get(`/messages/${profileId}?page=${page}`)
       .then((res) => {
-        console.log(res.data.pageInfo);
         setMessageList([...messageList, ...res.data.data]);
         setPageInfo(res.data.pageInfo);
       })

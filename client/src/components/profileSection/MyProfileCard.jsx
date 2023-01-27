@@ -39,7 +39,7 @@ const MyProfileCard = ({ user, setUser }) => {
         setUser(data.data);
         setProfile((prev) => ({ ...prev, url: data.data.profileImage.url }));
       })
-      .catch((err) => console.log(err.status));
+      .catch((err) => console.log(err));
   };
 
   const deleteHandler = async () => {
@@ -48,11 +48,7 @@ const MyProfileCard = ({ user, setUser }) => {
       .then(() => {
         getProfileData();
       })
-      .catch(({ response }) => {
-        console.log(response);
-        console.log(response.status);
-        console.log(response.data.message);
-      });
+      .catch((err) => console.log(err));
   };
 
   const deleteProps = {

@@ -4,6 +4,7 @@
   width: 100%;
   background-color: $snow;
   overflow: hidden;
+  height: 100%;
 }
 
 .container {

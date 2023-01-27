@@ -41,7 +41,6 @@ const OAuth = () => {
 
     if (userStatus === 'NONE') {
       navigate('/login');
-      console.log('회원정보 입력 필요');
     } else {
       navigate('/');
     }

@@ -35,13 +35,12 @@ const ProfileCard = ({ user }) => {
     await axios
       .post(`/messages/${myProfileId}`, postData)
       .then((res) => {
-        console.log(res.data.data.messageRoomId, '아아아');
         setCurrentRoomId(res.data.data.messageRoomId);
-        setTimeout(() => navigate(`/message`), 2000);
+        setTimeout(() => navigate(`/message`), 500);
       })
-      .catch(({ response }) => {
-        console.log(response);
-        if (response.data.message === 'MESSAGE ROOM EXISTS') {
+      .catch((err) => {
+        console.log(err);
+        if (err.response.data.message === 'MESSAGE ROOM EXISTS') {
           setModal(already);
         }
       });

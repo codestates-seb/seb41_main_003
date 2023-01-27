@@ -34,7 +34,7 @@ const TuteeProfile = () => {
       .then((res) => {
         setProfileDetail(res.data.data);
       })
-      .catch((err) => console.log(err.status));
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {

@@ -17,11 +17,7 @@ import Profile from '../recoil/profile';
 const Message = () => {
   const [messageList, setMessageList] = useState([0]);
   const [messageRoom, setMessageRoom] = useState({
-    messages: [
-      {
-        messageContent: '※ 대화 상대를 선택해주세요 ※',
-      },
-    ],
+    messages: [],
   });
   const [pageInfo, setPageInfo] = useState({});
   const [CurrentRoomId, resetCurrentRoomId] =
@@ -54,9 +50,8 @@ const Message = () => {
       .then((res) => {
         setMessageList(res.data.data);
         setPageInfo(res.data.pageInfo);
-        console.log(res.data.data, '메세지 리스트 API');
       })
-      .catch((err) => console.log(err, 'getMessageList'));
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -85,9 +80,8 @@ const Message = () => {
         .get(`/messages/rooms/${profileId}/${CurrentRoomId}`)
         .then((res) => {
           setMessageRoom(res.data.data);
-          console.log(res.data.data, 'getMessageRoom');
         })
-        .catch((err) => console.log(err, 'getMessageRoom')));
+        .catch((err) => console.log(err)));
   };
 
   const cancelAlertProps = {
@@ -105,7 +99,6 @@ const Message = () => {
     await axios
       .delete(`/messages/rooms/${CurrentRoomId}`)
       .then(() => {
-        console.log('현재 대화방 삭제');
         setModal(cancelAlertProps);
       })
       .catch(() => {
@@ -130,12 +123,18 @@ const Message = () => {
             setMessageList={setMessageList}
             setPageInfo={setPageInfo}
           />
-          <MessageContent
-            messageRoom={messageRoom}
-            getMessageList={getMessageList}
-            getMessageRoom={getMessageRoom}
-            delMessageRoom={delMessageRoom}
-          />
+          {CurrentRoomId === 0 ? (
+            <div className={styles.initialContain}>
+              대화 상대를 선택해주세요.
+            </div>
+          ) : (
+            <MessageContent
+              messageRoom={messageRoom}
+              getMessageList={getMessageList}
+              getMessageRoom={getMessageRoom}
+              delMessageRoom={delMessageRoom}
+            />
+          )}
         </div>
       </div>
     </div>

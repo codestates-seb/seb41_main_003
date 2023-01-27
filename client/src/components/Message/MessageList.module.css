@@ -8,6 +8,10 @@
   padding: 16px;
   overflow-x: hidden;
   overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 }
 
 .message {

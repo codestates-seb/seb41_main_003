@@ -1,3 +1,14 @@
+const getStringBytes = (str) => {
+  let bytes = 0;
+
+  for (let k of str) {
+    if (encodeURI(k).length > 4) bytes += 2;
+    else bytes++;
+  }
+
+  return bytes;
+};
+
 const validation = (value, type) => {
   const emailExp =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
@@ -13,8 +24,8 @@ const validation = (value, type) => {
       return passwordExp.test(value);
     case 'secondPassword':
       return secondPasswordExp.test(value);
-    case 'nickName':
-      return 2 <= value.length && value.length <= 10;
+    case 'name':
+      return 4 <= getStringBytes(value) && getStringBytes(value) <= 12;
     case 'phoneNumber':
       return phoneExp.test(value) || phoneExpHyphen.test(value);
     default:

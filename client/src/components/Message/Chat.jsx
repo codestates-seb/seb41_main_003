@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useResetRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import Profile from '../../recoil/profile';
 import ModalState from '../../recoil/modal.js';
+import dayjs from 'dayjs';
 
 const Chat = ({
   message,
@@ -21,8 +22,7 @@ const Chat = ({
   const confirmMatching = async () => {
     await axios
       .patch(`/tutoring/details/${profileId}/${tutoringId}`)
-      .then((res) => {
-        console.log(res, '매칭요청 승인');
+      .then(() => {
         matchingConfirmMessage();
         setModal(matchAlertModal);
       })
@@ -30,7 +30,6 @@ const Chat = ({
         if (err.message === 'Request failed with status code 400') {
           setModal(alreadyConfirmedModal);
         }
-        console.log(err, '매칭요청 승인');
       });
   };
 
@@ -38,8 +37,7 @@ const Chat = ({
   const deleteTutoring = async () => {
     await axios
       .delete(`/tutoring/details/${tutoringId}`)
-      .then((res) => {
-        console.log(res, tutoringId, '매칭요청 취소');
+      .then(() => {
         matchingCancelessage();
         setModal(cancelAlertModal);
       })
@@ -47,7 +45,6 @@ const Chat = ({
         if (err.message === 'Request failed with status code 400') {
           setModal(alreadyCanceledMatchModal);
         }
-        console.log(err, '매칭요청 취소');
       });
   };
 
@@ -61,7 +58,6 @@ const Chat = ({
         messageContent: 'MAT_CHING_CON_FIRM',
       })
       .then(() => {
-        console.log('메세지 전송');
         getMessageRoom();
       })
       .catch((err) => console.log(err));
@@ -77,7 +73,6 @@ const Chat = ({
         messageContent: 'MAT_CHING_CAN_CEL',
       })
       .then(() => {
-        console.log('메세지 전송');
         getMessageRoom();
       })
       .catch((err) => console.log(err));
@@ -190,10 +185,7 @@ const Chat = ({
         <p className={styles.text}>{messageContent}</p>
       )}
       {createAt && (
-        <span className={styles.time}>
-          {Number(createAt.slice(11, 13)) >= 12 ? 'PM' : 'AM'}{' '}
-          {createAt.slice(11, 16)}
-        </span>
+        <span className={styles.time}>{dayjs(createAt).format('HH:mm')}</span>
       )}
     </div>
   );

@@ -45,7 +45,7 @@ const MyProfile = () => {
         setUser(res.data.data);
         setPageInfo(res.data.pageInfo);
       })
-      .catch((err) => console.log(err.status));
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {

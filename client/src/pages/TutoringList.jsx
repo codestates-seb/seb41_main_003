@@ -32,7 +32,7 @@ const TutoringList = () => {
         setTutorings(res.data.data);
         setPageInfo(res.data.pageInfo);
       })
-      .catch((error) => console.log(error));
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -83,13 +83,7 @@ const TutoringList = () => {
           )}
         </ul>
 
-        <Pagination
-          pageInfo={pageInfo}
-          buttonHandler={(e) => {
-            const { name } = e.target;
-            setPage(name);
-          }}
-        />
+        <Pagination pageInfo={pageInfo} setPage={setPage} />
       </div>
     </div>
   );

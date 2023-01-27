@@ -58,7 +58,6 @@ const MessageContent = ({
         messageContent: inputValue,
       })
       .then(() => {
-        console.log('메세지 전송');
         refreshMessage();
       })
       .catch((err) => console.log(err));
@@ -73,15 +72,14 @@ const MessageContent = ({
         tutoringTitle: value,
         messageRoomId: CurrentRoomId,
       })
-      .then((res) => {
+      .then(() => {
         setModal(matchAlertProps);
-        console.log(res.data.data.tutoringId, '과외 생성 API');
       })
       .catch((err) => {
+        console.log(err);
         if (err.message === 'Request failed with status code 409') {
           setModal(alreadyMatchModal);
         }
-        console.log(err, '매칭 요청');
       });
   };
 
@@ -133,7 +131,6 @@ const MessageContent = ({
       text: `상담 취소 하시겠습니까?
       상담 취소 시 대화 내역이 모두 삭제됩니다.`,
       modalHandler: () => {
-        console.log('상담 취소');
         delMessageRoom();
       },
     },
@@ -143,7 +140,8 @@ const MessageContent = ({
     <div className={styles.container}>
       <div className={styles.messageContainer} ref={scrollRef}>
         <button className={styles.refresh} onClick={() => refreshMessage()}>
-          <MdRefresh size={24} />
+          <span>새로고침</span>
+          <MdRefresh />
         </button>
         {messages.map((message) => (
           <Chat

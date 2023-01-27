@@ -21,14 +21,16 @@ import Journal from './pages/Journal';
 import AddJournal from './pages/AddJournal';
 import Error from './pages/Error';
 import { GlobalModal } from './components/modal/GlobalModal';
-import { useResetRecoilState } from 'recoil';
+import { useResetRecoilState, useSetRecoilState } from 'recoil';
 import axios from 'axios';
 import Profile from './recoil/profile';
 import { useEffect } from 'react';
 import OAuth from './pages/OAuth';
+import ModalState from './recoil/modal';
 
 const App = () => {
   const resetProfile = useResetRecoilState(Profile);
+  const setModal = useSetRecoilState(ModalState);
 
   axios.interceptors.request.use(
     (config) => {
@@ -50,6 +52,26 @@ const App = () => {
       } = error;
 
       if (config.sent) return Promise.reject(error);
+
+      if (status === 500)
+        setModal({
+          isOpen: true,
+          modalType: 'alert',
+          props: {
+            text: `서버 오류가 발생했습니다. 
+            잠시 후 다시 시도해주세요.`,
+          },
+        });
+
+      if (status === 404)
+        setModal({
+          isOpen: true,
+          modalType: 'alert',
+          props: {
+            text: `알 수 없는 요청입니다. 
+            관리자에게 문의하세요.`,
+          },
+        });
 
       if (
         status === 403 &&

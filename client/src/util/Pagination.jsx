@@ -1,4 +1,5 @@
 import PropType from 'prop-types';
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 import styles from './Pagination.module.css';
 
 //Props::
@@ -7,28 +8,37 @@ import styles from './Pagination.module.css';
 //이 때 변경하는 page 값은 pageInfo와 별개의 상태값으로 설정되어 있어야 무한 루프 돌지 않음.
 //TutorContents 컴포넌트 참고 가능
 
-const Pagination = ({ pageInfo, buttonHandler }) => {
+const Pagination = ({ pageInfo, setPage }) => {
   const { page, totalPages } = pageInfo;
-  const pageArray = new Array(totalPages).fill(0).map((_, idx) => idx + 1);
+  // const [currentPage, setCurrentPage] = useState(page + 1);
+
+  const buttonHandler = ({ currentTarget: { name } }) => {
+    if (name === 'prev' && page !== 0) {
+      setPage(page - 1);
+    }
+    if (name === 'next' && page !== totalPages - 1) {
+      setPage(page + 1);
+    }
+  };
 
   return (
     <div className={styles.pagenation}>
-      {pageArray.map((el, idx) => (
-        <button
-          className={el === page + 1 && styles.active}
-          name={idx}
-          key={el}
-          onClick={buttonHandler}
-        >
-          {el}
-        </button>
-      ))}
+      <button name="prev" onClick={buttonHandler}>
+        <MdKeyboardArrowLeft />
+      </button>
+
+      <button className={styles.active}>
+        {page !== undefined && page + 1}
+      </button>
+      <button name="next" onClick={buttonHandler}>
+        <MdKeyboardArrowRight />
+      </button>
     </div>
   );
 };
 
 Pagination.propTypes = {
-  buttonHandler: PropType.func,
+  setPage: PropType.func,
   pageInfo: PropType.object,
 };
 
