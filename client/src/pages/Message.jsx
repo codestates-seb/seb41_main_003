@@ -43,6 +43,8 @@ const Message = () => {
     },
   };
 
+  console.log(CurrentRoomId, 'CurrentRoomId');
+
   const getMessageList = async () => {
     await axios
       .get(`/messages/${profileId}`)
@@ -56,6 +58,7 @@ const Message = () => {
 
   useEffect(() => {
     getMessageList();
+    getMessageRoom();
   }, []);
 
   useEffect(() => {

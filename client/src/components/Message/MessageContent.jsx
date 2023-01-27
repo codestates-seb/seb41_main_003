@@ -177,6 +177,7 @@ const MessageContent = ({
               setInputValue('');
             }
           }}
+          disabled={CurrentRoomId === 0 ? true : false}
         />
         <button
           onClick={() => {
