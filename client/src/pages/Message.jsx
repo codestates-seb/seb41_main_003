@@ -3,7 +3,12 @@ import MessageList from '../components/Message/MessageList';
 import MessageContent from '../components/Message/MessageContent';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useRecoilValue, useSetRecoilState, useResetRecoilState } from 'recoil';
+import {
+  useRecoilValue,
+  useRecoilState,
+  useSetRecoilState,
+  useResetRecoilState,
+} from 'recoil';
 import CurrentRoomIdState from '../recoil/currentRoomId.js';
 import ModalState from '../recoil/modal.js';
 import { useNavigate } from 'react-router-dom';
@@ -19,8 +24,8 @@ const Message = () => {
     ],
   });
   const [pageInfo, setPageInfo] = useState({});
-  const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
-  const resetCurrentRoomId = useResetRecoilState(CurrentRoomIdState);
+  const [CurrentRoomId, resetCurrentRoomId] =
+    useRecoilState(CurrentRoomIdState);
   const { profileId } = useRecoilValue(Profile);
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
@@ -42,8 +47,6 @@ const Message = () => {
       },
     },
   };
-
-  console.log(CurrentRoomId, 'CurrentRoomId');
 
   const getMessageList = async () => {
     await axios
@@ -82,7 +85,7 @@ const Message = () => {
         .get(`/messages/rooms/${profileId}/${CurrentRoomId}`)
         .then((res) => {
           setMessageRoom(res.data.data);
-          console.log(res.data.data, 'MessageRoom API');
+          console.log(res.data.data, 'getMessageRoom');
         })
         .catch((err) => console.log(err, 'getMessageRoom')));
   };

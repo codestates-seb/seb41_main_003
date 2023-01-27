@@ -43,15 +43,20 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+
+  &.overName {
+    flex-direction: column;
+  }
 }
 
 .subjects {
   ul {
-    height: 56px;
     display: flex;
     flex-wrap: wrap;
+    padding-bottom: 32px;
 
     > div {
+      margin-bottom: 5px;
       margin-right: 10px;
     }
   }
@@ -82,6 +87,11 @@
 .font1 {
   font-size: $font1;
   font-weight: $font1W;
+}
+
+.font2 {
+  font-size: $font2;
+  font-weight: $font2W;
 }
 
 .font4 {
