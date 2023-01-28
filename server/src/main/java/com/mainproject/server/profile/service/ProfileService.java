@@ -55,7 +55,9 @@ public class ProfileService {
     ) {
         User findUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ServiceLogicException(ErrorCode.USER_NOT_FOUND));
-        List<Profile> profiles = new ArrayList<>(findUser.getProfiles());
+        List<Profile> profiles = findUser.getProfiles()
+                .stream().filter(p -> !(p.getProfileStatus().equals(ProfileStatus.INACTIVE)))
+                .collect(Collectors.toList());
         if (profiles.isEmpty()) {
             return new ArrayList<>();
         }
@@ -78,7 +80,11 @@ public class ProfileService {
         UserStatus userStatus = findUser.getUserStatus();
         if (userStatus.equals(UserStatus.NONE)) {
             throw new ServiceLogicException(ErrorCode.USER_TYPE_NOT_NONE);
-        } else if (findUser.getProfiles().size() >= 4) {
+        } else if (findUser.getProfiles()
+                .stream()
+                .filter(p -> !(p.getProfileStatus().equals(ProfileStatus.INACTIVE)))
+                .count() >= 4
+        ) {
             throw new ServiceLogicException(ErrorCode.EXCEEDED_MAXIMUM_PROFILE_COUNT);
         }
         ProfileImage image = getBasicImage();
@@ -116,7 +122,21 @@ public class ProfileService {
 
     public void deleteProfile(Long profileId) {
         Profile findProfile = verifiedProfileById(profileId);
-        profileRepository.delete(findProfile);
+        findProfile.setProfileStatus(ProfileStatus.INACTIVE);
+        findProfile.setWantedStatus(WantedStatus.NONE);
+        profileRepository.save(findProfile);
+    }
+
+    public void callProfile(Long profileId) {
+        Profile findProfile = verifiedProfileById(profileId);
+        User user = findProfile.getUser();
+        if (user.getProfiles()
+                .stream()
+                .filter(p -> !(p.getProfileStatus().equals(ProfileStatus.INACTIVE)))
+                .count() < 4) {
+            findProfile.setProfileStatus(ProfileStatus.valueOf(user.getUserStatus().name()));
+        }
+        profileRepository.save(findProfile);
     }
 
     public void delegateSaveProfile(Profile profile) {

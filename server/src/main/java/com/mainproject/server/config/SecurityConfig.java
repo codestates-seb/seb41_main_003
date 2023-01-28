@@ -145,7 +145,6 @@ public class SecurityConfig {
         corsConfiguration.setMaxAge(493772L);
         corsConfiguration.addAllowedOrigin("http://localhost:3000");
         corsConfiguration.addAllowedOrigin("http://localhost:8080");
-        corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addExposedHeader("Authorization");
         corsConfiguration.addExposedHeader("userId");
         corsConfiguration.addExposedHeader("userStatus");

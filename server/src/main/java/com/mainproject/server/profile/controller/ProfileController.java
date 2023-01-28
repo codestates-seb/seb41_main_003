@@ -51,7 +51,7 @@ public class ProfileController {
             @PageableDefault(page = 0, size = 5, sort = "reviewId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
-        ProfilePageDto profile = profileService.getProfile(profileId,pageable);
+        ProfilePageDto profile = profileService.getProfile(profileId, pageable);
         ProfileResponseDto responseDto = ProfileResponseDto.of(profile);
         return new ResponseEntity<>(
                 PageResponseDto.of(
@@ -135,5 +135,11 @@ public class ProfileController {
         return ResponseEntity.noContent().build();
     }
 
-
+    @PostMapping("/re-call/{profileId}")
+    public ResponseEntity callDeleteProfile(
+            @PathVariable @Positive Long profileId
+    ) {
+        profileService.callProfile(profileId);
+        return ResponseEntity.noContent().build();
+    }
 }
