@@ -63,18 +63,21 @@ class ProfileServiceTest {
 
     @Test
     @DisplayName("특정 회원 프로필 리스트 조회 TEST - 정상 동작 확인")
-    void givenUserWhenProfileListSize2ThenReturnArrayListSize2() {
+    void givenUserWhenProfileListSize1ThenReturnArrayListSize1() {
         // Given
         Long userId = 1L;
+        Profile profile = Profile.builder()
+                .profileStatus(ProfileStatus.TUTOR)
+                .build();
         User findUser = User
                 .builder()
-                .profiles(Set.of(new Profile(), new Profile()))
+                .profiles(Set.of(profile))
                 .build();
         given(userRepository.findById(anyLong())).willReturn(Optional.of(findUser));
         // When
         List<Profile> profiles = profileService.getProfiles(userId);
         // Then
-        assertThat(profiles.size()).isEqualTo(2);
+        assertThat(profiles.size()).isEqualTo(1);
     }
 
     @Test
