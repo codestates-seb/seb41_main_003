@@ -184,6 +184,7 @@
   font-weight: $font4W;
   width: 200px;
   margin-bottom: 8px;
+  word-break: break-all;
 }
 
 .tutoringDate {
