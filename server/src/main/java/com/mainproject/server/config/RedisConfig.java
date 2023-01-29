@@ -24,7 +24,6 @@ public class RedisConfig {
 //    public RedisConnectionFactory redisConnectionFactory() {
 //        return new LettuceConnectionFactory("localhost", port);
 //    }
-
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisClusterConfiguration clusterConfiguration = new RedisClusterConfiguration();
