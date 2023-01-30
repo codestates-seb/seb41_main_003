@@ -11,7 +11,7 @@ v1.0.0, 2023.01.19
 
 - API 서버 배포 링크
 
-<http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com>
+<https://api-tutordiff.site>
 
 == 쓰앵님 팀원
 
