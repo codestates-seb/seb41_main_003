@@ -127,7 +127,7 @@ const LoginForm = () => {
           </button>
 
           <a
-            href="http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com/oauth2/authorization/kakao"
+            href={`${process.env.REACT_APP_BASE_URL}/oauth2/authorization/kakao`}
             className={styles.kakaoLoginButton}
           >
             <svg
@@ -155,7 +155,7 @@ const LoginForm = () => {
             <span>카카오 로그인</span>
           </a>
           <a
-            href="http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com/oauth2/authorization/google"
+            href={`${process.env.REACT_APP_BASE_URL}/oauth2/authorization/google`}
             className={styles.googleLoginButton}
           >
             <svg
