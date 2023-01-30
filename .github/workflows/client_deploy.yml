@@ -58,3 +58,5 @@ jobs:
             build s3://tutordiff.site \
             --delete
         working-directory: ./client
+      - name: Invalidate CloudFront Cache
+        run: aws cloudfront create-invalidation --distribution-id E3LT2FK5707VBA --paths "index.html" "static/*"
