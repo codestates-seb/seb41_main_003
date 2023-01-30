@@ -59,4 +59,8 @@ jobs:
             --delete
         working-directory: ./client
       - name: Invalidate CloudFront Cache
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_FE_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_FE_SECRET_KEY }}
+          AWS_EC2_METADATA_DISABLED: true
         run: aws cloudfront create-invalidation --distribution-id E3LT2FK5707VBA --paths "index.html" "static/*"
