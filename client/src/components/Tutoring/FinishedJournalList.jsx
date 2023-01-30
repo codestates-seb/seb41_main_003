@@ -1,6 +1,6 @@
 import styles from './FinishedJournalList.module.css';
 import { HiSpeakerphone } from 'react-icons/hi';
-import { ButtonNightBlue } from '../Button';
+import { ButtonNightBlue, ButtonRed } from '../Button';
 import { useSetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
 import { Link, useLocation } from 'react-router-dom';
@@ -80,6 +80,15 @@ const FinishedJournalList = ({
     },
   };
 
+  const deleteProps = {
+    isOpen: true,
+    modalType: 'redConfirm',
+    props: {
+      text: '과외를 삭제하시겠습니까? \n 삭제 시 과외 및 일지를 다시 열람할 수 없습니다.',
+      //TODO: modalHandler로 과외 상태 변경 patch 요청 보내기
+    },
+  };
+
   useEffect(() => {
     getReviewDetail();
   }, []);
@@ -141,13 +150,30 @@ const FinishedJournalList = ({
               ).toLocaleDateString()}`}
           </span>
         </div>
-        {userStatus === 'TUTEE' && (
+        {userStatus === 'TUTEE' ? (
           <div className={styles.buttonBox}>
             <ButtonNightBlue
               text="작성된 리뷰 확인"
               buttonHandler={(e) => {
                 e.preventDefault();
                 setModal(reviewDetailProps);
+              }}
+            />
+            <ButtonRed
+              text="과외 삭제"
+              buttonHandler={(e) => {
+                e.preventDefault();
+                setModal(deleteProps);
+              }}
+            />
+          </div>
+        ) : (
+          <div className={styles.buttonBox}>
+            <ButtonRed
+              text="과외 삭제"
+              buttonHandler={(e) => {
+                e.preventDefault();
+                setModal(deleteProps);
               }}
             />
           </div>
