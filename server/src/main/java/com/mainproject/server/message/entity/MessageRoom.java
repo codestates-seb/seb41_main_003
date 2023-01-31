@@ -29,6 +29,14 @@ public class MessageRoom extends Auditable {
     @Setter
     private Long tutoringId;
 
+    @Column(nullable = true)
+    @Setter
+    private String lastMessage;
+
+    @Column(nullable = true)
+    @Setter
+    private Long lastSenderId;
+
     /* 연관 관계 매핑 */
 
     @ToString.Exclude
@@ -49,6 +57,8 @@ public class MessageRoom extends Auditable {
 
     /* 연관 관계 편의 메소드 */
     public void addMessage(Message message) {
+        this.lastMessage = message.getMessageContent();
+        this.lastSenderId = message.getSender().getProfileId();
         this.messages.add(message);
     }
 
