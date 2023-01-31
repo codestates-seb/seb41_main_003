@@ -100,12 +100,17 @@ public class TutoringService {
                 .ifPresent(findTutoring::setTutoringTitle);
         TutoringStatus tutoringStatus = tutoring.getTutoringStatus();
         if (tutoringStatus != null &&
-                (tutoringStatus.equals(TutoringStatus.WAIT_FINISH) ||
+                (tutoringStatus.equals(TutoringStatus.PROGRESS) ||
+                        tutoringStatus.equals(TutoringStatus.WAIT_FINISH) ||
                         tutoringStatus.equals(TutoringStatus.UNCHECK) ||
-                        tutoringStatus.equals(TutoringStatus.PROGRESS))
+                        tutoringStatus.equals(TutoringStatus.TUTOR_DELETE) ||
+                        tutoringStatus.equals(TutoringStatus.TUTEE_DELETE))
         ) {
-            Optional.of(tutoringStatus)
-                    .ifPresent(findTutoring::setTutoringStatus);
+            if (findTutoring.getTutoringStatus().name().contains("DELETE")) {
+                findTutoring.setTutoringStatus(TutoringStatus.ALL_DELETE);
+            } else {
+                findTutoring.setTutoringStatus(tutoringStatus);
+            }
         } else {
             throw new ServiceLogicException(ErrorCode.WRONG_STATUS_PROPERTY);
         }
