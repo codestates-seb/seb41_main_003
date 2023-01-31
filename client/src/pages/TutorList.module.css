@@ -113,8 +113,7 @@
 .menuContainer {
   display: flex;
   justify-content: space-between;
-  margin-top: 24px;
-  margin-bottom: 24px;
+  margin: 24px 8px;
 }
 
 .menu {
