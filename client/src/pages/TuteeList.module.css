@@ -36,6 +36,11 @@
     font-size: $font4;
     font-weight: $font4W;
   }
+
+  @media only screen and (max-width: 443px) {
+    font-size: $font5;
+    font-weight: $font5W;
+  }
 }
 
 .searchBox {
