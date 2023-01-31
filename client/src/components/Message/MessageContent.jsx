@@ -148,7 +148,7 @@ const MessageContent = ({
         {messages.map((message) => (
           <Chat
             message={message}
-            key={message.messageId}
+            key={`msg${message.messageId}`}
             getMessageRoom={getMessageRoom}
             receiveMessageId={receiveMessageId}
             CurrentRoomId={CurrentRoomId}
