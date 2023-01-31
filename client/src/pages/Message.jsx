@@ -75,13 +75,13 @@ const Message = () => {
 
   //대화 화면 조회 API
   const getMessageRoom = async () => {
-    CurrentRoomId !== 0 &&
-      (await axios
+    if (CurrentRoomId !== 0 && CurrentRoomId !== undefined)
+      await axios
         .get(`/messages/rooms/${profileId}/${CurrentRoomId}`)
         .then((res) => {
           setMessageRoom(res.data.data);
         })
-        .catch((err) => console.log(err)));
+        .catch((err) => console.log(err));
   };
 
   const cancelAlertProps = {
@@ -123,7 +123,7 @@ const Message = () => {
             setMessageList={setMessageList}
             setPageInfo={setPageInfo}
           />
-          {CurrentRoomId === 0 ? (
+          {CurrentRoomId === 0 || CurrentRoomId === undefined ? (
             <div className={styles.initialContain}>
               대화 상대를 선택해주세요.
             </div>
