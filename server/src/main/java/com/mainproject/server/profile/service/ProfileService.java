@@ -186,12 +186,14 @@ public class ProfileService {
                     defaultPageable.getPageSize(),
                     Sort.by(Sort.Order.desc(sort))
             );
-        } else {
+        } else if (sort != null && sort.equals("updateAt")) {
             return PageRequest.of(
                     defaultPageable.getPageNumber(),
                     defaultPageable.getPageSize(),
-                    defaultPageable.getSort()
+                    Sort.by(Sort.Order.desc(sort))
             );
+        } else {
+            throw new ServiceLogicException(ErrorCode.WRONG_SORT_PROPERTY);
         }
     }
 
