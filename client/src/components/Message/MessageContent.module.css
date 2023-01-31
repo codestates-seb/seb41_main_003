@@ -51,6 +51,16 @@
   scrollbar-width: auto;
   scrollbar-color: #666 #f00;
 
+  .dateLine {
+    align-self: center;
+    font-size: $sub;
+    font-weight: 600;
+    line-height: 12px;
+    background-color: $white;
+    padding: 4px 16px;
+    border-radius: 30px;
+  }
+
   &::-webkit-scrollbar {
     width: 10px;
   }

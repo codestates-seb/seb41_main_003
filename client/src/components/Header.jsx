@@ -1,7 +1,7 @@
 import styles from './Header.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import { MdNotifications } from 'react-icons/md';
+import { MdMenu, MdNotifications } from 'react-icons/md';
 import { useSetRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import ModalState from '../recoil/modal.js';
 import defaultUser from '../assets/defaultUser.png';
@@ -23,13 +23,17 @@ const Header = () => {
   const resetJournal = useResetRecoilState(ChangeJournal);
 
   const menuRef = useRef(null);
-  const [dropDownRef, isMenu, setIsMenu] = useOutSideRef(menuRef);
+  const navRef = useRef(null);
+  const [dropDownRef, isUserMenu, setIsUserMenu] = useOutSideRef(menuRef);
+  const [sideRef, isNav, setIsNav] = useOutSideRef(navRef);
 
-  const adminProps = {
-    isOpen: true,
-    modalType: 'admin',
-    backDropHandle: true,
-    props: {},
+  const adminProps = (isFirstLogin) => {
+    return {
+      isOpen: true,
+      modalType: 'admin',
+      backDropHandle: isFirstLogin,
+      props: {},
+    };
   };
 
   const statusNoneProps = {
@@ -38,19 +42,31 @@ const Header = () => {
     backDropHandle: true,
     props: {
       text: `서비스 이용을 위해 회원 정보 입력이 필요합니다. 
-      회원 정보를 입력하시겠습니까?
-
-      (입력이 되지 않으면 정상적인 서비스가 불가하여,
-        취소 시 로그아웃 처리됩니다.)`,
-      modalHandler: (e) => {
-        const { name } = e.target;
+      회원 정보를 입력하시겠습니까?`,
+      modalHandler: ({ target: { name } }) => {
         if (name === 'yes') {
           resetModal();
           navigate('/userinfo');
         } else {
-          sessionStorage.clear();
-          resetProfile();
-          resetModal();
+          setModal({
+            isOpen: true,
+            modalType: 'bothHandler',
+            backDropHandle: true,
+            props: {
+              text: `회원 정보가 입력이 되지 않으면
+              정상적인 서비스가 불가하여 로그아웃 처리됩니다.
+              로그아웃 하시겠습니까?`,
+              modalHandler: ({ target: { name } }) => {
+                if (name === 'yes') {
+                  sessionStorage.clear();
+                  resetProfile();
+                  resetModal();
+                } else {
+                  setModal(statusNoneProps);
+                }
+              },
+            },
+          });
         }
       },
     },
@@ -64,8 +80,19 @@ const Header = () => {
       profile.profileId === 0 &&
       location.pathname !== '/userinfo'
     )
-      setModal(adminProps);
+      setModal(adminProps(true));
   });
+
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) setIsNav(false);
+    });
+    return () => {
+      window.removeEventListener('resize', () => {
+        if (window.innerWidth > 768) setIsNav(false);
+      });
+    };
+  }, []);
 
   const verify2ndPassword = async (value, path) => {
     await axios
@@ -143,7 +170,17 @@ const Header = () => {
           </svg>
         </Link>
       </div>
-      <nav className={styles.nav}>
+      <button
+        ref={navRef}
+        className={styles.hamBtn}
+        onClick={() => {
+          setIsNav(!isNav);
+        }}
+      >
+        <MdMenu />
+      </button>
+
+      <nav className={`${styles.nav} ${isNav && styles.active}`} ref={sideRef}>
         <ul>
           <li>
             <Link to="/tutorlist">튜터 찾기</Link>
@@ -158,6 +195,7 @@ const Header = () => {
           </li>
         </ul>
       </nav>
+
       {profile.isLogin ? (
         <div className={styles.memberMenu}>
           <ul className={styles.menuContainer}>
@@ -176,7 +214,7 @@ const Header = () => {
               <button
                 className={styles.profileButton}
                 onClick={() => {
-                  setIsMenu(!isMenu);
+                  setIsUserMenu(!isUserMenu);
                 }}
                 ref={menuRef}
               >
@@ -193,7 +231,7 @@ const Header = () => {
             <div className={styles.noti}>기능 추가 될 예정입니다.</div>
           )}
 
-          {isMenu && (
+          {isUserMenu && (
             <ul className={styles.dropdown} ref={dropDownRef}>
               <li>
                 <Link to={`/myprofile`}>나의 프로필</Link>
@@ -202,7 +240,7 @@ const Header = () => {
                 <Link to={`/message`}>메세지함</Link>
               </li>
               <li>
-                <button onClick={() => setModal(adminProps)}>
+                <button onClick={() => setModal(adminProps(false))}>
                   프로필 전환
                 </button>
               </li>

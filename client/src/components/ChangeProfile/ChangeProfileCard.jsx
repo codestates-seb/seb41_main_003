@@ -14,7 +14,8 @@ import Profile from '../../recoil/profile';
 import validation from '../../util/validation';
 
 const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
-  const { name, bio, school, subjects, profileStatus, profileImage } = user;
+  const { name, bio, school, subjects, profileImage } = user;
+  const userStatus = sessionStorage.getItem('userStatus');
   const [imgFile, setImgFile] = useState({});
   const [imgSrc, setImgSrc] = useState();
   const navigate = useNavigate();
@@ -199,15 +200,15 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
           <div className={styles.inputContain}>
             <LabelTextInput
               id="school"
-              name={profileStatus === 'TUTOR' ? '학교 / 학번' : '학년'}
-              placeHolder={profileStatus === 'TUTOR' ? '학교 / 학번' : '학년'}
+              name={userStatus === 'TUTOR' ? '학교 / 학번' : '학년'}
+              placeHolder={userStatus === 'TUTOR' ? '학교 / 학번' : '학년'}
               type="text"
               value={school}
               handler={inputHandler}
               required
             />
             <span className={styles.desc}>
-              {profileStatus === 'TUTOR'
+              {userStatus === 'TUTOR'
                 ? 'ex. 한국대학교 16학번 졸업'
                 : 'ex. 고등학교 2학년'}
             </span>
