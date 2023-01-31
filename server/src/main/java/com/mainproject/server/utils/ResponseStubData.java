@@ -7,12 +7,15 @@ import com.mainproject.server.dateNotice.dto.HomeworkResponseDto;
 import com.mainproject.server.dateNotice.dto.NoticeResponseDto;
 import com.mainproject.server.dateNotice.dto.ScheduleResponseDto;
 import com.mainproject.server.image.dto.ImageResponseDto;
+import com.mainproject.server.image.entity.ProfileImage;
 import com.mainproject.server.message.dto.MessageResponseDto;
+import com.mainproject.server.message.dto.MessageRoomQueryDto;
 import com.mainproject.server.message.dto.MessageRoomResponseDto;
 import com.mainproject.server.message.dto.MessageRoomSimpleResponseDto;
 import com.mainproject.server.profile.dto.ProfileListResponseDto;
 import com.mainproject.server.profile.dto.ProfilePageDto;
 import com.mainproject.server.profile.dto.ProfileSimpleResponseDto;
+import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.review.dto.ReviewResponseDto;
 import com.mainproject.server.subject.dto.SubjectProfileResponseDto;
 import com.mainproject.server.subject.dto.SubjectResponseDto;
@@ -263,6 +266,29 @@ public class ResponseStubData {
                 .tuteeId(1L)
                 .tuteeName("나에게")
                 .tutoringId(1L)
+                .build();
+    }
+
+    public static MessageRoomQueryDto createMessageRoomQueryDto() {
+        Profile pro = Profile.builder()
+                .profileId(1L)
+                .profileStatus(ProfileStatus.TUTEE)
+                .name("test")
+                .profileImage(ProfileImage.builder().url("testUrl").build())
+                .build();
+        return MessageRoomQueryDto.builder()
+                .messageRoomId(1L)
+                .messageStatus(MessageStatus.CHECK)
+                .tutoringId(1L)
+                .tutor(pro)
+                .tutee(pro)
+                .tuteeProfileImageUrl("testUrl")
+                .tutorProfileImageUrl("testUrl")
+                .lastMessage("test")
+                .lastSenderId(1L)
+                .currentProfileStatus(ProfileStatus.TUTEE)
+                .createAt(LocalDateTime.now())
+                .updateAt(LocalDateTime.now())
                 .build();
     }
 
