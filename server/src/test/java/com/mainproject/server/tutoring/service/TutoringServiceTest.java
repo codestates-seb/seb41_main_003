@@ -10,6 +10,8 @@ import com.mainproject.server.message.service.MessageService;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.service.ProfileService;
 import com.mainproject.server.tutoring.dto.TutoringDto;
+import com.mainproject.server.tutoring.dto.TutoringQueryDto;
+import com.mainproject.server.tutoring.dto.TutoringSimpleResponseDto;
 import com.mainproject.server.tutoring.entity.Tutoring;
 import com.mainproject.server.tutoring.repository.TutoringRepository;
 import com.mainproject.server.utils.StubData;
@@ -49,72 +51,45 @@ class TutoringServiceTest {
     private TutoringService tutoringService;
 
     @Test
-    @DisplayName("특정 프로필 과외 리스트 - TUTEE 경우")
-    void getTuteeAllTutoring() {
+    @DisplayName("특정 프로필 과외 리스트 - 동작 TEST")
+    void getAllTutoring() {
         //given
-        Map<String, String> param1 = new HashMap<>();
-        param1.put("get", "PROGRESS");
+        Map<String, String> param = new HashMap<>();
+        param.put("get", "PROGRESS");
         Pageable page = PageRequest.of(1,10);
         Long profileId = 1L;
-        Tutoring tutoring1 = new Tutoring();
+        TutoringQueryDto tutoring1 = new TutoringQueryDto();
         tutoring1.setTutoringStatus(TutoringStatus.FINISH);
         List list1 = List.of(tutoring1, tutoring1);
-        Page<Tutoring> result1 = new PageImpl<>(list1, page, list1.size());
-        Profile testProfile = new Profile();
-        testProfile.setProfileStatus(ProfileStatus.TUTEE);
-
-        given(profileService.verifiedProfileById(anyLong())).willReturn(testProfile);
-        given(tutoringRepository.findAllByTuteeProfileIdAndTutoringStatusOrTuteeProfileIdAndTutoringStatusOrTuteeProfileIdAndTutoringStatus(
-                anyLong(),
-                any(TutoringStatus.class),
-                anyLong(),
-                any(TutoringStatus.class),
+        Page<TutoringQueryDto> result1 = new PageImpl<>(list1, page, list1.size());
+        given(tutoringRepository.findQueryTutoring(
                 anyLong(),
                 any(TutoringStatus.class),
                 any(Pageable.class)
         )).willReturn(result1);
-
-
         //when
-        Page<Tutoring> testResult1 = tutoringService.getAllTutoring(param1, profileId, page);
-
+        Page<TutoringSimpleResponseDto> testResult =
+                tutoringService.getAllTutoring(param, profileId, page);
         //then
-        assertThat(testResult1.getContent().get(0).getTutoringStatus()).isEqualTo(TutoringStatus.FINISH);
+        assertThat(testResult.getContent().get(0).getTutoringStatus())
+                .isEqualTo(TutoringStatus.FINISH.name());
 
     }
 
     @Test
-    @DisplayName("특정 프로필 과외 리스트 - TUTOR 경우")
-    void getTutorAllTutoring() {
-
-        //given
-        Map<String, String> param2 = new HashMap<>();
-        param2.put("get", "PROGRESS");
-        Pageable page = PageRequest.of(1,10);
+    @DisplayName("특정 프로필 과외 리스트 - Parameter Input 예외 TEST")
+    void getAllTutoringThrowServiceLogicException() {
+        // Given
         Long profileId = 1L;
-        Tutoring tutoring2 = new Tutoring();
-        tutoring2.setTutoringStatus(TutoringStatus.UNCHECK);
-        List list2 = List.of(tutoring2, tutoring2);
-        Page<Tutoring> result2 = new PageImpl<>(list2, page, list2.size());
-        Profile testProfile = new Profile();
-        testProfile.setProfileStatus(ProfileStatus.TUTOR);
-
-        given(profileService.verifiedProfileById(anyLong())).willReturn(testProfile);
-        given(tutoringRepository.findAllByTutorProfileIdAndTutoringStatusOrTutorProfileIdAndTutoringStatusOrTutorProfileIdAndTutoringStatus(
-                anyLong(),
-                any(TutoringStatus.class),
-                anyLong(),
-                any(TutoringStatus.class),
-                anyLong(),
-                any(TutoringStatus.class),
-                any(Pageable.class)
-        )).willReturn(result2);
-
-        //when
-        Page<Tutoring> testResult2 = tutoringService.getAllTutoring(param2, profileId, page);
-
-        //then
-        assertThat(testResult2.getContent().get(0).getTutoringStatus()).isEqualTo(TutoringStatus.UNCHECK);
+        Pageable page = PageRequest.of(1,10);
+        Map<String, String> param = new HashMap<>();
+        // When
+        Throwable throwable = catchThrowable(
+                () -> tutoringService.getAllTutoring(param, profileId, page)
+        );
+        // Then
+        assertThat(throwable).isInstanceOf(ServiceLogicException.class)
+                .hasMessageContaining(ErrorCode.NOT_NULL_WRONG_PROFILE_STATUS_PROPERTY.getMessage());
     }
 
     @Test

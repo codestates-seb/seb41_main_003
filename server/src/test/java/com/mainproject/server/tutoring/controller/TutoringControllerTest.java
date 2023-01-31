@@ -163,17 +163,15 @@ class TutoringControllerTest {
         // Given
         Long profileId = 1L;
         Pageable pageable = PageRequest.of(1, 10);
-        Page<Tutoring> pageProfile =
-                new PageImpl<>(List.of(
-                        new Tutoring(),
-                        new Tutoring()),
-                        pageable, 2);
         TutoringSimpleResponseDto tutoringSimpleResponse =
                 ResponseStubData.createTutoringSimpleResponse();
+        Page<TutoringSimpleResponseDto> pageProfile =
+                new PageImpl<>(List.of(
+                        tutoringSimpleResponse,
+                        tutoringSimpleResponse),
+                        pageable, 2);
         given(tutoringService.getAllTutoring(anyMap(), anyLong(), any(Pageable.class)))
                 .willReturn(pageProfile);
-        given(tutoringMapper.tutoringListToTutoringSimpleResponseDtoList(anyList()))
-                .willReturn(List.of(tutoringSimpleResponse, tutoringSimpleResponse));
         // When
         RequestBuilder result = RestDocumentationRequestBuilders
                 .get("/tutoring/{profileId}?page=0", profileId)
