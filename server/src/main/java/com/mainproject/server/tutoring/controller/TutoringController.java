@@ -62,17 +62,10 @@ public class TutoringController {
             @PageableDefault(page = 0, size = 10, sort = "tutoringId", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
-        Page<Tutoring> pageTutoring =
+        Page<TutoringSimpleResponseDto> findAllTutoring =
                 tutoringService.getAllTutoring(params, profileId, pageable);
-        List<Tutoring> tutoringList = pageTutoring.getContent();
-        List<TutoringSimpleResponseDto> tutoringSimpleList =
-                tutoringMapper.tutoringListToTutoringSimpleResponseDtoList(tutoringList);
-        Page<TutoringSimpleResponseDto> page = new PageImpl<>(
-                tutoringSimpleList,
-                pageTutoring.getPageable(),
-                pageTutoring.getTotalElements());
         return new ResponseEntity(
-                PageResponseDto.of(tutoringSimpleList, page),
+                PageResponseDto.of(findAllTutoring.getContent(), findAllTutoring),
                 HttpStatus.OK);
     }
 
