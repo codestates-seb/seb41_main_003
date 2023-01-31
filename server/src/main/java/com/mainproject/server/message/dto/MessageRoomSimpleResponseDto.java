@@ -46,12 +46,25 @@ public class MessageRoomSimpleResponseDto {
             this.targetProfileUrl = messageRoom.getTutee().getProfileImage().getUrl();
         }
         this.createAt = messageRoom.getCreateAt();
-        List<Message> messages = new ArrayList<>(messageRoom.getMessages());
-        if (!messages.isEmpty()) {
-            Message lastMessage = messages.get(messages.size() - 1);
-            this.lastMessage = lastMessage.getMessageContent();
-            this.lastSenderId = lastMessage.getSender().getProfileId();
+        this.lastMessage = messageRoom.getLastMessage();
+        this.lastSenderId = messageRoom.getLastSenderId();
+    }
+
+    public MessageRoomSimpleResponseDto(
+            MessageRoomQueryDto messageRoom
+    ) {
+        this.messageRoomId = messageRoom.getMessageRoomId();
+        this.messageStatus = messageRoom.getMessageStatus().name();
+        if (messageRoom.getCurrentProfileStatus().equals(ProfileStatus.TUTEE)) {
+            this.targetName = messageRoom.getTutor().getName();
+            this.targetProfileUrl = messageRoom.getTutorProfileImageUrl();
+        } else {
+            this.targetName = messageRoom.getTutee().getName();
+            this.targetProfileUrl = messageRoom.getTuteeProfileImageUrl();
         }
+        this.createAt = messageRoom.getCreateAt();
+        this.lastMessage = messageRoom.getLastMessage();
+        this.lastSenderId = messageRoom.getLastSenderId();
     }
 
     public static MessageRoomSimpleResponseDto of(
@@ -59,6 +72,12 @@ public class MessageRoomSimpleResponseDto {
             MessageRoom messageRoom
     ) {
         return new MessageRoomSimpleResponseDto(status, messageRoom);
+    }
+
+    public static MessageRoomSimpleResponseDto of(
+            MessageRoomQueryDto messageRoom
+    ) {
+        return new MessageRoomSimpleResponseDto(messageRoom);
     }
 
 }
