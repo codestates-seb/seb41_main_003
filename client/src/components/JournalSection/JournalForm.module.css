@@ -93,6 +93,18 @@
       height: 120px;
     }
 
+    .noNotice {
+      width: 484px;
+      height: 120px;
+      font-size: $font4;
+      font-weight: $font4W;
+      color: $silver;
+      background-color: $snow;
+      text-align: center;
+      padding: 40px;
+      border-radius: 5px;
+    }
+
     .scheduleArea {
       width: 488px;
       height: 388px;
@@ -107,6 +119,16 @@
   .homeworkArea {
     width: 100%;
     margin-top: 0;
+
+    .noHomework {
+      background-color: $snow;
+      font-size: $font4;
+      font-weight: $font4W;
+      color: $silver;
+      text-align: center;
+      padding: 80px;
+      border-radius: 5px;
+    }
 
     .checkBoxContainer {
       display: flex;
