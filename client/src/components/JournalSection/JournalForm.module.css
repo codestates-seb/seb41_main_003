@@ -96,6 +96,7 @@
     .scheduleArea {
       width: 488px;
       height: 388px;
+      white-space: pre-line;
     }
 
     .homeworkContainer {

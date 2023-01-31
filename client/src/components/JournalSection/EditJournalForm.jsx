@@ -80,7 +80,14 @@ const EditJournalForm = () => {
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
+    // if (name === 'scheduleBody') {
+    //   setUserData({
+    //     ...userData,
+    //     [scheduleBody]: userData[scheduleBody].replace(/(\n|\r\n)/g, '<br>'),
+    //   });
+    // } else {
     setUserData({ ...userData, [name]: value });
+    // }
   };
 
   const deleteHomeworkHandler = (e) => {
