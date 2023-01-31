@@ -107,6 +107,15 @@
     font-size: $font4;
     font-weight: $font4W;
     position: relative;
+    @media screen and (max-width: 768px) {
+      li.login > button > span {
+        display: none;
+      }
+
+      > li:not(.login) {
+        display: none;
+      }
+    }
 
     > li {
       &.center {
@@ -133,6 +142,9 @@
           border-radius: 50%;
           object-fit: cover;
           margin-right: 8px;
+          @media screen and (max-width: 768px) {
+            margin-right: 0;
+          }
         }
 
         span {

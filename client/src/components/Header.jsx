@@ -210,7 +210,7 @@ const Header = () => {
                 <MdNotifications />
               </button>
             </li>
-            <li>
+            <li className={styles.login}>
               <button
                 className={styles.profileButton}
                 onClick={() => {
@@ -263,11 +263,11 @@ const Header = () => {
       ) : (
         <div className={styles.memberMenu}>
           <ul className={styles.menuContainer}>
-            <li>
+            <li className={styles.login}>
               <Link to="/login">로그인</Link>
             </li>
             <li className={styles.center}> | </li>
-            <li>
+            <li className={styles.signup}>
               <Link to="/signup">회원가입</Link>
             </li>
           </ul>
