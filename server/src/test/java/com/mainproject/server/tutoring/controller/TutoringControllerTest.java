@@ -252,7 +252,7 @@ class TutoringControllerTest {
                                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
                                                 fieldWithPath("data.tutoringId").type(JsonFieldType.NUMBER).description("과외 식별자"),
                                                 fieldWithPath("data.tutoringTitle").type(JsonFieldType.STRING).description("튜터 타이틀"),
-                                                fieldWithPath("data.tutoringStatus").type(JsonFieldType.STRING).description("과외 상태 TUTEE_WAITING/TUTOR_WAITING/PROGRESS/UNCHECK/WAIT_FINISH/FINISH"),
+                                                fieldWithPath("data.tutoringStatus").type(JsonFieldType.STRING).description("과외 상태 PROGRESS/WAIT_FINISH/TUTOR_DELETE/TUTEE_DELETE"),
                                                 fieldWithPath("data.latestNoticeId").type(JsonFieldType.NUMBER).description("마지막 공지 식별자"),
                                                 fieldWithPath("data.latestNoticeBody").type(JsonFieldType.STRING).description("마지막 공지 내용"),
                                                 fieldWithPath("data.tuteeId").type(JsonFieldType.NUMBER).description("튜티 식별자"),
