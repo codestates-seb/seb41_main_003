@@ -9,6 +9,7 @@ import axios from 'axios';
 import CurrentRoomIdState from '../../recoil/currentRoomId';
 import Profile from '../../recoil/profile';
 import useOutSideRef from '../../util/useOutSideRef';
+import dayjs from 'dayjs';
 
 const MessageContent = ({
   messageRoom,
@@ -145,16 +146,29 @@ const MessageContent = ({
           <span>새로고침</span>
           <MdRefresh />
         </button>
-        {messages.map((message) => (
-          <Chat
-            message={message}
-            key={`msg${message.messageId}`}
-            getMessageRoom={getMessageRoom}
-            receiveMessageId={receiveMessageId}
-            CurrentRoomId={CurrentRoomId}
-            tutoringId={tutoringId}
-          />
-        ))}
+
+        {messages.map((message, idx) => {
+          const prevDate = dayjs(messages[idx - 1]?.createAt).format(
+            'YYYY년 MM월 DD일'
+          );
+          const currDate = dayjs(message?.createAt).format('YYYY년 MM월 DD일');
+
+          return (
+            <>
+              {prevDate !== currDate && (
+                <p className={styles.dateLine}>{currDate}</p>
+              )}
+              <Chat
+                message={message}
+                key={`msg${message.messageId}`}
+                getMessageRoom={getMessageRoom}
+                receiveMessageId={receiveMessageId}
+                CurrentRoomId={CurrentRoomId}
+                tutoringId={tutoringId}
+              />
+            </>
+          );
+        })}
       </div>
       <div className={styles.sendContainer}>
         <button
