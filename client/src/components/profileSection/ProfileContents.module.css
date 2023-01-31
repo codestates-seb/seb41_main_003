@@ -37,6 +37,7 @@
 .paragragh {
   font-size: $para;
   font-weight: $paraW;
+  white-space: pre-line;
 }
 
 .subject {
@@ -81,6 +82,10 @@
 .reviewProfileId {
   font-size: $font6;
   font-weight: $font6W;
+}
+
+.reviewBody {
+  white-space: pre-line;
 }
 
 .rating {
