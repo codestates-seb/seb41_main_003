@@ -49,6 +49,7 @@
 }
 
 .searchBox {
+  position: relative;
   display: flex;
   justify-content: space-evenly;
   background-color: $snow;
@@ -59,8 +60,9 @@
 }
 
 .iconBox {
-  flex-grow: 0.5;
-  display: flex;
+  position: absolute;
+  top: 16px;
+  left: 16px;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
@@ -70,29 +72,20 @@
   font-size: 24px;
   height: 24px;
   background-color: $snow;
-
-  @media only screen and (max-width: 270px) {
-    font-size: 16px;
-    height: 16px;
-  }
 }
 
 .input {
-  flex-grow: 2;
+  width: 100%;
   border-radius: 5px;
   border: none;
   background-color: $snow;
   outline: none;
   font-size: $font5;
   font-weight: $font5W;
+  padding-left: 48px;
 
   &::placeholder {
     text-align: center;
-  }
-
-  @media only screen and (max-width: 270px) {
-    font-size: $font6;
-    font-weight: $font6W;
   }
 }
 
@@ -154,30 +147,4 @@
   font-size: 24px;
   height: 24px;
   margin-right: 4px;
-}
-
-.defaultMenu {
-  background-color: $snow;
-  color: $coal;
-  font-size: $font5;
-  font-weight: $font5W;
-  width: 80px;
-  height: 32px;
-  border-radius: 12px;
-  padding: 4px 10px;
-  margin-right: 8px;
-  box-shadow: $buttonShadow;
-}
-
-.activeMenu {
-  background-color: $night;
-  color: $white;
-  font-size: $font5;
-  font-weight: $font5W;
-  width: 80px;
-  height: 32px;
-  border-radius: 12px;
-  padding: 4px 10px;
-  margin-right: 8px;
-  box-shadow: $buttonShadow;
 }
