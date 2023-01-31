@@ -1,7 +1,7 @@
 import styles from './Header.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import { MdNotifications } from 'react-icons/md';
+import { MdMenu, MdNotifications } from 'react-icons/md';
 import { useSetRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import ModalState from '../recoil/modal.js';
 import defaultUser from '../assets/defaultUser.png';
@@ -23,7 +23,9 @@ const Header = () => {
   const resetJournal = useResetRecoilState(ChangeJournal);
 
   const menuRef = useRef(null);
-  const [dropDownRef, isMenu, setIsMenu] = useOutSideRef(menuRef);
+  const navRef = useRef(null);
+  const [dropDownRef, isUserMenu, setIsUserMenu] = useOutSideRef(menuRef);
+  const [sideRef, isNav, setIsNav] = useOutSideRef(navRef);
 
   const adminProps = (isFirstLogin) => {
     return {
@@ -80,6 +82,17 @@ const Header = () => {
     )
       setModal(adminProps(true));
   });
+
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) setIsNav(false);
+    });
+    return () => {
+      window.removeEventListener('resize', () => {
+        if (window.innerWidth > 768) setIsNav(false);
+      });
+    };
+  }, []);
 
   const verify2ndPassword = async (value, path) => {
     await axios
@@ -157,7 +170,17 @@ const Header = () => {
           </svg>
         </Link>
       </div>
-      <nav className={styles.nav}>
+      <button
+        ref={navRef}
+        className={styles.hamBtn}
+        onClick={() => {
+          setIsNav(!isNav);
+        }}
+      >
+        <MdMenu />
+      </button>
+
+      <nav className={`${styles.nav} ${isNav && styles.active}`} ref={sideRef}>
         <ul>
           <li>
             <Link to="/tutorlist">튜터 찾기</Link>
@@ -172,6 +195,7 @@ const Header = () => {
           </li>
         </ul>
       </nav>
+
       {profile.isLogin ? (
         <div className={styles.memberMenu}>
           <ul className={styles.menuContainer}>
@@ -190,7 +214,7 @@ const Header = () => {
               <button
                 className={styles.profileButton}
                 onClick={() => {
-                  setIsMenu(!isMenu);
+                  setIsUserMenu(!isUserMenu);
                 }}
                 ref={menuRef}
               >
@@ -207,7 +231,7 @@ const Header = () => {
             <div className={styles.noti}>기능 추가 될 예정입니다.</div>
           )}
 
-          {isMenu && (
+          {isUserMenu && (
             <ul className={styles.dropdown} ref={dropDownRef}>
               <li>
                 <Link to={`/myprofile`}>나의 프로필</Link>

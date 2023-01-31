@@ -1,4 +1,5 @@
 body {
+  width: 100%;
   margin: 0;
   font-family: 'Pretendard Variable', Pretendard, -apple-system,
     BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI',
@@ -6,6 +7,10 @@ body {
     'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  #root {
+    width: 100%;
+  }
 
   & * {
     margin: 0;
