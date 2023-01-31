@@ -36,6 +36,16 @@
     font-size: $font4;
     font-weight: $font4W;
   }
+
+  @media only screen and (max-width: 443px) {
+    font-size: $font5;
+    font-weight: $font5W;
+  }
+
+  @media only screen and (max-width: 270px) {
+    font-size: $font6;
+    height: $font6W;
+  }
 }
 
 .searchBox {
@@ -60,6 +70,11 @@
   font-size: 24px;
   height: 24px;
   background-color: $snow;
+
+  @media only screen and (max-width: 270px) {
+    font-size: 16px;
+    height: 16px;
+  }
 }
 
 .input {
@@ -73,6 +88,11 @@
 
   &::placeholder {
     text-align: center;
+  }
+
+  @media only screen and (max-width: 270px) {
+    font-size: $font6;
+    font-weight: $font6W;
   }
 }
 
