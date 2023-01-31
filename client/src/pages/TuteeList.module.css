@@ -16,7 +16,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1048px;
   height: 320px;
   background-color: $yellow;
 }
@@ -32,13 +31,18 @@
   font-size: $font3;
   font-weight: $font3W;
   margin-bottom: 21px;
+
+  @media only screen and (max-width: 550px) {
+    font-size: $font4;
+    font-weight: $font4W;
+  }
 }
 
 .searchBox {
   display: flex;
   justify-content: space-evenly;
   background-color: $snow;
-  width: 520px;
+  width: 90%;
   height: 60px;
   border: 3px solid $night;
   border-radius: 5px;
@@ -75,7 +79,7 @@
 .feedContainer {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   margin-bottom: 16px;
 
   .notFound {
@@ -94,7 +98,6 @@
 }
 
 .menuContainer {
-  width: 1048px;
   display: flex;
   justify-content: space-between;
   margin-top: 24px;
@@ -104,6 +107,7 @@
 .menu {
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
 }
 
 .filter {
@@ -113,6 +117,17 @@
   align-items: center;
   font-size: $font6;
   font-weight: $font6W;
+
+  > span {
+    width: 64px;
+    padding: 4px;
+  }
+
+  @media only screen and (max-width: 706px) {
+    align-items: flex-start;
+    justify-content: center;
+    height: 10%;
+  }
 
   .dropDown {
     position: absolute;
@@ -156,6 +171,7 @@
   padding: 4px 10px;
   margin-right: 8px;
   box-shadow: $buttonShadow;
+  margin-bottom: 8px;
 }
 
 .activeMenu {
@@ -169,4 +185,5 @@
   padding: 4px 10px;
   margin-right: 8px;
   box-shadow: $buttonShadow;
+  margin-bottom: 8px;
 }

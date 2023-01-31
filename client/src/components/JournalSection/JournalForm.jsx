@@ -74,26 +74,34 @@ const JournalForm = ({ userData }) => {
               <label htmlFor="noticeBody">
                 <h4>공지사항</h4>
               </label>
-              <p className={styles.noticeArea}>{noticeBody}</p>
+              {noticeBody.length === 0 ? (
+                <p className={styles.noNotice}>공지가 없습니다</p>
+              ) : (
+                <p className={styles.noticeArea}>{noticeBody}</p>
+              )}
             </div>
             <div className={styles.homeworkContainer}>
               <label htmlFor="noticeBody">
                 <h4>과제 체크리스트</h4>
               </label>
               <div className={styles.homeworkArea}>
-                {homeworks?.map((el) => {
-                  return (
-                    <div
-                      key={el.homeworkId}
-                      className={styles.checkBoxContainer}
-                    >
-                      <CheckBox
-                        value={el.homeworkStatus === 'FINISH' ? true : false}
-                      />
-                      <p className={styles.homeworkBody}>{el.homeworkBody}</p>
-                    </div>
-                  );
-                })}
+                {homeworks.length === 0 ? (
+                  <p className={styles.noHomework}>과제가 없습니다</p>
+                ) : (
+                  homeworks?.map((el) => {
+                    return (
+                      <div
+                        key={el.homeworkId}
+                        className={styles.checkBoxContainer}
+                      >
+                        <CheckBox
+                          value={el.homeworkStatus === 'FINISH' ? true : false}
+                        />
+                        <p className={styles.homeworkBody}>{el.homeworkBody}</p>
+                      </div>
+                    );
+                  })
+                )}
               </div>
             </div>
           </div>
