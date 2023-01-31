@@ -66,9 +66,9 @@ public class TutoringService {
                     .findQueryTutoring(profileId, TutoringStatus.valueOf(params.get("get")), pageable);
 
             List<TutoringSimpleResponseDto> list = dto.getContent()
-                            .stream()
-                            .map(TutoringSimpleResponseDto::of)
-                            .collect(Collectors.toList());
+                    .stream()
+                    .map(TutoringSimpleResponseDto::of)
+                    .collect(Collectors.toList());
 
             return new PageImpl<>(list, dto.getPageable(), dto.getTotalElements());
         } catch (IllegalArgumentException e) {
@@ -99,13 +99,14 @@ public class TutoringService {
         Optional.ofNullable(tutoring.getTutoringTitle())
                 .ifPresent(findTutoring::setTutoringTitle);
         TutoringStatus tutoringStatus = tutoring.getTutoringStatus();
-        if (tutoringStatus != null &&
-                (tutoringStatus.equals(TutoringStatus.PROGRESS) ||
+        if (tutoringStatus != null && (
+                        tutoringStatus.equals(TutoringStatus.PROGRESS) ||
                         tutoringStatus.equals(TutoringStatus.WAIT_FINISH) ||
+                        tutoringStatus.equals(TutoringStatus.FINISH) ||
                         tutoringStatus.equals(TutoringStatus.UNCHECK) ||
                         tutoringStatus.equals(TutoringStatus.TUTOR_DELETE) ||
-                        tutoringStatus.equals(TutoringStatus.TUTEE_DELETE))
-        ) {
+                        tutoringStatus.equals(TutoringStatus.TUTEE_DELETE)
+        )) {
             if (findTutoring.getTutoringStatus().name().contains("DELETE")) {
                 findTutoring.setTutoringStatus(TutoringStatus.ALL_DELETE);
             } else {
