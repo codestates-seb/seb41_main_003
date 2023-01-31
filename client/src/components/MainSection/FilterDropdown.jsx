@@ -10,7 +10,7 @@ const FilterDropdown = forwardRef(({ setFilter }, ref) => {
   return (
     <ul className={styles.dropdownContainer} ref={ref}>
       <li className={styles.dropdown}>
-        <button name="createAt" onClick={clickHandler}>
+        <button name="updateAt" onClick={clickHandler}>
           최신 순
         </button>
       </li>
