@@ -193,7 +193,7 @@ public class ProfileService {
                     Sort.by(Sort.Order.desc(sort))
             );
         } else {
-            throw new ServiceLogicException(ErrorCode.WRONG_SORT_PROPERTY);
+            return defaultPageable;
         }
     }
 
