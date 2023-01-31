@@ -9,18 +9,26 @@
   width: 256px;
   height: 400px;
   box-shadow: $buttonShadow;
+
+  @media only screen and (max-width: 550px) {
+    width: 240px;
+  }
+
+  @media only screen and (max-width: 510px) {
+    width: 208px;
+  }
 }
 
 .img {
-  width: 224px;
-  height: 150px;
+  width: 90%;
+  height: 40%;
   object-fit: cover;
   margin-top: 16px;
 }
 
 .nameAndStars {
   margin-top: 10px;
-  width: 217px;
+  width: 90%;
 
   .name {
     font-size: $font4;
@@ -48,24 +56,34 @@
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
-  width: 217px;
+  width: 90%;
   margin-top: 8px;
 }
 
 .subject {
   margin-right: 4px;
   margin-bottom: 4px;
+
+  > div {
+    @media only screen and (max-width: 510px) {
+      width: 56px;
+      height: 24px;
+      font-size: $font6;
+      font-weight: $font6W;
+      padding: 3px 7px;
+    }
+  }
 }
 
 .school {
-  width: 217px;
+  width: 90%;
   margin-top: 12px;
   font-size: $font6;
   font-weight: $font6W;
 }
 
 .bio {
-  width: 217px;
+  width: 90%;
   margin-top: 8px;
   font-size: $para;
   font-weight: $paraW;
