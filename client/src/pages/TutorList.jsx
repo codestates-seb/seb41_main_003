@@ -41,7 +41,7 @@ const TutorList = () => {
   const scrollFunc = async (page) => {
     await axios
       .get(
-        `/users/tutees?subject=${subjectMenu.join()}&search=${search}&sort=${sort}&page=${page}`
+        `/users/tutors?subject=${subjectMenu.join()}&search=${search}&sort=${sort}&page=${page}`
       )
       .then(({ data }) => {
         setTutorData([...tutorData, ...data.data]);
