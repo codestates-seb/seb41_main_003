@@ -17,6 +17,10 @@
   @media only screen and (max-width: 510px) {
     width: 208px;
   }
+
+  @media only screen and (max-width: 443px) {
+    width: 160px;
+  }
 }
 
 .img {
@@ -63,16 +67,6 @@
 .subject {
   margin-right: 4px;
   margin-bottom: 4px;
-
-  > div {
-    @media only screen and (max-width: 510px) {
-      width: 56px;
-      height: 24px;
-      font-size: $font6;
-      font-weight: $font6W;
-      padding: 3px 7px;
-    }
-  }
 }
 
 .school {
@@ -80,6 +74,11 @@
   margin-top: 12px;
   font-size: $font6;
   font-weight: $font6W;
+
+  @media only screen and (max-width: 270px) {
+    font-size: $para;
+    font-weight: $paraW;
+  }
 }
 
 .bio {
@@ -88,4 +87,9 @@
   font-size: $para;
   font-weight: $paraW;
   margin-bottom: 16px;
+
+  @media only screen and (max-width: 270px) {
+    font-size: $sub;
+    font-weight: $subW;
+  }
 }
