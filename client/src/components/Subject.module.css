@@ -19,7 +19,7 @@
     padding: 3px 7px;
   }
 
-  @media only screen and (max-width: 270px) {
+  @media only screen and (max-width: 360px) {
     width: 48px;
     height: 16px;
     font-size: $sub;
@@ -47,7 +47,7 @@
     padding: 3px 7px;
   }
 
-  @media only screen and (max-width: 270px) {
+  @media only screen and (max-width: 360px) {
     width: 48px;
     height: 16px;
     font-size: $sub;
