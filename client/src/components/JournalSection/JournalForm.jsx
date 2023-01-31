@@ -47,7 +47,7 @@ const JournalForm = ({ userData }) => {
         </div>
         <section className={styles.upperPart}>
           <div className={styles.pickerContainer}>
-            <p className={styles.font1}>19</p>
+            <p className={styles.font1}>{dayjs(startTime).date()}</p>
             <p className={styles.font5}>
               {dayjs(startTime).format('YYYY년 M월')}
             </p>
