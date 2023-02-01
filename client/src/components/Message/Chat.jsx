@@ -139,7 +139,7 @@ const Chat = ({
     isOpen: true,
     modalType: 'redAlert',
     props: {
-      text: `이미 취소된 요청입니다.`,
+      text: `이미 매칭되거나 취소된 요청입니다.`,
     },
   };
 
