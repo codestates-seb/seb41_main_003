@@ -119,8 +119,15 @@ public class TutoringService {
     }
 
     public void deleteTutoring(Long tutoringId) {
-        messageService.deleteMessageRoomTutoringId(tutoringId);
-        tutoringRepository.delete(verifiedTutoring(tutoringId));
+        Tutoring tutoring = verifiedTutoring(tutoringId);
+        if (tutoring.getTutoringStatus().equals(TutoringStatus.TUTEE_WAITING) ||
+                tutoring.getTutoringStatus().equals(TutoringStatus.TUTOR_WAITING)
+        ) {
+            messageService.deleteMessageRoomTutoringId(tutoringId);
+            tutoringRepository.delete(tutoring);
+        } else {
+            throw new ServiceLogicException(ErrorCode.TUTORING_STATUS_BAD_REQUEST);
+        }
     }
 
     /* 검증 및 유틸 로직 */
