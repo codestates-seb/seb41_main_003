@@ -98,7 +98,15 @@ https://user-images.githubusercontent.com/77656241/215424663-8bc388f5-a06c-48c4-
 
 ### 백엔드
 
-- REST API 백엔드 서버 구축
+- Java & Spring 기반 REST API 백엔드 서버 어플리캐이션 구현
+- 새로운 기술과 라이브러리를 학습하고 적용
+- 요구 사항 정의서에 기술된 목표 기능 구현
+- QueryDSL 라이브러리를 사용한 쿼리 성능 최적화
+- JUnit5, Mockito를 이용한 단위 테스트 코드를 작성하여 구현 코드에 대한 신뢰성 확보
+- Controller 단위 테스트 기반 REST API SPEC Docs 작성
+- GitHub Actions CI/CD 구축
+- AWS EC2, S3, CodeDeploy, RDS, ElastiCache를 이용한 서버 인프라 구축
+- Nginx 활용한 서버 Reverse Proxy, Load Balancing 적용
 
 ## 프로젝트 문서
 
