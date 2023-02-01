@@ -1,0 +1,57 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  cache:
+    type: redis
+  redis:
+    host: ${AWS_ELASTICACHE_END_POINT}
+    port: 6379
+  datasource:
+    url: ${MAIN_DB_URL}
+    username: ${MAIN_DB_ID}
+    password: ${MAIN_DB_PW}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 1000
+#  sql:
+#    init:
+#      mode: always
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_OAUTH2_MAIN_ID}
+          kakao:
+            client-id: ${KAKAO_OAUTH2_MAIN_ID}
+logging.level:
+  org.hibernate.SQL: debug
+  com:
+    amazonaws:
+      util:
+        EC2MetadataUtils: error
+  org:
+    hibernate:
+      type:
+        descriptor:
+          sql:
+            org.hibernate.type.descriptor.sql.BasicBinder: trace
+    springframework:
+      web.servlet: debug
+cloud:
+  aws:
+    s3:
+      bucket: image-test-suyoung
+      dir: /image
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

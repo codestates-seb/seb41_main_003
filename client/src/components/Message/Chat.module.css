@@ -1,0 +1,107 @@
+@import url('../../default.css');
+
+.chatContainer {
+  display: inline-block;
+  max-width: 50%;
+  position: relative;
+  margin-bottom: 25px;
+
+  /* 메세지 내용 위로 안넘어 가게 */
+
+  h5 {
+    width: 120px;
+    font-size: $font6;
+    font-weight: $font6W;
+    margin-bottom: 1px;
+    position: absolute;
+    top: 0;
+  }
+
+  .text {
+    margin-top: 22px;
+    background-color: $white;
+    border-radius: 5px;
+    padding: 8px;
+    overflow: hidden;
+    word-wrap: break-word;
+  }
+
+  .time {
+    font-weight: 500;
+    position: absolute;
+    bottom: -16px;
+    left: 2px;
+    font-size: 11px;
+    text-align: left;
+  }
+
+  .matchingBox {
+    background-color: $night;
+    padding: 8px;
+    border-radius: 5px;
+    width: 221px;
+    height: 79px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    margin-top: 22px;
+
+    p {
+      color: $white;
+      font-size: $font6;
+      font-weight: $font6W;
+    }
+  }
+
+  .matchingComent {
+    background-color: $night;
+    border-radius: 5px;
+    margin-top: 22px;
+
+    > p {
+      color: $white;
+      padding: 8px;
+      font-weight: $font5W;
+    }
+  }
+
+  &.sendChat {
+    align-self: end;
+
+    .time {
+      left: auto;
+      right: 0;
+    }
+
+    .matchingBox,
+    .matchingComent {
+      margin-top: 0;
+    }
+
+    .text {
+      margin-top: 0;
+      background-color: $baby;
+    }
+  }
+}
+
+.requestCancelBtn {
+  background-color: $red;
+  width: 205px;
+  height: 36px;
+  color: $white;
+  padding: 6px;
+  border-radius: 5px;
+  font-weight: $font5W;
+  font-size: $font5;
+}
+
+.checkRequestBtn {
+  background-color: $white;
+  width: 205px;
+  height: 36px;
+  padding: 6px;
+  border-radius: 5px;
+  font-weight: $font5W;
+  font-size: $font5;
+}

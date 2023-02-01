@@ -1,0 +1,66 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    url: jdbc:h2:mem:test;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+    #    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        # Fetch size 설정 1+N 문제 임시 해결
+        default_batch_fetch_size: 1000
+        # Entity에 예약어가 있다면 '' 자동 추가
+  #        auto_quote_keyword: true
+  sql:
+    init:
+      mode: always
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_OAUTH2_MAIN_ID}
+          kakao:
+            client-id: ${KAKAO_OAUTH2_MAIN_ID}
+# 디버깅 용이하게 하기 위한 로깅 레벨 수정
+logging.level:
+  org.hibernate.SQL: debug
+  com:
+    amazonaws:
+      util:
+        EC2MetadataUtils: error
+  org:
+    hibernate:
+      type:
+        descriptor:
+          sql:
+            org.hibernate.type.descriptor.sql.BasicBinder: trace
+    springframework:
+      web.servlet: debug
+cloud:
+  aws:
+    s3:
+      bucket: image-test-suyoung
+      dir: /image
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

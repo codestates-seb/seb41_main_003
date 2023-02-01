@@ -1,0 +1,133 @@
+@import url('../../default.css');
+
+.container {
+  width: 344px;
+  background-color: $white;
+  border-radius: 5px;
+  padding: 40px;
+  box-shadow: $bigShadow;
+  position: relative;
+}
+
+.required {
+  display: block;
+  text-align: right;
+  margin-top: 16px;
+  font-size: $sub;
+  font-weight: 500;
+}
+
+.requiredIcon {
+  position: relative;
+  top: -4px;
+  margin: 0 8px;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: $red;
+}
+
+.userImage {
+  position: relative;
+  width: 264px;
+  height: 264px;
+
+  > img {
+    width: 264px;
+    height: 264px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  > button {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    background-color: $night;
+    border-radius: 50%;
+    box-shadow: $buttonShadow;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      font-size: 24px;
+      fill: $white;
+    }
+  }
+
+  > input {
+    width: 200px;
+    height: 100px;
+    z-index: 1;
+    position: absolute;
+    bottom: 10px;
+    left: 200px;
+    background-color: $snow;
+    border-radius: 5px;
+  }
+}
+
+.userInfo {
+  width: 264px;
+
+  > .inputContain {
+    margin-bottom: 24px;
+
+    &:first-child {
+      margin-bottom: 12px;
+    }
+  }
+
+  .vali {
+    display: inline-block;
+    height: 12px;
+    font-size: $sub;
+    font-weight: $subW;
+    color: $red;
+  }
+
+  .desc {
+    display: inline-block;
+    height: 12px;
+    font-size: $sub;
+    font-weight: $subW;
+    color: $nickel;
+  }
+}
+
+.subject {
+  font-size: $font6;
+  font-weight: $font6W;
+  padding-left: 4px;
+}
+
+.btnContain {
+  width: 264px;
+  margin-top: 4px;
+  margin-bottom: 32px;
+
+  > button {
+    width: 64px;
+    height: 24px;
+    border-radius: 10px;
+    background-color: $nickel;
+    color: $white;
+    font-size: $font6;
+    font-weight: $font6W;
+    line-height: 24px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+
+    &.active {
+      background-color: $dirty;
+    }
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+}

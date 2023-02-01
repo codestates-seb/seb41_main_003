@@ -1,0 +1,14 @@
+.app {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding-bottom: 160px;
+  position: relative;
+  display: flex;
+}
+
+.content {
+  width: 100%;
+  min-height: 100%;
+  margin-top: 64px;
+}

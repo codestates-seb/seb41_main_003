@@ -1,0 +1,71 @@
+@import url('../../default.css');
+
+.view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background-color: $white;
+  padding: 16px 0;
+  width: 522px;
+
+  > button {
+    margin-bottom: 32px;
+  }
+}
+
+.text {
+  font-size: $font5;
+  font-weight: $font5W;
+  margin: 32px 0;
+  white-space: pre-line;
+  text-align: center;
+}
+
+.fileBox {
+  display: flex;
+
+  > input:first-child {
+    display: inline-block;
+    height: 32px;
+    padding: 0 10px;
+    vertical-align: middle;
+    border: 1px solid $silver;
+    border-radius: 5px 0 0 5px;
+    width: 78%;
+    color: $silver;
+  }
+
+  > label {
+    display: inline-block;
+    padding: 8px 16px;
+    color: $black;
+    font-size: $para;
+    font-weight: $paraW;
+    vertical-align: middle;
+    background-color: $silver;
+    cursor: pointer;
+    height: 32px;
+    width: 104px;
+    border-radius: 0 5px 5px 0;
+  }
+
+  > input:last-child {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+  }
+}
+
+.buttonBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 280px;
+  margin-bottom: 32px;
+  margin-top: 32px;
+}

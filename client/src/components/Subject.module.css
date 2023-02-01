@@ -1,0 +1,57 @@
+@import url('../default.css');
+
+.blueSubject {
+  color: $white;
+  background-color: $dirty;
+  border-radius: 10px;
+  width: 64px;
+  height: 24px;
+  font-size: $font6;
+  font-weight: $font6W;
+  padding: 3px 7px;
+  text-align: center;
+
+  @media only screen and (max-width: 510px) {
+    width: 56px;
+    height: 24px;
+    font-size: $font6;
+    font-weight: $font6W;
+    padding: 3px 7px;
+  }
+
+  @media only screen and (max-width: 443px) {
+    width: 48px;
+    height: 16px;
+    font-size: $sub;
+    font-weight: $subW;
+    padding: 1px 5px;
+  }
+}
+
+.graySubject {
+  color: $white;
+  background-color: $nickel;
+  border-radius: 10px;
+  width: 64px;
+  height: 24px;
+  font-size: $font6;
+  font-weight: $font6W;
+  padding: 3px 7px;
+  text-align: center;
+
+  @media only screen and (max-width: 510px) {
+    width: 56px;
+    height: 24px;
+    font-size: $font6;
+    font-weight: $font6W;
+    padding: 3px 7px;
+  }
+
+  @media only screen and (max-width: 443px) {
+    width: 48px;
+    height: 16px;
+    font-size: $sub;
+    font-weight: $subW;
+    padding: 1px 5px;
+  }
+}

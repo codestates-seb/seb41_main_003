@@ -1,0 +1,21 @@
+@import url('../default.css');
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+  background-color: $snow;
+}
+
+.container {
+  max-width: 1048px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 0;
+
+  > div:first-child {
+    position: sticky;
+    top: 80px;
+  }
+}

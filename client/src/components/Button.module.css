@@ -1,0 +1,77 @@
+@import url('../default.css');
+
+.default {
+  background-color: $white;
+  padding: 8px 16px;
+  font-size: $font4;
+  font-weight: $font4W;
+  color: black;
+  border-radius: 5px;
+  box-shadow: $buttonShadow;
+}
+
+.nightBlue {
+  background-color: $night;
+  padding: 8px 16px;
+  font-size: $font4;
+  font-weight: $font4W;
+  color: $white;
+  border-radius: 5px;
+  box-shadow: $buttonShadow;
+}
+
+.red {
+  background-color: $red;
+  padding: 8px 16px;
+  font-size: $font4;
+  font-weight: $font4W;
+  color: $white;
+  border-radius: 5px;
+}
+
+.snow {
+  background-color: $snow;
+  padding: 8px 16px;
+  font-size: $font4;
+  font-weight: $font4W;
+  color: black;
+  border-radius: 5px;
+  box-shadow: $buttonShadow;
+}
+
+.silver {
+  background-color: $silver;
+  padding: 8px 16px;
+  font-size: $font4;
+  font-weight: $font4W;
+  color: black;
+  border-radius: 5px;
+  box-shadow: $buttonShadow;
+}
+
+.top {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: $night;
+  box-shadow: $buttonShadow;
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 3;
+
+  > span {
+    color: $snow;
+    font-size: $font5;
+    font-weight: $font5W;
+  }
+
+  > svg {
+    fill: $snow;
+    margin-bottom: 4px;
+  }
+}

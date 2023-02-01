@@ -1,0 +1,138 @@
+@import url('../../default.css');
+
+.cardContainer {
+  width: 344px;
+  height: 100%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: $bigShadow;
+  border-radius: 5px;
+  margin-right: 8px;
+  margin-bottom: 32px;
+  background-color: $white;
+  position: sticky;
+  top: 80px;
+
+  .userImage {
+    position: relative;
+    width: 264px;
+    height: 264px;
+
+    > img {
+      width: 264px;
+      height: 264px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    > button {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      width: 40px;
+      height: 40px;
+      background-color: $night;
+      border-radius: 50%;
+      box-shadow: $buttonShadow;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      svg {
+        font-size: 24px;
+        fill: $white;
+      }
+    }
+  }
+
+  .textContainer {
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+  }
+
+  .starLine {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+    &.overName {
+      flex-direction: column;
+    }
+  }
+
+  .starBox {
+    display: flex;
+    align-self: flex-end;
+
+    p {
+      margin-left: 5px;
+      margin-top: 2.5px;
+    }
+  }
+
+  .subjects {
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      padding-bottom: 32px;
+
+      > div {
+        margin-right: 10px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .toggleContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+  }
+
+  .announceText1 {
+    font-size: $font4;
+    font-weight: $font4W;
+    margin-bottom: 8px;
+  }
+
+  .announceText2 {
+    font-size: $font6;
+    font-weight: $font4W;
+  }
+
+  .announceOnText {
+    color: #e74c3c;
+  }
+
+  .font1 {
+    font-size: $font1;
+    font-weight: $font1W;
+  }
+
+  .font2 {
+    font-size: $font2;
+    font-weight: $font2W;
+  }
+
+  .font4 {
+    font-size: $font4;
+    font-weight: $font4W;
+    margin-bottom: 8px;
+    margin-top: 16px;
+  }
+
+  .paragragh {
+    font-size: $para;
+    font-weight: $paraW;
+  }
+
+  .paragraghMoon {
+    font-size: $para;
+    font-weight: $paraW;
+    color: $moon;
+  }
+}

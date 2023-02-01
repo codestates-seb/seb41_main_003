@@ -1,0 +1,58 @@
+@import url('../default.css');
+
+.wrapper {
+  width: 100%;
+  background-color: $snow;
+  overflow: hidden;
+  height: 100%;
+}
+
+.container {
+  max-width: 1048px;
+  margin: 0 auto;
+
+  h2 {
+    font-size: $font1;
+    font-weight: $font1W;
+    color: $black;
+    margin: 24px 0 16px;
+  }
+
+  .filter {
+    margin-bottom: 36px;
+
+    > * {
+      font-size: $font5;
+      font-weight: $font5W;
+      color: $moon;
+    }
+
+    > .active {
+      color: $black;
+    }
+  }
+
+  .tutoringList {
+    width: 100%;
+    height: 1px;
+    min-height: 500px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-content: flex-start;
+  }
+}
+
+.noContent {
+  background-color: $silver;
+  border-radius: 5px;
+  box-shadow: $defaultShadow;
+
+  > p {
+    padding: 70px;
+    font-size: $font4;
+    font-weight: $font4W;
+    text-align: center;
+  }
+}

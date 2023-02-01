@@ -1,0 +1,50 @@
+@import url('../../default.css');
+
+.view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background-color: $white;
+  padding: 16px 0;
+  width: 522px;
+
+  > button {
+    margin-bottom: 32px;
+  }
+}
+
+.text {
+  font-size: $font5;
+  font-weight: $font5W;
+  margin: 32px 0;
+  white-space: pre-line;
+  text-align: center;
+}
+
+.input {
+  width: 344px;
+  margin-bottom: 16px;
+
+  input {
+    margin-bottom: 2px;
+  }
+
+  span {
+    display: inline-block;
+    height: 12px;
+    margin-left: 4px;
+    font-size: $sub;
+    font-weight: $subW;
+    color: $red;
+  }
+}
+
+.buttonBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 168px;
+  margin-bottom: 32px;
+}

@@ -1,0 +1,70 @@
+@import url('../../default.css');
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 123px;
+  margin-right: 16px;
+  position: relative;
+
+  .font1 {
+    font-size: $font1;
+    font-weight: $font1W;
+  }
+
+  .font4 {
+    font-size: $font5;
+    font-weight: $font4W;
+    margin-top: -7px;
+  }
+
+  .font6 {
+    font-size: $font6;
+    font-weight: $font6W;
+  }
+}
+
+.day {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.iconButtonT {
+  margin-top: 8px;
+}
+
+.time {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.timePopup {
+  position: absolute;
+  left: -4px;
+  bottom: -84px;
+  background-color: $white;
+  box-shadow: $buttonShadow;
+  display: flex;
+  padding: 16px;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &:first-child {
+      margin-right: 16px;
+    }
+  }
+
+  span {
+    font-size: $font6;
+    font-weight: 700;
+    display: inline-block;
+    width: 70px;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+}

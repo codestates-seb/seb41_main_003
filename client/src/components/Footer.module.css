@@ -1,0 +1,45 @@
+@import url('../default.css');
+
+.footer {
+  z-index: 1;
+  width: 100%;
+  height: 160px;
+  background-color: $coal;
+  position: absolute;
+  bottom: 0;
+}
+
+.container {
+  max-width: 1048px;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logos {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-left: 32px;
+}
+
+.copyright {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  margin-right: 32px;
+
+  > div {
+    color: $white;
+    font-size: $para;
+    font-weight: $paraW;
+  }
+
+  .name {
+    margin-top: 16px;
+    font-size: $sub;
+    font-weight: $sub;
+  }
+}
