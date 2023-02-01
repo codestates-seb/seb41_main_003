@@ -7,6 +7,7 @@ import com.mainproject.server.constant.ProfileStatus;
 import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.image.entity.ProfileImage;
 import com.mainproject.server.message.dto.MessageRoomPostDto;
+import com.mainproject.server.message.dto.MessageRoomQueryDto;
 import com.mainproject.server.message.dto.MessageRoomSimpleResponseDto;
 import com.mainproject.server.message.entity.Message;
 import com.mainproject.server.message.entity.MessageRoom;
@@ -16,6 +17,7 @@ import com.mainproject.server.message.service.MessageService;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.service.ProfileService;
 import com.mainproject.server.tutoring.repository.TutoringRepository;
+import com.mainproject.server.utils.ResponseStubData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -145,14 +147,13 @@ class MessageServiceTest {
         Profile profile = Profile
                 .builder()
                 .profileStatus(ProfileStatus.TUTEE).build();
-        MessageRoom testMessageRoom = createTestMessageRoom();
-        Page<MessageRoom> page = new PageImpl<>(
+        MessageRoomQueryDto testMessageRoom = ResponseStubData.createMessageRoomQueryDto();
+        Page<MessageRoomQueryDto> page = new PageImpl<>(
                 List.of(testMessageRoom, testMessageRoom),
                 pageable, 2);
-        given(profileService.verifiedProfileById(anyLong()))
-                .willReturn(profile);
-        given(messageRoomRepository.findAllByTutorProfileIdOrTuteeProfileId(
-                anyLong(), anyLong(), any(Pageable.class)
+
+        given(messageRoomRepository.findQueryMessageRoom(
+                anyLong(), any(Pageable.class)
         )).willReturn(page);
         // When
         Page<MessageRoomSimpleResponseDto> messageRooms = messageService.getMessageRooms(profileId, pageable);
@@ -168,24 +169,4 @@ class MessageServiceTest {
         assertThat(messageRooms.getTotalElements()).isEqualTo(2);
     }
 
-    private MessageRoom createTestMessageRoom() {
-        Profile pro = Profile.builder()
-                .profileId(1L)
-                .profileStatus(ProfileStatus.TUTEE)
-                .name("test")
-                .profileImage(ProfileImage.builder().url("testUrl").build())
-                .build();
-        Message testMessage = Message.builder()
-                .messageContent("test")
-                .sender(pro)
-                .build();
-        return MessageRoom.builder()
-                .messageRoomId(1L)
-                .messageStatus(MessageStatus.CHECK)
-                .tutoringId(1L)
-                .tutor(pro)
-                .tutee(pro)
-                .messages(Set.of(testMessage))
-                .build();
-    }
 }

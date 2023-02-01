@@ -72,16 +72,14 @@ public class MessageService {
             Long profileId,
             Pageable pageable
     ) {
-        Profile profile = profileService.verifiedProfileById(profileId);
-        ProfileStatus profileStatus = profile.getProfileStatus();
-        Page<MessageRoom> messageRooms =
-                messageRoomRepository.findAllByTutorProfileIdOrTuteeProfileId(
-                        profileId, profileId, pageable
+        Page<MessageRoomQueryDto> messageRooms =
+                messageRoomRepository.findQueryMessageRoom(
+                        profileId, pageable
                 );
-        List<MessageRoom> messageRoomList = messageRooms.getContent();
+        List<MessageRoomQueryDto> messageRoomList = messageRooms.getContent();
         List<MessageRoomSimpleResponseDto> simpleResponseDtoList =
                 messageRoomList.stream()
-                        .map(mr -> MessageRoomSimpleResponseDto.of(profileStatus, mr))
+                        .map(MessageRoomSimpleResponseDto::of)
                         .collect(Collectors.toList());
 
         return new PageImpl<>(
