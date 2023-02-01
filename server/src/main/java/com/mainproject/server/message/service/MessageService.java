@@ -117,22 +117,15 @@ public class MessageService {
 
     public void deleteMessageRoom(Long messageRoomId) {
         MessageRoom messageRoom = verifiedMessageRoom(messageRoomId);
-        if (messageRoom.getTutoringId() != null) {
-            Long tutoringId = messageRoom.getTutoringId();
-            Tutoring tutoring = tutoringRepository.findById(tutoringId)
-                    .orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
-            if (tutoring.getTutoringStatus().equals(TutoringStatus.TUTOR_WAITING) ||
-                    tutoring.getTutoringStatus().equals(TutoringStatus.TUTEE_WAITING)
-            ) {
-                tutoringRepository.delete(tutoring);
-            } else {
-                throw new ServiceLogicException(ErrorCode.PROGRESS_TUTORING_BAD_REQUEST);
-            }
+        if (messageRoom.getTutoringId() == null) {
+            messageRepository.deleteAllById(messageRoom.getMessages()
+                    .stream().map(Message::getMessageId)
+                    .collect(Collectors.toList()));
+            messageRoomRepository.deleteById(messageRoomId);
+        } else {
+            throw new ServiceLogicException(ErrorCode.PROGRESS_TUTORING_BAD_REQUEST);
         }
-        messageRepository.deleteAllById(messageRoom.getMessages()
-                .stream().map(Message::getMessageId)
-                .collect(Collectors.toList()));
-        messageRoomRepository.deleteById(messageRoomId);
+
     }
 
     public void sendTutoringRequestMessage(
