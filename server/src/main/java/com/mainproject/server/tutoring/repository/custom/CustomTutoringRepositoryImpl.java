@@ -63,8 +63,7 @@ public class CustomTutoringRepositoryImpl
                 );
             } else {
                 query.where(
-                        tutoring.tutoringStatus.eq(TutoringStatus.TUTEE_DELETE)
-                                .or(tutoring.tutoringStatus.eq(TutoringStatus.PROGRESS))
+                        tutoring.tutoringStatus.eq(TutoringStatus.PROGRESS)
                                 .or(tutoring.tutoringStatus.eq(TutoringStatus.UNCHECK))
                                 .or(tutoring.tutoringStatus.eq(TutoringStatus.WAIT_FINISH))
                 );
@@ -77,8 +76,7 @@ public class CustomTutoringRepositoryImpl
                 );
             } else {
                 query.where(
-                        tutoring.tutoringStatus.eq(TutoringStatus.TUTOR_DELETE)
-                                .or(tutoring.tutoringStatus.eq(TutoringStatus.PROGRESS))
+                        tutoring.tutoringStatus.eq(TutoringStatus.PROGRESS)
                                 .or(tutoring.tutoringStatus.eq(TutoringStatus.UNCHECK))
                                 .or(tutoring.tutoringStatus.eq(TutoringStatus.WAIT_FINISH))
                 );
