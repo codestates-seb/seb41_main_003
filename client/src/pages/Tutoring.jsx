@@ -41,7 +41,8 @@ const Tutoring = () => {
         <div className={styles.title}>과외 관리</div>
         <div className={styles.listContainer}>
           {Object.keys(tutoring).length !== 0 ? (
-            tutoring.tutoringStatus === 'FINISH' ? (
+            tutoring.tutoringStatus === 'FINISH' ||
+            tutoring.tutoringStatus.includes('DELETE') ? (
               <FinishedJournalList
                 tutoring={tutoring}
                 setTutoring={setTutoring}

@@ -18,7 +18,8 @@ const Tutoring = ({ tutoring }) => {
   return (
     <li
       className={`${styles.tutoring} ${
-        tutoringStatus === 'FINISH' && styles.finish
+        (tutoringStatus === 'FINISH' || tutoringStatus.includes('DELETE')) &&
+        styles.finish
       }`}
     >
       <Link to="/tutoring" state={{ tutoringId }}>

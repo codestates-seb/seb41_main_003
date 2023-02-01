@@ -1,9 +1,9 @@
 import styles from './FinishedJournalList.module.css';
 import { HiSpeakerphone } from 'react-icons/hi';
 import { ButtonNightBlue, ButtonRed } from '../Button';
-import { useSetRecoilState } from 'recoil';
+import { useResetRecoilState, useSetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import PropType from 'prop-types';
@@ -27,8 +27,10 @@ const FinishedJournalList = ({
     updateAt: '',
   });
   const setModal = useSetRecoilState(ModalState);
+  const resetModal = useResetRecoilState(ModalState);
   const userStatus = sessionStorage.getItem('userStatus');
   const { tutoringId } = useLocation().state;
+  const navigate = useNavigate();
 
   const reviewDetailProps = {
     isOpen: true,
@@ -85,7 +87,27 @@ const FinishedJournalList = ({
     modalType: 'redConfirm',
     props: {
       text: '과외를 삭제하시겠습니까? \n 삭제 시 과외 및 일지를 다시 열람할 수 없습니다.',
-      //TODO: modalHandler로 과외 상태 변경 patch 요청 보내기
+      modalHandler: () => {
+        axios
+          .patch(`/tutoring/details/${tutoringId}`, {
+            tutoringStatus: `${userStatus}_DELETE`,
+          })
+          .then(() => {
+            setModal({
+              isOpen: true,
+              modalType: 'handlerAlert',
+              backDropHandle: true,
+              props: {
+                text: `삭제가 완료되었습니다.`,
+                modalHandler: () => {
+                  navigate('/tutoringlist');
+                  resetModal();
+                },
+              },
+            });
+          })
+          .catch((err) => console.log(err));
+      },
     },
   };
 
