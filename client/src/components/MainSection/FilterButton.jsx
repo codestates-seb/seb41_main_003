@@ -1,4 +1,4 @@
-import styles from '../../pages/TuteeList.module.css';
+import styles from '../../pages/FeedList.module.css';
 import PropType from 'prop-types';
 
 const MenuButtons = ({ subjectMenu, subjectHandler }) => {
