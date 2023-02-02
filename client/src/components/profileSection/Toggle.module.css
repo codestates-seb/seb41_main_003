@@ -4,6 +4,10 @@
   position: relative;
   width: 72px;
   height: 40px;
+  @media screen and (max-width: 1024px) {
+    width: 56px;
+    height: 30px;
+  }
 
   button {
     position: absolute;
@@ -34,12 +38,19 @@
       content: '';
       position: absolute;
       top: 10px;
-      left: 45px;
+      right: 10px;
       width: 19px;
       height: 19px;
       border-radius: 50%;
       background-color: white;
       transition: 0.4s;
+
+      @media screen and (max-width: 1024px) {
+        width: 19px;
+        height: 19px;
+        top: 6px;
+        right: 6px;
+      }
     }
   }
 
@@ -49,6 +60,9 @@
     &::before {
       transform: translateX(-35px);
       background-color: white;
+      @media screen and (max-width: 1024px) {
+        transform: translateX(-26px);
+      }
     }
   }
 }
