@@ -105,15 +105,15 @@
     padding: 0 8px;
     grid-template-columns: repeat(2, 1fr);
   }
+}
 
-  .notFound {
-    width: 100%;
-    font-size: $font3;
-    font-weight: $font3W;
-    color: $nickel;
-    text-align: center;
-    padding: 320px 0;
-  }
+.notFound {
+  width: 100%;
+  font-size: $font3;
+  font-weight: $font3W;
+  color: $nickel;
+  text-align: center;
+  padding: 320px 0;
 }
 
 .menuContainer {
