@@ -17,33 +17,38 @@
   align-items: center;
   height: 320px;
   background-color: $yellow;
-}
 
-.bannerContents {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.bannerText {
-  font-size: $font3;
-  font-weight: $font3W;
-  margin-bottom: 21px;
-
-  @media only screen and (max-width: 550px) {
-    font-size: $font4;
-    font-weight: $font4W;
+  @media only screen and (max-width: 480px) {
+    height: 240px;
   }
 
-  @media only screen and (max-width: 443px) {
-    font-size: $font5;
-    font-weight: $font5W;
+  @media only screen and (max-width: 360px) {
+    height: 200px;
   }
 
-  @media only screen and (max-width: 270px) {
-    font-size: $font6;
-    height: $font6W;
+  .bannerContents {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .bannerText {
+    font-size: $font3;
+    font-weight: $font3W;
+    margin-bottom: 21px;
+
+    @media only screen and (max-width: 550px) {
+      font-size: $font4;
+    }
+
+    @media only screen and (max-width: 480px) {
+      font-size: $font5;
+    }
+
+    @media only screen and (max-width: 360px) {
+      font-size: $font6;
+    }
   }
 }
 
