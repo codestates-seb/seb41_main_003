@@ -8,7 +8,8 @@
   border-radius: 10px;
   background-color: $white;
   padding: 16px 0;
-  width: 522px;
+  width: 70%;
+  max-width: 522px;
 
   > button {
     margin-bottom: 32px;
@@ -21,10 +22,16 @@
   margin: 32px 0;
   white-space: pre-line;
   text-align: center;
+
+  @media screen and (max-width: 768px) {
+    font-size: $font6;
+    font-weight: $font6W;
+  }
 }
 
 .input {
-  width: 344px;
+  max-width: 344px;
+  width: 70%;
   margin-bottom: 16px;
 
   input {
