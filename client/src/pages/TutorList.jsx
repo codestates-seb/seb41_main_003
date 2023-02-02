@@ -1,5 +1,5 @@
 import FeedItem from '../components/MainSection/FeedItem';
-import styles from '../pages/TutorList.module.css';
+import styles from '../pages/FeedList.module.css';
 import { MdSearch, MdFilterList } from 'react-icons/md';
 import { useState, useEffect, useRef } from 'react';
 import FilterDropdown from '../components/MainSection/FilterDropdown';
@@ -111,10 +111,9 @@ const TutorList = () => {
             subjectMenu={subjectMenu}
             subjectHandler={subjectHandler}
           />
-          <div
+          <button
             className={styles.filter}
             onClick={filterHandler}
-            aria-hidden="true"
             ref={menuRef}
           >
             <MdFilterList className={styles.mdFilterList} />
@@ -122,7 +121,7 @@ const TutorList = () => {
             {isOpen ? (
               <FilterDropdown setFilter={setSort} ref={dropdownRef} />
             ) : null}
-          </div>
+          </button>
         </div>
         <div className={styles.feedContainer}>
           {tutorData?.map((tutor) => (

@@ -1,5 +1,5 @@
 import FeedItem from '../components/MainSection/FeedItem';
-import styles from '../pages/TuteeList.module.css';
+import styles from '../pages/FeedList.module.css';
 import { MdSearch, MdFilterList } from 'react-icons/md';
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';

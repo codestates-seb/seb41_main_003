@@ -2,7 +2,7 @@
 
 .wrapper {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: $white;
 }
 
@@ -90,10 +90,21 @@
 }
 
 .feedContainer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(320px, auto);
+  gap: 8px;
   margin-bottom: 16px;
+
+  @media screen and (max-width: 768px) {
+    padding: 0 8px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media screen and (max-width: 480px) {
+    padding: 0 8px;
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   .notFound {
     width: 100%;
@@ -103,11 +114,6 @@
     text-align: center;
     padding: 320px 0;
   }
-}
-
-.list {
-  margin-right: 6px;
-  margin-bottom: 8px;
 }
 
 .menuContainer {
@@ -129,6 +135,7 @@
   align-items: center;
   font-size: $font6;
   font-weight: $font6W;
+  cursor: pointer;
 
   > span {
     width: 64px;
@@ -184,6 +191,14 @@
   margin-right: 8px;
   box-shadow: $buttonShadow;
   margin-bottom: 8px;
+
+  @media screen and (max-width: 768px) {
+    font-size: $font6;
+    font-weight: $font6W;
+    width: 60px;
+    height: 24px;
+    padding: 4px 2px;
+  }
 }
 
 .activeMenu {
@@ -198,4 +213,12 @@
   margin-right: 8px;
   box-shadow: $buttonShadow;
   margin-bottom: 8px;
+
+  @media screen and (max-width: 768px) {
+    font-size: $font6;
+    font-weight: $font6W;
+    width: 60px;
+    height: 24px;
+    padding: 4px 2px;
+  }
 }

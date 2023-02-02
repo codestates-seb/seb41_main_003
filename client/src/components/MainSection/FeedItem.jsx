@@ -10,7 +10,8 @@ const FeedItem = ({ data, userStatus }) => {
       <img className={styles.img} alt="프로필 이미지" src={profileImage?.url} />
       <div className={styles.nameAndStars}>
         <div className={styles.name}>
-          {userStatus === 'TUTOR' ? `${name} 튜터` : `${name} 튜티`}
+          <span>{name}</span>
+          <span>{userStatus === 'TUTOR' ? '튜터' : '튜티'}</span>
         </div>
         {userStatus === 'TUTOR' && (
           <div className={styles.stars}>

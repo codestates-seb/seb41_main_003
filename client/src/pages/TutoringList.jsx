@@ -37,10 +37,6 @@ const TutoringList = () => {
 
   useEffect(() => {
     getTutoringList();
-  }, []);
-
-  useEffect(() => {
-    getTutoringList();
   }, [page, isFinished]);
 
   return (
@@ -82,8 +78,9 @@ const TutoringList = () => {
             <Loading />
           )}
         </ul>
-
-        <Pagination pageInfo={pageInfo} setPage={setPage} />
+        <div className={styles.pageNation}>
+          <Pagination pageInfo={pageInfo} setPage={setPage} />
+        </div>
       </div>
     </div>
   );

@@ -6,28 +6,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 256px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
   box-shadow: $buttonShadow;
-
-  @media only screen and (max-width: 550px) {
-    width: 240px;
-  }
-
-  @media only screen and (max-width: 510px) {
-    width: 208px;
-  }
-
-  @media only screen and (max-width: 443px) {
-    width: 160px;
-  }
 }
 
 .img {
   width: 90%;
-  height: 40%;
+  height: 200px;
   object-fit: cover;
+  overflow: hidden;
   margin-top: 16px;
+  @media screen and (max-width: 768px) {
+    height: 150px;
+  }
+
+  @media screen and (max-width: 480px) {
+    height: 120px;
+  }
 }
 
 .nameAndStars {
@@ -35,9 +31,18 @@
   width: 90%;
 
   .name {
-    font-size: $font4;
-    font-weight: $font4W;
     margin-bottom: 4px;
+
+    > span:first-child {
+      font-size: $font4;
+      font-weight: $font4W;
+      margin-right: 4px;
+    }
+
+    > span:last-child {
+      font-size: $font6;
+      font-weight: $font6W;
+    }
   }
 }
 

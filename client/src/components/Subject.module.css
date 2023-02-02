@@ -11,20 +11,12 @@
   padding: 3px 7px;
   text-align: center;
 
-  @media only screen and (max-width: 510px) {
-    width: 56px;
-    height: 24px;
-    font-size: $font6;
-    font-weight: $font6W;
-    padding: 3px 7px;
-  }
-
-  @media only screen and (max-width: 443px) {
+  @media only screen and (max-width: 768px) {
     width: 48px;
-    height: 16px;
+    height: 18px;
     font-size: $sub;
-    font-weight: $subW;
-    padding: 1px 5px;
+    font-weight: $font5W;
+    padding: 3px 7px;
   }
 }
 
@@ -39,19 +31,11 @@
   padding: 3px 7px;
   text-align: center;
 
-  @media only screen and (max-width: 510px) {
-    width: 56px;
-    height: 24px;
-    font-size: $font6;
-    font-weight: $font6W;
-    padding: 3px 7px;
-  }
-
-  @media only screen and (max-width: 443px) {
+  @media only screen and (max-width: 768px) {
     width: 48px;
-    height: 16px;
+    height: 18px;
     font-size: $sub;
-    font-weight: $subW;
-    padding: 1px 5px;
+    font-weight: $font5W;
+    padding: 3px 7px;
   }
 }
