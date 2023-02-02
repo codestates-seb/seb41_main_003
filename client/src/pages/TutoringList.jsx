@@ -37,7 +37,6 @@ const TutoringList = () => {
 
   useEffect(() => {
     getTutoringList();
-    console.log(2);
   }, [page, isFinished]);
 
   return (

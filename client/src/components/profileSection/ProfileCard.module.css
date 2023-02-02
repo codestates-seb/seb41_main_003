@@ -1,41 +1,83 @@
 @import url('../../default.css');
 
 .cardContainer {
-  width: 344px;
-  height: 100%;
   padding: 40px;
   display: flex;
   flex-direction: column;
   box-shadow: $bigShadow;
   border-radius: 5px;
-  margin-right: 8px;
-  margin-bottom: 32px;
   background-color: $white;
   position: sticky;
   top: 80px;
+  @media screen and (max-width: 1024px) {
+    padding: 24px;
+  }
+  @media screen and (max-width: 768px) {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    column-gap: 16px;
+    position: static;
+  }
+  @media screen and (max-width: 480px) {
+    display: grid;
+    grid-template-columns: none;
+    row-gap: 16px;
+  }
 
-  > img {
-    width: 264px;
-    height: 264px;
-    border-radius: 50%;
-    object-fit: cover;
+  .userImg {
+    width: 100%;
+    position: relative;
+    aspect-ratio: 1/1;
+
+    &::after {
+      padding-bottom: 100%;
+      display: block;
+      content: '';
+    }
+
+    > .imgContain {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+
+      > img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      align-self: center;
+    }
   }
 }
 
 .textContainer {
-  height: 100%;
   margin-top: 16px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-}
+  @media screen and (max-width: 768px) {
+    height: auto;
+    margin: 0;
 
-.starBox {
-  display: flex;
+    .font1 {
+      font-size: $font3;
+      font-weight: $font3W;
+    }
 
-  p {
-    margin-left: 5px;
-    margin-top: 2.5px;
+    .font4 {
+      margin-top: 8px;
+      margin-bottom: 4px;
+      font-size: $font5;
+      font-weight: $font5W;
+    }
+
+    .subjects > ul {
+      padding-bottom: 0;
+    }
   }
 }
 
@@ -43,9 +85,23 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  flex-direction: column;
 
-  &.overName {
-    flex-direction: column;
+  .starBox {
+    display: flex;
+    align-self: flex-end;
+
+    p {
+      margin-left: 5px;
+      margin-top: 2.5px;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    flex-direction: row;
+
+    h3 {
+      margin-right: 8px;
+    }
   }
 }
 
@@ -62,26 +118,19 @@
   }
 }
 
-.toggleContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 32px;
-}
+.buttonBox {
+  > button {
+    width: 100%;
+  }
+  @media screen and (max-width: 768px) {
+    margin-top: 16px;
+    grid-column: 1/3;
+  }
 
-.announceText1 {
-  font-size: $font4;
-  font-weight: $font4W;
-  margin-bottom: 8px;
-}
-
-.announceText2 {
-  font-size: $font6;
-  font-weight: $font4W;
-}
-
-.announceOnText {
-  color: #e74c3c;
+  @media screen and (max-width: 480px) {
+    margin-top: 16px;
+    grid-column: auto;
+  }
 }
 
 .font1 {

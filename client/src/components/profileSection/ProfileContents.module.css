@@ -1,7 +1,6 @@
 @import url('../../default.css');
 
 .container {
-  width: 696px;
   min-height: 672px;
   padding: 32px 32px 0;
   display: flex;
@@ -9,12 +8,27 @@
   box-shadow: $bigShadow;
   border-radius: 5px;
   justify-content: flex-start;
-  margin-bottom: 32px;
   background-color: $white;
   position: relative;
 
   > div {
     margin-bottom: 32px;
+  }
+
+  @media screen and (max-width: 480px) {
+    > div {
+      margin-bottom: 16px;
+    }
+
+    .font3 {
+      font-size: $font4;
+      font-weight: $font4W;
+    }
+
+    .font4 {
+      font-size: $font5;
+      margin-bottom: 8px;
+    }
   }
 }
 
@@ -51,7 +65,7 @@
 }
 
 .reviewContainer {
-  margin-top: 51px;
+  margin-top: 48px;
 
   > hr {
     height: 2px;
@@ -91,17 +105,21 @@
 .rating {
   display: flex;
   flex-wrap: wrap;
-  width: 400px;
   margin-top: 16px;
   margin-bottom: 16px;
 
   .flexbox {
     display: flex;
-    margin-bottom: 8px;
+    flex-wrap: wrap;
 
     > p {
       display: flex;
       align-items: center;
+      margin-bottom: 8px;
+      @media screen and (max-width: 480px) {
+        font-size: $sub;
+        font-weight: 500;
+      }
     }
   }
 }
@@ -113,7 +131,9 @@
 
   > svg {
     fill: #f0c24d;
-    font-size: 24px;
+    @media screen and (max-width: 480px) {
+      font-size: $sub;
+    }
   }
 }
 
@@ -133,6 +153,14 @@
     font-size: 22px;
     fill: $snow;
     vertical-align: text-bottom;
+  }
+  @media screen and (max-width: 480px) {
+    padding: 4px 8px;
+    font-size: $font6;
+
+    > svg {
+      font-size: 16px;
+    }
   }
 }
 

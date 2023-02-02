@@ -19,10 +19,6 @@
   align-items: center;
   margin-bottom: 24px;
 
-  &:hover {
-    text-decoration: underline;
-  }
-
   &:last-child {
     margin: 0;
   }
@@ -30,5 +26,10 @@
   > button {
     font-size: $font5;
     font-weight: $font5W;
+    padding: 4px;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

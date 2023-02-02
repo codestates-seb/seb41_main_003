@@ -7,12 +7,17 @@
 }
 
 .container {
-  display: flex;
-  justify-content: center;
-  padding-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: start;
+  padding: 16px 8px;
+  gap: 8px;
   background-color: $snow;
-  min-width: 1048px;
+  max-width: 1048px;
   margin: 0 auto;
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .modalText {

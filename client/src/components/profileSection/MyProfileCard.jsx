@@ -66,7 +66,9 @@ const MyProfileCard = ({ user, setUser }) => {
   return (
     <div className={styles.cardContainer}>
       <div className={styles.userImage}>
-        <img alt="user img" src={user.profileImage.url} />
+        <div className={styles.imgContain}>
+          <img alt="user img" src={user.profileImage?.url} />
+        </div>
         {user.profileImage.url !==
           'https://image-test-suyoung.s3.ap-northeast-2.amazonaws.com/image/user.png' && (
           <button
@@ -130,34 +132,33 @@ const MyProfileCard = ({ user, setUser }) => {
           buttonHandler={() => setModal(confirm)}
         />
       </div>
-      <section>
-        {user.wantedStatus === 'BASIC' ? (
-          <div className={styles.toggleContainer}>
-            <div className={styles.toggleTextBox}>
-              <p className={styles.announceText1}>공고 상태</p>
-              <div className={styles.announceText2}>
-                공고 상태 수정은 프로필 필수 항목 작성이 완료되면 가능합니다.
-              </div>
+
+      {user.wantedStatus === 'BASIC' ? (
+        <div className={styles.toggleContainer}>
+          <div className={styles.toggleTextBox}>
+            <p className={styles.announceText1}>공고 상태</p>
+            <div className={styles.announceText2}>
+              공고 상태 수정은 프로필 필수 항목 작성이 완료되면 가능합니다.
             </div>
           </div>
-        ) : (
-          <div className={styles.toggleContainer}>
-            <div className={styles.toggleTextBox}>
-              <p className={styles.announceText1}>공고 상태</p>
-              <div className={styles.announceText2}>
-                지금은{' '}
-                {user.wantedStatus === 'REQUEST' ? (
-                  <span className={styles.announceOnText}>공고 중</span>
-                ) : (
-                  <span>공고 안함</span>
-                )}{' '}
-                상태입니다
-              </div>
+        </div>
+      ) : (
+        <div className={styles.toggleContainer}>
+          <div className={styles.toggleTextBox}>
+            <p className={styles.announceText1}>공고 상태</p>
+            <div className={styles.announceText2}>
+              지금은{' '}
+              {user.wantedStatus === 'REQUEST' ? (
+                <span className={styles.announceOnText}>공고 중</span>
+              ) : (
+                <span className={styles.announceOffText}>공고 안함</span>
+              )}{' '}
+              상태입니다
             </div>
-            <Toggle user={user} setUser={setUser} />
           </div>
-        )}
-      </section>
+          <Toggle user={user} setUser={setUser} />
+        </div>
+      )}
     </div>
   );
 };

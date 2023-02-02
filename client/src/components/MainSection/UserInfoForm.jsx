@@ -372,13 +372,11 @@ const UserInfoForm = () => {
             : ''}
         </span>
         <ButtonNightBlue text="수정 완료" form="editUserInfo" />
-      </form>
-      <div className={styles.quitButton}>
         <ButtonRed
           text="회원 탈퇴"
           buttonHandler={() => setModal(confirmQuit)}
         />
-      </div>
+      </form>
     </article>
   );
 };
