@@ -8,7 +8,8 @@
   border-radius: 10px;
   background-color: $white;
   padding: 16px 0;
-  width: 522px;
+  max-width: 522px;
+  width: 70%;
 
   > button {
     margin-bottom: 32px;
@@ -21,6 +22,11 @@
   margin: 32px 0;
   white-space: pre-line;
   text-align: center;
+
+  @media screen and (max-width: 768px) {
+    font-size: $font6;
+    font-weight: $font6W;
+  }
 }
 
 .fileBox {
@@ -35,6 +41,11 @@
     border-radius: 5px 0 0 5px;
     width: 78%;
     color: $silver;
+
+    @media screen and (max-width: 480px) {
+      font-size: $sub;
+      font-weight: $subW;
+    }
   }
 
   > label {
@@ -43,12 +54,20 @@
     color: $black;
     font-size: $para;
     font-weight: $paraW;
+    text-align: center;
     vertical-align: middle;
     background-color: $silver;
     cursor: pointer;
     height: 32px;
-    width: 104px;
+    max-width: 104px;
+    width: 50%;
     border-radius: 0 5px 5px 0;
+
+    @media screen and (max-width: 480px) {
+      font-size: $sub;
+      font-weight: $subW;
+      padding: 8px;
+    }
   }
 
   > input:last-child {
@@ -65,7 +84,8 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 280px;
+  max-width: 280px;
+  width: 70%;
   margin-bottom: 32px;
   margin-top: 32px;
 }
