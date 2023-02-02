@@ -68,13 +68,13 @@ const ProfileCard = ({ user }) => {
 
   return (
     <div className={styles.cardContainer}>
-      <img alt="user img" src={profileImage?.url} />
+      <div className={styles.userImg}>
+        <div className={styles.imgContain}>
+          <img alt="user img" src={profileImage?.url} />
+        </div>
+      </div>
       <section className={styles.textContainer}>
-        <div
-          className={`${styles.starLine}  ${
-            name.length >= 6 ? styles.overName : ''
-          }`}
-        >
+        <div className={`${styles.starLine}`}>
           <h3 className={` ${name.length > 4 ? styles.font2 : styles.font1}`}>
             {name}
           </h3>
