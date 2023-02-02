@@ -71,7 +71,25 @@
   }
 
   > svg {
+    width: 16px;
+    height: 16px;
     fill: $snow;
     margin-bottom: 4px;
+  }
+  @media screen and (max-width: 480px) {
+    width: 40px;
+    height: 40px;
+
+    > span {
+      color: $snow;
+      font-size: $sub;
+      font-weight: $sub;
+    }
+
+    > svg {
+      width: 10px;
+      height: 10px;
+      margin-bottom: 2px;
+    }
   }
 }
