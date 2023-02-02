@@ -12,16 +12,26 @@
   margin-bottom: 80px;
   border-radius: 5px;
   box-shadow: 0 24px 38px 3px rgb(0 0 0 / 14%);
+
+  @media only screen and (max-width: 420px) {
+    width: 270px;
+    margin: 50px 0;
+  }
 }
 
 .inputArea {
   display: flex;
   flex-direction: column;
   margin-top: 45px;
+  align-items: center;
 
   > input {
     width: 296px;
     margin-bottom: 4px;
+
+    @media only screen and (max-width: 420px) {
+      width: 240px;
+    }
   }
 
   > span {
@@ -30,6 +40,11 @@
     font-size: $sub;
     font-weight: $subW;
     color: $red;
+
+    @media only screen and (max-width: 420px) {
+      width: 230px;
+      word-wrap: break-word;
+    }
   }
 }
 
@@ -37,6 +52,11 @@
   font-size: $font5;
   font-weight: $font5W;
   margin-top: 40px;
+
+  @media only screen and (max-width: 420px) {
+    font-size: 18px;
+    font-weight: $font5W;
+  }
 }
 
 .buttonContainer {
@@ -50,6 +70,11 @@
     font-weight: $font6W;
     margin-top: 24px;
     margin-bottom: 16px;
+
+    @media only screen and (max-width: 420px) {
+      margin-top: 32px;
+      margin-bottom: 8px;
+    }
   }
 
   > .failAuth {
@@ -69,10 +94,20 @@
   margin-top: 16px;
   box-shadow: $buttonShadow;
 
+  @media only screen and (max-width: 420px) {
+    width: 240px;
+    height: 40px;
+  }
+
   > span {
     font-size: $font5;
     font-weight: $font5W;
     width: 109px;
+
+    @media only screen and (max-width: 420px) {
+      font-size: $font6;
+      font-weight: $font6W;
+    }
   }
 
   > svg {
@@ -91,9 +126,19 @@
   align-items: center;
   box-shadow: $buttonShadow;
 
+  @media only screen and (max-width: 420px) {
+    width: 240px;
+    height: 40px;
+  }
+
   > span {
     font-size: $font5;
     font-weight: $font5W;
+
+    @media only screen and (max-width: 420px) {
+      font-size: $font6;
+      font-weight: $font6W;
+    }
   }
 
   > svg {
@@ -106,6 +151,11 @@
   justify-content: flex-start;
   align-items: center;
   padding-left: 2px;
+
+  @media only screen and (max-width: 420px) {
+    margin-top: 5px;
+    margin-left: 3px;
+  }
 
   > span {
     margin-left: 9px;
@@ -123,6 +173,13 @@
   color: $white;
   border-radius: 5px;
   box-shadow: $buttonShadow;
+
+  @media only screen and (max-width: 420px) {
+    width: 240px;
+    height: 40px;
+    font-size: $font5;
+    font-weight: $font5W;
+  }
 }
 
 .signupButton {
@@ -135,4 +192,11 @@
   color: $white;
   border-radius: 5px;
   box-shadow: $buttonShadow;
+
+  @media only screen and (max-width: 420px) {
+    width: 240px;
+    height: 40px;
+    font-size: $font5;
+    font-weight: $font5W;
+  }
 }
