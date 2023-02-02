@@ -75,7 +75,9 @@ const AdminModal = () => {
                     name={`profile${profileId}`}
                     onClick={() => switchHandler(profileId, name, url)}
                   >
-                    <img className={styles.userImage} src={url} alt="user" />
+                    <div className={styles.imgBox}>
+                      <img className={styles.userImage} src={url} alt="user" />
+                    </div>
                     <p>{name}</p>
                   </button>
                 </li>
