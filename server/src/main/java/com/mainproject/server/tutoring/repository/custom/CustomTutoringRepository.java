@@ -3,6 +3,7 @@ package com.mainproject.server.tutoring.repository.custom;
 import com.mainproject.server.constant.TutoringStatus;
 import com.mainproject.server.tutoring.dto.TutoringQueryDto;
 import com.mainproject.server.tutoring.dto.TutoringSimpleResponseDto;
+import com.mainproject.server.tutoring.entity.Tutoring;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,5 +16,7 @@ public interface CustomTutoringRepository {
             TutoringStatus status,
             Pageable pageable
     );
+
+    Tutoring findTutoringById(Long tutoringId);
 
 }
