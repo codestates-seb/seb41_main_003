@@ -7,8 +7,8 @@
   align-items: flex-start;
   border-radius: 10px;
   background-color: $white;
-  width: 872px;
-  height: 475px;
+  width: 70%;
+  max-width: 700px;
   padding: 36px;
 
   > button {
@@ -26,13 +26,18 @@
   font-size: $font4;
   font-weight: $font4W;
   margin-bottom: 8px;
+
+  @media screen and (max-width: 480px) {
+    font-size: $font5;
+    font-weight: $font5W;
+  }
 }
 
 .textBox {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 800px;
+  width: 100%;
   margin-bottom: 36px;
 
   > div:first-child {
@@ -47,9 +52,10 @@
 }
 
 .starBox {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  margin-bottom: 12px;
+  margin-bottom: 24px;
 
   > div:first-child {
     font-size: $font6;
@@ -57,25 +63,25 @@
   }
 
   .stars {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 50%);
     font-size: $para;
     font-weight: $paraW;
-    width: 454px;
-
-    > div:nth-child(odd) {
-      margin-right: 16px;
-    }
+    width: 100%;
 
     .star {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       margin-top: 8px;
 
       > span {
         margin-right: 4px;
       }
+    }
+
+    @media screen and (max-width: 768px) {
+      grid-template-columns: repeat(auto-fit, 100%);
     }
   }
 }
@@ -84,14 +90,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 800px;
+  width: 100%;
 }
 
 .editButtonBox {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 800px;
+  width: 100%;
 
   > button:first-child {
     margin-right: 24px;

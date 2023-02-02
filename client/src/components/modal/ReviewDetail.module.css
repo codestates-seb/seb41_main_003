@@ -20,8 +20,8 @@
   align-items: flex-start;
   border-radius: 10px;
   background-color: $white;
-  width: 695px;
-  height: 475px;
+  width: 70%;
+  max-width: 700px;
   padding: 36px;
 
   > button {
@@ -39,6 +39,16 @@
   font-size: $font4;
   font-weight: $font4W;
   margin-bottom: 8px;
+
+  @media screen and (max-width: 768px) {
+    font-size: $font5;
+    font-weight: $font5W;
+  }
+
+  @media screen and (max-width: 480px) {
+    font-size: $font6;
+    font-weight: $font6W;
+  }
 }
 
 .titleText {
@@ -76,29 +86,30 @@
 
 .starBox {
   display: flex;
+  width: 100%;
   flex-direction: column;
   margin-bottom: 12px;
 
   .stars {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 50%);
     font-size: $para;
     font-weight: $paraW;
-    width: 454px;
-
-    > div:nth-child(odd) {
-      margin-right: 16px;
-    }
+    width: 100%;
 
     .star {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       margin-top: 8px;
 
       > span {
         margin-right: 4px;
       }
+    }
+
+    @media screen and (max-width: 768px) {
+      grid-template-columns: repeat(auto-fit, 100%);
     }
   }
 }
@@ -107,7 +118,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 600px;
+  width: 100%;
 
   > button:first-child {
     margin-right: 24px;
