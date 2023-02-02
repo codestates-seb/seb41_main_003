@@ -1,11 +1,8 @@
 @import url('../../default.css');
 
 .tutoring {
-  width: 50%;
-  max-width: 520px;
   background-color: $white;
   box-shadow: $buttonShadow;
-  margin-bottom: 8px;
   border-radius: 5px;
 
   &.finish {
@@ -21,22 +18,40 @@
       font-size: $font4;
       font-weight: $font4W;
       margin-bottom: 16px;
+
+      @media screen and (max-width: 1048px) and (min-width: 768px) {
+        display: flex;
+        flex-direction: column;
+
+        > span {
+          margin-top: 8px;
+        }
+      }
     }
 
     span {
       font-size: $font6;
       font-weight: $font6W;
+
+      @media screen and (max-width: 1048px) {
+        font-weight: $para;
+      }
     }
 
     .noti {
       position: absolute;
       display: inline-block;
-      width: 16px;
-      height: 16px;
+      width: 12px;
+      height: 12px;
       background-color: $red;
       border-radius: 50%;
-      top: 16px;
-      right: 16px;
+      top: 8px;
+      right: 8px;
     }
   }
+}
+
+.title {
+  font-size: $font4;
+  font-weight: $font4W;
 }

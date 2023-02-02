@@ -78,8 +78,9 @@ const TutoringList = () => {
             <Loading />
           )}
         </ul>
-
-        <Pagination pageInfo={pageInfo} setPage={setPage} />
+        <div className={styles.pageNation}>
+          <Pagination pageInfo={pageInfo} setPage={setPage} />
+        </div>
       </div>
     </div>
   );

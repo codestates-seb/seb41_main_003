@@ -8,6 +8,7 @@ import Profile from '../../recoil/profile';
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import dayjs from 'dayjs';
 
 const Journals = ({
   tutoring,
@@ -63,13 +64,11 @@ const Journals = ({
               <li className={styles.li}>
                 <div className={styles.dateBox}>
                   <span className={styles.day}>
-                    {new Date(el.startTime).getDate()}
+                    {dayjs(el.startTime).date()}
                   </span>
-                  <span className={styles.yearMonth}>{`${new Date(
-                    el.startTime
-                  ).getFullYear()}년 ${
-                    new Date(el.startTime).getMonth() + 1
-                  }월`}</span>
+                  <span className={styles.yearMonth}>
+                    {dayjs(el.startTime).format('YYYY년 M월')}
+                  </span>
                 </div>
                 <div className={styles.textAndNotiBox}>
                   <div className={styles.textBox}>
