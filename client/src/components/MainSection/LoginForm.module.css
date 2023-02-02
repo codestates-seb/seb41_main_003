@@ -6,16 +6,16 @@
   justify-content: space-between;
   align-items: center;
   width: 344px;
-  height: 599px;
   background-color: $white;
   margin-top: 80px;
   margin-bottom: 80px;
   border-radius: 5px;
   box-shadow: 0 24px 38px 3px rgb(0 0 0 / 14%);
 
-  @media only screen and (max-width: 420px) {
-    width: 270px;
+  @media only screen and (max-width: 480px) {
     margin: 50px 0;
+    width: 71%;
+    padding: 0 8px;
   }
 }
 
@@ -24,13 +24,13 @@
   flex-direction: column;
   margin-top: 45px;
   align-items: center;
+  width: 100%;
 
   > input {
-    width: 296px;
     margin-bottom: 4px;
 
-    @media only screen and (max-width: 420px) {
-      width: 240px;
+    @media only screen and (max-width: 480px) {
+      width: 100%;
     }
   }
 
@@ -41,8 +41,7 @@
     font-weight: $subW;
     color: $red;
 
-    @media only screen and (max-width: 420px) {
-      width: 230px;
+    @media only screen and (max-width: 480px) {
       word-wrap: break-word;
     }
   }
@@ -53,7 +52,7 @@
   font-weight: $font5W;
   margin-top: 40px;
 
-  @media only screen and (max-width: 420px) {
+  @media only screen and (max-width: 480px) {
     font-size: 18px;
     font-weight: $font5W;
   }
@@ -71,7 +70,7 @@
     margin-top: 24px;
     margin-bottom: 16px;
 
-    @media only screen and (max-width: 420px) {
+    @media only screen and (max-width: 480px) {
       margin-top: 32px;
       margin-bottom: 8px;
     }
@@ -94,8 +93,8 @@
   margin-top: 16px;
   box-shadow: $buttonShadow;
 
-  @media only screen and (max-width: 420px) {
-    width: 240px;
+  @media only screen and (max-width: 480px) {
+    width: 100%;
     height: 40px;
   }
 
@@ -104,7 +103,7 @@
     font-weight: $font5W;
     width: 109px;
 
-    @media only screen and (max-width: 420px) {
+    @media only screen and (max-width: 480px) {
       font-size: $font6;
       font-weight: $font6W;
     }
@@ -116,7 +115,6 @@
 }
 
 .googleLoginButton {
-  width: 295px;
   height: 45px;
   margin-top: 16px;
   border: 1px solid #4285f4;
@@ -126,16 +124,21 @@
   align-items: center;
   box-shadow: $buttonShadow;
 
-  @media only screen and (max-width: 420px) {
-    width: 240px;
+  @media only screen and (max-width: 480px) {
+    width: 100%;
     height: 40px;
+    padding: 0 40px;
+  }
+
+  @media only screen and (max-width: 285px) {
+    padding: 0 20px;
   }
 
   > span {
     font-size: $font5;
     font-weight: $font5W;
 
-    @media only screen and (max-width: 420px) {
+    @media only screen and (max-width: 480px) {
       font-size: $font6;
       font-weight: $font6W;
     }
@@ -152,7 +155,7 @@
   align-items: center;
   padding-left: 2px;
 
-  @media only screen and (max-width: 420px) {
+  @media only screen and (max-width: 480px) {
     margin-top: 5px;
     margin-left: 3px;
   }
@@ -174,8 +177,8 @@
   border-radius: 5px;
   box-shadow: $buttonShadow;
 
-  @media only screen and (max-width: 420px) {
-    width: 240px;
+  @media only screen and (max-width: 480px) {
+    width: 100%;
     height: 40px;
     font-size: $font5;
     font-weight: $font5W;
@@ -193,8 +196,8 @@
   border-radius: 5px;
   box-shadow: $buttonShadow;
 
-  @media only screen and (max-width: 420px) {
-    width: 240px;
+  @media only screen and (max-width: 480px) {
+    width: 100%;
     height: 40px;
     font-size: $font5;
     font-weight: $font5W;
