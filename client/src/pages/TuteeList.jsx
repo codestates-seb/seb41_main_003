@@ -123,13 +123,13 @@ const TuteeList = () => {
               <FeedItem data={tutee} userStatus="TUTEE" />
             </Link>
           ))}
-          {tuteeData?.length === 0 && (
-            <div className={styles.notFound}>
-              표시 할 튜티가 없습니다. 검색 조건을 확인하세요.
-            </div>
-          )}
-          {tuteeData === undefined && <Loading />}
         </div>
+        {tuteeData?.length === 0 && (
+          <div className={styles.notFound}>
+            표시 할 튜티가 없습니다. 검색 조건을 확인하세요.
+          </div>
+        )}
+        {tuteeData === undefined && <Loading />}
         <LoadingIndicator ref={loadingRef} isLoading={isLoading} />
       </div>
       <ButtonTop />

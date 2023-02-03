@@ -62,22 +62,21 @@ const TutoringList = () => {
         </div>
         <ul className={styles.tutoringList}>
           {tutorings[0] !== 0 ? (
-            tutorings.length === 0 ? (
-              <div className={styles.noContent}>
-                <p>
-                  아직 {isFinished === false ? '진행중인' : '종료된'} 과외가
-                  없습니다.
-                </p>
-              </div>
-            ) : (
-              tutorings.map((tutoring) => (
-                <Tutoring tutoring={tutoring} key={tutoring.tutoringId} />
-              ))
-            )
+            tutorings.map((tutoring) => (
+              <Tutoring tutoring={tutoring} key={tutoring.tutoringId} />
+            ))
           ) : (
             <Loading />
           )}
         </ul>
+        {tutorings.length === 0 && (
+          <div className={styles.noContent}>
+            <p>
+              아직 {isFinished === false ? '진행중인' : '종료된'} 과외가
+              없습니다.
+            </p>
+          </div>
+        )}
         <div className={styles.pageNation}>
           <Pagination pageInfo={pageInfo} setPage={setPage} />
         </div>

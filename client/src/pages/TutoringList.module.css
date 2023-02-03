@@ -10,18 +10,19 @@
 .container {
   max-width: 1048px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 32px;
   margin-bottom: 100px;
-
-  @media screen and (max-width: 768px) {
-    padding: 0 8px;
-  }
 
   h2 {
     font-size: $font1;
     font-weight: $font1W;
     color: $black;
     margin: 24px 0 16px;
+
+    @media screen and (max-width: 480px) {
+      font-size: $font3;
+      font-weight: $font3W;
+    }
   }
 
   .filter {
@@ -29,8 +30,12 @@
 
     > * {
       font-size: $font5;
-      font-weight: $font5W;
+      font-weight: $font4W;
       color: $moon;
+
+      @media screen and (max-width: 480px) {
+        font-size: $font6;
+      }
     }
 
     > .active {
@@ -42,25 +47,22 @@
     width: 100%;
     display: grid;
     justify-content: center;
-    grid-template-columns: repeat(2, minmax(49%, 1fr));
-    grid-template-rows: repeat(5, minmax(1fr, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     column-gap: 8px;
     row-gap: 8px;
 
     @media screen and (max-width: 768px) {
-      grid-template-columns: repeat(1, minmax(49%, 1fr));
-      grid-template-rows: repeat(10, minmax(1fr, 1fr));
+      grid-template-columns: repeat(1, 1fr);
     }
 
-    @media screen and (max-width: 480px) {
-      grid-template-columns: repeat(1, minmax(1fr, 1fr));
-      grid-template-rows: repeat(10, minmax(1fr, 1fr));
+    > div {
+      grid-column: 1 / 3;
     }
   }
 }
 
 .noContent {
-  background-color: $silver;
+  background-color: $white;
   border-radius: 5px;
   box-shadow: $defaultShadow;
 
