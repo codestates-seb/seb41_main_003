@@ -1,4 +1,4 @@
-import styles from './FinishedJournalList.module.css';
+import styles from './JournalList.module.css';
 import { HiSpeakerphone } from 'react-icons/hi';
 import { ButtonNightBlue, ButtonRed } from '../Button';
 import { useResetRecoilState, useSetRecoilState } from 'recoil';
