@@ -157,9 +157,12 @@ const JournalList = ({ tutoring, setTutoring, pageInfo, setPageInfo }) => {
           >
             <div>
               <HiSpeakerphone className={styles.icon} />
-              {tutoring.latestNoticeBody > 20
-                ? `최근 공지사항 | ${tutoring.latestNoticeBody.slice(0, 20)}...`
-                : `최근 공지사항 | ${tutoring.latestNoticeBody}`}
+              <span>{`최근 공지사항 | `}</span>
+              <span>
+                {tutoring.latestNoticeBody > 20
+                  ? `${tutoring.latestNoticeBody.slice(0, 20)}...`
+                  : `${tutoring.latestNoticeBody}`}
+              </span>
             </div>
           </Link>
         ) : (

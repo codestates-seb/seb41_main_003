@@ -17,9 +17,16 @@
   font-weight: $font1W;
   padding-top: 32px;
   margin-bottom: 38px;
-  width: 1048px;
+  width: 100%;
+
+  @media screen and (max-width: 768px) {
+    padding-left: 24px;
+    font-size: $font3;
+    font-weight: $font3W;
+  }
 }
 
 .listContainer {
-  height: 640px;
+  min-height: 640px;
+  width: 100%;
 }
