@@ -1,5 +1,5 @@
 import styles from './MessageContent.module.css';
-import { MdMenu, MdRefresh } from 'react-icons/md';
+import { MdClose, MdMenu, MdRefresh } from 'react-icons/md';
 import PropType from 'prop-types';
 import { useState, useEffect, useRef } from 'react';
 import Chat from './Chat';
@@ -16,6 +16,7 @@ const MessageContent = ({
   delMessageRoom,
   getMessageRoom,
   getMessageList,
+  setIsChat,
 }) => {
   const { tutorId, tuteeId, tutoringId, messages } = messageRoom;
   const menuRef = useRef(null);
@@ -142,7 +143,19 @@ const MessageContent = ({
   return (
     <div className={styles.container}>
       <div className={styles.messageContainer} ref={scrollRef}>
-        <button className={styles.refresh} onClick={() => refreshMessage()}>
+        <button
+          className={`${styles.btn} ${styles.close} `}
+          onClick={() => {
+            setIsChat(false);
+          }}
+        >
+          <MdClose />
+        </button>
+
+        <button
+          className={`${styles.btn} ${styles.refresh} `}
+          onClick={() => refreshMessage()}
+        >
           <span>새로고침</span>
           <MdRefresh />
         </button>
@@ -226,6 +239,7 @@ MessageContent.propTypes = {
   delMessageRoom: PropType.func,
   getMessageRoom: PropType.func,
   getMessageList: PropType.func,
+  setIsChat: PropType.func,
 };
 
 export default MessageContent;

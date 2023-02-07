@@ -14,6 +14,7 @@ const MessageList = ({
   setMessageList,
   pageInfo,
   setPageInfo,
+  setIsChat,
 }) => {
   const { profileId } = useRecoilValue(Profile);
   const loadingRef = useRef(null);
@@ -21,6 +22,7 @@ const MessageList = ({
 
   const getCurrentRoomId = (e) => {
     setCurrentRoomId(e.currentTarget.id);
+    setIsChat(true);
   };
 
   const [isLoading, setIsLoading] = useScroll(() => {
@@ -99,6 +101,7 @@ MessageList.propTypes = {
   setMessageList: PropTypes.func,
   pageInfo: PropTypes.object,
   setPageInfo: PropTypes.func,
+  setIsChat: PropTypes.func,
 };
 
 export default MessageList;
