@@ -56,7 +56,6 @@ const Message = () => {
 
   useEffect(() => {
     getMessageList();
-    getMessageRoom();
   }, []);
 
   useEffect(() => {

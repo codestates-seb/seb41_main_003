@@ -40,8 +40,8 @@ const JournalForm = ({ userData }) => {
 
   return (
     <div className={styles.container}>
-      <h1>과외 일지 </h1>
       <div className={styles.journalContainer}>
+        <h1>과외 일지</h1>
         <div className={styles.exitButton}>
           <ButtonSilver text="나가기" buttonHandler={() => setModal(confirm)} />
         </div>
