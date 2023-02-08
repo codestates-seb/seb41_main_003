@@ -5,6 +5,12 @@
   border-radius: 5px;
   position: relative;
 
+  @media screen and (max-width: 768px) {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
   .btn {
     position: absolute;
     top: -48px;
@@ -62,6 +68,11 @@
   overflow-y: auto;
   scrollbar-width: auto;
   scrollbar-color: #666 #f00;
+
+  @media screen and (max-width: 768px) {
+    height: auto;
+    flex: 1 0 0;
+  }
 
   .dateLine {
     align-self: center;
