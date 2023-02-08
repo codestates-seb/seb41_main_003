@@ -3,9 +3,14 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 123px;
   margin-right: 16px;
   position: relative;
+  @media screen and (max-width: 480px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+  }
 
   .font1 {
     font-size: $font1;
@@ -32,6 +37,10 @@
 
 .iconButtonT {
   margin-top: 8px;
+  @media screen and (max-width: 480px) {
+    margin-top: 0;
+    align-self: flex-end;
+  }
 }
 
 .time {
@@ -48,6 +57,12 @@
   box-shadow: $buttonShadow;
   display: flex;
   padding: 16px;
+  z-index: 2;
+
+  @media screen and (max-width: 480px) {
+    left: auto;
+    right: -4px;
+  }
 
   > div {
     display: flex;

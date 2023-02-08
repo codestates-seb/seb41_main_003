@@ -1,15 +1,24 @@
 @import url('../../default.css');
 
 .container {
-  width: 1048px;
-  height: 580px;
-  top: 118px;
+  width: 100%;
+  height: 100%;
   margin-bottom: 60px;
   display: flex;
+
+  @media screen and (max-width: 1048px) {
+    padding: 0 16px;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: grid;
+    grid-template-columns: auto;
+    gap: 16px;
+  }
 }
 
 .leftCard {
-  width: 784px;
+  width: 78%;
   height: 580px;
   box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
   margin-right: 8px;
@@ -19,88 +28,91 @@
   align-items: center;
   padding: 16px;
   border-radius: 5px;
+  margin-bottom: 48px;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+
+    &:nth-child(1) {
+      order: 2;
+    }
+  }
 }
 
 .rightCard {
-  width: 256px;
+  width: 25%;
   height: 580px;
   box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
   background-color: $white;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 25px 16px;
+  padding: 24px 16px;
   border-radius: 5px;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+  }
 }
 
-.noti {
+.notiIcon {
   display: flex;
   align-items: center;
-  width: 752px;
-  padding: 8px 4px;
+  justify-content: center;
   font-size: $font6;
-  font-weight: $font6W;
-  background-color: $whiteBlue;
-  margin-bottom: 16px;
+  padding: 4px;
+  min-width: 64px;
+  height: 32px;
+  background-color: $night;
+  color: $white;
+  border-radius: 5px;
 
-  > div {
+  > span {
+    color: $white;
+    font-size: $font6;
+    font-weight: $font6W;
+    padding-right: 4px;
+  }
+
+  @media screen and (max-width: 480px) {
+    padding: 0;
+    min-width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+
+    > span {
+      display: none;
+    }
+  }
+}
+
+.goal {
+  margin-bottom: 4px;
+
+  > span {
+    font-size: $font5;
+    font-weight: $font5W;
+  }
+
+  @media screen and (max-width: 768px) {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+
+    > span:first-child {
+      font-size: $font6;
+      font-weight: $font6W;
+    }
   }
-}
 
-.icon {
-  fill: $nickel;
-  font-size: 24px;
-  margin-right: 8px;
-  margin-left: 11px;
-}
-
-.emptyJournals {
-  font-size: $font4;
-  font-weight: $font4W;
-  text-align: center;
-  margin-top: 200px;
-}
-
-.list {
-  overflow: hidden auto;
-  width: 752px;
-
-  &::-webkit-scrollbar {
-    width: 0;
+  @media screen and (max-width: 480px) {
+    > span:first-child {
+      display: none;
+    }
   }
-}
-
-.li {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 8px;
-  background-color: $snow;
-  border-radius: 5px;
-  padding: 11px 16px 11px 8px;
-}
-
-.dateBox {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  border-right: 2px solid $black;
-  width: 110px;
-  height: 57px;
-  padding-right: 8px;
-  margin-left: 4px;
-}
-
-.day {
-  font-size: $font3;
-  font-weight: $font3W;
-}
-
-.yearMonth {
-  font-size: $font6;
-  font-weight: $font6W;
 }
 
 .nameBox {
@@ -113,19 +125,17 @@
     font-size: $font2;
     font-weight: $font2W;
     margin-right: 16px;
+
+    @media screen and (max-width: 1024px) {
+      font-size: $font3;
+      font-weight: $font3W;
+    }
+
+    @media screen and (max-width: 480px) {
+      font-size: $font3;
+      font-weight: $font3W;
+    }
   }
-}
-
-.textAndNotiBox {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.textBox {
-  display: flex;
-  flex-direction: column;
-  padding-left: 12px;
 }
 
 .titleEditButtonBox {
@@ -143,25 +153,163 @@
   }
 }
 
-.goal {
-  font-size: $font5;
-  font-weight: $font5W;
+.noti {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: $whiteBlue;
+  padding: 8px;
+  margin-bottom: 16px;
+
+  > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: $font6;
+    font-weight: $font6W;
+
+    > span:first-of-type {
+      min-width: 96px;
+    }
+
+    > span:last-child {
+      padding-left: 4px;
+    }
+
+    @media screen and (max-width: 480px) {
+      padding: 4px;
+    }
+  }
+}
+
+.icon {
+  fill: $nickel;
+  font-size: 24px;
+  margin-right: 8px;
+}
+
+.emptyJournals {
+  font-size: $font4;
+  font-weight: $font4W;
+  text-align: center;
+  margin-top: 200px;
+
+  @media screen and (max-width: 768px) {
+    margin: 0;
+    padding: 80px 0;
+    font-size: $font5;
+    font-weight: $font5W;
+  }
+
+  @media screen and (max-width: 480px) {
+    padding: 50px 0;
+  }
+}
+
+.list {
+  overflow: hidden auto;
+  width: 100%;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+
+  @media screen and (max-width: 768px) {
+    overflow: auto;
+  }
+}
+
+.li {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 8px;
+  background-color: $snow;
+  border-radius: 5px;
+  padding: 11px 16px 11px 8px;
+  position: relative;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px;
+  }
+}
+
+.dateBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  border-right: 2px solid $black;
+  min-width: 104px;
+  align-self: stretch;
+  padding-right: 8px;
+  margin-left: 4px;
+
+  @media screen and (max-width: 480px) {
+    align-self: auto;
+    flex-direction: row-reverse;
+    width: auto;
+    height: auto;
+    margin-bottom: 8px;
+  }
+
+  .day {
+    font-size: $font3;
+    font-weight: $font3W;
+
+    > .text {
+      display: none;
+    }
+
+    @media screen and (max-width: 480px) {
+      font-size: $font6;
+      font-weight: $font4W;
+
+      > .text {
+        display: inline;
+        font-size: inherit;
+        font-weight: inherit;
+      }
+    }
+  }
+
+  .yearMonth {
+    font-size: $font6;
+    font-weight: $font6W;
+
+    @media screen and (max-width: 480px) {
+      font-size: $font6;
+      font-weight: $font4W;
+      margin-right: 4px;
+    }
+  }
+}
+
+.textAndNotiBox {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.textBox {
+  display: flex;
+  flex-direction: column;
+  padding-left: 12px;
+  @media screen and (max-width: 480px) {
+    padding-left: 4px;
+  }
 }
 
 .homework {
   font-size: $para;
   font-weight: $paraW;
-}
 
-.notiIcon {
-  display: flex;
-  align-items: center;
-  font-size: $font6;
-  width: 61px;
-  height: 32px;
-  background-color: $night;
-  color: $white;
-  border-radius: 5px;
+  @media screen and (max-width: 480px) {
+    font-size: $sub;
+    font-weight: $subW;
+  }
 }
 
 .hiSpeaker {
@@ -174,6 +322,13 @@
   display: flex;
   flex-direction: column;
 
+  > button {
+    @media screen and (max-width: 880px) {
+      font-size: $font5;
+      font-weight: $font5W;
+    }
+  }
+
   > button:first-child {
     margin-bottom: 8px;
   }
@@ -182,14 +337,23 @@
 .tutoringTitle {
   font-size: $font4;
   font-weight: $font4W;
-  width: 200px;
   margin-bottom: 8px;
   word-break: break-all;
+
+  @media screen and (max-width: 1024px) {
+    font-size: $font5;
+    font-weight: $font5W;
+  }
 }
 
 .tutoringDate {
   font-size: $para;
   font-weight: $paraW;
+
+  @media screen and (max-width: 1024px) {
+    font-size: $sub;
+    font-weight: $subW;
+  }
 }
 
 .waitingNoti {
@@ -197,6 +361,11 @@
   font-weight: 600;
   color: $red;
   margin-top: 16px;
+
+  @media screen and (max-width: 400px) {
+    font-size: $sub;
+    font-weight: $subW;
+  }
 }
 
 .mdEdit {
@@ -208,5 +377,9 @@
 .rightTextBox {
   display: flex;
   flex-direction: column;
-  padding-left: 12px;
+  margin-bottom: 16px;
+
+  @media screen and (max-width: 768px) {
+    margin-left: 8px;
+  }
 }

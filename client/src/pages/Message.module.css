@@ -20,19 +20,47 @@
     font-weight: $font1W;
     color: $black;
     margin: 24px 8px 16px;
+    @media screen and (max-width: 768px) {
+      padding-left: 16px;
+    }
   }
 }
 
 .message {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  padding: 8px;
+  gap: 8px;
   margin-bottom: 24px;
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: 1.5fr 2fr;
+  }
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chatContainer {
+  &.active {
+    right: 0;
+    transition: right 0.3s ease-in-out;
+  }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: calc(100vh - 64px);
+    position: fixed;
+    top: 64px;
+    right: -100vw;
+    z-index: 2;
+    background-color: $white;
+    padding: 80px 16px 16px;
+    transition: right 0.3s ease-in-out;
+  }
 }
 
 .initialContain {
-  width: 696px;
-  height: 640px;
+  width: 100%;
+  height: 100%;
   background-color: $snow;
   border-radius: 5px;
   font-size: $font3;

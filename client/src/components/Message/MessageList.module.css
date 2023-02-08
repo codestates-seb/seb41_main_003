@@ -1,7 +1,6 @@
 @import url('../../default.css');
 
 .messageList {
-  width: 344px;
   height: 640px;
   border-radius: 5px;
   background-color: $snow;
@@ -19,7 +18,7 @@
 }
 
 .person {
-  width: 312px;
+  width: 100%;
   height: 76px;
   background-color: $white;
   position: relative;

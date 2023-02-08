@@ -19,6 +19,7 @@ const Message = () => {
   const [messageRoom, setMessageRoom] = useState({
     messages: [],
   });
+  const [isChat, setIsChat] = useState(false);
   const [pageInfo, setPageInfo] = useState({});
   const [CurrentRoomId, resetCurrentRoomId] =
     useRecoilState(CurrentRoomIdState);
@@ -56,11 +57,15 @@ const Message = () => {
 
   useEffect(() => {
     getMessageList();
-  }, []);
-
-  useEffect(() => {
+    getMessageRoom();
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) setIsChat(false);
+    });
     return () => {
       resetCurrentRoomId();
+      window.removeEventListener('resize', () => {
+        if (window.innerWidth > 768) setIsChat(false);
+      });
     };
   }, []);
 
@@ -121,19 +126,23 @@ const Message = () => {
             pageInfo={pageInfo}
             setMessageList={setMessageList}
             setPageInfo={setPageInfo}
+            setIsChat={setIsChat}
           />
-          {CurrentRoomId === 0 || CurrentRoomId === undefined ? (
-            <div className={styles.initialContain}>
-              대화 상대를 선택해주세요.
-            </div>
-          ) : (
-            <MessageContent
-              messageRoom={messageRoom}
-              getMessageList={getMessageList}
-              getMessageRoom={getMessageRoom}
-              delMessageRoom={delMessageRoom}
-            />
-          )}
+          <div className={`${styles.chatContainer} ${isChat && styles.active}`}>
+            {CurrentRoomId === 0 || CurrentRoomId === undefined ? (
+              <div className={styles.initialContain}>
+                대화 상대를 선택해주세요.
+              </div>
+            ) : (
+              <MessageContent
+                messageRoom={messageRoom}
+                getMessageList={getMessageList}
+                getMessageRoom={getMessageRoom}
+                delMessageRoom={delMessageRoom}
+                setIsChat={setIsChat}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
