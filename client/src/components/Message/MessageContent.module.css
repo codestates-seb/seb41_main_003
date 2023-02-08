@@ -1,15 +1,13 @@
 @import url('../../default.css');
 
 .container {
-  width: 696px;
   height: 640px;
   border-radius: 5px;
   position: relative;
 
-  .refresh {
+  .btn {
     position: absolute;
-    right: 0;
-    top: -46px;
+    top: -48px;
     background-color: $snow;
     border-radius: 5px;
     padding: 8px;
@@ -19,6 +17,7 @@
 
     > svg {
       font-size: 24px;
+      vertical-align: middle;
     }
 
     > span {
@@ -28,10 +27,23 @@
       font-weight: 600;
     }
 
-    &:hover {
-      > svg {
-        transform: rotate(90deg);
-        transition: all 0.3s;
+    &.refresh {
+      right: 0;
+
+      &:hover {
+        > svg {
+          transform: rotate(90deg);
+          transition: all 0.3s;
+        }
+      }
+    }
+
+    &.close {
+      display: none;
+      left: 0;
+      box-shadow: $buttonShadow;
+      @media screen and (max-width: 768px) {
+        display: block;
       }
     }
   }
@@ -59,6 +71,7 @@
     background-color: $white;
     padding: 4px 16px;
     border-radius: 30px;
+    margin-bottom: 4px;
   }
 
   &::-webkit-scrollbar {

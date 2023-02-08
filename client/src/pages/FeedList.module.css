@@ -100,13 +100,13 @@
   gap: 8px;
   padding: 0 8px;
   margin-bottom: 16px;
+  padding: 0 16px;
 
   @media screen and (max-width: 768px) {
     grid-template-columns: repeat(3, 1fr);
   }
 
   @media screen and (max-width: 480px) {
-    padding: 0 16px;
     grid-template-columns: repeat(2, 1fr);
   }
 }

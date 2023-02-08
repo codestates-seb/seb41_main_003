@@ -10,12 +10,12 @@
   align-items: center;
   position: fixed;
   top: 0;
+  z-index: 999;
   box-shadow: 0 4px 10px rgb(0 0 0 / 10%);
   background-color: $white;
   font-size: $font5;
   font-weight: $font5W;
   color: $black;
-  z-index: 1;
 
   .hamBtn {
     display: none;
@@ -64,7 +64,7 @@
     position: fixed;
     top: 0;
     left: -100vw;
-    z-index: 3;
+    z-index: 999;
     transform: none;
     background-color: rgba(0 0 0 / 0%);
   }
