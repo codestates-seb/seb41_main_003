@@ -65,6 +65,7 @@ const Journals = ({
                 <div className={styles.dateBox}>
                   <span className={styles.day}>
                     {dayjs(el.startTime).date()}
+                    <span className={styles.text}>일</span>
                   </span>
                   <span className={styles.yearMonth}>
                     {dayjs(el.startTime).format('YYYY년 M월')}
