@@ -62,7 +62,11 @@ const JournalForm = ({ userData }) => {
                 <label htmlFor="dateNoticeTitle">
                   <h4>학습목표</h4>
                 </label>
-                {userStatus === 'TUTOR' && !isFinished && <DropDown />}
+                {userStatus === 'TUTOR' && !isFinished && (
+                  <div className={styles.dropDownBox}>
+                    <DropDown />
+                  </div>
+                )}
               </div>
               <h5 className={styles.noticeArea}>{dateNoticeTitle}</h5>
             </div>

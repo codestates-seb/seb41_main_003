@@ -11,15 +11,6 @@
     font-size: $font4;
     font-weight: $font4W;
   }
-
-  h5 {
-    margin-top: 8px;
-    font-size: $font5;
-    font-weight: $font5W;
-    background-color: $snow;
-    min-height: 16px;
-    width: 100%;
-  }
 }
 
 .journalContainer {
@@ -60,6 +51,11 @@
 
   .upperPart {
     display: flex;
+    width: 100%;
+
+    .upperGoal {
+      width: 100%;
+    }
 
     .font1 {
       font-size: $font1;
@@ -97,6 +93,16 @@
     }
   }
 
+  .dropDownBox {
+    position: absolute;
+    right: 0;
+    top: -8px;
+
+    /* @media screen and (max-width: 480px) {
+      display: none;
+    } */
+  }
+
   .lowerPart {
     display: flex;
     margin-top: 40px;
@@ -124,13 +130,6 @@
       }
     }
 
-    .noticeArea {
-      width: 100%;
-      background-color: $snow;
-      min-height: 64px;
-      padding: 16px;
-    }
-
     .noNotice {
       width: 100%;
       font-size: $font4;
@@ -148,7 +147,7 @@
 
     .scheduleArea {
       width: 240%;
-      height: 388px;
+      height: 90%;
       white-space: pre-line;
       background-color: $snow;
       min-height: 64px;
@@ -167,6 +166,20 @@
       @media screen and (max-width: 1064px) {
         margin-bottom: 32px;
       }
+    }
+  }
+
+  .noticeArea {
+    width: 100%;
+    background-color: $snow;
+    padding: 16px;
+    margin-top: 20px;
+    font-size: $font5;
+    font-weight: $font5W;
+    @media screen and (max-width: 480px) {
+      font-size: $font6;
+      font-weight: $font6W;
+      word-wrap: break-word;
     }
   }
 
