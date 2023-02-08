@@ -3,15 +3,17 @@
 .container {
   width: 100%;
   height: 100%;
-  top: 118px;
   margin-bottom: 60px;
   display: flex;
+
+  @media screen and (max-width: 1048px) {
+    padding: 0 16px;
+  }
 
   @media screen and (max-width: 768px) {
     display: grid;
     grid-template-columns: auto;
     gap: 16px;
-    padding: 0 16px;
   }
 }
 
@@ -46,20 +48,12 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 25px 16px;
+  padding: 24px 16px;
   border-radius: 5px;
-
-  @media screen and (max-width: 1024px) {
-    padding: 25px 8px;
-  }
 
   @media screen and (max-width: 768px) {
     width: 100%;
     height: 100%;
-  }
-
-  @media screen and (max-width: 480px) {
-    padding: 16px;
   }
 }
 
@@ -69,7 +63,7 @@
   justify-content: center;
   font-size: $font6;
   padding: 4px;
-  width: 61px;
+  min-width: 64px;
   height: 32px;
   background-color: $night;
   color: $white;
@@ -79,25 +73,26 @@
     color: $white;
     font-size: $font6;
     font-weight: $font6W;
+    padding-right: 4px;
   }
 
   @media screen and (max-width: 480px) {
     padding: 0;
-    width: 32px;
-    height: 32px;
+    min-width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
 
     > span {
       display: none;
     }
   }
-
-  @media screen and (max-width: 450px) {
-    width: 20px;
-    height: 20px;
-  }
 }
 
 .goal {
+  margin-bottom: 4px;
+
   > span {
     font-size: $font5;
     font-weight: $font5W;
@@ -106,24 +101,16 @@
   @media screen and (max-width: 768px) {
     display: flex;
     flex-direction: column;
-  }
 
-  @media screen and (max-width: 540px) {
     > span:first-child {
       font-size: $font6;
       font-weight: $font6W;
     }
-
-    > span:last-child {
-      font-size: $font6;
-      font-weight: $font6W;
-    }
   }
 
-  @media screen and (max-width: 408px) {
-    > span:last-child {
-      font-size: $sub;
-      font-weight: $subW;
+  @media screen and (max-width: 480px) {
+    > span:first-child {
+      display: none;
     }
   }
 }
@@ -171,14 +158,19 @@
   align-items: center;
   width: 100%;
   background-color: $whiteBlue;
+  padding: 8px;
   margin-bottom: 16px;
 
   > div {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    padding: 8px 4px;
     font-size: $font6;
     font-weight: $font6W;
+
+    > span:first-of-type {
+      min-width: 96px;
+    }
 
     > span:last-child {
       padding-left: 4px;
@@ -186,8 +178,6 @@
 
     @media screen and (max-width: 480px) {
       padding: 4px;
-      font-size: $sub;
-      font-weight: $subW;
     }
   }
 }
@@ -196,7 +186,6 @@
   fill: $nickel;
   font-size: 24px;
   margin-right: 8px;
-  margin-left: 11px;
 }
 
 .emptyJournals {
@@ -207,19 +196,13 @@
 
   @media screen and (max-width: 768px) {
     margin: 0;
-    padding: 80px;
+    padding: 80px 0;
     font-size: $font5;
     font-weight: $font5W;
   }
 
-  @media screen and (max-width: 490px) {
-    padding: 50px;
-    font-size: $font6;
-    font-weight: $font6W;
-  }
-
-  @media screen and (max-width: 460px) {
-    padding: 40px;
+  @media screen and (max-width: 480px) {
+    padding: 50px 0;
   }
 }
 
@@ -229,6 +212,10 @@
 
   &::-webkit-scrollbar {
     width: 0;
+  }
+
+  @media screen and (max-width: 768px) {
+    overflow: auto;
   }
 }
 
@@ -240,9 +227,12 @@
   background-color: $snow;
   border-radius: 5px;
   padding: 11px 16px 11px 8px;
+  position: relative;
 
-  @media screen and (max-width: 420px) {
-    padding: 4px;
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px;
   }
 }
 
@@ -252,34 +242,48 @@
   align-items: flex-end;
   justify-content: center;
   border-right: 2px solid $black;
-  width: 110px;
-  height: 57px;
+  min-width: 104px;
+  align-self: stretch;
   padding-right: 8px;
   margin-left: 4px;
-}
 
-.day {
-  font-size: $font3;
-  font-weight: $font3W;
-
-  @media screen and (max-width: 585px) {
-    font-size: $font4;
-    font-weight: $font4W;
-  }
-}
-
-.yearMonth {
-  font-size: $font6;
-  font-weight: $font6W;
-
-  @media screen and (max-width: 670px) {
-    font-size: $para;
-    font-weight: $paraW;
+  @media screen and (max-width: 480px) {
+    align-self: auto;
+    flex-direction: row-reverse;
+    width: auto;
+    height: auto;
+    margin-bottom: 8px;
   }
 
-  @media screen and (max-width: 550px) {
-    font-size: $sub;
-    font-weight: $subW;
+  .day {
+    font-size: $font3;
+    font-weight: $font3W;
+
+    > .text {
+      display: none;
+    }
+
+    @media screen and (max-width: 480px) {
+      font-size: $font6;
+      font-weight: $font4W;
+
+      > .text {
+        display: inline;
+        font-size: inherit;
+        font-weight: inherit;
+      }
+    }
+  }
+
+  .yearMonth {
+    font-size: $font6;
+    font-weight: $font6W;
+
+    @media screen and (max-width: 480px) {
+      font-size: $font6;
+      font-weight: $font4W;
+      margin-right: 4px;
+    }
   }
 }
 
@@ -293,6 +297,9 @@
   display: flex;
   flex-direction: column;
   padding-left: 12px;
+  @media screen and (max-width: 480px) {
+    padding-left: 4px;
+  }
 }
 
 .homework {
@@ -316,13 +323,9 @@
   flex-direction: column;
 
   > button {
-    @media screen and (max-width: 850px) {
+    @media screen and (max-width: 880px) {
       font-size: $font5;
       font-weight: $font5W;
-    }
-    @media screen and (max-width: 768px) {
-      font-size: $font4;
-      font-weight: $font4W;
     }
   }
 
@@ -374,6 +377,9 @@
 .rightTextBox {
   display: flex;
   flex-direction: column;
-  padding-left: 12px;
   margin-bottom: 16px;
+
+  @media screen and (max-width: 768px) {
+    margin-left: 8px;
+  }
 }
