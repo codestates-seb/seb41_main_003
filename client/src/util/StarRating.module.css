@@ -4,14 +4,23 @@
   fill: $yellow;
   font-size: 32px;
   cursor: pointer;
+  @media screen and (max-width: 768px) {
+    font-size: 24px;
+  }
 }
 
 .yellowStar {
   fill: $yellow;
   font-size: 32px;
+  @media screen and (max-width: 768px) {
+    font-size: 24px;
+  }
 }
 
 .emptyStar {
   fill: $yellow;
   font-size: 32px;
+  @media screen and (max-width: 768px) {
+    font-size: 24px;
+  }
 }

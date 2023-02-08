@@ -109,8 +109,8 @@ class TutoringServiceTest {
         );
         given(dateNoticeRepository.findAllByTutoring(any(Tutoring.class), any(Pageable.class)))
                 .willReturn(pageList);
-        given(tutoringRepository.findById(anyLong()))
-                .willReturn(Optional.of(tutoring));
+        given(tutoringRepository.findTutoringById(anyLong())).
+                willReturn(tutoring);
         given(tutoringRepository.save(any(Tutoring.class)))
                 .willReturn(tutoring);
         //when
@@ -138,8 +138,8 @@ class TutoringServiceTest {
         );
         given(dateNoticeRepository.findAllByTutoring(any(Tutoring.class), any(Pageable.class)))
                 .willReturn(pageList);
-        given(tutoringRepository.findById(anyLong())).
-                willReturn(Optional.of(tutoring));
+        given(tutoringRepository.findTutoringById(anyLong())).
+                willReturn(tutoring);
         given(tutoringRepository.save(any(Tutoring.class)))
                 .willReturn(tutoring);
         //when
@@ -161,8 +161,8 @@ class TutoringServiceTest {
         Tutoring tutoring = StubData.createTutoring(tutoringId);
         tutoring.setTutoringStatus(TutoringStatus.FINISH);
 
-        given(tutoringRepository.findById(anyLong())).
-                willReturn(Optional.of(tutoring));
+        given(tutoringRepository.findTutoringById(anyLong())).
+                willReturn(tutoring);
 
         //when
         Throwable throwable = catchThrowable(
@@ -183,7 +183,8 @@ class TutoringServiceTest {
 
         //given
         Long tutoringId = 1L;
-        given(tutoringRepository.findById(anyLong())).willReturn(Optional.empty());
+        given(tutoringRepository.findTutoringById(anyLong())).
+                willThrow(new ServiceLogicException(ErrorCode.NOT_FOUND));
 
         //when
         Throwable throwable = catchThrowable(() -> tutoringService.verifiedTutoring(tutoringId));

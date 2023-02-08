@@ -3,32 +3,33 @@
 .dropdownContainer {
   display: block;
   position: absolute;
-  top: 30px;
+  top: 36px;
   right: 0;
-  background-color: $snow;
-  padding: 24px;
+  background-color: $white;
+  padding: 16px;
   border-radius: 3px;
-  box-shadow: $defaultShadow;
+  box-shadow: $buttonShadow;
   width: 120px;
-  height: 120px;
 }
 
 .dropdown {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 24px;
-
-  &:hover {
-    text-decoration: underline;
-  }
+  margin-bottom: 8px;
 
   &:last-child {
     margin: 0;
   }
 
   > button {
+    width: 100%;
     font-size: $font5;
     font-weight: $font5W;
+    padding: 4px;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

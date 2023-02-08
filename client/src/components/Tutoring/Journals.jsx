@@ -8,6 +8,7 @@ import Profile from '../../recoil/profile';
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import dayjs from 'dayjs';
 
 const Journals = ({
   tutoring,
@@ -63,21 +64,22 @@ const Journals = ({
               <li className={styles.li}>
                 <div className={styles.dateBox}>
                   <span className={styles.day}>
-                    {new Date(el.startTime).getDate()}
+                    {dayjs(el.startTime).date()}
                   </span>
-                  <span className={styles.yearMonth}>{`${new Date(
-                    el.startTime
-                  ).getFullYear()}년 ${
-                    new Date(el.startTime).getMonth() + 1
-                  }월`}</span>
+                  <span className={styles.yearMonth}>
+                    {dayjs(el.startTime).format('YYYY년 M월')}
+                  </span>
                 </div>
                 <div className={styles.textAndNotiBox}>
                   <div className={styles.textBox}>
-                    <span className={styles.goal}>
-                      {el.dateNoticeTitle.length > 20
-                        ? `학습 목표 | ${el.dateNoticeTitle.slice(0, 30)}... `
-                        : `학습 목표 | ${el.dateNoticeTitle}`}
-                    </span>
+                    <div className={styles.goal}>
+                      <span>{`학습 목표 | `}</span>
+                      <span>
+                        {el.dateNoticeTitle.length > 20
+                          ? `${el.dateNoticeTitle.slice(0, 18)}... `
+                          : `${el.dateNoticeTitle}`}
+                      </span>
+                    </div>
                     <span
                       className={styles.homework}
                     >{`과제 제출 완료 (${el.finishHomeworkCount}/${el.homeworkCount})`}</span>
@@ -85,7 +87,7 @@ const Journals = ({
                   {el.noticeStatus === 'NOTICE' && (
                     <div className={styles.notiIcon}>
                       <HiSpeakerphone className={styles.hiSpeaker} />
-                      공지
+                      <span>공지</span>
                     </div>
                   )}
                 </div>

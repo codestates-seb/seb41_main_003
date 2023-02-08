@@ -100,7 +100,7 @@ public class TutoringService {
                 .ifPresent(findTutoring::setTutoringTitle);
         TutoringStatus tutoringStatus = tutoring.getTutoringStatus();
         if (tutoringStatus != null && (
-                        tutoringStatus.equals(TutoringStatus.PROGRESS) ||
+                tutoringStatus.equals(TutoringStatus.PROGRESS) ||
                         tutoringStatus.equals(TutoringStatus.WAIT_FINISH) ||
                         tutoringStatus.equals(TutoringStatus.FINISH) ||
                         tutoringStatus.equals(TutoringStatus.UNCHECK) ||
@@ -158,8 +158,7 @@ public class TutoringService {
     }
 
     public Tutoring verifiedTutoring(Long tutoringId) {
-        return tutoringRepository.findById(tutoringId)
-                .orElseThrow(() -> new ServiceLogicException(ErrorCode.NOT_FOUND));
+        return tutoringRepository.findTutoringById(tutoringId);
     }
 
     public TutoringStatus getTutoringStatus(Long profileId) {

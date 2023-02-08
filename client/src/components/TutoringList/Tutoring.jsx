@@ -25,13 +25,17 @@ const Tutoring = ({ tutoring }) => {
       <Link to="/tutoring" state={{ tutoringId }}>
         <div>
           <h4>
-            {sessionStorage.getItem('userStatus') === 'TUTOR'
-              ? tuteeName
-              : tutorName}
-            |{' '}
-            {tutoringTitle.length >= 21
-              ? `${tutoringTitle.slice(0, 21)} ...`
-              : tutoringTitle}
+            <span className={styles.name}>
+              {sessionStorage.getItem('userStatus') === 'TUTOR'
+                ? tuteeName
+                : tutorName}
+              <span className={styles.bar}>|</span>
+            </span>
+            <span className={styles.title}>
+              {tutoringTitle.length >= 21
+                ? `${tutoringTitle.slice(0, 21)} ...`
+                : tutoringTitle}
+            </span>
           </h4>
           {createAt === '' ? undefined : (
             <span>
