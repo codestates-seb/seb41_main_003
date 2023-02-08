@@ -7,6 +7,5 @@
 
 .background {
   background-color: $snow;
-  min-width: 1048px;
   height: 100%;
 }
