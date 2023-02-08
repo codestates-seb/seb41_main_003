@@ -158,13 +158,15 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
       <form id="profile" onSubmit={(e) => submitHandler(e)}>
         <div className={styles.container}>
           <div className={styles.userImage}>
-            <img
-              src={imgSrc || profileImage?.url || defaultUser}
-              alt="profile-img"
-            />
-            <button type="button" onClick={() => setModal(imgModalProps)}>
-              <MdMode />
-            </button>
+            <div className={styles.imgContain}>
+              <img
+                src={imgSrc || profileImage?.url || defaultUser}
+                alt="profile-img"
+              />
+              <button type="button" onClick={() => setModal(imgModalProps)}>
+                <MdMode />
+              </button>
+            </div>
           </div>
           <div>
             <span className={styles.required}>
