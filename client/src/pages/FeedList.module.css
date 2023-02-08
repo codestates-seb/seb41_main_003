@@ -221,3 +221,29 @@
     padding: 4px 2px;
   }
 }
+
+.dropDown {
+  display: block;
+  position: absolute;
+  top: 36px;
+  right: 0;
+  background-color: $white;
+  padding: 16px;
+  border-radius: 3px;
+  box-shadow: $buttonShadow;
+  width: 120px;
+
+  > span {
+    font-size: $font5;
+    font-weight: $font5W;
+  }
+
+  @media screen and (max-width: 768px) {
+    top: 25px;
+
+    > span {
+      font-size: $font6;
+      font-weight: $font6W;
+    }
+  }
+}
