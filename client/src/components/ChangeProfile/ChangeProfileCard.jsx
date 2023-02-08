@@ -154,76 +154,87 @@ const ChangeProfileCard = ({ isNew = true, user, setUser }) => {
   };
 
   return (
-    <div className={styles.container}>
+    <div>
       <form id="profile" onSubmit={(e) => submitHandler(e)}>
-        <div className={styles.userImage}>
-          <img
-            src={imgSrc || profileImage?.url || defaultUser}
-            alt="profile-img"
-          />
-          <button type="button" onClick={() => setModal(imgModalProps)}>
-            <MdMode />
-          </button>
-        </div>
-        <span className={styles.required}>
-          <span className={styles.requiredIcon} />은 필수 입력 사항입니다.
-        </span>
-        <div className={styles.userInfo}>
-          <div className={styles.inputContain}>
-            <LabelTextInput
-              id="name"
-              name="이름"
-              placeHolder="이름"
-              type="text"
-              value={name}
-              handler={inputHandler}
-              required
+        <div className={styles.container}>
+          <div className={styles.userImage}>
+            <img
+              src={imgSrc || profileImage?.url || defaultUser}
+              alt="profile-img"
             />
-            <span className={styles.vali}>
-              {!validation(name, 'name') &&
-                `이름은 한글 2~6자, 영어 4~12글자까지 쓸 수 있습니다.`}
-            </span>
+            <button type="button" onClick={() => setModal(imgModalProps)}>
+              <MdMode />
+            </button>
           </div>
-          <div className={styles.inputContain}>
-            <LabelTextInput
-              id="bio"
-              name="한 줄 소개"
-              placeHolder="한 줄 소개"
-              type="text"
-              value={bio}
-              handler={inputHandler}
-              required
-            />
-            <span className={styles.desc}>본인을 간단히 표현해보세요.</span>
+          <div>
+            <span className={styles.required}>
+              <span className={styles.requiredIcon} />은 필수 입력 사항입니다.
+            </span>
+
+            <div className={styles.userInfo}>
+              <div className={styles.inputContain}>
+                <LabelTextInput
+                  id="name"
+                  name="이름"
+                  placeHolder="이름"
+                  type="text"
+                  value={name}
+                  handler={inputHandler}
+                  required
+                />
+                <span className={styles.vali}>
+                  {!validation(name, 'name') &&
+                    `이름은 한글 2~6자, 영어 4~12글자까지 쓸 수 있습니다.`}
+                </span>
+              </div>
+              <div className={styles.inputContain}>
+                <LabelTextInput
+                  id="bio"
+                  name="한 줄 소개"
+                  placeHolder="한 줄 소개"
+                  type="text"
+                  value={bio}
+                  handler={inputHandler}
+                  required
+                />
+                <span className={styles.desc}>본인을 간단히 표현해보세요.</span>
+              </div>
+
+              <div className={styles.inputContain}>
+                <LabelTextInput
+                  id="school"
+                  name={userStatus === 'TUTOR' ? '학교 / 학번' : '학년'}
+                  placeHolder={userStatus === 'TUTOR' ? '학교 / 학번' : '학년'}
+                  type="text"
+                  value={school}
+                  handler={inputHandler}
+                  required
+                />
+                <span className={styles.desc}>
+                  {userStatus === 'TUTOR'
+                    ? 'ex. 한국대학교 16학번 졸업'
+                    : 'ex. 고등학교 2학년'}
+                </span>
+              </div>
+            </div>
           </div>
 
-          <div className={styles.inputContain}>
-            <LabelTextInput
-              id="school"
-              name={userStatus === 'TUTOR' ? '학교 / 학번' : '학년'}
-              placeHolder={userStatus === 'TUTOR' ? '학교 / 학번' : '학년'}
-              type="text"
-              value={school}
-              handler={inputHandler}
-              required
-            />
-            <span className={styles.desc}>
-              {userStatus === 'TUTOR'
-                ? 'ex. 한국대학교 16학번 졸업'
-                : 'ex. 고등학교 2학년'}
-            </span>
+          <div className={styles.subject}>
+            과목
+            <span className={styles.requiredIcon} />
+            <SubjectsButtons subjectTitles={subjectTitles} setUser={setUser} />
           </div>
+
+          {isNew ? (
+            <div className={styles.buttonBox}>
+              <ButtonNightBlue text="추가완료" form="profile" type="submit" />
+            </div>
+          ) : (
+            <div className={styles.buttonBox}>
+              <ButtonNightBlue text="수정완료" form="profile" type="submit" />
+            </div>
+          )}
         </div>
-        <div className={styles.subject}>
-          과목
-          <span className={styles.requiredIcon} />
-          <SubjectsButtons subjectTitles={subjectTitles} setUser={setUser} />
-        </div>
-        {isNew ? (
-          <ButtonNightBlue text="추가완료" form="profile" type="submit" />
-        ) : (
-          <ButtonNightBlue text="수정완료" form="profile" type="submit" />
-        )}
       </form>
     </div>
   );
