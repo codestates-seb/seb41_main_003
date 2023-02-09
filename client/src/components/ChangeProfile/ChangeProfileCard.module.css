@@ -152,6 +152,7 @@
       flex-wrap: wrap;
     }
 
+    /* stylelint-disable-next-line no-descending-specificity */
     > button {
       width: 64px;
       height: 24px;
