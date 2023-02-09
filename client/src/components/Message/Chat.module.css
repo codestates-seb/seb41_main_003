@@ -2,9 +2,13 @@
 
 .chatContainer {
   display: inline-block;
-  max-width: 50%;
   position: relative;
   margin-bottom: 25px;
+  max-width: 60%;
+
+  @media screen and (max-width: 480px) {
+    max-width: 70%;
+  }
 
   /* 메세지 내용 위로 안넘어 가게 */
 
@@ -39,8 +43,6 @@
     background-color: $night;
     padding: 8px;
     border-radius: 5px;
-    width: 221px;
-    height: 79px;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -50,6 +52,7 @@
       color: $white;
       font-size: $font6;
       font-weight: $font6W;
+      margin-bottom: 4px;
     }
   }
 
@@ -94,6 +97,9 @@
   border-radius: 5px;
   font-weight: $font5W;
   font-size: $font5;
+  @media screen and (max-width: 480px) {
+    width: auto;
+  }
 }
 
 .checkRequestBtn {
@@ -104,4 +110,7 @@
   border-radius: 5px;
   font-weight: $font5W;
   font-size: $font5;
+  @media screen and (max-width: 480px) {
+    width: auto;
+  }
 }

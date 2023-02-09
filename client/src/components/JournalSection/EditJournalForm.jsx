@@ -80,14 +80,7 @@ const EditJournalForm = () => {
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
-    // if (name === 'scheduleBody') {
-    //   setUserData({
-    //     ...userData,
-    //     [scheduleBody]: userData[scheduleBody].replace(/(\n|\r\n)/g, '<br>'),
-    //   });
-    // } else {
     setUserData({ ...userData, [name]: value });
-    // }
   };
 
   const deleteHomeworkHandler = (e) => {
@@ -123,27 +116,9 @@ const EditJournalForm = () => {
     <div className={styles.container}>
       <h1>과외 일지 {isAdd ? '작성' : '수정'}</h1>
       <div className={styles.journalContainer}>
-        <div className={styles.buttonContainer}>
-          <span className={styles.required}>
-            <span className={styles.requiredIcon} />은 필수 입력 사항입니다.
-          </span>
-          <ButtonRed text="취소" buttonHandler={() => setModal(cancel)} />
-          <ButtonNightBlue
-            text={`${isAdd ? '작성' : '수정'}`}
-            buttonHandler={() => {
-              if (dateNoticeTitle.length !== 0 && scheduleBody.length !== 0)
-                setModal(confirm);
-              else
-                setModal({
-                  isOpen: true,
-                  modalType: 'alert',
-                  props: {
-                    text: `학습목표와 수업 상세 및 전달 사항은 필수로 작성해야 합니다.`,
-                  },
-                });
-            }}
-          />
-        </div>
+        <span className={styles.required}>
+          <span className={styles.requiredIcon} />은 필수 입력 사항입니다.
+        </span>
         <section className={styles.upperPart}>
           <DatePickerForm />
           <div className={styles.upperGoal}>
@@ -181,7 +156,7 @@ const EditJournalForm = () => {
               </div>
             </div>
             <div className={styles.homeworkContainer}>
-              <label htmlFor="noticeBody">
+              <label htmlFor="homework">
                 <h4>과제 체크리스트</h4>
               </label>
               <ul className={styles.homeworkArea}>
@@ -236,6 +211,7 @@ const EditJournalForm = () => {
                 <div className={styles.addHomework}>
                   <CheckBox />
                   <input
+                    id="homework"
                     value={homeworkVal}
                     onKeyUp={addHomeworkHandler}
                     onChange={(e) => setHomeworkVal(e.target.value)}
@@ -257,11 +233,29 @@ const EditJournalForm = () => {
                 id="scheduleBody"
                 handler={inputHandler}
                 value={scheduleBody}
-                placeHolder="Text"
+                placeHolder="수업 상세 및 전달사항"
               />
             </div>
           </div>
         </section>
+        <div className={styles.buttonContainer}>
+          <ButtonNightBlue
+            text={`${isAdd ? '작성' : '수정'}`}
+            buttonHandler={() => {
+              if (dateNoticeTitle.length !== 0 && scheduleBody.length !== 0)
+                setModal(confirm);
+              else
+                setModal({
+                  isOpen: true,
+                  modalType: 'alert',
+                  props: {
+                    text: `학습목표와 수업 상세 및 전달 사항은 필수로 작성해야 합니다.`,
+                  },
+                });
+            }}
+          />
+          <ButtonRed text="취소" buttonHandler={() => setModal(cancel)} />
+        </div>
       </div>
     </div>
   );

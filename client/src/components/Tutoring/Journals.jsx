@@ -65,6 +65,7 @@ const Journals = ({
                 <div className={styles.dateBox}>
                   <span className={styles.day}>
                     {dayjs(el.startTime).date()}
+                    <span className={styles.text}>일</span>
                   </span>
                   <span className={styles.yearMonth}>
                     {dayjs(el.startTime).format('YYYY년 M월')}
@@ -72,11 +73,14 @@ const Journals = ({
                 </div>
                 <div className={styles.textAndNotiBox}>
                   <div className={styles.textBox}>
-                    <span className={styles.goal}>
-                      {el.dateNoticeTitle.length > 20
-                        ? `학습 목표 | ${el.dateNoticeTitle.slice(0, 30)}... `
-                        : `학습 목표 | ${el.dateNoticeTitle}`}
-                    </span>
+                    <div className={styles.goal}>
+                      <span>{`학습 목표 | `}</span>
+                      <span>
+                        {el.dateNoticeTitle.length > 20
+                          ? `${el.dateNoticeTitle.slice(0, 18)}... `
+                          : `${el.dateNoticeTitle}`}
+                      </span>
+                    </div>
                     <span
                       className={styles.homework}
                     >{`과제 제출 완료 (${el.finishHomeworkCount}/${el.homeworkCount})`}</span>
@@ -84,7 +88,7 @@ const Journals = ({
                   {el.noticeStatus === 'NOTICE' && (
                     <div className={styles.notiIcon}>
                       <HiSpeakerphone className={styles.hiSpeaker} />
-                      공지
+                      <span>공지</span>
                     </div>
                   )}
                 </div>

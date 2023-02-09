@@ -40,8 +40,8 @@ const JournalForm = ({ userData }) => {
 
   return (
     <div className={styles.container}>
-      <h1>과외 일지 </h1>
       <div className={styles.journalContainer}>
+        <h1>과외 일지</h1>
         <div className={styles.exitButton}>
           <ButtonSilver text="나가기" buttonHandler={() => setModal(confirm)} />
         </div>
@@ -62,7 +62,11 @@ const JournalForm = ({ userData }) => {
                 <label htmlFor="dateNoticeTitle">
                   <h4>학습목표</h4>
                 </label>
-                {userStatus === 'TUTOR' && !isFinished && <DropDown />}
+                {userStatus === 'TUTOR' && !isFinished && (
+                  <div className={styles.dropDownBox}>
+                    <DropDown />
+                  </div>
+                )}
               </div>
               <h5 className={styles.noticeArea}>{dateNoticeTitle}</h5>
             </div>

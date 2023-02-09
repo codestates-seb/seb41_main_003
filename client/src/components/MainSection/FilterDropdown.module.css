@@ -10,6 +10,10 @@
   border-radius: 3px;
   box-shadow: $buttonShadow;
   width: 120px;
+
+  @media screen and (max-width: 768px) {
+    top: 25px;
+  }
 }
 
 .dropdown {
@@ -30,6 +34,11 @@
 
     &:hover {
       text-decoration: underline;
+    }
+
+    @media screen and (max-width: 768px) {
+      font-size: $font6;
+      font-weight: $font6W;
     }
   }
 }

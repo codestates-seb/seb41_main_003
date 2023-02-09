@@ -3,21 +3,35 @@
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-top: 32px;
-  padding-bottom: 63px;
+  padding: 32px 16px 64px;
+  width: 100%;
+  max-width: 1048px;
+
+  label {
+    display: inline-block;
+  }
 
   h1 {
     font-size: $font1;
     font-weight: $font1W;
     margin-bottom: 32px;
     display: flex;
-    margin-right: 777px;
   }
 
   h4 {
     font-size: $font4;
     font-weight: $font4W;
+  }
+
+  @media screen and (max-width: 480px) {
+    h1 {
+      font-size: $font3;
+      font-weight: $font3W;
+    }
+
+    h4 {
+      margin-bottom: 16px;
+    }
   }
 }
 
@@ -37,6 +51,17 @@
   text-align: right;
   font-size: $sub;
   font-weight: 500;
+  position: absolute;
+  right: 200px;
+  top: 48px;
+
+  @media screen and (max-width: 768px) {
+    right: 36px;
+  }
+  @media screen and (max-width: 480px) {
+    top: 24px;
+    right: 24px;
+  }
 
   .requiredIcon {
     top: -5px;
@@ -44,7 +69,7 @@
 }
 
 .journalContainer {
-  width: 1048px;
+  width: 100%;
   height: 100%;
   background-color: $white;
   border-radius: 5px;
@@ -52,8 +77,13 @@
   padding: 32px;
   position: relative;
 
+  @media screen and (max-width: 480px) {
+    padding: 24px;
+  }
+
   .buttonContainer {
     display: flex;
+    flex-direction: row-reverse;
     position: absolute;
     right: 32px;
     top: 20px;
@@ -62,32 +92,54 @@
     > button {
       margin-left: 8px;
     }
+
+    @media screen and (max-width: 768px) {
+      position: static;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 16px;
+
+      > button {
+        margin: 0;
+      }
+    }
   }
 
   .upperPart {
     display: flex;
     margin-bottom: 32px;
 
+    @media screen and (max-width: 480px) {
+      flex-direction: column;
+    }
+
+    .upperGoal {
+      flex: 1 0 0;
+    }
+
     .titleContainer {
-      width: 843px;
-      height: 36px;
+      width: 100%;
       margin-top: 17px;
     }
   }
 
   .lowerPart {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+
+    @media screen and (max-width: 768px) {
+      grid-template-columns: minmax(200px, 1fr);
+      padding-top: 16px;
+    }
 
     h4 {
       margin-bottom: 16px;
     }
 
-    .noticeHomework {
-      margin-right: 12px;
-    }
-
     .noticeArea {
-      width: 484px;
+      width: 100%;
       height: 120px;
 
       > * {
@@ -100,7 +152,7 @@
     }
 
     .scheduleArea {
-      width: 488px;
+      width: 100%;
       height: 388px;
 
       > * {
@@ -113,8 +165,12 @@
     }
 
     .homeworkContainer {
+      width: 100%;
       margin-top: 16px;
-      width: 484px;
+
+      @media screen and (max-width: 768px) {
+        margin-bottom: 16px;
+      }
     }
   }
 
@@ -125,6 +181,9 @@
     height: 209px;
     scrollbar-width: auto;
     scrollbar-color: #666 #f00;
+    @media screen and (max-width: 768px) {
+      height: auto;
+    }
 
     &::-webkit-scrollbar {
       width: 10px;
@@ -171,7 +230,7 @@
     .homeworkBody {
       margin-left: 8px;
       font-size: $para;
-      font-weight: $para;
+      font-weight: $paraW;
       overflow: hidden;
       word-wrap: break-word;
       padding-right: 20px;
@@ -182,7 +241,6 @@
       padding: 4px;
 
       input {
-        width: 300px;
         margin: 0 8px;
         border: 0;
         border-bottom: 2px solid $moon;

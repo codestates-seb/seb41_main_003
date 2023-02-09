@@ -1,7 +1,7 @@
 @import url('../../default.css');
 
 .container {
-  width: 696px;
+  width: 100%;
   background-color: $white;
   border-radius: 5px;
   padding: 32px;

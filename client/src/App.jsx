@@ -32,6 +32,7 @@ import Profile from './recoil/profile';
 import { useEffect } from 'react';
 import OAuth from './pages/OAuth';
 import ModalState from './recoil/modal';
+import ScrollToTop from './util/ScrollToTop';
 
 const App = () => {
   const resetProfile = useResetRecoilState(Profile);
@@ -116,6 +117,7 @@ const App = () => {
   return (
     <div className="app">
       <Router basename="/">
+        <ScrollToTop />
         <Header />
         <div className="content">
           <Routes>

@@ -7,15 +7,24 @@
 }
 
 .container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: start;
+  padding: 16px 8px;
+  gap: 8px;
+  background-color: $snow;
   max-width: 1048px;
   margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 16px 0;
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 
   > div:first-child {
     position: sticky;
     top: 80px;
+    @media screen and (max-width: 768px) {
+      position: relative;
+      top: 0;
+    }
   }
 }
