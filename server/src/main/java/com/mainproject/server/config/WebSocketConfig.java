@@ -35,7 +35,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOrigins("http://localhost:3000","https://tutordiff.site"
                         ,"https://api-tutordiff.site","http://tutordiff.site","http://api-tutordiff.site")
                 .withSockJS();
-//                .setAllowedOrigins("*");
     }
 
     @Override
