@@ -17,6 +17,7 @@ const useLiveChat = () => {
   const TOKEN = sessionStorage.getItem('authorization');
 
   // ! 추후 URL API 사양에 맞게 변경 요망
+  //TODO: useEffect 내부에서 CurrentRoomId가 바뀌면 동작하는 함수를 connect를 subscribe로 바꾸기
   const URL =
     'http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com:8081/stomp/content';
 
@@ -43,9 +44,11 @@ const useLiveChat = () => {
     client.current = new StompJs.Client({
       webSocketFactory: () => new SockJS(URL),
       connectHeaders: {
-        authorization: TOKEN,
+        Authorization: TOKEN,
       },
-      debug: () => {},
+      debug: (str) => {
+        console.log(str);
+      },
       reconnectDelay: 3000,
       heartbeatIncoming: 2000,
       heartbeatOutgoing: 2000,
@@ -92,7 +95,7 @@ const useLiveChat = () => {
     }
 
     client.current.publish({
-      destination: `/pub/chats/message/${CurrentRoomId}`,
+      destination: `/pub/chats/${CurrentRoomId}`,
       body: JSON.stringify({
         senderId: profileId,
         receiverId: receiverId,
