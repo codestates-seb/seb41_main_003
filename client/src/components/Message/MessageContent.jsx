@@ -158,7 +158,7 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
               <Chat
                 publish={publish}
                 message={message}
-                key={`msg${message.messageId}`}
+                key={`msg${CurrentRoomId}${message.messageId}`}
                 tutoringId={tutoringId}
               />
             </>
