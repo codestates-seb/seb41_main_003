@@ -10,26 +10,29 @@ import com.mainproject.server.message.entity.Message;
 import com.mainproject.server.message.entity.MessageRoom;
 import com.mainproject.server.message.repository.MessageRepository;
 import com.mainproject.server.message.repository.MessageRoomRepository;
+import com.mainproject.server.message.ui.RedisPublisher;
+import com.mainproject.server.message.ui.RedisSubscriber;
 import com.mainproject.server.profile.entity.Profile;
 import com.mainproject.server.profile.service.ProfileService;
 import com.mainproject.server.tutoring.entity.Tutoring;
 import com.mainproject.server.tutoring.repository.TutoringRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class MessageService {
 
     private final MessageRepository messageRepository;
@@ -40,6 +43,14 @@ public class MessageService {
 
     private final TutoringRepository tutoringRepository;
 
+    private final RedisPublisher redisPublisher;
+
+    private final Map<String, ChannelTopic> topics;
+
+    private final RedisMessageListenerContainer redisMessageListener;
+
+    private final RedisSubscriber redisSubscriber;
+
 
     public MessageResponseDto createMessage(
             MessagePostDto postDto
@@ -48,7 +59,14 @@ public class MessageService {
         Profile sender = profileService.verifiedProfileById(postDto.getSenderId());
         Profile receiver = profileService.verifiedProfileById(postDto.getReceiverId());
         Message message = saveMessage(postDto, messageRoom, sender, receiver);
-        return MessageResponseDto.of(messageRepository.save(message));
+        MessageResponseDto dto = MessageResponseDto.of(
+                messageRepository.save(message),
+                messageRoom.getMessageRoomId()
+        );
+        redisPublisher.publish(
+                ChannelTopic.of("messageRoom"+messageRoom.getMessageRoomId()),
+                dto);
+        return dto;
     }
 
     public MessageRoomSimpleResponseDto createMessageRoom(
@@ -62,6 +80,7 @@ public class MessageService {
                 tutee.getProfileStatus().equals(ProfileStatus.TUTEE)) {
             verifyMessageRoom(tutor, tutee);
             MessageRoom save = saveMessageRoom(tutor, tutee);
+            sendTopic(save.getMessageRoomId());
             return MessageRoomSimpleResponseDto.of(profile.getProfileStatus(), save);
         } else {
             throw new ServiceLogicException(ErrorCode.WRONG_TUTOR_AND_TUTEE);
@@ -102,7 +121,9 @@ public class MessageService {
                 findMessageRoom.setMessageStatus(MessageStatus.CHECK);
             }
         }
-        return MessageRoomResponseDto.of(messageRoomRepository.save(findMessageRoom));
+        MessageRoom save = messageRoomRepository.save(findMessageRoom);
+        sendTopic(save.getMessageRoomId());
+        return MessageRoomResponseDto.of(save);
     }
 
     public MessageRoom updateMessageRoom(Long messageRoomId, Long tutoringId) {
@@ -192,6 +213,19 @@ public class MessageService {
         messageRoom.addTutor(tutor);
         messageRoom.addTutee(tutee);
         return messageRoomRepository.save(messageRoom);
+    }
+
+    private void sendTopic(Long messageRoomId) {
+        String roomId = "messageRoom" + messageRoomId;
+        log.info("topics={}",topics);
+        if (!topics.containsKey(roomId)) {
+            log.info("메세지 토픽 만들어짐");
+            ChannelTopic topic = new ChannelTopic(roomId);
+            redisMessageListener.addMessageListener(redisSubscriber, topic);
+            topics.put(roomId, topic);
+            log.info("메세지 토픽 전송");
+            log.info("topics={}",topics);
+        }
     }
 
 }

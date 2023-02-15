@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +31,16 @@ public class MessageController {
 
     @PostMapping
     public ResponseEntity postMessage(
+            @RequestBody @Validated MessagePostDto messagePostDto
+    ) {
+        ResponseDto response =
+                ResponseDto.of(messageService.createMessage(messagePostDto));
+        return new ResponseEntity<>(response ,HttpStatus.CREATED);
+    }
+
+    @MessageMapping("/chats/{roomId}")
+    public ResponseEntity sendMessage(
+            @DestinationVariable Long roomId,
             @RequestBody @Validated MessagePostDto messagePostDto
     ) {
         ResponseDto response =
