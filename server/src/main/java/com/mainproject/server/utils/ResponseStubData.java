@@ -242,6 +242,7 @@ public class ResponseStubData {
     }
     public static MessageResponseDto createMessageResponse() {
         return MessageResponseDto.builder()
+                .messageRoomId(1L)
                 .messageId(1L)
                 .senderId(1L)
                 .senderName("홍길동")
