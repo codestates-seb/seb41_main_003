@@ -25,8 +25,8 @@ public class CorsFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         log.info("Do CORS Filter");
         List<String> list = List.of(
-                "http://localhost:3000",
-                "http://localhost:8080"
+                "http://localhost:3000","https://tutordiff.site"
+                ,"https://api-tutordiff.site","http://tutordiff.site","http://api-tutordiff.site"
         );
         String originUrl = request.getHeader("Origin");
         log.info("requestURL = {}", originUrl);
@@ -37,6 +37,7 @@ public class CorsFilter extends OncePerRequestFilter {
         response.setHeader("Access-Control-Allow-Methods","GET, POST, DELETE, PATCH, OPTIONS");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Expose-Headers", "Authorization, userId, userStatus");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Headers",
                 "Origin, X-Requested-With, Content-Type, Accept, Key, Authorization, Authorization, userId, userStatus");
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
