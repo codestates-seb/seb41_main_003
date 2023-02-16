@@ -16,9 +16,7 @@ import Profile from '../recoil/profile';
 
 const Message = () => {
   const [messageList, setMessageList] = useState([0]);
-  const [messageRoom, setMessageRoom] = useState({
-    messages: [],
-  });
+
   const [isChat, setIsChat] = useState(false);
   const [pageInfo, setPageInfo] = useState({});
   const [CurrentRoomId, resetCurrentRoomId] =
@@ -57,7 +55,6 @@ const Message = () => {
 
   useEffect(() => {
     getMessageList();
-    getMessageRoom();
     window.addEventListener('resize', () => {
       if (window.innerWidth > 768) setIsChat(false);
     });
@@ -73,20 +70,20 @@ const Message = () => {
     if (messageList.length === 0) setModal(noListAlertModal);
   }, [messageList]);
 
-  useEffect(() => {
-    getMessageRoom();
-  }, [CurrentRoomId]);
+  // useEffect(() => {
+  //   getMessageRoom();
+  // }, [CurrentRoomId]);
 
   //대화 화면 조회 API
-  const getMessageRoom = async () => {
-    if (CurrentRoomId !== 0 && CurrentRoomId !== undefined)
-      await axios
-        .get(`/messages/rooms/${profileId}/${CurrentRoomId}`)
-        .then((res) => {
-          setMessageRoom(res.data.data);
-        })
-        .catch((err) => console.log(err));
-  };
+  // const getMessageRoom = async () => {
+  //   if (CurrentRoomId !== 0 && CurrentRoomId !== undefined)
+  //     await axios
+  //       .get(`/messages/rooms/${profileId}/${CurrentRoomId}`)
+  //       .then((res) => {
+  //         setMessageRoom(res.data.data);
+  //       })
+  //       .catch((err) => console.log(err));
+  // };
 
   const cancelAlertProps = {
     isOpen: true,
@@ -135,9 +132,7 @@ const Message = () => {
               </div>
             ) : (
               <MessageContent
-                messageRoom={messageRoom}
                 getMessageList={getMessageList}
-                getMessageRoom={getMessageRoom}
                 delMessageRoom={delMessageRoom}
                 setIsChat={setIsChat}
               />
