@@ -16,8 +16,7 @@ const useLiveChat = () => {
   const client = useRef({});
   const TOKEN = sessionStorage.getItem('authorization');
 
-  const URL =
-    'http://ec2-15-165-186-53.ap-northeast-2.compute.amazonaws.com:8081/stomp/content';
+  const URL = 'https://api-tutordiff.site/stomp/content';
 
   useEffect(() => {
     initialChatSetting();
