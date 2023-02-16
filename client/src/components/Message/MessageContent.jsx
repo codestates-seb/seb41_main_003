@@ -34,7 +34,7 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
     if (CurrentRoomId !== 0 && CurrentRoomId !== undefined)
       await axios
         .get(`/messages/rooms/${profileId}/${CurrentRoomId}`)
-        .then(({ data: data }) => {
+        .then(({ data: { data } }) => {
           setMessageRoom(data);
         })
         .catch((err) => console.log(err));

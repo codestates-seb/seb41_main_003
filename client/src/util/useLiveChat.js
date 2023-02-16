@@ -9,7 +9,7 @@ import Profile from '../recoil/profile';
 
 const useLiveChat = () => {
   const [text, setText] = useState('');
-  const [messageRoom, setMessageRoom] = useState([]);
+  const [messageRoom, setMessageRoom] = useState({});
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
   const { profileId } = useRecoilValue(Profile);
   const [receiverId, setReceiverId] = useState(0);
