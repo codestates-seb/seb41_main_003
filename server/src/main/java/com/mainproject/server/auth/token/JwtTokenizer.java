@@ -134,7 +134,7 @@ public class JwtTokenizer {
     /* AccessToken 검증 */
     public void verifyAccessToken(
             String accessToken
-    ) throws IOException {
+    ) {
         String base64SecretKey = encodeBase64SecretKey(getSecretKey());
         try {
             verifySignature(accessToken, base64SecretKey);

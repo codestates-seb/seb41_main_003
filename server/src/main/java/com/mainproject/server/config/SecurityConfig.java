@@ -80,6 +80,8 @@ public class SecurityConfig {
                 .and().authorizeRequests(
                         auth -> auth
                                 .antMatchers("/").permitAll()
+                                .antMatchers("/stomp/content").permitAll()
+                                .antMatchers("/stomp/content/**").permitAll()
                                 .antMatchers("/docs/**").permitAll()
                                 .antMatchers("/h2/**").permitAll()
                                 .antMatchers("/h2").permitAll()
