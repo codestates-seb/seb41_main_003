@@ -6,13 +6,7 @@ import Profile from '../../recoil/profile';
 import ModalState from '../../recoil/modal.js';
 import dayjs from 'dayjs';
 
-const Chat = ({
-  message,
-  getMessageRoom,
-  CurrentRoomId,
-  receiveMessageId,
-  tutoringId,
-}) => {
+const Chat = ({ message, tutoringId, publish }) => {
   const { senderId, messageContent, senderName, createAt } = message;
   const { profileId } = useRecoilValue(Profile);
   const setModal = useSetRecoilState(ModalState);
@@ -49,33 +43,13 @@ const Chat = ({
   };
 
   //* 매칭요청 승인시에 보내는 메세지
-  const matchingConfirmMessage = async () => {
-    await axios
-      .post(`/messages`, {
-        senderId: profileId,
-        receiverId: receiveMessageId,
-        messageRoomId: CurrentRoomId,
-        messageContent: 'MAT_CHING_CON_FIRM',
-      })
-      .then(() => {
-        getMessageRoom();
-      })
-      .catch((err) => console.log(err));
+  const matchingConfirmMessage = () => {
+    publish('matchingConfirm');
   };
 
   //* 매칭 취소시에 보내는 메세지
-  const matchingCancelessage = async () => {
-    await axios
-      .post(`/messages`, {
-        senderId: profileId,
-        receiverId: receiveMessageId,
-        messageRoomId: CurrentRoomId,
-        messageContent: 'MAT_CHING_CAN_CEL',
-      })
-      .then(() => {
-        getMessageRoom();
-      })
-      .catch((err) => console.log(err));
+  const matchingCancelessage = () => {
+    publish('matchingCancel');
   };
 
   const matchConfirmModal = {
@@ -88,7 +62,6 @@ const Chat = ({
       modalHandler: () => {
         confirmMatching();
         resetModal();
-        getMessageRoom();
       },
     },
   };
@@ -111,7 +84,6 @@ const Chat = ({
       modalHandler: () => {
         deleteTutoring();
         resetModal();
-        getMessageRoom();
       },
     },
   };
@@ -193,10 +165,8 @@ const Chat = ({
 
 Chat.propTypes = {
   message: PropType.object,
-  receiveMessageId: PropType.number,
-  CurrentRoomId: PropType.string,
   tutoringId: PropType.number,
-  getMessageRoom: PropType.func,
+  publish: PropType.func,
 };
 
 export default Chat;

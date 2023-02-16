@@ -50,7 +50,7 @@ const MessageList = ({
       <ul className={styles.messageList}>
         {messageList.map((list) => {
           return (
-            <li key={list.messageRoomId} className={styles.message}>
+            <li key={`roomId${list.messageRoomId}`} className={styles.message}>
               <button
                 id={list.messageRoomId}
                 onClick={getCurrentRoomId}

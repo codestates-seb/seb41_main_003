@@ -1,7 +1,7 @@
 import styles from './MessageContent.module.css';
 import { MdClose, MdMenu, MdRefresh } from 'react-icons/md';
 import PropType from 'prop-types';
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Chat from './Chat';
 import { useRecoilValue, useSetRecoilState, useResetRecoilState } from 'recoil';
 import ModalState from '../../recoil/modal.js';
@@ -10,21 +10,15 @@ import CurrentRoomIdState from '../../recoil/currentRoomId';
 import Profile from '../../recoil/profile';
 import useOutSideRef from '../../util/useOutSideRef';
 import dayjs from 'dayjs';
+import useLiveChat from '../../util/useLiveChat';
 
-const MessageContent = ({
-  messageRoom,
-  delMessageRoom,
-  getMessageRoom,
-  getMessageList,
-  setIsChat,
-}) => {
+const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
+  const { publish, messageRoom, setMessageRoom, text, setText } = useLiveChat();
   const { tutorId, tuteeId, tutoringId, messages } = messageRoom;
   const menuRef = useRef(null);
   const scrollRef = useRef(null);
   const inputRef = useRef(null);
   const [dropdownRef, isMenu, setIsMenu] = useOutSideRef(menuRef);
-  const [inputValue, setInputValue] = useState('');
-  const [receiveMessageId, setReceiveMessageId] = useState(0);
   const CurrentRoomId = useRecoilValue(CurrentRoomIdState);
   const { profileId } = useRecoilValue(Profile);
   const setModal = useSetRecoilState(ModalState);
@@ -36,35 +30,25 @@ const MessageContent = ({
     inputRef.current.focus();
   }, [messageRoom]);
 
+  const getMessageRoom = async () => {
+    if (CurrentRoomId !== 0 && CurrentRoomId !== undefined)
+      await axios
+        .get(`/messages/rooms/${profileId}/${CurrentRoomId}`)
+        .then(({ data: { data } }) => {
+          setMessageRoom(data);
+        })
+        .catch((err) => console.log(err));
+  };
+
   //*
   const refreshMessage = () => {
     getMessageList();
     getMessageRoom();
   };
-  //* messageList가 변경될때마다 message의 receiver를 변경해줌
-  const setReceiver = () => {
-    if (profileId === tuteeId) {
-      setReceiveMessageId(tutorId);
-    } else setReceiveMessageId(tuteeId);
-  };
-
-  useEffect(() => {
-    setReceiver();
-  }, [messageRoom]);
 
   //* 메세지 post API
-  const sendMessage = async () => {
-    await axios
-      .post(`/messages`, {
-        senderId: profileId,
-        receiverId: receiveMessageId,
-        messageRoomId: CurrentRoomId,
-        messageContent: inputValue,
-      })
-      .then(() => {
-        refreshMessage();
-      })
-      .catch((err) => console.log(err));
+  const sendMessage = () => {
+    publish();
   };
 
   //* 매칭 요청 (과외 생성) API
@@ -160,7 +144,7 @@ const MessageContent = ({
           <MdRefresh />
         </button>
 
-        {messages.map((message, idx) => {
+        {messages?.map((message, idx) => {
           const prevDate = dayjs(messages[idx - 1]?.createAt).format(
             'YYYY년 MM월 DD일'
           );
@@ -172,11 +156,9 @@ const MessageContent = ({
                 <p className={styles.dateLine}>{currDate}</p>
               )}
               <Chat
+                publish={publish}
                 message={message}
-                key={`msg${message.messageId}`}
-                getMessageRoom={getMessageRoom}
-                receiveMessageId={receiveMessageId}
-                CurrentRoomId={CurrentRoomId}
+                key={`msg${CurrentRoomId}${message.messageId}`}
                 tutoringId={tutoringId}
               />
             </>
@@ -196,12 +178,12 @@ const MessageContent = ({
           id="sendMsg"
           placeholder="메세지를 입력하세요"
           type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
           onKeyUp={(e) => {
             if (e.key === 'Enter' && e.target.value) {
               sendMessage();
-              setInputValue('');
+              setText('');
             }
           }}
           ref={inputRef}
@@ -209,9 +191,9 @@ const MessageContent = ({
         />
         <button
           onClick={() => {
-            if (inputValue !== '') {
+            if (text !== '') {
               sendMessage();
-              setInputValue('');
+              setText('');
             }
           }}
           className={styles.sendBtn}

@@ -124,6 +124,7 @@ class MessageControllerTest {
                                 PayloadDocumentation.responseFields(
                                         List.of(
                                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+                                                fieldWithPath("data.messageRoomId").type(JsonFieldType.NUMBER).description("메세지 룸 식별자"),
                                                 fieldWithPath("data.messageId").type(JsonFieldType.NUMBER).description("메세지 식별자"),
                                                 fieldWithPath("data.senderId").type(JsonFieldType.NUMBER).description("보내는 프로필 식별자"),
                                                 fieldWithPath("data.senderName").type(JsonFieldType.STRING).description("보내는 프로필 이름"),
@@ -291,6 +292,7 @@ class MessageControllerTest {
                                                 fieldWithPath("data.tuteeName").type(JsonFieldType.STRING).description("튜티 이름"),
                                                 fieldWithPath("data.tutoringId").type(JsonFieldType.NUMBER).description("과외 식별자"),
                                                 fieldWithPath("data.messages").type(JsonFieldType.ARRAY).description("메세지 리스트"),
+                                                fieldWithPath("data.messages.[]messageRoomId").type(JsonFieldType.NUMBER).description("메세지 룸 식별자"),
                                                 fieldWithPath("data.messages.[]messageId").type(JsonFieldType.NUMBER).description("메세지 식별자"),
                                                 fieldWithPath("data.messages.[]senderId").type(JsonFieldType.NUMBER).description("보내는 프로필 식별자"),
                                                 fieldWithPath("data.messages.[]senderName").type(JsonFieldType.STRING).description("보내는 프로필 이름"),
@@ -348,6 +350,7 @@ class MessageControllerTest {
 
     private MessageResponseDto createMessageResponseDto() {
         return MessageResponseDto.builder()
+                .messageRoomId(1L)
                 .messageId(1L)
                 .senderId(1L)
                 .receiverId(2L)
