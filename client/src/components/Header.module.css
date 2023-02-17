@@ -159,22 +159,6 @@
     font-size: 26px;
   }
 
-  .noti {
-    width: 300px;
-    height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 64px;
-    right: 150px;
-    background-color: $snow;
-    padding: 24px;
-    box-shadow: $defaultShadow;
-    font-size: $font5;
-    font-weight: $font5W;
-  }
-
   .dropdown {
     display: block;
     position: absolute;

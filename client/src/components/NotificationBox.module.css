@@ -1,0 +1,54 @@
+@import url('../default.css');
+
+.noticeBoxContainer {
+  width: 320px;
+  height: 320px;
+  background-color: $snow;
+  position: absolute;
+  right: 120px;
+  top: 64px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.noticeListArea {
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.noticeListArea::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.buttonArea {
+  width: 320px;
+  height: 30px;
+  background-color: $white;
+  padding-right: 8px;
+  box-shadow: 0 -2px 0 rgb(0 0 0 / 2%);
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  > button {
+    display: flex;
+  }
+
+  > button:last-child {
+    margin-left: 8px;
+  }
+
+  > button:hover {
+    text-decoration: underline;
+  }
+
+  > button > span {
+    font-size: 14px;
+    margin-top: 1.5px;
+  }
+}

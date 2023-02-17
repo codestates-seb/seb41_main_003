@@ -10,6 +10,7 @@ import axios from 'axios';
 import useOutSideRef from '../util/useOutSideRef';
 import CurrentRoomIdState from '../recoil/currentRoomId';
 import ChangeJournal from '../recoil/journal';
+import NotificationBox from './NotificationBox';
 
 const Header = () => {
   const [isNoti, setIsNoti] = useState(false);
@@ -227,9 +228,7 @@ const Header = () => {
               </button>
             </li>
           </ul>
-          {isNoti && (
-            <div className={styles.noti}>기능 추가 될 예정입니다.</div>
-          )}
+          {isNoti && <NotificationBox />}
 
           {isUserMenu && (
             <ul className={styles.dropdown} ref={dropDownRef}>
