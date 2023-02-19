@@ -28,12 +28,14 @@ public class Alarm {
     @Setter
     Long contentId;
 
-    @Column(nullable = false)
     @Setter
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     AlarmType alarmType;
 
-    @Column(nullable = false)
     @Setter
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     AlarmStatus alarmStatus;
 
     @ToString.Exclude
