@@ -5,6 +5,7 @@ import com.mainproject.server.alarm.dto.AlarmDto;
 import com.mainproject.server.alarm.entity.Alarm;
 import com.mainproject.server.alarm.service.AlarmService;
 import com.mainproject.server.dto.PageResponseDto;
+import com.mainproject.server.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,7 +35,7 @@ public class AlarmController {
     ) {
         boolean comp = alarmService.verifyAlarm(profileId);
         return new ResponseEntity(
-                ResponseEntity.ok(Map.of("alarmCheck",comp)),
+                ResponseDto.of(Map.of("alarmCheck",comp)),
                 HttpStatus.OK
         );
     }
