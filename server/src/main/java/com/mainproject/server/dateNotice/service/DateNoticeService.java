@@ -1,5 +1,7 @@
 package com.mainproject.server.dateNotice.service;
 
+import com.mainproject.server.alarm.service.AlarmService;
+import com.mainproject.server.constant.AlarmType;
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.NoticeStatus;
 import com.mainproject.server.constant.TutoringStatus;
@@ -31,6 +33,8 @@ public class DateNoticeService {
 
     private final HomeworkRepository homeworkRepository;
 
+    private final AlarmService alarmService;
+
 
     public DateNotice createDateNotice(DateNotice dateNotice, Long tutoringId) {
         Tutoring findTutoring = tutoringService.verifiedTutoring(tutoringId);
@@ -39,6 +43,10 @@ public class DateNoticeService {
         dateNotice.getHomeworks().forEach(h -> h.addDateNotice(dateNotice));
         dateNotice.setNoticeStatus(NoticeStatus.NONE);
         DateNotice saveNotice = dateNoticeRepository.save(dateNotice);
+        alarmService.sendAlarm(
+                findTutoring.getTutee(),findTutoring.getTutor(),
+                AlarmType.DATE_NOTICE,saveNotice.getDateNoticeId()
+        );
         return updateCheckNotice(saveNotice, findTutoring);
     }
 
