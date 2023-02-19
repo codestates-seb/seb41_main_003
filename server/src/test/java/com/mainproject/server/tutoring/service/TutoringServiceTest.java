@@ -1,5 +1,7 @@
 package com.mainproject.server.tutoring.service;
 
+import com.mainproject.server.alarm.service.AlarmService;
+import com.mainproject.server.constant.AlarmType;
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.ProfileStatus;
 import com.mainproject.server.constant.TutoringStatus;
@@ -43,6 +45,9 @@ class TutoringServiceTest {
 
     @Mock
     private MessageService messageService;
+
+    @Mock
+    private AlarmService alarmService;
 
     @Mock
     private DateNoticeRepository dateNoticeRepository;
@@ -142,6 +147,7 @@ class TutoringServiceTest {
                 willReturn(tutoring);
         given(tutoringRepository.save(any(Tutoring.class)))
                 .willReturn(tutoring);
+        doNothing().when(alarmService).sendAlarm(any(Profile.class),any(Profile.class),any(AlarmType.class),anyLong());
         //when
         TutoringDto dto = tutoringService.setTutoringStatusProgress(tutoringId, profileId, page);
 
