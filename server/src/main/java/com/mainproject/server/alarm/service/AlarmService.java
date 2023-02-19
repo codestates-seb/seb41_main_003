@@ -68,11 +68,9 @@ public class AlarmService {
     public void updateAllAlarm(Long profileId) {
         Profile profile = verifiedProfileById(profileId);
         if (!profile.getAlarms().isEmpty()) {
-            profile.getAlarms().stream()
-                    .filter(a -> a.getAlarmStatus().equals(AlarmStatus.UNCHECK))
+            profile.getAlarms()
                     .forEach(a -> {
                         a.setAlarmStatus(AlarmStatus.CHECK);
-                        alarmRepository.save(a);
                     });
         } else {
             throw new ServiceLogicException(ErrorCode.ALARM_CHECK_BAD_REQUEST);
