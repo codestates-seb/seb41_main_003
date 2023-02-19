@@ -1,5 +1,7 @@
 package com.mainproject.server.tutoring.service;
 
+import com.mainproject.server.alarm.service.AlarmService;
+import com.mainproject.server.constant.AlarmType;
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.ProfileStatus;
 import com.mainproject.server.constant.TutoringStatus;
@@ -40,6 +42,8 @@ public class TutoringService {
     private final ProfileService profileService;
 
     private final MessageService messageService;
+
+    private final AlarmService alarmService;
 
     public Tutoring createTutoring(Tutoring tutoring, Long profileId, Long messageRoomId) {
         tutoring.setTutoringStatus(getTutoringStatus(profileId));
@@ -111,11 +115,45 @@ public class TutoringService {
                 findTutoring.setTutoringStatus(TutoringStatus.ALL_DELETE);
             } else {
                 findTutoring.setTutoringStatus(tutoringStatus);
+                if (tutoringStatus.equals(TutoringStatus.WAIT_FINISH)) {
+                    alarmService.sendAlarm(
+                            findTutoring.getTutee(),
+                            findTutoring.getTutor(),
+                            AlarmType.WAIT_FINISH,
+                            findTutoring.getTutoringId()
+                            );
+                }
             }
         } else {
             throw new ServiceLogicException(ErrorCode.WRONG_STATUS_PROPERTY);
         }
         return getTutoringDto(tutoringRepository.save(findTutoring), pageable);
+    }
+
+    public TutoringDto setTutoringStatusProgress(
+            Long tutoringId,
+            Long profileId,
+            Pageable pageable
+    ) {
+        Tutoring tutoring = verifiedTutoring(tutoringId);
+        Profile tutor = tutoring.getTutor();
+        Profile tutee = tutoring.getTutee();
+        boolean comp = tutor.getProfileId().equals(profileId);
+        if ((comp || tutee.getProfileId().equals(profileId)) &&
+                !tutoring.getTutoringStatus().equals(TutoringStatus.FINISH) &&
+                !tutoring.getTutoringStatus().equals(TutoringStatus.PROGRESS)
+        ) {
+            tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
+            Tutoring progressTutoring = tutoringRepository.save(tutoring);
+            if (comp) {
+                alarmService.sendAlarm(tutee, tutor, AlarmType.TUTORING_MATCH, tutoringId);
+            } else {
+                alarmService.sendAlarm(tutor, tutee, AlarmType.TUTORING_MATCH, tutoringId);
+            }
+            return getTutoringDto(progressTutoring, pageable);
+        } else {
+            throw new ServiceLogicException(ErrorCode.TUTORING_STATUS_BAD_REQUEST);
+        }
     }
 
     public void deleteTutoring(Long tutoringId) {
@@ -136,25 +174,6 @@ public class TutoringService {
         Page<DateNotice> dateNoticePage =
                 dateNoticeRepository.findAllByTutoring(tutoring, pageable);
         return TutoringDto.of(tutoring, dateNoticePage);
-    }
-
-    public TutoringDto setTutoringStatusProgress(
-            Long tutoringId,
-            Long profileId,
-            Pageable pageable
-    ) {
-        Tutoring tutoring = verifiedTutoring(tutoringId);
-        if ((tutoring.getTutor().getProfileId().equals(profileId) ||
-                tutoring.getTutee().getProfileId().equals(profileId)) &&
-                !tutoring.getTutoringStatus().equals(TutoringStatus.FINISH) &&
-                !tutoring.getTutoringStatus().equals(TutoringStatus.PROGRESS)
-        ) {
-            tutoring.setTutoringStatus(TutoringStatus.PROGRESS);
-            Tutoring progressTutoring = tutoringRepository.save(tutoring);
-            return getTutoringDto(progressTutoring, pageable);
-        } else {
-            throw new ServiceLogicException(ErrorCode.TUTORING_STATUS_BAD_REQUEST);
-        }
     }
 
     public Tutoring verifiedTutoring(Long tutoringId) {

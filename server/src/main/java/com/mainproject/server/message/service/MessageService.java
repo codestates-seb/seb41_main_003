@@ -1,9 +1,7 @@
 package com.mainproject.server.message.service;
 
-import com.mainproject.server.constant.ErrorCode;
-import com.mainproject.server.constant.MessageStatus;
-import com.mainproject.server.constant.ProfileStatus;
-import com.mainproject.server.constant.TutoringStatus;
+import com.mainproject.server.alarm.service.AlarmService;
+import com.mainproject.server.constant.*;
 import com.mainproject.server.exception.ServiceLogicException;
 import com.mainproject.server.message.dto.*;
 import com.mainproject.server.message.entity.Message;
@@ -51,6 +49,8 @@ public class MessageService {
 
     private final RedisSubscriber redisSubscriber;
 
+    private final AlarmService alarmService;
+
 
     public MessageResponseDto createMessage(
             MessagePostDto postDto
@@ -59,6 +59,7 @@ public class MessageService {
         Profile sender = profileService.verifiedProfileById(postDto.getSenderId());
         Profile receiver = profileService.verifiedProfileById(postDto.getReceiverId());
         Message message = saveMessage(postDto, messageRoom, sender, receiver);
+        alarmService.sendAlarm(receiver,sender, AlarmType.MESSAGE,messageRoom.getMessageRoomId());
         MessageResponseDto dto = MessageResponseDto.of(
                 messageRepository.save(message),
                 messageRoom.getMessageRoomId()
@@ -169,6 +170,7 @@ public class MessageService {
         sendMessage.setMessageContent("REQ_UEST");
         Message saveSendMessage = messageRepository.save(sendMessage);
         saveSendMessage.addMessageRoom(messageRoom);
+        alarmService.sendAlarm(receiver,sender, AlarmType.TUTORING_REQUEST,messageRoom.getMessageRoomId());
         messageRoomRepository.save(messageRoom);
     }
 
