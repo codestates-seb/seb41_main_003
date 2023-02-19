@@ -1,5 +1,7 @@
 package com.mainproject.server.review.service;
 
+import com.mainproject.server.alarm.service.AlarmService;
+import com.mainproject.server.constant.AlarmType;
 import com.mainproject.server.constant.ErrorCode;
 import com.mainproject.server.constant.TutoringStatus;
 import com.mainproject.server.exception.ServiceLogicException;
@@ -27,6 +29,8 @@ public class ReviewService {
 
     private final MessageService messageService;
 
+    private final AlarmService alarmService;
+
     public Review getReview(Long reviewId) {
         return verifiedReviewById(reviewId);
     }
@@ -37,6 +41,11 @@ public class ReviewService {
             throw new ServiceLogicException(ErrorCode.TUTORING_STATUS_NOT_WAIT_FINISH);
         tutoring.setTutoringStatus(TutoringStatus.FINISH);
         messageService.deleteMessageRoomTutoringId(tutoringId);
+        alarmService.sendAlarm(
+                tutoring.getTutor(),
+                tutoring.getTutee(),
+                AlarmType.FINISH,
+                tutoringId);
         Profile tutee = tutoring.getTutee();
         Profile tutor = tutoring.getTutor();
         review.addTutor(tutor);
