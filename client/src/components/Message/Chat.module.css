@@ -5,6 +5,7 @@
   position: relative;
   margin-bottom: 25px;
   max-width: 60%;
+  align-self: flex-start;
 
   @media screen and (max-width: 480px) {
     max-width: 70%;
