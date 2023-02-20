@@ -166,7 +166,10 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
           const currDate = dayjs(message?.createAt).format('YYYY년 MM월 DD일');
 
           return (
-            <>
+            <div
+              className={styles.chatContainer}
+              key={`msg${CurrentRoomId}${message.messageId}`}
+            >
               {prevDate !== currDate && (
                 <p className={styles.dateLine}>{currDate}</p>
               )}
@@ -176,7 +179,7 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
                 key={`msg${CurrentRoomId}${message.messageId}`}
                 tutoringId={tutoringId}
               />
-            </>
+            </div>
           );
         })}
       </div>
