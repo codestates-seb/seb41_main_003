@@ -70,6 +70,7 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
   //* 메세지 post API
   const sendMessage = () => {
     publish();
+    inputRef.current.focus();
   };
 
   //* 매칭 요청 (과외 생성) API
