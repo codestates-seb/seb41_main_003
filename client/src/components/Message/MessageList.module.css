@@ -11,6 +11,9 @@
   &::-webkit-scrollbar {
     width: 0;
   }
+  @media screen and (max-width: 768px) {
+    height: auto;
+  }
 }
 
 .message {
