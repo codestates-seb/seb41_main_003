@@ -19,8 +19,11 @@ const useLiveChat = () => {
   const URL = 'https://api-tutordiff.site/stomp/content';
 
   useEffect(() => {
-    initialChatSetting();
-    connect();
+    const setRoom = async () => {
+      await initialChatSetting();
+      connect();
+    };
+    setRoom();
     return () => disconnect();
   }, [CurrentRoomId]);
 
@@ -49,6 +52,9 @@ const useLiveChat = () => {
       heartbeatOutgoing: 2000,
       onConnect: () => {
         subscribe();
+      },
+      onWebSocketError: (str) => {
+        console.log(str);
       },
       onStompError: (frame) => {
         console.error(frame);
