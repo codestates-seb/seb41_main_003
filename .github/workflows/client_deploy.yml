@@ -4,7 +4,7 @@ name: Client Build and Deploy to S3 # 실행할 액션의 이름
 on:
   push:
     branches:
-      - dev # dev 브랜치에 push가 생길 때 실행된다.
+      - "dev" # dev 브랜치에 push가 생길 때 실행된다.
     path:
       - "client/**"
 
