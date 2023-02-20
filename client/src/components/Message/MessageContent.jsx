@@ -28,6 +28,10 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
   useEffect(() => {
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     inputRef.current.focus();
+  }, [CurrentRoomId]);
+
+  useEffect(() => {
+    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messageRoom]);
 
   const getMessageRoom = async () => {
@@ -179,6 +183,7 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
           placeholder="메세지를 입력하세요"
           type="text"
           value={text}
+          autoComplete="off"
           onChange={(e) => setText(e.target.value)}
           onKeyUp={(e) => {
             if (e.key === 'Enter' && e.target.value) {
