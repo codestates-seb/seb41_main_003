@@ -33,6 +33,12 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
       let vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--vh', `${vh}px`);
     });
+    return () => {
+      window.removeEventListener('resize', () => {
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+      });
+    };
   });
 
   //* 채팅창의 스크롤 위치 제어
