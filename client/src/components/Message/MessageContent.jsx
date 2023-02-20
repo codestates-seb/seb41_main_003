@@ -26,7 +26,6 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
 
   //* vh 크로스 브라우징 지원
   useEffect(() => {
-    console.log('useeffect');
     let vh = window.visualViewport.height * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
 
@@ -37,7 +36,6 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
     };
 
     return () => {
-      console.log('unmount');
       document.documentElement.style.removeProperty('--vh');
       window.visualViewport.onresize = null;
     };
