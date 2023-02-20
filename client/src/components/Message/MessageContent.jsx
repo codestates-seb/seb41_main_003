@@ -26,18 +26,19 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
 
   //* vh 크로스 브라우징 지원
   useEffect(() => {
-    let vh = window.innerHeight * 0.01;
+    let vh = window.visualViewport.height * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
 
-    window.addEventListener('resize', () => {
-      let vh = window.innerHeight * 0.01;
+    window.visualViewport.onresize = () => {
+      let vh = window.visualViewport.height * 0.01;
       document.documentElement.style.setProperty('--vh', `${vh}px`);
-    });
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    };
+
     return () => {
-      window.removeEventListener('resize', () => {
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-      });
+      console.log('unmount');
+      document.documentElement.style.removeProperty('--vh');
+      window.visualViewport.onresize = null;
     };
   });
 
@@ -70,6 +71,7 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
   //* 메세지 post API
   const sendMessage = () => {
     publish();
+    inputRef.current.focus();
   };
 
   //* 매칭 요청 (과외 생성) API

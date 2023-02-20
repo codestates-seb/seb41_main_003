@@ -65,7 +65,7 @@
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
-  scrollbar-width: auto;
+  scrollbar-width: 4px;
   scrollbar-color: #666 #f00;
 
   @media screen and (max-width: 768px) {
@@ -91,11 +91,13 @@
   }
 
   &::-webkit-scrollbar {
-    width: 10px;
+    width: 4px;
+    position: absolute;
   }
 
   &::-webkit-scrollbar-track {
     background: none;
+    padding: 4px;
   }
 
   &::-webkit-scrollbar-thumb {
