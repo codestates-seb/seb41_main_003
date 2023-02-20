@@ -24,6 +24,17 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
 
+  //* vh 크로스 브라우징 지원
+  useEffect(() => {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+    window.addEventListener('resize', () => {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    });
+  });
+
   //* 채팅창의 스크롤 위치 제어
   useEffect(() => {
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
