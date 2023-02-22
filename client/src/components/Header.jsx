@@ -13,7 +13,7 @@ import ChangeJournal from '../recoil/journal';
 import NotificationBox from './NotificationBox';
 
 const Header = () => {
-  const [isNoti, setIsNoti] = useState(true);
+  const [isNoti, setIsNoti] = useState(false);
   const navigate = useNavigate();
 
   const profile = useRecoilValue(Profile);
@@ -238,7 +238,6 @@ const Header = () => {
                 className={styles.notiButton}
                 onClick={() => setIsNoti(!isNoti)}
               >
-
                 <MdNotifications />
                 {profile.alarmCheck && <span className={styles.notiRed} />}
               </button>
