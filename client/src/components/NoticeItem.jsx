@@ -18,33 +18,33 @@ const NoticeItem = ({ data }) => {
       }`}
     >
       {contentType === 'MESSAGE' ? (
-        <div>
-          <MdChatBubble size={16} pull="right" />
+        <div className={styles.content}>
+          <MdChatBubble pull="right" />
           <span>{profileName}님이 보낸 메세지가 도착했습니다.</span>
         </div>
       ) : contentType === 'TUTORING_REQUEST' ? (
-        <div>
-          <BsPersonFill size={16} />
+        <div className={styles.content}>
+          <BsPersonFill />
           <span>{profileName}님이 매칭을 요청했습니다.</span>
         </div>
       ) : contentType === 'TUTORING_MATCH' ? (
-        <div>
-          <BsPersonCheckFill size={16} />
+        <div className={styles.content}>
+          <BsPersonCheckFill />
           <span>{profileName}님이 매칭을 수락했습니다.</span>
         </div>
       ) : contentType === 'DATE_NOTICE' ? (
-        <div>
-          <BiCalendar size={16} />
+        <div className={styles.content}>
+          <BiCalendar />
           <span>{profileName}님이 새로운 일지를 작성했습니다.</span>
         </div>
       ) : contentType === 'WAIT_FINISH' ? (
-        <div>
-          <BiCalendarExclamation size={16} />
+        <div className={styles.content}>
+          <BiCalendarExclamation />
           <span>{profileName}님이 과외 종료를 요청했습니다.</span>
         </div>
       ) : contentType === 'FINISH' ? (
-        <div>
-          <BiCalendarCheck size={16} />
+        <div className={styles.content}>
+          <BiCalendarCheck />
           <span>{profileName}님이 과외 종료를 수락했습니다.</span>
         </div>
       ) : (

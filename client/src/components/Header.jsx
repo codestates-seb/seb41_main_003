@@ -13,7 +13,7 @@ import ChangeJournal from '../recoil/journal';
 import NotificationBox from './NotificationBox';
 
 const Header = () => {
-  const [isNoti, setIsNoti] = useState(false);
+  const [isNoti, setIsNoti] = useState(true);
   const navigate = useNavigate();
 
   const profile = useRecoilValue(Profile);
