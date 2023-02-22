@@ -8,7 +8,10 @@
   top: 64px;
   display: flex;
   flex-direction: column;
-  box-shadow: $bigShadow;
+  box-shadow: $containShadow;
+  @media screen and (max-width: 768px) {
+    right: 0;
+  }
 }
 
 .noticeListArea {

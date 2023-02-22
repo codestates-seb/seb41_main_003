@@ -9,6 +9,7 @@ import LoadingIndicator from './LoadingIndicator';
 import useScroll from '../util/useScroll';
 import Loading from '../components/Loading';
 
+
 const NotificationBox = () => {
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [noticeList, setNoticeList] = useState([0]);
