@@ -67,7 +67,7 @@ public class MessageController {
     @GetMapping("/{profileId}")
     public ResponseEntity getMessageRooms(
             @PathVariable("profileId")Long profileId,
-            @PageableDefault(page = 0, size = 7, sort = "messageRoomId", direction = Sort.Direction.DESC)
+            @PageableDefault(page = 0, size = 7, sort = "updateAt", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
         Page<MessageRoomSimpleResponseDto> messageRooms =
