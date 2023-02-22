@@ -204,9 +204,6 @@ const Header = () => {
               <button
                 className={styles.notiButton}
                 onClick={() => setIsNoti(!isNoti)}
-                onBlur={() => {
-                  setTimeout(() => setIsNoti(false), 100);
-                }}
               >
                 <MdNotifications />
               </button>
