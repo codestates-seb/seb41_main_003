@@ -200,15 +200,15 @@ const Header = () => {
       {profile.isLogin ? (
         <div className={styles.memberMenu}>
           <ul className={styles.menuContainer}>
-            <li>
+            <li className={styles.notiButton}>
               <button
-                className={styles.notiButton}
                 onClick={() => setIsNoti(!isNoti)}
                 onBlur={() => {
                   setTimeout(() => setIsNoti(false), 100);
                 }}
               >
                 <MdNotifications />
+                <span className={styles.notiRed} />
               </button>
             </li>
             <li className={styles.login}>
