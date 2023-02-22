@@ -30,14 +30,27 @@
 }
 
 .logo {
+  svg {
+    height: 24px;
+  }
+
+  .symbolLogo {
+    display: none;
+  }
+
   @media screen and (max-width: 768px) {
     position: absolute;
     transform: translateX(-50%);
     left: 50%;
-  }
 
-  svg {
-    height: 24px;
+    .symbolLogo {
+      display: block;
+      height: 36px;
+    }
+
+    .textLogo {
+      display: none;
+    }
   }
 }
 
@@ -107,12 +120,25 @@
     font-size: $font4;
     font-weight: $font4W;
     position: relative;
+
+    .notiButton {
+      > button {
+        position: relative;
+
+        .notiRed {
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background-color: $red;
+          position: absolute;
+          top: 4px;
+          right: 4px;
+        }
+      }
+    }
     @media screen and (max-width: 768px) {
       li.login > button > span {
-        display: none;
-      }
-
-      > li:not(.login) {
         display: none;
       }
     }
@@ -157,22 +183,6 @@
 
   svg {
     font-size: 26px;
-  }
-
-  .noti {
-    width: 300px;
-    height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 64px;
-    right: 150px;
-    background-color: $snow;
-    padding: 24px;
-    box-shadow: $defaultShadow;
-    font-size: $font5;
-    font-weight: $font5W;
   }
 
   .dropdown {

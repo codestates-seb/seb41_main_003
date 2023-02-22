@@ -1,0 +1,46 @@
+@import url('../default.css');
+
+.noticeContainer {
+  border-radius: 5px;
+  padding: 16px;
+  background-color: $white;
+  margin-bottom: 4px;
+  box-shadow: $buttonShadow;
+
+  &.checked {
+    background-color: $silver;
+  }
+
+  > .content {
+    display: flex;
+
+    svg {
+      width: 24px;
+      font-size: 16px;
+      margin-right: 4px;
+      position: relative;
+    }
+  }
+}
+
+.buttonArea {
+  display: flex;
+  justify-content: flex-end;
+
+  > button {
+    display: flex;
+  }
+
+  > button:last-child {
+    margin-left: 8px;
+  }
+
+  > button:hover {
+    text-decoration: underline;
+  }
+
+  > button > span {
+    font-size: 14px;
+    margin-top: 1.5px;
+  }
+}

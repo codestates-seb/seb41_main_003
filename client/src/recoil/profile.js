@@ -27,6 +27,7 @@ const Profile = atom({
     profileId: 0,
     name: '',
     url: '',
+    alarmCheck: false,
   },
   effects: [localStorageEffect('current_user')],
 });
