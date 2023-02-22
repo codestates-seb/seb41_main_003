@@ -17,6 +17,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const profile = useRecoilValue(Profile);
+  const setProfile = useSetRecoilState(Profile);
   const setModal = useSetRecoilState(ModalState);
   const resetProfile = useResetRecoilState(Profile);
   const resetModal = useResetRecoilState(ModalState);
@@ -94,6 +95,23 @@ const Header = () => {
       });
     };
   }, []);
+
+  useEffect(() => {
+    const { isLogin, profileId } = profile;
+
+    if (!isLogin || profileId === 0) return;
+
+    const checkAlarmAPI = async () => {
+      const {
+        data: {
+          data: { alarmCheck },
+        },
+      } = await axios.get(`/alarm/${profile.profileId}`);
+      setProfile((prev) => ({ ...prev, alarmCheck }));
+    };
+
+    checkAlarmAPI();
+  }, [location.pathname, profile.profileId]);
 
   const verify2ndPassword = async (value, path) => {
     await axios
@@ -208,7 +226,7 @@ const Header = () => {
                 }}
               >
                 <MdNotifications />
-                <span className={styles.notiRed} />
+                {profile.alarmCheck && <span className={styles.notiRed} />}
               </button>
             </li>
             <li className={styles.login}>
