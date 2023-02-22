@@ -45,7 +45,7 @@ public class DateNoticeService {
         DateNotice saveNotice = dateNoticeRepository.save(dateNotice);
         alarmService.sendAlarm(
                 findTutoring.getTutee(),findTutoring.getTutor(),
-                AlarmType.DATE_NOTICE,saveNotice.getDateNoticeId()
+                AlarmType.DATE_NOTICE,saveNotice.getTutoring().getTutoringId()
         );
         return updateCheckNotice(saveNotice, findTutoring);
     }
