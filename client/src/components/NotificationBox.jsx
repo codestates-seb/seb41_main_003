@@ -1,100 +1,108 @@
 import styles from './NotificationBox.module.css';
 import NoticeItem from './NoticeItem';
-import { Link } from 'react-router-dom';
 import { MdCheck, MdClose } from 'react-icons/md';
+import axios from 'axios';
+import { useState, useEffect, useRef } from 'react';
+import { useRecoilValue } from 'recoil';
+import Profile from '../recoil/profile';
+import LoadingIndicator from './LoadingIndicator';
+import useScroll from '../util/useScroll';
+import Loading from '../components/Loading';
 
-const dummy = {
-  data: [
-    {
-      noticeId: 1,
-      noticeStatus: 'UNCHECK',
-      contentType: 'MESSAGE',
-      profileName: '빨간점은 필수1111111',
-      createAt: '2023-01-16T10:32:23.634168',
-    },
-    {
-      noticeId: 2,
-      noticeStatus: 'UNCHECK',
-      contentType: 'TUTORING_REQUEST',
-      profileName: '빨간점은 필수22',
-      createAt: '2023-01-16T10:32:23.634168',
-    },
-    {
-      noticeId: 3,
-      noticeStatus: 'CHECK',
-      contentType: 'TUTORING_MATCH',
-      profileName: '빨간점은 필수33',
-      createAt: '2023-01-16T10:32:23.634168',
-    },
-    {
-      noticeId: 4,
-      noticeStatus: 'CHECK',
-      contentType: 'DATE_NOTICE',
-      profileName: '빨간점은44',
-      createAt: '2023-01-16T10:32:23.634168',
-    },
-    {
-      noticeId: 5,
-      noticeStatus: 'CHECK',
-      contentType: 'WAIT_FINISH',
-      profileName: '빨간점은 필수55',
-      createAt: '2023-01-16T10:32:23.634168',
-    },
-    {
-      noticeId: 6,
-      noticeStatus: 'CHECK',
-      contentType: 'FINISH',
-      profileName: '빨간점은 필수66',
-      createAt: '2023-01-16T10:32:23.634168',
-    },
-    {
-      noticeId: 6,
-      noticeStatus: 'CHECK',
-      contentType: 'FINISH',
-      profileName: '빨간점은 필수66',
-      createAt: '2023-01-16T10:32:23.634168',
-    },
-
-    {
-      noticeId: 6,
-      noticeStatus: 'CHECK',
-      contentType: 'FINISH',
-      profileName: '빨간점은 필수66',
-      createAt: '2023-01-16T10:32:23.634168',
-    },
-    {
-      noticeId: 6,
-      noticeStatus: 'CHECK',
-      contentType: 'FINISH',
-      profileName: '빨간점은 필수66',
-      createAt: '2023-01-16T10:32:23.634168',
-    },
-  ],
-  pageInfo: {
-    page: 1,
-    size: 1,
-    totalElements: 1,
-    totalPages: 1,
-  },
-};
 const NotificationBox = () => {
-  const noticeList = dummy.data;
+  const [isLoadingData, setIsLoadingData] = useState(false);
+  const [noticeList, setNoticeList] = useState([0]);
+  const [pageInfo, setPageInfo] = useState({
+    page: 1,
+  });
+  const { profileId } = useRecoilValue(Profile);
+  const loadingRef = useRef(null);
+
+  const [isLoading, setIsLoading] = useScroll(() => {
+    if (pageInfo.page < pageInfo.totalPages - 1) {
+      setTimeout(() => {
+        scrollFunc(pageInfo.page + 1);
+        setIsLoading(false);
+      }, 500);
+    } else setIsLoading(false);
+  }, loadingRef);
+
+  const scrollFunc = async (page) => {
+    await axios
+      .get(`/alarm/all/${profileId}?page=${page}`)
+      .then(({ data }) => {
+        setNoticeList([...noticeList, ...data.data]);
+        setPageInfo(data.pageInfo);
+      })
+      .catch((err) => console.error(err.message));
+  };
+
+  const getNoticeList = async () => {
+    setIsLoadingData(true);
+    await axios
+      .get(`/alarm/all/${profileId}`)
+      .then((res) => {
+        setNoticeList(res.data.data);
+        setPageInfo(res.data.pageInfo);
+        setIsLoadingData(false);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const patchAllAlarm = async () => {
+    await axios
+      .patch(`/alarm/all/${profileId}`)
+      .then(() => {
+        setNoticeList((prev) =>
+          prev.map((el) => ({ ...el, alarmStatus: 'CHECK' }))
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const deleteAllAlarm = async () => {
+    await axios
+      .delete(`/alarm/all/${profileId}`)
+      .then(() => {
+        setNoticeList([]);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getNoticeList();
+  }, []);
 
   return (
     <div className={styles.noticeBoxContainer}>
       <ul className={styles.noticeListArea}>
-        {noticeList?.map((notice) => (
-          <Link key={notice.noticeId}>
-            <NoticeItem data={notice} />
-          </Link>
-        ))}
+        {isLoadingData ? (
+          <Loading />
+        ) : noticeList.length !== 0 ? (
+          noticeList?.map((notice) => (
+            <div key={notice.alarmId + notice.alarmStatus}>
+              <NoticeItem
+                data={notice}
+                setNoticeList={setNoticeList}
+                noticeList={noticeList}
+              />
+            </div>
+          ))
+        ) : (
+          <div className={styles.noAlarm}>새로운 알림이 없습니다</div>
+        )}
+        <LoadingIndicator
+          ref={loadingRef}
+          isLoading={isLoading}
+          isSmall={true}
+        />
       </ul>
       <div className={styles.buttonArea}>
-        <button>
+        <button onClick={patchAllAlarm}>
           <MdCheck size={20} />
           <span>전체 확인</span>
         </button>
-        <button>
+        <button onClick={deleteAllAlarm}>
           <MdClose size={20} />
           <span>전체 삭제</span>
         </button>
