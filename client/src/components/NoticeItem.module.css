@@ -14,6 +14,10 @@
   > .content {
     display: flex;
 
+    > :last-child {
+      text-align: start;
+    }
+
     svg {
       width: 24px;
       font-size: 16px;

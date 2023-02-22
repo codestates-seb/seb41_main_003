@@ -26,6 +26,15 @@
   display: none; /* Chrome, Safari, Opera */
 }
 
+.noAlarm {
+  font-size: $font6;
+  font-weight: $font6W;
+  color: $nickel;
+  text-align: center;
+  padding: 72px;
+  margin-top: 56px;
+}
+
 .buttonArea {
   height: 30px;
   background-color: $white;

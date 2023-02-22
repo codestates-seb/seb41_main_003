@@ -233,8 +233,12 @@ const Header = () => {
       {profile.isLogin ? (
         <div className={styles.memberMenu}>
           <ul className={styles.menuContainer}>
-            <li className={styles.notiButton}>
-              <button onClick={() => setIsNoti(!isNoti)}>
+            <li>
+              <button
+                className={styles.notiButton}
+                onClick={() => setIsNoti(!isNoti)}
+              >
+
                 <MdNotifications />
                 {profile.alarmCheck && <span className={styles.notiRed} />}
               </button>
