@@ -30,14 +30,27 @@
 }
 
 .logo {
+  svg {
+    height: 24px;
+  }
+
+  .symbolLogo {
+    display: none;
+  }
+
   @media screen and (max-width: 768px) {
     position: absolute;
     transform: translateX(-50%);
     left: 50%;
-  }
 
-  svg {
-    height: 24px;
+    .symbolLogo {
+      display: block;
+      height: 36px;
+    }
+
+    .textLogo {
+      display: none;
+    }
   }
 }
 
@@ -126,10 +139,6 @@
     }
     @media screen and (max-width: 768px) {
       li.login > button > span {
-        display: none;
-      }
-
-      > li:not(.login) {
         display: none;
       }
     }

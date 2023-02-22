@@ -48,7 +48,7 @@ const dummy = {
       createAt: '2023-01-16T10:32:23.634168',
     },
     {
-      noticeId: 6,
+      noticeId: 7,
       noticeStatus: 'CHECK',
       contentType: 'FINISH',
       profileName: '빨간점은 필수66',
@@ -56,14 +56,14 @@ const dummy = {
     },
 
     {
-      noticeId: 6,
+      noticeId: 8,
       noticeStatus: 'CHECK',
       contentType: 'FINISH',
       profileName: '빨간점은 필수66',
       createAt: '2023-01-16T10:32:23.634168',
     },
     {
-      noticeId: 6,
+      noticeId: 9,
       noticeStatus: 'CHECK',
       contentType: 'FINISH',
       profileName: '빨간점은 필수66',
