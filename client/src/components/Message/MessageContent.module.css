@@ -63,15 +63,20 @@
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   overflow-x: hidden;
   overflow-y: auto;
-  scrollbar-width: auto;
+  scrollbar-width: 4px;
   scrollbar-color: #666 #f00;
 
   @media screen and (max-width: 768px) {
     height: auto;
     flex: 1 0 0;
+  }
+
+  .chatContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 
   .dateLine {
@@ -82,15 +87,17 @@
     background-color: $white;
     padding: 4px 16px;
     border-radius: 30px;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
   }
 
   &::-webkit-scrollbar {
-    width: 10px;
+    width: 4px;
+    position: absolute;
   }
 
   &::-webkit-scrollbar-track {
     background: none;
+    padding: 4px;
   }
 
   &::-webkit-scrollbar-thumb {

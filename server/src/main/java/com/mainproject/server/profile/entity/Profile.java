@@ -1,5 +1,6 @@
 package com.mainproject.server.profile.entity;
 
+import com.mainproject.server.alarm.entity.Alarm;
 import com.mainproject.server.audit.Auditable;
 import com.mainproject.server.constant.ProfileStatus;
 import com.mainproject.server.constant.WantedStatus;
@@ -107,6 +108,12 @@ public class Profile extends Auditable {
     @Setter
     private Set<SubjectProfile> subjectProfiles = new LinkedHashSet<>();
 
+    @ToString.Exclude
+    @OrderBy("alarmId")
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    @Setter
+    private Set<Alarm> alarms = new LinkedHashSet<>();
+
 
 
     /* 연관 관계 편의 메소드 */
@@ -124,6 +131,14 @@ public class Profile extends Auditable {
         this.reviews.add(review);
     }
 
+    public void addAlarm(Alarm alarm) {
+        if (alarms != null) {
+            alarms.add(alarm);
+        } else {
+            this.alarms = new LinkedHashSet<>();
+            alarms.add(alarm);
+        }
+    }
 
     public void addSubjectProfile(SubjectProfile subjectProfile) {
         this.subjectProfiles.add(subjectProfile);

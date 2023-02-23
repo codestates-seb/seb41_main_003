@@ -14,13 +14,15 @@ const useLiveChat = () => {
   const { profileId } = useRecoilValue(Profile);
   const [receiverId, setReceiverId] = useState(0);
   const client = useRef({});
-  const TOKEN = sessionStorage.getItem('authorization');
 
   const URL = 'https://api-tutordiff.site/stomp/content';
 
   useEffect(() => {
-    initialChatSetting();
-    connect();
+    const setRoom = async () => {
+      await initialChatSetting();
+      connect();
+    };
+    setRoom();
     return () => disconnect();
   }, [CurrentRoomId]);
 
@@ -41,7 +43,7 @@ const useLiveChat = () => {
     client.current = new StompJs.Client({
       webSocketFactory: () => new SockJS(URL),
       connectHeaders: {
-        Authorization: TOKEN,
+        Authorization: sessionStorage.getItem('authorization'),
       },
       debug: () => {},
       reconnectDelay: 3000,

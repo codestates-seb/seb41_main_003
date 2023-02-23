@@ -24,10 +24,31 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
   const setModal = useSetRecoilState(ModalState);
   const resetModal = useResetRecoilState(ModalState);
 
+  //* vh 크로스 브라우징 지원
+  useEffect(() => {
+    let vh = window.visualViewport.height * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+    window.visualViewport.onresize = () => {
+      let vh = window.visualViewport.height * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    };
+
+    return () => {
+      document.documentElement.style.removeProperty('--vh');
+      window.visualViewport.onresize = null;
+    };
+  }, []);
+
   //* 채팅창의 스크롤 위치 제어
   useEffect(() => {
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     inputRef.current.focus();
+  }, [CurrentRoomId]);
+
+  useEffect(() => {
+    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messageRoom]);
 
   const getMessageRoom = async () => {
@@ -49,6 +70,7 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
   //* 메세지 post API
   const sendMessage = () => {
     publish();
+    inputRef.current.focus();
   };
 
   //* 매칭 요청 (과외 생성) API
@@ -151,7 +173,10 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
           const currDate = dayjs(message?.createAt).format('YYYY년 MM월 DD일');
 
           return (
-            <>
+            <div
+              className={styles.chatContainer}
+              key={`msg${CurrentRoomId}${message.messageId}`}
+            >
               {prevDate !== currDate && (
                 <p className={styles.dateLine}>{currDate}</p>
               )}
@@ -161,7 +186,7 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
                 key={`msg${CurrentRoomId}${message.messageId}`}
                 tutoringId={tutoringId}
               />
-            </>
+            </div>
           );
         })}
       </div>
@@ -179,6 +204,7 @@ const MessageContent = ({ delMessageRoom, getMessageList, setIsChat }) => {
           placeholder="메세지를 입력하세요"
           type="text"
           value={text}
+          autoComplete="off"
           onChange={(e) => setText(e.target.value)}
           onKeyUp={(e) => {
             if (e.key === 'Enter' && e.target.value) {
