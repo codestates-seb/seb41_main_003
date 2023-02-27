@@ -34,6 +34,7 @@ import OAuth from './pages/OAuth';
 import ModalState from './recoil/modal';
 import ScrollToTop from './util/ScrollToTop';
 import Offline from './components/Offline';
+import Home from './pages/Home';
 
 const App = () => {
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
@@ -142,7 +143,7 @@ const App = () => {
         <Header />
         <div className="content">
           <Routes>
-            <Route path="/" element={<TutorList />} />
+            <Route path="/" element={<Home />} />
             <Route path="/tutorlist" element={<TutorList />} />
             <Route path="/tuteelist" element={<TuteeList />} />
             <Route path="/tutoringlist" element={<TutoringList />} />
