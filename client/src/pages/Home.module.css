@@ -1,0 +1,272 @@
+/* stylelint-disable no-descending-specificity */
+@import url('../default.css');
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+  background-color: $night;
+}
+
+.testBtn {
+  position: fixed;
+  top: 80px;
+  right: 64px;
+  background-color: $white;
+  font-size: $font5;
+  font-weight: $font5W;
+  z-index: 9999;
+  padding: 4px 16px;
+  border-radius: 50px;
+  box-shadow: $buttonShadow;
+}
+
+.container {
+  max-width: 1048px;
+  margin: 0 auto;
+
+  @media screen and (max-width: 1048px) {
+    padding: 0 16px;
+  }
+
+  > section > article {
+    width: 100%;
+    height: 400px;
+    background-color: $white;
+    border-radius: 10px;
+    padding: 0 48px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    align-items: center;
+    margin-top: 40px;
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.5s ease-in-out;
+    box-shadow: $blurShadow;
+
+    > .text {
+      > h4 {
+        font-size: $font1;
+        font-weight: $font1W;
+        margin-bottom: 40px;
+        opacity: 0;
+        transform: translateY(4px);
+        transition: all 0.4s ease-in-out 0.2s;
+      }
+
+      > p {
+        font-size: $font4;
+        font-weight: $font4W;
+        opacity: 0;
+        transform: translateY(4px);
+        transition: all 0.4s ease-in-out 0.3s;
+
+        &:first-of-type {
+          margin-bottom: 24px;
+        }
+      }
+    }
+
+    &.active {
+      opacity: 1;
+      transform: translateY(0);
+
+      > .text {
+        > h4 {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        > p {
+          opacity: 1;
+          transform: translateY(0);
+
+          &:first-of-type {
+            margin-bottom: 24px;
+          }
+        }
+      }
+    }
+
+    img {
+      width: 100%;
+    }
+  }
+}
+
+.topBanner {
+  width: 100%;
+  position: relative;
+
+  > img {
+    width: 100%;
+    height: 576px;
+    object-fit: cover;
+  }
+
+  > .title {
+    position: absolute;
+    top: 168px;
+    right: 20%;
+
+    > p {
+      font-size: $font4;
+      font-weight: $font4W;
+      color: $white;
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.pageView {
+  width: 100%;
+
+  /* height: 1000px; */
+  position: relative;
+  margin-bottom: 120px;
+
+  .mock {
+    display: flex;
+    padding: 0 88px;
+
+    /* position: absolute; */
+
+    &.leftUp {
+      top: 0;
+      left: 0;
+
+      > p {
+        text-align: left;
+        margin-top: 40px;
+        margin-left: 20px;
+      }
+    }
+
+    &.leftDown {
+      bottom: 0;
+      left: 0;
+      align-items: flex-end;
+
+      > p {
+        text-align: left;
+        margin-bottom: 40px;
+        margin-right: 20px;
+      }
+    }
+
+    &.rightUp {
+      top: 0;
+      right: 0;
+      justify-content: flex-end;
+
+      > p {
+        text-align: right;
+        margin-top: 40px;
+        margin-right: 20px;
+      }
+    }
+
+    &.rightDown {
+      bottom: 0;
+      right: 0;
+      align-items: flex-end;
+      justify-content: flex-end;
+
+      > p {
+        text-align: right;
+        margin-bottom: 40px;
+        margin-right: 20px;
+      }
+    }
+
+    &.center {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+    }
+
+    > p {
+      text-align: right;
+      font-size: $font4;
+      font-weight: $font3W;
+      color: $white;
+      opacity: 0;
+      transform: translateX(8px);
+      transition: all 0.3s ease-in-out 0.2s;
+      text-shadow: $blurShadow;
+    }
+
+    > img {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: all 0.5s ease-in-out;
+    }
+  }
+
+  .active {
+    > p,
+    img {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    img:hover {
+      transform: translateY(-4px);
+    }
+  }
+}
+
+/* .tutoringContainer > .pageView {
+  height: 1800px;
+
+  .mock.leftUp {
+    top: 800px;
+  }
+} */
+
+.bottomBanner {
+  width: 100%;
+  height: 800px;
+  background-image: url('../assets/bottom_banner.png');
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  > svg {
+    margin-bottom: 48px;
+  }
+
+  > p {
+    font-size: $font1;
+    font-weight: $font1W;
+    margin-bottom: 80px;
+    color: $white;
+  }
+
+  .btnContainer {
+    display: flex;
+
+    > button {
+      width: 256px;
+      height: 64px;
+      border-radius: 30px;
+      font-size: $font3;
+      font-weight: $font3W;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &.newUser {
+        background-color: $white;
+        margin-right: 8px;
+      }
+
+      &.exUser {
+        color: $white;
+        background-color: $night;
+      }
+    }
+  }
+}
