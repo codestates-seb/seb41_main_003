@@ -11,9 +11,12 @@ import tutoringMock1 from '../assets/tutoring_mock1.png';
 import tutoringMock2 from '../assets/tutoring_mock2.png';
 import tutoringMock3 from '../assets/tutoring_mock3.png';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [isActive, setIsActive] = useState(false);
+  const navigate = useNavigate();
+
   return (
     <div className={styles.wrapper}>
       <button
@@ -233,8 +236,22 @@ const Home = () => {
         </svg>
         <p>지금 시작하기</p>
         <div className={styles.btnContainer}>
-          <button className={styles.newUser}>새로운 회원</button>
-          <button className={styles.exUser}>기존 회원</button>
+          <button
+            className={styles.newUser}
+            onClick={() => {
+              navigate('/signup');
+            }}
+          >
+            새로운 회원
+          </button>
+          <button
+            className={styles.exUser}
+            onClick={() => {
+              navigate('/login');
+            }}
+          >
+            기존 회원
+          </button>
         </div>
       </div>
     </div>
