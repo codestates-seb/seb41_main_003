@@ -95,12 +95,12 @@ const Home = () => {
               className={`${styles.mock} ${styles.leftUp} `}
               ref={(el) => (elementRef.current[1] = el)}
             >
-              <img src={searchMock1} alt="search_tutor" />
               <p>
                 당신에게 필요한
                 <br />
                 비대면 과외를 찾아볼 수 있습니다
               </p>
+              <img src={searchMock1} alt="search_tutor" />
             </div>
             <div
               className={`${styles.mock} ${styles.rightDown} `}
@@ -147,10 +147,10 @@ const Home = () => {
               className={`${styles.mock} ${styles.leftDown} `}
               ref={(el) => (elementRef.current[5] = el)}
             >
-              <img src={messageMock2} alt="request_match" />
               <p>
                 매칭 요청을 보내 <br /> 과외를 시작하세요
               </p>
+              <img src={messageMock2} alt="request_match" />
             </div>
           </div>
         </section>
@@ -191,12 +191,12 @@ const Home = () => {
               className={`${styles.mock} ${styles.leftUp} `}
               ref={(el) => (elementRef.current[8] = el)}
             >
-              <img src={tutoringMock2} alt="write_journal" />
               <p>
                 선생님은 과외 일지를 작성해
                 <br />
                 진행 상황을 공유하고,
               </p>
+              <img src={tutoringMock2} alt="write_journal" />
             </div>
             <div
               className={`${styles.mock} ${styles.rightDown} `}

@@ -23,7 +23,6 @@
 .container {
   max-width: 1048px;
   margin: 0 auto;
-
   @media screen and (max-width: 1048px) {
     padding: 0 16px;
   }
@@ -179,6 +178,8 @@
     &.leftUp {
       top: 0;
       left: 0;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
 
       > p {
         text-align: left;
@@ -191,6 +192,8 @@
       bottom: 0;
       left: 0;
       align-items: flex-end;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
 
       > p {
         text-align: left;
@@ -225,8 +228,8 @@
     }
 
     &.center {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      justify-content: flex-end;
       align-items: center;
     }
 
@@ -243,6 +246,13 @@
         font-size: $font5;
         font-weight: $font4W;
       }
+      @media screen and (max-width: 480px) {
+        font-weight: $font5W;
+      }
+      @media screen and (max-width: 360px) {
+        font-size: $font6;
+        font-weight: $font6W;
+      }
     }
 
     > img {
@@ -250,7 +260,7 @@
       transform: translateY(24px);
       transition: all 0.5s ease-in-out;
       @media screen and (max-width: 768px) {
-        width: 60%;
+        width: 50%;
       }
     }
   }
@@ -268,14 +278,6 @@
   }
 }
 
-/* .tutoringContainer > .pageView {
-  height: 1800px;
-
-  .mock.leftUp {
-    top: 800px;
-  }
-} */
-
 .bottomBanner {
   width: 100%;
   height: 800px;
@@ -285,9 +287,22 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  @media screen and (max-width: 1048px) {
+    height: 600px;
+  }
+  @media screen and (max-width: 768px) {
+    height: 500px;
+  }
 
   > svg {
     margin-bottom: 48px;
+    @media screen and (max-width: 768px) {
+      width: 80%;
+    }
+    @media screen and (max-width: 480px) {
+      width: 60%;
+      margin-bottom: 12px;
+    }
   }
 
   > p {
