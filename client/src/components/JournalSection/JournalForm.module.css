@@ -145,8 +145,12 @@
       }
     }
 
+    .scheduleContainer {
+      width: 50%;
+    }
+
     .scheduleArea {
-      width: 240%;
+      width: 100%;
       height: 90%;
       white-space: pre-line;
       background-color: $snow;

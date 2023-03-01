@@ -9,7 +9,7 @@
   background-color: $white;
   padding: 16px 0;
   max-width: 522px;
-  width: 70%;
+  width: 80%;
 
   > button {
     margin-bottom: 32px;
@@ -88,4 +88,13 @@
   width: 70%;
   margin-bottom: 32px;
   margin-top: 32px;
+
+  @media screen and (max-width: 480px) {
+    > button {
+      font-size: $font6;
+      font-weight: $font6W;
+      width: 30%;
+      padding: 4px 8px;
+    }
+  }
 }
