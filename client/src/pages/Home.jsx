@@ -10,21 +10,32 @@ import messageMock2 from '../assets/message_mock2.png';
 import tutoringMock1 from '../assets/tutoring_mock1.png';
 import tutoringMock2 from '../assets/tutoring_mock2.png';
 import tutoringMock3 from '../assets/tutoring_mock3.png';
-import { useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
-  const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
+  const elementRef = useRef([]);
+
+  const handleScroll = ([entry]) => {
+    if (entry.isIntersecting) entry.target.classList.add(`${styles.active}`);
+    else entry.target.classList.remove(`${styles.active}`);
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleScroll, {
+      threshold: 0.25,
+    });
+
+    elementRef.current.forEach((el) => {
+      observer.observe(el);
+    });
+
+    return () => observer?.disconnect();
+  }, []);
 
   return (
     <div className={styles.wrapper}>
-      <button
-        className={styles.testBtn}
-        onClick={() => setIsActive((prev) => !prev)}
-      >
-        isActive
-      </button>
       <div className={styles.topBanner}>
         <img src={topBanner} alt="top_image" />
         <span className={styles.title}>
@@ -64,7 +75,8 @@ const Home = () => {
       <section className={styles.container}>
         <section className={styles.searchContainer}>
           <article
-            className={`${styles.searchTitle} ${isActive && styles.active}`}
+            className={`${styles.searchTitle}`}
+            ref={(el) => (elementRef.current[0] = el)}
           >
             <div className={styles.text}>
               <h4>
@@ -80,9 +92,8 @@ const Home = () => {
           </article>
           <div className={styles.pageView}>
             <div
-              className={`${isActive && styles.active} ${styles.mock} ${
-                styles.leftUp
-              }`}
+              className={`${styles.mock} ${styles.leftUp} `}
+              ref={(el) => (elementRef.current[1] = el)}
             >
               <img src={searchMock1} alt="search_tutor" />
               <p>
@@ -92,9 +103,8 @@ const Home = () => {
               </p>
             </div>
             <div
-              className={`${isActive && styles.active} ${styles.mock} ${
-                styles.rightDown
-              }`}
+              className={`${styles.mock} ${styles.rightDown} `}
+              ref={(el) => (elementRef.current[2] = el)}
             >
               <p>
                 선생님이신가요?
@@ -107,7 +117,8 @@ const Home = () => {
         </section>
         <section className={styles.messageContainer}>
           <article
-            className={`${styles.messageTitle} ${isActive && styles.active}`}
+            className={`${styles.messageTitle}`}
+            ref={(el) => (elementRef.current[3] = el)}
           >
             <div className={styles.text}>
               <h4>
@@ -122,9 +133,8 @@ const Home = () => {
           </article>
           <div className={styles.pageView}>
             <div
-              className={`${isActive && styles.active} ${styles.mock} ${
-                styles.rightUp
-              }`}
+              className={`${styles.mock} ${styles.rightUp} `}
+              ref={(el) => (elementRef.current[4] = el)}
             >
               <p>
                 원하는 상대에게 자유롭게
@@ -134,9 +144,8 @@ const Home = () => {
               <img src={messageMock1} alt="send_message" />
             </div>
             <div
-              className={`${isActive && styles.active} ${styles.mock} ${
-                styles.leftDown
-              }`}
+              className={`${styles.mock} ${styles.leftDown} `}
+              ref={(el) => (elementRef.current[5] = el)}
             >
               <img src={messageMock2} alt="request_match" />
               <p>매칭 요청을 보내 과외를 시작하세요</p>
@@ -145,7 +154,8 @@ const Home = () => {
         </section>
         <section className={styles.tutoringContainer}>
           <article
-            className={`${styles.tutoringTitle} ${isActive && styles.active}`}
+            className={`${styles.tutoringTitle}`}
+            ref={(el) => (elementRef.current[6] = el)}
           >
             <div className={styles.text}>
               <h4>
@@ -163,9 +173,8 @@ const Home = () => {
           </article>
           <div className={styles.pageView}>
             <div
-              className={`${isActive && styles.active} ${styles.mock} ${
-                styles.center
-              }`}
+              className={`${styles.mock} ${styles.center} `}
+              ref={(el) => (elementRef.current[7] = el)}
             >
               <p>
                 과외 관리 페이지에서
@@ -177,9 +186,8 @@ const Home = () => {
               <img src={tutoringMock1} alt="tutoring" />
             </div>
             <div
-              className={`${isActive && styles.active} ${styles.mock} ${
-                styles.leftUp
-              }`}
+              className={`${styles.mock} ${styles.leftUp} `}
+              ref={(el) => (elementRef.current[8] = el)}
             >
               <img src={tutoringMock2} alt="write_journal" />
               <p>
@@ -189,9 +197,8 @@ const Home = () => {
               </p>
             </div>
             <div
-              className={`${isActive && styles.active} ${styles.mock} ${
-                styles.rightDown
-              }`}
+              className={`${styles.mock} ${styles.rightDown} `}
+              ref={(el) => (elementRef.current[9] = el)}
             >
               <p>
                 학생은 일지를 통해
