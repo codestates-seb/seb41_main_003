@@ -125,7 +125,7 @@ const Home = () => {
                 원하는 상대에게 <br /> 메세지를 보내세요
               </h4>
               <p>
-                연락처를 오픈하지 않고도 <br /> 상대방과 대화할 수 있습니다.
+                연락처를 공개하지 않고도 <br /> 상대방과 대화할 수 있습니다.
               </p>
               <p>원하는 조건에 대한 상세한 이야기를 나눠보세요!</p>
             </div>
@@ -148,7 +148,9 @@ const Home = () => {
               ref={(el) => (elementRef.current[5] = el)}
             >
               <img src={messageMock2} alt="request_match" />
-              <p>매칭 요청을 보내 과외를 시작하세요</p>
+              <p>
+                매칭 요청을 보내 <br /> 과외를 시작하세요
+              </p>
             </div>
           </div>
         </section>

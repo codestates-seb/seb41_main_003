@@ -27,6 +27,9 @@
   @media screen and (max-width: 1048px) {
     padding: 0 16px;
   }
+  @media screen and (max-width: 480px) {
+    padding: 0 24px;
+  }
 
   > section > article {
     width: 100%;
@@ -43,6 +46,15 @@
     transform: translateY(8px);
     transition: all 0.5s ease-in-out;
     box-shadow: $blurShadow;
+    @media screen and (max-width: 768px) {
+      height: 100%;
+      padding: 40px 32px;
+    }
+    @media screen and (max-width: 480px) {
+      display: flex;
+      flex-direction: column-reverse;
+      padding: 24px;
+    }
 
     > .text {
       > h4 {
@@ -52,6 +64,18 @@
         opacity: 0;
         transform: translateY(4px);
         transition: all 0.4s ease-in-out 0.2s;
+        @media screen and (max-width: 1048px) {
+          font-size: $font2;
+          font-weight: $font2W;
+        }
+        @media screen and (max-width: 768px) {
+          font-size: $font3;
+          font-weight: $font3W;
+        }
+        @media screen and (max-width: 480px) {
+          font-size: $font4;
+          font-weight: $font4W;
+        }
       }
 
       > p {
@@ -60,6 +84,14 @@
         opacity: 0;
         transform: translateY(4px);
         transition: all 0.4s ease-in-out 0.3s;
+        @media screen and (max-width: 1048px) {
+          font-size: $font5;
+          font-weight: $font5W;
+        }
+        @media screen and (max-width: 480px) {
+          font-size: $font6;
+          font-weight: $font6W;
+        }
 
         &:first-of-type {
           margin-bottom: 24px;
@@ -90,6 +122,11 @@
 
     img {
       width: 100%;
+
+      @media screen and (max-width: 480px) {
+        width: 80%;
+        margin-bottom: 16px;
+      }
     }
   }
 }
@@ -102,6 +139,12 @@
     width: 100%;
     height: 576px;
     object-fit: cover;
+    @media screen and (max-width: 1048px) {
+      height: 450px;
+    }
+    @media screen and (max-width: 768px) {
+      height: 350px;
+    }
   }
 
   > .title {
@@ -120,16 +163,18 @@
 
 .pageView {
   width: 100%;
-
-  /* height: 1000px; */
   position: relative;
   margin-bottom: 120px;
 
   .mock {
     display: flex;
     padding: 0 88px;
-
-    /* position: absolute; */
+    @media screen and (max-width: 768px) {
+      padding: 0 24px;
+    }
+    @media screen and (max-width: 480px) {
+      padding: 0;
+    }
 
     &.leftUp {
       top: 0;
@@ -194,12 +239,19 @@
       transform: translateX(8px);
       transition: all 0.3s ease-in-out 0.2s;
       text-shadow: $blurShadow;
+      @media screen and (max-width: 768px) {
+        font-size: $font5;
+        font-weight: $font4W;
+      }
     }
 
     > img {
       opacity: 0;
       transform: translateY(24px);
       transition: all 0.5s ease-in-out;
+      @media screen and (max-width: 768px) {
+        width: 60%;
+      }
     }
   }
 
@@ -243,10 +295,18 @@
     font-weight: $font1W;
     margin-bottom: 80px;
     color: $white;
+    @media screen and (max-width: 768px) {
+      font-size: $font2;
+      font-weight: $font2W;
+      margin-bottom: 40px;
+    }
   }
 
   .btnContainer {
     display: flex;
+    @media screen and (max-width: 480px) {
+      flex-direction: column;
+    }
 
     > button {
       width: 256px;
@@ -257,10 +317,19 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      @media screen and (max-width: 768px) {
+        width: 192px;
+        height: 48px;
+        font-size: $font4;
+        font-weight: $font4W;
+      }
 
       &.newUser {
         background-color: $white;
-        margin-right: 8px;
+        margin-right: 16px;
+        @media screen and (max-width: 480px) {
+          margin-bottom: 16px;
+        }
       }
 
       &.exUser {
