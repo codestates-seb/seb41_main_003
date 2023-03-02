@@ -5,11 +5,10 @@
   flex-direction: column;
   align-items: center;
   padding-top: 104px;
-  padding-bottom: 63px;
+  padding-bottom: 64px;
 
-  h4 {
-    font-size: $font4;
-    font-weight: $font4W;
+  @media screen and (max-width: 1064px) {
+    padding: 104px 16px 64px;
   }
 }
 
@@ -24,7 +23,7 @@
   position: relative;
 
   @media screen and (max-width: 1064px) {
-    width: 97%;
+    width: 100%;
   }
 
   h1 {
@@ -35,11 +34,13 @@
     left: 8px;
 
     @media screen and (max-width: 1064px) {
-      font-size: $font2;
-      font-weight: $font2W;
       position: absolute;
       top: -72px;
-      left: 0;
+    }
+
+    @media screen and (max-width: 768px) {
+      font-size: $font3;
+      font-weight: $font3W;
     }
   }
 
@@ -47,14 +48,25 @@
     position: absolute;
     top: -66px;
     right: 0;
+    @media screen and (max-width: 1064px) {
+      right: 8px;
+    }
   }
 
   .upperPart {
     display: flex;
     width: 100%;
 
+    @media screen and (max-width: 480px) {
+      flex-direction: column;
+    }
+
     .upperGoal {
       width: 100%;
+
+      @media screen and (max-width: 480px) {
+        margin-top: 36px;
+      }
     }
 
     .font1 {
@@ -83,7 +95,6 @@
 
     .titleContainer {
       width: 100%;
-      height: 36px;
 
       .menuLine {
         display: flex;

@@ -23,12 +23,15 @@
     font-weight: $font4W;
   }
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 768px) {
     h1 {
       font-size: $font3;
       font-weight: $font3W;
+      margin-left: 8px;
     }
+  }
 
+  @media screen and (max-width: 480px) {
     h4 {
       margin-bottom: 16px;
     }
