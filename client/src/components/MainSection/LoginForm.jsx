@@ -58,7 +58,9 @@ const LoginForm = () => {
             userStatus: res.data.userStatus,
           }));
           sessionStorage.setItem('userStatus', res.data.userStatus);
-          navigate('/');
+          res.data.userStatus === 'TUTOR'
+            ? navigate('/tuteelist')
+            : navigate('/tutorlist');
         })
         .catch((err) => {
           if (err.response?.status === 401) {

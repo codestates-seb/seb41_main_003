@@ -5,11 +5,10 @@
   flex-direction: column;
   align-items: center;
   padding-top: 104px;
-  padding-bottom: 63px;
+  padding-bottom: 64px;
 
-  h4 {
-    font-size: $font4;
-    font-weight: $font4W;
+  @media screen and (max-width: 1064px) {
+    padding: 104px 16px 64px;
   }
 }
 
@@ -20,11 +19,11 @@
   border-radius: 5px;
   box-shadow: $bigShadow;
   padding: 32px;
-  margin-top: 0 16px;
+  margin: 0 16px;
   position: relative;
 
   @media screen and (max-width: 1064px) {
-    width: 97%;
+    width: 100%;
   }
 
   h1 {
@@ -35,11 +34,13 @@
     left: 8px;
 
     @media screen and (max-width: 1064px) {
-      font-size: $font2;
-      font-weight: $font2W;
       position: absolute;
       top: -72px;
-      left: 0;
+    }
+
+    @media screen and (max-width: 768px) {
+      font-size: $font3;
+      font-weight: $font3W;
     }
   }
 
@@ -47,14 +48,25 @@
     position: absolute;
     top: -66px;
     right: 0;
+    @media screen and (max-width: 1064px) {
+      right: 8px;
+    }
   }
 
   .upperPart {
     display: flex;
     width: 100%;
 
+    @media screen and (max-width: 480px) {
+      flex-direction: column;
+    }
+
     .upperGoal {
-      width: 100%;
+      flex: 1 0;
+
+      @media screen and (max-width: 480px) {
+        margin-top: 36px;
+      }
     }
 
     .font1 {
@@ -77,13 +89,21 @@
       font-weight: $font6W;
     }
 
+    label > h4 {
+      font-size: $font4;
+      font-weight: $font4W;
+
+      @media screen and (max-width: 480px) {
+        font-size: $font5;
+      }
+    }
+
     .pickerContainer {
       margin-right: 15px;
     }
 
     .titleContainer {
       width: 100%;
-      height: 36px;
 
       .menuLine {
         display: flex;
@@ -107,12 +127,14 @@
     display: flex;
     margin-top: 40px;
 
-    @media screen and (max-width: 1064px) {
+    @media screen and (max-width: 768px) {
       flex-direction: column;
       justify-content: center;
     }
 
-    h4 {
+    label > h4 {
+      font-size: $font4;
+      font-weight: $font4W;
       margin-bottom: 16px;
       width: 100%;
 
@@ -125,7 +147,7 @@
       margin-right: 12px;
       width: 49%;
 
-      @media screen and (max-width: 1064px) {
+      @media screen and (max-width: 768px) {
         width: 100%;
       }
     }
@@ -145,19 +167,22 @@
       }
     }
 
+    .scheduleContainer {
+      width: 50%;
+
+      @media screen and (max-width: 768px) {
+        width: 100%;
+        margin-bottom: 16px;
+      }
+    }
+
     .scheduleArea {
-      width: 240%;
+      width: 100%;
       height: 90%;
       white-space: pre-line;
       background-color: $snow;
       min-height: 64px;
       padding: 16px;
-
-      @media screen and (max-width: 1064px) {
-        width: 100%;
-        height: 100%;
-        margin-bottom: 16px;
-      }
     }
 
     .homeworkContainer {
