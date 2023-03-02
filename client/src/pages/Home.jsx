@@ -75,7 +75,7 @@ const Home = () => {
       <section className={styles.container}>
         <section className={styles.searchContainer}>
           <article
-            className={`${styles.searchTitle}`}
+            className={styles.searchTitle}
             ref={(el) => (elementRef.current[0] = el)}
           >
             <div className={styles.text}>
@@ -117,7 +117,7 @@ const Home = () => {
         </section>
         <section className={styles.messageContainer}>
           <article
-            className={`${styles.messageTitle}`}
+            className={styles.messageTitle}
             ref={(el) => (elementRef.current[3] = el)}
           >
             <div className={styles.text}>
@@ -156,7 +156,7 @@ const Home = () => {
         </section>
         <section className={styles.tutoringContainer}>
           <article
-            className={`${styles.tutoringTitle}`}
+            className={styles.tutoringTitle}
             ref={(el) => (elementRef.current[6] = el)}
           >
             <div className={styles.text}>

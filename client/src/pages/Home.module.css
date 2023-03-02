@@ -7,19 +7,6 @@
   background-color: $night;
 }
 
-.testBtn {
-  position: fixed;
-  top: 80px;
-  right: 64px;
-  background-color: $white;
-  font-size: $font5;
-  font-weight: $font5W;
-  z-index: 9999;
-  padding: 4px 16px;
-  border-radius: 50px;
-  box-shadow: $buttonShadow;
-}
-
 .container {
   max-width: 1048px;
   margin: 0 auto;
@@ -45,9 +32,9 @@
     transform: translateY(8px);
     transition: all 0.5s ease-in-out;
     box-shadow: $blurShadow;
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1048px) {
       height: 100%;
-      padding: 40px 32px;
+      padding: 32px;
     }
     @media screen and (max-width: 480px) {
       display: flex;
@@ -56,6 +43,11 @@
     }
 
     > .text {
+      @media screen and (max-width: 480px) {
+        margin-top: 16px;
+        align-self: flex-start;
+      }
+
       > h4 {
         font-size: $font1;
         font-weight: $font1W;
@@ -87,7 +79,7 @@
           font-size: $font5;
           font-weight: $font5W;
         }
-        @media screen and (max-width: 480px) {
+        @media screen and (max-width: 768px) {
           font-size: $font6;
           font-weight: $font6W;
         }
@@ -173,11 +165,10 @@
     }
     @media screen and (max-width: 480px) {
       padding: 0;
+      flex-direction: column !important;
     }
 
     &.leftUp {
-      top: 0;
-      left: 0;
       flex-direction: row-reverse;
       justify-content: flex-end;
 
@@ -185,12 +176,18 @@
         text-align: left;
         margin-top: 40px;
         margin-left: 20px;
+        @media screen and (max-width: 768px) {
+          margin-left: 0;
+        }
+        @media screen and (max-width: 480px) {
+          margin-top: 20px;
+          margin-left: 24px;
+          margin-bottom: 0;
+        }
       }
     }
 
     &.leftDown {
-      bottom: 0;
-      left: 0;
       align-items: flex-end;
       flex-direction: row-reverse;
       justify-content: flex-end;
@@ -199,24 +196,38 @@
         text-align: left;
         margin-bottom: 40px;
         margin-right: 20px;
+        @media screen and (max-width: 768px) {
+          margin-right: 0;
+        }
+        @media screen and (max-width: 480px) {
+          margin-top: 20px;
+          margin-right: 24px;
+          margin-bottom: 0;
+          text-align: right;
+        }
       }
     }
 
     &.rightUp {
-      top: 0;
-      right: 0;
       justify-content: flex-end;
 
       > p {
         text-align: right;
         margin-top: 40px;
         margin-right: 20px;
+        @media screen and (max-width: 768px) {
+          margin-right: 0;
+        }
+        @media screen and (max-width: 480px) {
+          margin-top: 20px;
+          margin-left: 24px;
+          margin-bottom: 0;
+          text-align: left;
+        }
       }
     }
 
     &.rightDown {
-      bottom: 0;
-      right: 0;
       align-items: flex-end;
       justify-content: flex-end;
 
@@ -224,6 +235,14 @@
         text-align: right;
         margin-bottom: 40px;
         margin-right: 20px;
+        @media screen and (max-width: 768px) {
+          margin-right: 0;
+        }
+        @media screen and (max-width: 480px) {
+          margin-top: 20px;
+          margin-right: 24px;
+          margin-bottom: 0;
+        }
       }
     }
 
@@ -231,6 +250,13 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
+
+      > p {
+        @media screen and (max-width: 480px) {
+          margin-top: 20px;
+          text-align: center;
+        }
+      }
     }
 
     > p {
@@ -261,6 +287,9 @@
       transition: all 0.5s ease-in-out;
       @media screen and (max-width: 768px) {
         width: 50%;
+      }
+      @media screen and (max-width: 480px) {
+        width: 80%;
       }
     }
   }
