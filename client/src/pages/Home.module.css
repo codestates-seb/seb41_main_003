@@ -1,0 +1,385 @@
+/* stylelint-disable no-descending-specificity */
+@import url('../default.css');
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+  background-color: $night;
+}
+
+.container {
+  max-width: 1048px;
+  margin: 0 auto;
+  @media screen and (max-width: 1048px) {
+    padding: 0 16px;
+  }
+  @media screen and (max-width: 480px) {
+    padding: 0 24px;
+  }
+
+  > section > article {
+    width: 100%;
+    height: 400px;
+    background-color: $white;
+    border-radius: 10px;
+    padding: 0 48px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    align-items: center;
+    margin-top: 40px;
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.5s ease-in-out;
+    box-shadow: $blurShadow;
+    @media screen and (max-width: 1048px) {
+      height: 100%;
+      padding: 32px;
+    }
+    @media screen and (max-width: 480px) {
+      display: flex;
+      flex-direction: column-reverse;
+      padding: 24px;
+    }
+
+    > .text {
+      @media screen and (max-width: 480px) {
+        margin-top: 16px;
+        align-self: flex-start;
+      }
+
+      > h4 {
+        font-size: $font1;
+        font-weight: $font1W;
+        margin-bottom: 40px;
+        opacity: 0;
+        transform: translateY(4px);
+        transition: all 0.4s ease-in-out 0.2s;
+        @media screen and (max-width: 1048px) {
+          font-size: $font2;
+          font-weight: $font2W;
+        }
+        @media screen and (max-width: 768px) {
+          font-size: $font3;
+          font-weight: $font3W;
+        }
+        @media screen and (max-width: 480px) {
+          font-size: $font4;
+          font-weight: $font4W;
+        }
+      }
+
+      > p {
+        font-size: $font4;
+        font-weight: $font4W;
+        opacity: 0;
+        transform: translateY(4px);
+        transition: all 0.4s ease-in-out 0.3s;
+        @media screen and (max-width: 1048px) {
+          font-size: $font5;
+          font-weight: $font5W;
+        }
+        @media screen and (max-width: 768px) {
+          font-size: $font6;
+          font-weight: $font6W;
+        }
+
+        &:first-of-type {
+          margin-bottom: 24px;
+        }
+      }
+    }
+
+    &.active {
+      opacity: 1;
+      transform: translateY(0);
+
+      > .text {
+        > h4 {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        > p {
+          opacity: 1;
+          transform: translateY(0);
+
+          &:first-of-type {
+            margin-bottom: 24px;
+          }
+        }
+      }
+    }
+
+    img {
+      width: 100%;
+
+      @media screen and (max-width: 480px) {
+        width: 80%;
+        margin-bottom: 16px;
+      }
+    }
+  }
+}
+
+.topBanner {
+  width: 100%;
+  position: relative;
+
+  > img {
+    width: 100%;
+    height: 576px;
+    object-fit: cover;
+    @media screen and (max-width: 1048px) {
+      height: 450px;
+    }
+    @media screen and (max-width: 768px) {
+      height: 350px;
+    }
+  }
+
+  > .title {
+    position: absolute;
+    top: 168px;
+    right: 20%;
+
+    > p {
+      font-size: $font4;
+      font-weight: $font4W;
+      color: $white;
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.pageView {
+  width: 100%;
+  position: relative;
+  margin-bottom: 120px;
+
+  .mock {
+    display: flex;
+    padding: 0 88px;
+    @media screen and (max-width: 768px) {
+      padding: 0 24px;
+    }
+    @media screen and (max-width: 480px) {
+      padding: 0;
+      flex-direction: column !important;
+    }
+
+    &.leftUp {
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+
+      > p {
+        text-align: left;
+        margin-top: 40px;
+        margin-left: 20px;
+        @media screen and (max-width: 768px) {
+          margin-left: 0;
+        }
+        @media screen and (max-width: 480px) {
+          margin-top: 20px;
+          margin-left: 24px;
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    &.leftDown {
+      align-items: flex-end;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+
+      > p {
+        text-align: left;
+        margin-bottom: 40px;
+        margin-right: 20px;
+        @media screen and (max-width: 768px) {
+          margin-right: 0;
+        }
+        @media screen and (max-width: 480px) {
+          margin-top: 20px;
+          margin-right: 24px;
+          margin-bottom: 0;
+          text-align: right;
+        }
+      }
+    }
+
+    &.rightUp {
+      justify-content: flex-end;
+
+      > p {
+        text-align: right;
+        margin-top: 40px;
+        margin-right: 20px;
+        @media screen and (max-width: 768px) {
+          margin-right: 0;
+        }
+        @media screen and (max-width: 480px) {
+          margin-top: 20px;
+          margin-left: 24px;
+          margin-bottom: 0;
+          text-align: left;
+        }
+      }
+    }
+
+    &.rightDown {
+      align-items: flex-end;
+      justify-content: flex-end;
+
+      > p {
+        text-align: right;
+        margin-bottom: 40px;
+        margin-right: 20px;
+        @media screen and (max-width: 768px) {
+          margin-right: 0;
+        }
+        @media screen and (max-width: 480px) {
+          margin-top: 20px;
+          margin-right: 24px;
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    &.center {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+
+      > p {
+        @media screen and (max-width: 480px) {
+          margin-top: 20px;
+          text-align: center;
+        }
+      }
+    }
+
+    > p {
+      text-align: right;
+      font-size: $font4;
+      font-weight: $font3W;
+      color: $white;
+      opacity: 0;
+      transform: translateX(8px);
+      transition: all 0.3s ease-in-out 0.2s;
+      text-shadow: $blurShadow;
+      @media screen and (max-width: 768px) {
+        font-size: $font5;
+        font-weight: $font4W;
+      }
+      @media screen and (max-width: 480px) {
+        font-weight: $font5W;
+      }
+      @media screen and (max-width: 360px) {
+        font-size: $font6;
+        font-weight: $font6W;
+      }
+    }
+
+    > img {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: all 0.5s ease-in-out;
+      @media screen and (max-width: 768px) {
+        width: 50%;
+      }
+      @media screen and (max-width: 480px) {
+        width: 80%;
+      }
+    }
+  }
+
+  .active {
+    > p,
+    img {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    img:hover {
+      transform: translateY(-4px);
+    }
+  }
+}
+
+.bottomBanner {
+  width: 100%;
+  height: 800px;
+  background-image: url('../assets/bottom_banner.png');
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @media screen and (max-width: 1048px) {
+    height: 600px;
+  }
+  @media screen and (max-width: 768px) {
+    height: 500px;
+  }
+
+  > svg {
+    margin-bottom: 48px;
+    @media screen and (max-width: 768px) {
+      width: 80%;
+    }
+    @media screen and (max-width: 480px) {
+      width: 60%;
+      margin-bottom: 12px;
+    }
+  }
+
+  > p {
+    font-size: $font1;
+    font-weight: $font1W;
+    margin-bottom: 80px;
+    color: $white;
+    @media screen and (max-width: 768px) {
+      font-size: $font2;
+      font-weight: $font2W;
+      margin-bottom: 40px;
+    }
+  }
+
+  .btnContainer {
+    display: flex;
+    @media screen and (max-width: 480px) {
+      flex-direction: column;
+    }
+
+    > button {
+      width: 256px;
+      height: 64px;
+      border-radius: 30px;
+      font-size: $font3;
+      font-weight: $font3W;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      @media screen and (max-width: 768px) {
+        width: 192px;
+        height: 48px;
+        font-size: $font4;
+        font-weight: $font4W;
+      }
+
+      &.newUser {
+        background-color: $white;
+        margin-right: 16px;
+        @media screen and (max-width: 480px) {
+          margin-bottom: 16px;
+        }
+      }
+
+      &.exUser {
+        color: $white;
+        background-color: $night;
+      }
+    }
+  }
+}

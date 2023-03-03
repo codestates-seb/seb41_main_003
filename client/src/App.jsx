@@ -29,12 +29,15 @@ import { GlobalModal } from './components/modal/GlobalModal';
 import { useResetRecoilState, useSetRecoilState } from 'recoil';
 import axios from 'axios';
 import Profile from './recoil/profile';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import OAuth from './pages/OAuth';
 import ModalState from './recoil/modal';
 import ScrollToTop from './util/ScrollToTop';
+import Offline from './components/Offline';
+import Home from './pages/Home';
 
 const App = () => {
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
   const resetProfile = useResetRecoilState(Profile);
   const setModal = useSetRecoilState(ModalState);
 
@@ -113,7 +116,25 @@ const App = () => {
 
   useEffect(() => {
     if (!sessionStorage.getItem('authorization')) resetProfile();
-  });
+
+    window.addEventListener('online', () => {
+      setIsOffline(false);
+    });
+
+    window.addEventListener('offline', () => {
+      setIsOffline(true);
+    });
+
+    return () => {
+      window.removeEventListener('online', () => {
+        setIsOffline(false);
+      });
+
+      window.removeEventListener('offline', () => {
+        setIsOffline(true);
+      });
+    };
+  }, []);
 
   return (
     <div className="app">
@@ -122,7 +143,7 @@ const App = () => {
         <Header />
         <div className="content">
           <Routes>
-            <Route path="/" element={<TutorList />} />
+            <Route path="/" element={<Home />} />
             <Route path="/tutorlist" element={<TutorList />} />
             <Route path="/tuteelist" element={<TuteeList />} />
             <Route path="/tutoringlist" element={<TutoringList />} />
@@ -145,6 +166,7 @@ const App = () => {
           </Routes>
         </div>
         <GlobalModal />
+        {isOffline && <Offline />}
       </Router>
       <Footer />
     </div>

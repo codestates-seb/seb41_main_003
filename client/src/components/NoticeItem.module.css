@@ -15,7 +15,7 @@
     display: flex;
 
     > :last-child {
-      text-align: start;
+      text-align: left;
     }
 
     svg {

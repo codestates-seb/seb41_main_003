@@ -13,7 +13,7 @@
 
 ## 프로젝트 기간
 
-2023.01.03 ~
+2023.01.03 ~ 2023.03.02
 
 ## 배포 링크
 
@@ -36,7 +36,7 @@
 ### FrontEnd
 
 <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/recoil-3578e5.svg?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHdpZHRoPSIyMzY4IiB2aWV3Qm94PSIzMCAxMSAyNy41IDc4Ij48Y2lyY2xlIGN4PSI0My41IiBjeT0iMTguNSIgZmlsbD0iI2ZmZiIgcj0iNy41Ii8+PGNpcmNsZSBjeD0iNDMuNSIgY3k9IjgxLjUiIGZpbGw9IiNmZmYiIHI9IjcuNSIvPjxnIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIzIj48cGF0aCBkPSJNNDMuOTk5IDI1QzQyLjUgMzcgNTcuNSAzNCA1Ny41IDQyLjVjMCA1LTUuODc4IDYuMzY1LTEzLjUwMSA3QzM3Ljk5OSA1MCAzMCA1MCAzMCA1OHMxNiA1LjUgMTMuOTk5IDE3TTM0LjEzMiAzMy4zNTNjMCAxNS4yODkgMjMuMTUgMTguMjg5IDIzLjE1IDMyLjYyIi8+PC9nPjwvc3ZnPg==&logoColor=white"> <img src="https://img.shields.io/badge/postcss-DD3A0A.svg?style=for-the-badge&logo=PostCSS&logoColor=white"> <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">
-<img src="https://img.shields.io/badge/eslint-4B32C3?style=for-the-badge&logo=ESLint&logoColor=white"> <img src="https://img.shields.io/badge/stylelint-263238?style=for-the-badge&logo=stylelint&logoColor=white"> <img src="https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=Prettier&logoColor=black">
+<img src="https://img.shields.io/badge/eslint-4B32C3?style=for-the-badge&logo=ESLint&logoColor=white"> <img src="https://img.shields.io/badge/stylelint-263238?style=for-the-badge&logo=stylelint&logoColor=white"> <img src="https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=Prettier&logoColor=black"> <img src="https://img.shields.io/badge/stompjs-000000?style=for-the-badge&logo=&logoColor=black"> <img src="https://img.shields.io/badge/sockjs-000000?style=for-the-badge&logo=&logoColor=black">
 
 ### Backend
 
@@ -67,11 +67,31 @@ https://user-images.githubusercontent.com/77656241/215424636-3813c414-d4c2-4c85-
 
 여러 과외나 학생을 관리하기 위한 다중 프로필 기능을 지원하며, 서비스 내에서 매칭을 할 수 있도록 메세지 기능을 제공합니다.
 
+- **2023.02.20. 실시간 채팅 기능 추가**  
+  기존 메세지 기능을 WebSocket 기술을 활용해 실시간 채팅으로 업데이트 하였습니다.
+
 ### 과외 관리 서비스
 
 https://user-images.githubusercontent.com/77656241/215424663-8bc388f5-a06c-48c4-a491-d2c9a932f482.mp4
 
 서비스 내에서 매칭이 성사되면 자동으로 과외 관리 페이지를 생성합니다. 과외 관리 페이지에서는 튜터가 작성한 과외 일지를 통해 현재 진행 중인 과외의 현황을 확인 할 수 있습니다.
+
+### 반응형 웹 및 PWA 적용
+
+https://user-images.githubusercontent.com/77656241/222341892-4dc6d4fe-310a-406b-bdd0-33f33c9369f8.mp4
+
+반응형 웹을 적용해 다양한 디바이스에서 서비스를 이용 할 수 있습니다.
+
+![Screenshot_27](https://user-images.githubusercontent.com/77656241/222341954-4c0f8312-de53-42bc-832d-ca91a9278ec8.png)  
+또한, PWA(Progressive Web App)을 적용해 웹 어플리케이션으로도 사용할 수 있습니다.
+
+### 알림 기능
+
+https://user-images.githubusercontent.com/77656241/222342350-f674d0d2-0556-44df-9b11-30a1bad809ce.mp4
+
+서비스를 이용하면서 확인이 필요한 부분에 알림 기능을 제공합니다.
+
+- 적용 대상 : 메세지 / 매칭 요청 / 매칭 승인 / 새로운 일지 / 과외 종료 요청 / 과외 종료
 
 ## 프로젝트 목표
 
@@ -112,7 +132,7 @@ https://user-images.githubusercontent.com/77656241/215424663-8bc388f5-a06c-48c4-
 
 [프로젝트 관리 Notion](https://codestates.notion.site/81a539d40b8043218fcc04a720ae87b5)  
 [프로젝트 관리 Sheet (사용자 요구사항 정의서, 테이블 명세서, ERD)](https://docs.google.com/spreadsheets/d/1xXDMro8_Y60AMyBLFTEZ6FTt2ztlR0SviWoF0sieI28/edit?usp=sharing)  
-[화면 정의서]()  
+[화면 정의서](https://codestates.notion.site/0b46b89d6bd24e0e91e965a1095b9c2b)  
 [Prototype](https://www.figma.com/file/tjklQ53VM1vS3iB3uPRYAA/seb_41_main_003_protoType?node-id=0%3A1&t=T5PQYwtVPd18BUXh-1)  
 [User Flow](https://www.figma.com/file/uasFDiY5Q8HiEODFHsXt7s/seb_41_main_003_tutorDiff?node-id=0%3A1&t=uQ6BA3T37VQWrRjD-1)
 

@@ -19,7 +19,9 @@ const AdminModal = () => {
 
   const switchHandler = (profileId, name, url) => {
     setProfile((prev) => ({ ...prev, profileId, name, url }));
-    navigate('/');
+    sessionStorage.getItem('userStatus') === 'TUTOR'
+      ? navigate('/tuteelist')
+      : navigate('/tutorlist');
     resetModal();
   };
 
